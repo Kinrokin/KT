@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "next_lawful_move": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.failure_confession_receipt.v1"
+    },
+    "what_did_not_fail": {
+      "type": "array"
+    },
+    "what_evidence_supports_owner": {
+      "type": "array"
+    },
+    "what_failed": {
+      "type": "array"
+    },
+    "what_intervention_is_allowed": {
+      "type": "array"
+    },
+    "what_intervention_is_forbidden": {
+      "type": "array"
+    },
+    "what_layer_owned_failure": {
+      "type": "array"
+    },
+    "what_must_not_be_claimed": {
+      "type": "array"
+    },
+    "what_was_overclaimed": {
+      "type": "array"
+    },
+    "what_was_undermeasured": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "what_failed",
+    "what_did_not_fail",
+    "what_was_overclaimed",
+    "what_was_undermeasured",
+    "what_layer_owned_failure",
+    "what_evidence_supports_owner",
+    "what_intervention_is_allowed",
+    "what_intervention_is_forbidden",
+    "what_must_not_be_claimed",
+    "next_lawful_move",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.failure_confession_receipt.v1",
+  "type": "object"
+}

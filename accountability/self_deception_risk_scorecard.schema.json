@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "claim_without_admissibility_rate": {
+      "type": "number"
+    },
+    "niche_to_global_claim_rate": {
+      "type": "number"
+    },
+    "omitted_negative_result_rate": {
+      "type": "number"
+    },
+    "promotion_eligible": {
+      "type": "boolean"
+    },
+    "requires_followup_measurement": {
+      "type": "boolean"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "scaffold_pass_rate": {
+      "type": "number"
+    },
+    "schema_id": {
+      "const": "kt.self_deception_risk_scorecard.v1"
+    },
+    "self_deception_risk_score": {
+      "type": "number"
+    },
+    "training_without_owner_rate": {
+      "type": "number"
+    },
+    "unowned_failure_rate": {
+      "type": "number"
+    },
+    "unpaired_metric_rate": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "unowned_failure_rate",
+    "scaffold_pass_rate",
+    "unpaired_metric_rate",
+    "niche_to_global_claim_rate",
+    "omitted_negative_result_rate",
+    "training_without_owner_rate",
+    "claim_without_admissibility_rate",
+    "self_deception_risk_score",
+    "promotion_eligible",
+    "requires_followup_measurement",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.self_deception_risk_scorecard.v1",
+  "type": "object"
+}

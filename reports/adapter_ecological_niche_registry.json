@@ -1,0 +1,33 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-26T20:06:34Z",
+  "global_promotion_allowed": false,
+  "niches": [
+    {
+      "adapter_id": "adapter_g3_formal_math_repair_adapter",
+      "allowed_task_families": [
+        "formal_math",
+        "gsm8k_like"
+      ],
+      "blocked_task_families": [
+        "global_general_reasoning",
+        "truthfulness",
+        "commercial",
+        "regulated_domain",
+        "red_assault"
+      ],
+      "negative_transfer_score": 0.115,
+      "promotion_eligible": false,
+      "quarantine_status": "QUARANTINED_OUTSIDE_FORMAL_MATH_SPECIALIST_ROUTE",
+      "routing_preconditions": [
+        "task_family classified as formal_math or gsm8k_like",
+        "deterministic math verifier/finalizer available",
+        "adapter isolation receipt emitted",
+        "global negative transfer remains quarantined"
+      ],
+      "schema_id": "kt.adapter_niche_boundary.v1",
+      "verifier_required": true
+    }
+  ],
+  "schema_id": "kt.adapter_ecological_niche_registry.v1"
+}

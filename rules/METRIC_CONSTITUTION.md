@@ -29,3 +29,17 @@ Anti-Goodhart pairs:
 - SY -> human_anchor_agreement
 - DD -> target_metric_gain + failure_map_present + semantic_delta_present + no_regression_pass
 - GAD -> external_verifier_delta + claim_ceiling_preservation
+- self_deception_risk -> failure_confession_receipt + claim_admissibility_casefile
+
+Accountability Kernel extension:
+
+self_deception_risk_score =
+0.20 * unowned_failure_rate
++ 0.20 * scaffold_pass_rate
++ 0.15 * unpaired_metric_rate
++ 0.15 * niche_to_global_claim_rate
++ 0.10 * omitted_negative_result_rate
++ 0.10 * training_without_owner_rate
++ 0.10 * claim_without_admissibility_rate
+
+No accountability metric may be emitted without its anti-Goodhart pair.

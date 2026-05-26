@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "baseline_artifacts": {
+      "type": "array"
+    },
+    "global_replay_results": {
+      "type": "object"
+    },
+    "regression_detected": {
+      "type": "boolean"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.no_regression_memory.v1"
+    },
+    "target_slice_results": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "baseline_artifacts",
+    "target_slice_results",
+    "global_replay_results",
+    "regression_detected"
+  ],
+  "title": "kt.no_regression_memory.v1",
+  "type": "object"
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "artifact_registry_updated": {
+      "type": "boolean"
+    },
+    "claim_ceiling_unchanged": {
+      "type": "boolean"
+    },
+    "expected_files": {
+      "type": "array"
+    },
+    "forbidden_paths": {
+      "type": "array"
+    },
+    "next_lawful_move": {
+      "type": "string"
+    },
+    "required_tests": {
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.repo_state_diff_contract.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "expected_files",
+    "forbidden_paths",
+    "required_tests",
+    "claim_ceiling_unchanged",
+    "artifact_registry_updated",
+    "next_lawful_move"
+  ],
+  "title": "kt.repo_state_diff_contract.v1",
+  "type": "object"
+}

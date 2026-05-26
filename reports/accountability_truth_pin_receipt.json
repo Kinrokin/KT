@@ -1,0 +1,86 @@
+{
+  "artifact_registry_file": "registry/artifact_authority_registry.json",
+  "audit_pass": true,
+  "claim_ceiling_file": "rules/CLAIM_CEILING.md",
+  "claim_ceiling_status": "UNCHANGED",
+  "created_utc": "2026-05-26T20:06:34Z",
+  "current_branch": "prep/kt-accountability-kernel-specialist-routing-v1",
+  "current_head": "9bede81ee8d9b73d177e9f196f0c36f94fe7f15a",
+  "existing_accountability_surfaces": [
+    "accountability/accountability_kernel_receipt.json",
+    "accountability/accountability_kernel_receipt.schema.json",
+    "accountability/accountability_trace_ledger.json",
+    "accountability/accountability_trace_ledger.schema.json",
+    "accountability/causal_ownership_court.json",
+    "accountability/causal_ownership_court.schema.json",
+    "accountability/claim_admissibility_casefile.json",
+    "accountability/claim_admissibility_casefile.schema.json",
+    "accountability/failure_confession_receipt.json",
+    "accountability/failure_confession_receipt.schema.json",
+    "accountability/no_regression_memory.json",
+    "accountability/no_regression_memory.schema.json",
+    "accountability/repair_consequence_receipt.json",
+    "accountability/repair_consequence_receipt.schema.json",
+    "accountability/self_deception_risk_scorecard.json",
+    "accountability/self_deception_risk_scorecard.schema.json",
+    "accountability/success_admissibility_receipt.json",
+    "accountability/success_admissibility_receipt.schema.json",
+    "reports/accountability_current_implementation_map.json",
+    "reports/accountability_gap_matrix.json",
+    "reports/accountability_metric_constitution_receipt.json",
+    "reports/accountability_source_evidence_index.json",
+    "reports/accountability_superlane_receipt.json",
+    "reports/accountability_truth_pin_receipt.json",
+    "scripts/accountability_common.py",
+    "scripts/enforce_accountability_gates.py",
+    "scripts/run_accountability_kernel_superlane.py"
+  ],
+  "existing_g32_surfaces": [
+    "reports/g32_do_not_train_receipt_set.json",
+    "reports/g32_future_multi_substrate_lane_status.json",
+    "reports/g32_gap_matrix.json",
+    "reports/g32_human_anchor_manifest.json",
+    "reports/g32_minimum_viable_signal_receipt.json",
+    "reports/g32_signal_density_matrix.jsonl",
+    "reports/g32_superlane_receipt.json",
+    "reports/g32_training_decision_receipt.json",
+    "reports/g32_truth_pin_receipt.json",
+    "schemas/kt.signal_density_matrix.schema.json",
+    "schemas/kt.signal_density_row.schema.json",
+    "scripts/g32_common.py",
+    "scripts/run_g32_signal_density_superlane.py"
+  ],
+  "existing_packets": [
+    "packets/ktg31_v1.zip",
+    "packets/ktg3_run_v1.zip",
+    "packets/ktg3_v3.zip",
+    "packets/ktg3full_v12.zip"
+  ],
+  "existing_specialist_routing_surfaces": [
+    "reports/formal_math_specialist_router_plan.json",
+    "reports/specialist_router_decision_contract.json",
+    "schemas/kt.adapter_isolation_receipt.schema.json",
+    "schemas/kt.adapter_niche_boundary.schema.json",
+    "schemas/kt.specialist_router_decision.schema.json"
+  ],
+  "latest_g3full_assessment_sources": [
+    {
+      "exists": true,
+      "path": "evidence/G3FULL_RESULTS_SUMMARY.md",
+      "role": "packet_imported_measured_summary",
+      "sha256": "9da7bfbbc79c18f68bf20413019b280a17ec3f3543a6ecf00b2606a4ecf8368d"
+    },
+    {
+      "exists": true,
+      "path": "source_packet:ktak_v1.zip",
+      "role": "source_packet_sanitized_reference",
+      "sha256": "34d0dc5dd7315929be6491ec8dbb7084ef66e3b379bb9559f28b07f0ec95abbc"
+    }
+  ],
+  "missing_surfaces": [],
+  "program_id": "KT_ACCOUNTABILITY_KERNEL_AND_SPECIALIST_ROUTING_SUPERLANE_V1",
+  "schema_id": "kt.accountability.truth_pin_receipt.v1",
+  "stale_surfaces": [],
+  "superseded_surfaces": [],
+  "worktree_clean": true
+}

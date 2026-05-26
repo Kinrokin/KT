@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "events": {
+      "type": "array"
+    },
+    "receipts": {
+      "type": "array"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.accountability_trace_ledger.v1"
+    },
+    "source_artifacts": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "events",
+    "source_artifacts",
+    "receipts",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.accountability_trace_ledger.v1",
+  "type": "object"
+}

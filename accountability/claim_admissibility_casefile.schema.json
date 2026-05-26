@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "argument": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "array"
+    },
+    "claim": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "forbidden_claims": {
+      "type": "array"
+    },
+    "limitations": {
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.claim_admissibility_casefile.v1"
+    },
+    "tier": {
+      "maximum": 5,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_id",
+    "claim",
+    "argument",
+    "evidence",
+    "assumptions",
+    "limitations",
+    "tier",
+    "forbidden_claims"
+  ],
+  "title": "kt.claim_admissibility_casefile.v1",
+  "type": "object"
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "cluster_id": {
+      "type": "string"
+    },
+    "failure_repair_value": {
+      "type": "number"
+    },
+    "importance": {
+      "type": "number"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "recurrence": {
+      "type": "number"
+    },
+    "regression_safety": {
+      "type": "number"
+    },
+    "regret_potential": {
+      "type": "number"
+    },
+    "repair_cost": {
+      "type": "number"
+    },
+    "scar_clarity": {
+      "type": "number"
+    },
+    "schema_id": {
+      "const": "kt.failure_mode_effects_row.v1"
+    },
+    "severity": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "schema_id",
+    "cluster_id",
+    "severity",
+    "recurrence",
+    "importance",
+    "regret_potential",
+    "scar_clarity",
+    "regression_safety",
+    "repair_cost",
+    "failure_repair_value",
+    "owner"
+  ],
+  "title": "kt.failure_mode_effects_row.v1",
+  "type": "object"
+}

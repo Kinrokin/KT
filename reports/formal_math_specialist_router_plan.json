@@ -1,0 +1,25 @@
+{
+  "acceptance_criteria": [
+    "formal_math_router_specialist > base_raw on GSM8K",
+    "formal_math_router_specialist >= base_raw globally or regression explicitly bounded and non-promotable",
+    "formal_math_global_adapter remains quarantined if global negative transfer persists",
+    "adapter isolation receipt proves no PEFT leakage between arms"
+  ],
+  "arms": [
+    "base_raw",
+    "base_kt_hat_compact",
+    "formal_math_global_adapter",
+    "formal_math_router_specialist",
+    "oracle_math_router",
+    "adapter_isolation_probe"
+  ],
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-26T20:06:34Z",
+  "schema_id": "kt.formal_math_specialist_router_plan.v1",
+  "specialist_route": {
+    "fallback_route": "base_raw",
+    "selected_adapter": "adapter_g3_formal_math_repair_adapter",
+    "task_family": "formal_math",
+    "verifier_gate_required": true
+  }
+}

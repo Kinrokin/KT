@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_consequence": {
+      "type": "string"
+    },
+    "cluster_id": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "no_regression_required": {
+      "type": "boolean"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "promotion_consequence": {
+      "type": "string"
+    },
+    "repair_bid": {
+      "type": "number"
+    },
+    "schema_id": {
+      "const": "kt.repair_consequence_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "cluster_id",
+    "owner",
+    "decision",
+    "repair_bid",
+    "no_regression_required",
+    "promotion_consequence",
+    "claim_consequence"
+  ],
+  "title": "kt.repair_consequence_receipt.v1",
+  "type": "object"
+}
