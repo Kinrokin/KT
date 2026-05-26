@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PROGRAM_ID = "KT_G3_2_SIGNAL_DENSITY_AND_CAUSAL_REPAIR_METALLURGY_SUPERLANE_V1_1"
-PACKET_BUILD_HEAD = "e0e5025b23f1dfe218c200a831aabdd3654579d2"
+PACKET_BUILD_HEAD = "8a100dd359d056db886f6409705f62d8195497a4"
 SCAFFOLD_STATUS = "SCAFFOLD_EMITTED_NOT_EARNED"
 
 
@@ -48,14 +48,14 @@ def main() -> int:
         "assurance_case_claim_compiler_receipt.json": scaffold("kt.g32.assurance_case_claim_compiler_receipt.v1"),
         "clinical_promotion_receipt.json": scaffold("kt.g32.clinical_promotion_receipt.v1"),
         "repair_corpus_provenance_scan.json": scaffold("kt.g32.repair_corpus_provenance_scan.v1"),
-        "human_anchor_manifest.json": scaffold("kt.g32.human_anchor_manifest.v1"),
+        "g32_human_anchor_manifest.json": scaffold("kt.g32.human_anchor_manifest.v1"),
     }
     for name, obj in outputs.items():
         write_json(out / name, obj)
     (out / "benchmark_predictions.jsonl").write_text("", encoding="utf-8")
     (out / "route_regret_matrix.jsonl").write_text("", encoding="utf-8")
     (out / "operator_summary.md").write_text("G3.2 compute scaffold emitted; runtime measurement still required.\n", encoding="utf-8")
-    assessment = out / "KTG3_V3_ASSESSMENT_ONLY.zip"
+    assessment = out / "ASSESSMENT_ONLY.zip"
     with zipfile.ZipFile(assessment, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         for item in sorted(out.iterdir()):
             if item.is_file() and item != assessment:

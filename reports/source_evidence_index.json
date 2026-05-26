@@ -2,9 +2,9 @@
   "artifact_registry_file": "registry/artifact_authority_registry.json",
   "claim_ceiling_file": "governance/current_claim_ceiling.json",
   "claim_ceiling_status": "UNCHANGED",
-  "created_utc": "2026-05-26T15:08:04Z",
+  "created_utc": "2026-05-26T15:59:51Z",
   "current_branch": "prep/kt-g32-signal-density-metallurgy-v1-1",
-  "current_head": "e0e5025b23f1dfe218c200a831aabdd3654579d2",
+  "current_head": "8a100dd359d056db886f6409705f62d8195497a4",
   "existing_ci_workflows": [
     ".github/workflows/ci_audits_json_valid.yml",
     ".github/workflows/ci_epic15_governance.yml",
@@ -55,6 +55,7 @@
     "reports/g32_do_not_train_receipt_set.json",
     "reports/g32_future_multi_substrate_lane_status.json",
     "reports/g32_gap_matrix.json",
+    "reports/g32_human_anchor_manifest.json",
     "reports/g32_minimum_viable_signal_receipt.json",
     "reports/g32_superlane_receipt.json",
     "reports/g32_training_decision_receipt.json",
@@ -177,7 +178,8 @@
     {
       "authority": "SOURCE_PACKET_NOT_CAPABILITY_CLAIM",
       "mapped_kt_artifact": "KT_G3_2_SIGNAL_DENSITY_AND_CAUSAL_REPAIR_METALLURGY_SUPERLANE_V1_1",
-      "path": "d:/user/rober/Downloads/ktg32_metal_v1_1.zip",
+      "path": "source_packet:ktg32_metal_v1_1.zip",
+      "path_policy": "sanitized_non_local_path",
       "retrieval_date": "2026-05-26",
       "sha256": "8bff4df9e87b3c55d2c706005317126efa23800a3ca21439873fa2d01c37d1ab"
     }

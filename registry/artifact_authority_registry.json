@@ -539,22 +539,28 @@
     },
     {
       "artifact_id": "KT_G32_SIGNAL_DENSITY_RECEIPT",
-      "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
-      "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
       "notes": "Repo-side G3.2 law/gate receipt; no commercial, external, S-tier, 7B, router, multi-lobe, or production authority.",
       "path": "reports/g32_superlane_receipt.json",
       "role": "g32_signal_density_superlane_receipt",
-      "sha256": "e976d4b88790e00bfe9b06328faa2c4c94a517c1237e1e90de30e42fddf4e696",
+      "sha256": "8b552d282bed2eed56c4f571c3f193b3b4449e47c24435f53653e3720a32dfc7",
+      "superseded_by": null,
+      "supersedes": [],
       "validation_status": "PASS"
     },
     {
       "artifact_id": "KTG3_V3_SIGNAL_DENSITY_PACKET",
-      "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
-      "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
       "notes": "Compute packet scaffold; runtime evidence not earned until Kaggle/assessment run.",
       "path": "packets/ktg3_v3.zip",
       "role": "g32_future_compute_packet",
-      "sha256": "64e80cc77214a7d4364152054c60960d060f48561adb1c843ec22eed8e306401",
+      "sha256": "fd405e44cd022cb41d7ccbb5b7dd55f61f0c70a9e4b722c3a1cd97d656fff610",
+      "superseded_by": null,
+      "supersedes": [],
       "validation_status": "PASS"
     },
     {
@@ -597,7 +603,7 @@
       "validation_status": "PASS"
     }
   ],
-  "current_head": "e0e5025b23f1dfe218c200a831aabdd3654579d2",
-  "generated_utc": "2026-05-26T15:08:04Z",
+  "current_head": "8a100dd359d056db886f6409705f62d8195497a4",
+  "generated_utc": "2026-05-26T15:59:51Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }

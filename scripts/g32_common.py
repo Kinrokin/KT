@@ -263,11 +263,12 @@ def build_truth_and_audit(root: Path, audit_clean: bool | None = None) -> dict[s
         ],
         "g32_packet_sources": [
             {
-                "path": "d:/user/rober/Downloads/ktg32_metal_v1_1.zip",
+                "path": "source_packet:ktg32_metal_v1_1.zip",
                 "sha256": SOURCE_PACKET_SHA256,
                 "retrieval_date": utc_now()[:10],
                 "mapped_kt_artifact": "KT_G3_2_SIGNAL_DENSITY_AND_CAUSAL_REPAIR_METALLURGY_SUPERLANE_V1_1",
                 "authority": "SOURCE_PACKET_NOT_CAPABILITY_CLAIM",
+                "path_policy": "sanitized_non_local_path",
             }
         ],
         **existing,
@@ -583,8 +584,12 @@ def build_decisions(rows: Sequence[Mapping[str, Any]], scans: Mapping[str, Any],
             {
                 "schema_id": "kt.do_not_train_receipt.v1",
                 "cluster_id": d["cluster_id"],
+                "counterfactual_owner": d["counterfactual_owner"],
                 "training_decision": d["training_decision"],
                 "do_not_train": d["training_decision"] not in {"TRAIN_ADAPTER", "TRAIN_ROUTER"},
+                "forbidden_action": "TRAIN_ADAPTER_OR_ROUTER_WITHOUT_AUTHORIZED_MINIMUM_VIABLE_SIGNAL",
+                "required_action": d["training_decision"],
+                "evidence": d.get("evidence", []),
                 "reason": "owner_specific_non_training_intervention_or_insufficient_signal",
                 "claim_ceiling_preserved": True,
             }
@@ -846,14 +851,14 @@ def main() -> int:
         "assurance_case_claim_compiler_receipt.json": scaffold("kt.g32.assurance_case_claim_compiler_receipt.v1"),
         "clinical_promotion_receipt.json": scaffold("kt.g32.clinical_promotion_receipt.v1"),
         "repair_corpus_provenance_scan.json": scaffold("kt.g32.repair_corpus_provenance_scan.v1"),
-        "human_anchor_manifest.json": scaffold("kt.g32.human_anchor_manifest.v1"),
+        "g32_human_anchor_manifest.json": scaffold("kt.g32.human_anchor_manifest.v1"),
     }}
     for name, obj in outputs.items():
         write_json(out / name, obj)
     (out / "benchmark_predictions.jsonl").write_text("", encoding="utf-8")
     (out / "route_regret_matrix.jsonl").write_text("", encoding="utf-8")
     (out / "operator_summary.md").write_text("G3.2 compute scaffold emitted; runtime measurement still required.\\n", encoding="utf-8")
-    assessment = out / "KTG3_V3_ASSESSMENT_ONLY.zip"
+    assessment = out / "ASSESSMENT_ONLY.zip"
     with zipfile.ZipFile(assessment, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         for item in sorted(out.iterdir()):
             if item.is_file() and item != assessment:
@@ -916,26 +921,35 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
             "artifact_id": "KT_G32_SIGNAL_DENSITY_RECEIPT",
             "path": "reports/g32_superlane_receipt.json",
             "role": "g32_signal_density_superlane_receipt",
-            "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
             "sha256": file_sha256(root / "reports/g32_superlane_receipt.json"),
             "validation_status": "PASS",
-            "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+            "controls_execution": False,
+            "claim_authority": "NONE",
+            "superseded_by": None,
+            "supersedes": [],
             "notes": "Repo-side G3.2 law/gate receipt; no commercial, external, S-tier, 7B, router, multi-lobe, or production authority.",
         },
         {
             "artifact_id": "KTG3_V3_SIGNAL_DENSITY_PACKET",
             "path": PACKET_ZIP,
             "role": "g32_future_compute_packet",
-            "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
             "sha256": packet_sha,
             "validation_status": "PASS",
-            "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+            "controls_execution": False,
+            "claim_authority": "NONE",
+            "superseded_by": None,
+            "supersedes": [],
             "notes": "Compute packet scaffold; runtime evidence not earned until Kaggle/assessment run.",
         },
     ]
     for item in additions:
         if item["artifact_id"] in by_id:
-            by_id[item["artifact_id"]].update(item)
+            existing = by_id[item["artifact_id"]]
+            existing.pop("authority", None)
+            existing.pop("claim_ceiling_effect", None)
+            existing.update(item)
         else:
             artifacts.append(item)
     registry["current_head"] = head
