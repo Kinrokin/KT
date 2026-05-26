@@ -538,6 +538,26 @@
       "validation_status": "PASS"
     },
     {
+      "artifact_id": "KT_G32_SIGNAL_DENSITY_RECEIPT",
+      "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+      "notes": "Repo-side G3.2 law/gate receipt; no commercial, external, S-tier, 7B, router, multi-lobe, or production authority.",
+      "path": "reports/g32_superlane_receipt.json",
+      "role": "g32_signal_density_superlane_receipt",
+      "sha256": "e976d4b88790e00bfe9b06328faa2c4c94a517c1237e1e90de30e42fddf4e696",
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KTG3_V3_SIGNAL_DENSITY_PACKET",
+      "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_ceiling_effect": "NO_CLAIM_EXPANSION",
+      "notes": "Compute packet scaffold; runtime evidence not earned until Kaggle/assessment run.",
+      "path": "packets/ktg3_v3.zip",
+      "role": "g32_future_compute_packet",
+      "sha256": "64e80cc77214a7d4364152054c60960d060f48561adb1c843ec22eed8e306401",
+      "validation_status": "PASS"
+    },
+    {
       "artifact_id": "KT_13_LOBE_7B_TRANCHE_CONFIG",
       "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
       "claim_authority": "INTERNAL_SHADOW",
@@ -545,7 +565,7 @@
       "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
       "path": "training/kt_13_lobe_7b_tranche_config.json",
       "role": "thirteen_lobe_tranche_config",
-      "sha256": "2bc9ef79862d80151af74aa0980d3082866f1b27707892fc730887aa887243eb",
+      "sha256": "2c1227a7ee8f74496c1f0e91f7b0b6c0b7d927914b8a77b27306a5833b78f1f0",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
@@ -571,13 +591,13 @@
       "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
       "path": "KT_PROD_CLEANROOM/reports/kt_13_lobe_tranche_readiness_inspection_receipt.json",
       "role": "thirteen_lobe_tranche_readiness_receipt",
-      "sha256": "e655a3b0948e956dcb1c743371ebdc62a125f2c944f16d03e9f3e56097ebfc84",
+      "sha256": "4973d60316e2cf47bffaf51d52e99253d465228ae714a480181792b7cd9f6e04",
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
     }
   ],
-  "current_head": "5945ce88ef9602268dca67437a24a1f7b0b8ff17",
-  "generated_utc": "2026-05-25T20:50:13Z",
+  "current_head": "e0e5025b23f1dfe218c200a831aabdd3654579d2",
+  "generated_utc": "2026-05-26T15:08:04Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }

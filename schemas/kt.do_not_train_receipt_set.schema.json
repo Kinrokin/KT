@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.do_not_train_receipt_set.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "receipts",
+    "claim_ceiling_preserved"
+  ],
+  "title": "KT Do Not Train Receipt Set",
+  "type": "object"
+}
