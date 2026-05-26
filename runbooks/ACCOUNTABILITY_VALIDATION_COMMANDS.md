@@ -7,8 +7,8 @@ python -m pytest --no-cov -q tests/test_adapter_isolation.py
 python -m pytest --no-cov -q tests/test_cross_domain_translation_engine.py
 python -m pytest --no-cov -q tests/test_fmea_repair_bid_matrix.py
 python -m pytest --no-cov -q tests/test_repo_state_diff_contract.py
-python scripts/validate_json_artifacts.py
-python -m tools.operator.trust_zone_validate
+python scripts/validate_json_artifacts.py schemas reports registry packets accountability research
+PYTHONPATH=KT_PROD_CLEANROOM python KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py
 python KT_PROD_CLEANROOM/tools/operator/taxonomy_drift_scan.py
 git diff --check
 ```

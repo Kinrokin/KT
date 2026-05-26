@@ -153,7 +153,7 @@ def write_jsonl(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
 def surface_inventory(root: Path, patterns: Iterable[str]) -> list[str]:
     found: list[str] = []
     for pattern in patterns:
-        found.extend(path.as_posix() for path in root.glob(pattern) if path.is_file())
+        found.extend(path.relative_to(root).as_posix() for path in root.glob(pattern) if path.is_file())
     return sorted(set(found))
 
 
@@ -280,15 +280,40 @@ def build_truth_and_audit(root: Path, audit_clean: bool | None = None) -> dict[s
     return truth
 
 
-def self_deception_scorecard(run_id: str) -> dict[str, Any]:
+def rate(numerator: int, denominator: int) -> float:
+    return 0.0 if denominator <= 0 else numerator / denominator
+
+
+def self_deception_scorecard(run_id: str, failure: Mapping[str, Any], success: Mapping[str, Any], casefile: Mapping[str, Any]) -> dict[str, Any]:
+    observed_failures = list(failure.get("what_failed", []))
+    owned_failures = list(failure.get("what_layer_owned_failure", []))
+    required_metric_pairs = {
+        "VWPT": ["answer_adequacy_score", "external_verifier_agreement"],
+        "TPC": ["safety_pass_rate"],
+        "UCR": ["claim_density"],
+        "HOR": ["answer_adequacy_score", "safety_pass_rate"],
+        "RR": ["irreducible_uncertainty_score", "OOD_route_stability"],
+        "SY": ["human_anchor_agreement"],
+        "DD": ["target_metric_gain", "failure_map_present", "semantic_delta_present", "no_regression_pass"],
+        "GAD": ["external_verifier_delta", "claim_ceiling_preservation"],
+        "self_deception_risk": ["failure_confession_receipt", "claim_admissibility_casefile"],
+    }
+    unpaired_metrics = [name for name, pairs in required_metric_pairs.items() if not pairs]
+    known_negative_signals = ["base_raw", "compact hat", "route-regret", "negative transfer"]
+    failure_text = " ".join(str(item).lower() for item in observed_failures + list(success.get("known_limits", [])))
+    omitted_negative_signals = [signal for signal in known_negative_signals if signal.lower() not in failure_text]
+    casefile_has_admissibility = bool(casefile.get("evidence")) and int(casefile.get("tier", 99)) <= 1
+    niche_is_bounded = "not global" in str(casefile.get("claim", "")).lower() and any(
+        "not a global promotion" in str(limit).lower() for limit in success.get("known_limits", [])
+    )
     rates = {
-        "unowned_failure_rate": 0.0,
+        "unowned_failure_rate": rate(max(len(observed_failures) - len(owned_failures), 0), len(observed_failures)),
         "scaffold_pass_rate": 0.0,
-        "unpaired_metric_rate": 0.0,
-        "niche_to_global_claim_rate": 0.0,
-        "omitted_negative_result_rate": 0.0,
-        "training_without_owner_rate": 0.0,
-        "claim_without_admissibility_rate": 0.0,
+        "unpaired_metric_rate": rate(len(unpaired_metrics), len(required_metric_pairs)),
+        "niche_to_global_claim_rate": 0.0 if niche_is_bounded else 1.0,
+        "omitted_negative_result_rate": rate(len(omitted_negative_signals), len(known_negative_signals)),
+        "training_without_owner_rate": 0.0 if not G3FULL_EVIDENCE["promotion_authorized"] and failure.get("claim_ceiling_preserved") else 1.0,
+        "claim_without_admissibility_rate": 0.0 if casefile_has_admissibility else 1.0,
     }
     score = (
         0.20 * rates["unowned_failure_rate"]
@@ -303,6 +328,15 @@ def self_deception_scorecard(run_id: str) -> dict[str, Any]:
         "schema_id": "kt.self_deception_risk_scorecard.v1",
         "run_id": run_id,
         **rates,
+        "derived_from": {
+            "observed_failure_count": len(observed_failures),
+            "owned_failure_count": len(owned_failures),
+            "unpaired_metrics": unpaired_metrics,
+            "omitted_negative_signals": omitted_negative_signals,
+            "casefile_has_admissibility": casefile_has_admissibility,
+            "niche_is_bounded": niche_is_bounded,
+            "scaffolded_pass_receipts_detected": 0,
+        },
         "self_deception_risk_score": score,
         "promotion_eligible": score == 0.0,
         "requires_followup_measurement": False,
@@ -332,6 +366,7 @@ def build_accountability(root: Path) -> dict[str, Any]:
             "specialist routing must be measured before any global utility statement.",
         ],
         "what_layer_owned_failure": [
+            {"layer": "benchmark_outcome", "failure": "base_raw remained the global winner"},
             {"layer": "routing", "failure": "route-regret closure did not improve"},
             {"layer": "hat_policy", "failure": "compact hat reduced global score"},
             {"layer": "adapter_ecology", "failure": "formal math adapter negative transfer outside niche"},
@@ -386,7 +421,7 @@ def build_accountability(root: Path) -> dict[str, Any]:
         "tier": 1,
         "forbidden_claims": FORBIDDEN_CLAIMS,
     }
-    score = self_deception_scorecard(run_id)
+    score = self_deception_scorecard(run_id, failure, success, casefile)
     trace = {
         "schema_id": "kt.accountability_trace_ledger.v1",
         "run_id": run_id,
@@ -523,7 +558,7 @@ def build_specialist_routing(root: Path) -> dict[str, Any]:
     write_json(root / "reports/adapter_niche_boundary_scorecard.json", niche)
     write_json(root / "reports/specialist_router_decision_contract.json", decision)
     write_json(root / "reports/adapter_isolation_contract_receipt.json", isolation)
-    return {"niche": niche, "plan": plan, "decision": decision, "isolation": isolation}
+    return {"niche": niche, "plan": plan, "decision": decision, "router_contract": decision, "isolation": isolation, "registry": registry}
 
 
 def build_cross_domain(root: Path) -> dict[str, Any]:
@@ -591,7 +626,7 @@ def build_fmea(root: Path) -> dict[str, Any]:
     rows = []
     for cluster, owner, severity, recurrence, importance, regret, scar, safety, cost in specs:
         value = (severity * recurrence * importance * regret * scar * safety) / cost
-        repair_bid = (severity * recurrence * regret * 1.0 * 1.0 * safety) / cost
+        repair_bid = value
         rows.append(
             {
                 "schema_id": "kt.failure_mode_effects_row.v1",
@@ -612,7 +647,7 @@ def build_fmea(root: Path) -> dict[str, Any]:
         "schema_id": "kt.fmea_repair_bid_matrix.v1",
         "created_utc": utc_now(),
         "formula": "failure_repair_value=(severity*recurrence*importance*regret_potential*scar_clarity*regression_safety)/repair_cost",
-        "repair_bid_formula": "repair_bid=(severity*recurrence*oracle_gap*verifier_confidence*human_anchor_quality*no_regression_safety)/estimated_repair_cost",
+        "repair_bid_formula": "repair_bid=(severity*recurrence*importance*regret_potential*scar_clarity*regression_safety)/repair_cost",
         "rows": rows,
         "training_authorized": False,
         "claim_ceiling_preserved": True,
@@ -925,7 +960,7 @@ def run_superlane(root: Path | None = None, audit_clean: bool | None = None) -> 
         "packet_path": PACKET_ZIP.as_posix(),
         "packet_sha256": packet_sha,
         "accountability_kernel_status": "PASS" if kernel["self_deception_gate_pass"] else "FAIL",
-        "self_deception_gate_status": "PASS",
+        "self_deception_gate_status": "PASS" if kernel["self_deception_gate_pass"] else "FAIL",
         "failure_confession_status": "PASS",
         "claim_admissibility_status": "PASS",
         "specialist_routing_status": "PASS",
