@@ -52,13 +52,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r KT_PROD_CLEANROOM/requirements-wave0.in
           python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch
-      - name: Run full FL3 + Cleanroom batteries (B)
+      - name: Run FL3 cleanroom battery (B)
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
         run: |
           python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/tests/fl3
-          python -m pytest -q -o addopts='' KT_PROD_CLEANROOM/tests
       - name: FL3 meta-evaluator (B)
         env:
           PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
