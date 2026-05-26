@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.counterfactual_ownership.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "cluster_id",
+    "counterfactual_owner",
+    "confidence",
+    "evidence"
+  ],
+  "title": "KT Counterfactual Ownership",
+  "type": "object"
+}

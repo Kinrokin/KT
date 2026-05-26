@@ -1,0 +1,206 @@
+{
+  "artifact_registry_file": "registry/artifact_authority_registry.json",
+  "claim_ceiling_file": "governance/current_claim_ceiling.json",
+  "claim_ceiling_status": "UNCHANGED",
+  "created_utc": "2026-05-26T15:59:51Z",
+  "current_branch": "prep/kt-g32-signal-density-metallurgy-v1-1",
+  "current_head": "8a100dd359d056db886f6409705f62d8195497a4",
+  "existing_ci_workflows": [
+    ".github/workflows/ci_audits_json_valid.yml",
+    ".github/workflows/ci_epic15_governance.yml",
+    ".github/workflows/ci_epic16_governance.yml",
+    ".github/workflows/ci_fl3_merge_micro_factory.yml",
+    ".github/workflows/ci_fl3_meta_eval.yml",
+    ".github/workflows/ci_fl3_pr_fast.yml",
+    ".github/workflows/ci_fl4_preflight.yml",
+    ".github/workflows/ci_no_conflict_markers.yml",
+    ".github/workflows/ci_p0_fail_closed_main.yml",
+    ".github/workflows/ci_p0_warn_only_closure.yml",
+    ".github/workflows/ci_truth_barrier.yml",
+    ".github/workflows/kt_g32_signal_density.yml"
+  ],
+  "existing_kaggle_packets": [
+    "packets/kt13_crucible_epoch_academy_v1.zip",
+    "packets/kt13_crucible_epoch_academy_v1/KAGGLE_BOOTSTRAP_CELL.py",
+    "packets/kt13_expand_repair_v1.zip",
+    "packets/kt13_expand_repair_v1/KAGGLE_BOOTSTRAP_CELL.py",
+    "packets/ktg31_v1.zip",
+    "packets/ktg31_v1/KAGGLE_BOOTSTRAP_CELL.py",
+    "packets/ktg3_run_v1.zip",
+    "packets/ktg3_run_v1/KAGGLE_BOOTSTRAP_CELL.py",
+    "packets/ktg3_v3.zip",
+    "packets/ktg3_v3/KAGGLE_BOOTSTRAP_CELL.py"
+  ],
+  "existing_receipts": [
+    "reports/g2_evidence_import_receipt.json",
+    "reports/g2_evidence_manifest.json",
+    "reports/g2_failure_map.json",
+    "reports/g2_route_regret_targets.json",
+    "reports/g31_adapter_identity_scorecard.json",
+    "reports/g31_causal_repair_superlane_receipt.json",
+    "reports/g31_duplicate_prompt_cluster_scan.json",
+    "reports/g31_evidence_import_receipt.json",
+    "reports/g31_hat_salvage_suppression_matrix.json",
+    "reports/g31_human_anchor_quality_receipt.json",
+    "reports/g31_math_act_decomposition.json",
+    "reports/g31_math_act_verifier_receipt.json",
+    "reports/g31_negative_transfer_scorecard.json",
+    "reports/g31_no_placeholder_pass_receipt.json",
+    "reports/g31_poison_trigger_scan.json",
+    "reports/g31_reducible_uncertainty_matrix.json",
+    "reports/g31_repair_corpus_provenance_scan.json",
+    "reports/g31_route_regret_closure_targets.json",
+    "reports/g31_source_evidence_index.json",
+    "reports/g31_truth_pin_receipt.json",
+    "reports/g32_do_not_train_receipt_set.json",
+    "reports/g32_future_multi_substrate_lane_status.json",
+    "reports/g32_gap_matrix.json",
+    "reports/g32_human_anchor_manifest.json",
+    "reports/g32_minimum_viable_signal_receipt.json",
+    "reports/g32_superlane_receipt.json",
+    "reports/g32_training_decision_receipt.json",
+    "reports/g32_truth_pin_receipt.json",
+    "reports/g3_academy_pressure_repair_receipt.json",
+    "reports/g3_anti_goodhart_scorecard.json",
+    "reports/g3_assurance_case_claim_compiler_receipt.json",
+    "reports/g3_clinical_phase_promotion_receipt.json",
+    "reports/g3_formal_math_repair_plan.json",
+    "reports/g3_lobe_specialization_scorecard.json",
+    "reports/g3_long_horizon_state_tracking_receipt.json",
+    "reports/g3_metric_constitution.json",
+    "reports/g3_phase_status.json",
+    "reports/g3_scar_delta_receipt.json",
+    "reports/g3_utility_under_constraint_receipt.json"
+  ],
+  "existing_schemas": [
+    "schemas/kt.anti_goodhart_scorecard.schema.json",
+    "schemas/kt.assurance_case_claim.schema.json",
+    "schemas/kt.counterfactual_ownership.schema.json",
+    "schemas/kt.crucible_diagnostic_contract.schema.json",
+    "schemas/kt.do_not_train_receipt.schema.json",
+    "schemas/kt.do_not_train_receipt_set.schema.json",
+    "schemas/kt.g32_training_decision_receipt.schema.json",
+    "schemas/kt.g3_promotion_ladder_receipt.schema.json",
+    "schemas/kt.human_anchor_manifest.schema.json",
+    "schemas/kt.lobe_specialization_scorecard.schema.json",
+    "schemas/kt.long_horizon_state_tracking.schema.json",
+    "schemas/kt.math_act_trace.schema.json",
+    "schemas/kt.minimum_viable_signal.schema.json",
+    "schemas/kt.repair_bid.schema.json",
+    "schemas/kt.repair_corpus_provenance_scan.schema.json",
+    "schemas/kt.route_regret_matrix.schema.json",
+    "schemas/kt.signal_density_matrix.schema.json",
+    "schemas/kt.signal_density_row.schema.json",
+    "schemas/kt.verifier_bounded_candidate_selection.schema.json"
+  ],
+  "existing_scripts": [
+    "scripts/build_assurance_case_claims.py",
+    "scripts/build_human_anchor_manifest.py",
+    "scripts/build_route_regret_matrix.py",
+    "scripts/build_signal_density_matrix.py",
+    "scripts/check_g3_promotion_ladder.py",
+    "scripts/check_minimum_viable_signal.py",
+    "scripts/classify_math_failure_stage.py",
+    "scripts/classify_repairability.py",
+    "scripts/compute_anti_goodhart_scorecard.py",
+    "scripts/compute_lobe_specialization.py",
+    "scripts/enforce_do_not_train.py",
+    "scripts/g32_common.py",
+    "scripts/math_act_pipeline_check.py",
+    "scripts/normalize_math_answer.py",
+    "scripts/run_g32_signal_density_superlane.py",
+    "scripts/run_long_horizon_state_tracking_crucible.py",
+    "scripts/scan_repair_corpus_provenance.py",
+    "scripts/score_math_answers.py",
+    "scripts/select_verified_candidate.py",
+    "scripts/train_route_regret_router.py",
+    "scripts/validate_json_artifacts.py"
+  ],
+  "existing_tests": [
+    "tests/test_anti_goodhart_scorecard.py",
+    "tests/test_assurance_case_claim_compiler.py",
+    "tests/test_crucible_epoch_academy_pressure_v1.py",
+    "tests/test_g32_do_not_train_enforcement.py",
+    "tests/test_g32_minimum_viable_signal.py",
+    "tests/test_g32_receipt_set_schema.py",
+    "tests/test_g32_repairability_classifier.py",
+    "tests/test_g32_signal_density_schema.py",
+    "tests/test_g32_training_decision_receipt.py",
+    "tests/test_g3_promotion_ladder.py",
+    "tests/test_human_anchor_and_provenance.py",
+    "tests/test_lobe_specialization_scorecard.py",
+    "tests/test_long_horizon_state_tracking.py",
+    "tests/test_math_act_pipeline.py",
+    "tests/test_route_regret_schema.py",
+    "tests/test_verified_candidate_selection.py"
+  ],
+  "g2_evidence_sources": [
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g2_evidence_manifest.json",
+      "sha256": "75d0679a0bc4affc11352ff55223ba8ed64f2c3e20c8eff8384f564f9bcd0706"
+    },
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g2_failure_map.json",
+      "sha256": "40d1a5458dfc2c4b94d87ce027f0278add6e49da7cac07346c63a3387cf2ae7f"
+    },
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g2_route_regret_targets.json",
+      "sha256": "ab972219b1652071d7245d6d03fe828c6b2440ca0da3853dc7acecce106a94e9"
+    }
+  ],
+  "g31_packet_sources": [
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g31_causal_repair_superlane_receipt.json",
+      "sha256": "245d2a2b0cd3d47e8c3036a25502a2f0224d8a78cf958b02d49e2c321c43e29c"
+    },
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g31_per_sample_causal_trace.jsonl",
+      "sha256": "f9e6658b182b381ac58334b2ae411816b0ec5e5850133ea7b7f7ae26e44aa154"
+    },
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "packets/ktg31_v1.zip",
+      "sha256": "9ff04cd45113f3d922b0d466fbeb2b897ea545ef571ced6c5b7b2f41a9030907"
+    }
+  ],
+  "g32_packet_sources": [
+    {
+      "authority": "SOURCE_PACKET_NOT_CAPABILITY_CLAIM",
+      "mapped_kt_artifact": "KT_G3_2_SIGNAL_DENSITY_AND_CAUSAL_REPAIR_METALLURGY_SUPERLANE_V1_1",
+      "path": "source_packet:ktg32_metal_v1_1.zip",
+      "path_policy": "sanitized_non_local_path",
+      "retrieval_date": "2026-05-26",
+      "sha256": "8bff4df9e87b3c55d2c706005317126efa23800a3ca21439873fa2d01c37d1ab"
+    }
+  ],
+  "g3_packet_sources": [
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "reports/g3_academy_pressure_repair_receipt.json",
+      "sha256": "76149d50a211fc33c96b87d3bff60ba14656a6cc17fd8b7deedccaed96b5fb65"
+    },
+    {
+      "authority": "LIVE_REPO_SOURCE",
+      "exists": true,
+      "path": "packets/ktg3_run_v1.zip",
+      "sha256": "30bcc754a6bc2a54d4f0ad3fe60245b49f69bc7ebbe4c67111afffb5b29bce5d"
+    }
+  ],
+  "missing_surfaces": [],
+  "schema_id": "kt.g32.source_evidence_index.v1",
+  "stale_surfaces": [],
+  "superseded_surfaces": [],
+  "worktree_clean": true
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.g32_training_decision_receipt.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "created_utc",
+    "decisions",
+    "claim_ceiling_preserved"
+  ],
+  "title": "KT G32 Training Decision Receipt",
+  "type": "object"
+}

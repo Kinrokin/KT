@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.signal_density_matrix.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "row_schema_id",
+    "row_count",
+    "trace_coverage",
+    "claim_ceiling_preserved"
+  ],
+  "title": "KT Signal Density Matrix",
+  "type": "object"
+}

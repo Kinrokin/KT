@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "counterfactual_owner": {
+      "enum": [
+        "ADAPTER_OWNED",
+        "ROUTE_OWNED",
+        "HAT_OWNED",
+        "VERIFIER_OWNED",
+        "CORPUS_OWNED",
+        "BENCHMARK_OWNED",
+        "SUBSTRATE_OWNED",
+        "IRREDUCIBLE",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "failure_class": {
+      "type": "string"
+    },
+    "repairability_class": {
+      "enum": [
+        "CONTROL_REPAIRABLE",
+        "ROUTE_REPAIRABLE",
+        "VERIFIER_REPAIRABLE",
+        "HAT_CALIBRATION_REPAIRABLE",
+        "HAT_REPAIRABLE",
+        "ADAPTER_REPAIRABLE",
+        "CORPUS_REPAIRABLE",
+        "EVALUATION_ARTIFACT",
+        "IRREDUCIBLE_OR_QUARANTINE",
+        "UNKNOWN_BLOCKED"
+      ]
+    },
+    "schema_id": {
+      "const": "kt.signal_density_row.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "sample_id",
+    "dataset",
+    "task_family",
+    "prompt_hash",
+    "answer_hash",
+    "expected_hash",
+    "correct",
+    "verifier_pass",
+    "admissible",
+    "answer_adequacy_score",
+    "claim_density",
+    "unsupported_claim_rate",
+    "total_tokens",
+    "latency_ms",
+    "selected_subject",
+    "selected_route",
+    "selected_lobe",
+    "selected_adapter",
+    "selected_verifier",
+    "selected_gate",
+    "selected_receipt",
+    "failure_present",
+    "failure_class",
+    "failure_stage",
+    "repairability_class",
+    "counterfactual_owner",
+    "minimum_viable_signal",
+    "human_anchor_available",
+    "benchmark_leakage_risk",
+    "poison_trigger_risk",
+    "negative_transfer_risk",
+    "irreducible_uncertainty_score",
+    "reducible_uncertainty_score",
+    "recommended_intervention",
+    "training_decision_id"
+  ],
+  "title": "KT Signal Density Row",
+  "type": "object"
+}
