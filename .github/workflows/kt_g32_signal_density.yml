@@ -14,10 +14,10 @@ jobs:
         run: python -m pip install -U pytest jsonschema
       - name: Focused G3.2 tests
         run: |
-          python -m pytest --no-cov -q tests/test_g32_signal_density_schema.py
-          python -m pytest --no-cov -q tests/test_g32_do_not_train_enforcement.py
-          python -m pytest --no-cov -q tests/test_g32_training_decision_receipt.py
-          python -m pytest --no-cov -q tests/test_g32_repairability_classifier.py
-          python -m pytest --no-cov -q tests/test_g32_minimum_viable_signal.py
+          python -m pytest -q tests/test_g32_signal_density_schema.py
+          python -m pytest -q tests/test_g32_do_not_train_enforcement.py
+          python -m pytest -q tests/test_g32_training_decision_receipt.py
+          python -m pytest -q tests/test_g32_repairability_classifier.py
+          python -m pytest -q tests/test_g32_minimum_viable_signal.py
       - name: Diff check
         run: git diff --check
