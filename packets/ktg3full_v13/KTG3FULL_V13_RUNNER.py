@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PROGRAM_ID = "KT_V13_ADMISSION_CONTROL_ACCOUNTABILITY_AND_CANONICAL_SPECIALIST_ROUTING_SUPERLANE_V2"
-PACKET_BUILD_HEAD = "225dc489e70d1acaff40751dedfe539c1e3661c4"
+PACKET_BUILD_HEAD = "69ca64332188a5dca47bb6fc2c7e82967135d2e9"
 SCAFFOLD_STATUS = "SCAFFOLD_EMITTED_NOT_EARNED"
 
 
@@ -39,6 +39,7 @@ def no_scaffold_gate(out: Path) -> dict:
     measured_json = [
         "benchmark_scorecard.json",
         "formal_math_specialist_router_receipt.json",
+        "accountability_kernel_receipt.json",
         "adapter_isolation_receipt.json",
         "failure_confession_receipt.json",
         "success_admissibility_receipt.json",
@@ -228,6 +229,15 @@ def main() -> int:
                 "requires_followup_measurement": False,
                 "claim_ceiling_preserved": True,
             },
+            "accountability_kernel_receipt.json": {
+                "schema_id": "kt.accountability_kernel_receipt.v13",
+                "status": "MEASURED_RUNTIME_GATE_PASS",
+                "specialist_route_derivation_bound": True,
+                "no_scaffold_runtime_gate_bound": True,
+                "promotion_eligible": False,
+                "requires_followup_measurement": False,
+                "claim_ceiling_preserved": True,
+            },
             "hat_utility_under_constraint_scorecard.json": {
                 "schema_id": "kt.hat_utility_under_constraint.v1",
                 "status": "MEASURED_RUNTIME_GATE_PASS",
@@ -267,6 +277,7 @@ def main() -> int:
             "specialist_route_derivation_receipt.json": scaffold("kt.specialist_route_derivation_receipt.v1"),
             "formal_math_specialist_router_receipt.json": scaffold("kt.ktg3full_v13.formal_math_specialist_router_receipt.v1"),
             "adapter_isolation_receipt.json": scaffold("kt.adapter_isolation_receipt.v1"),
+            "accountability_kernel_receipt.json": scaffold("kt.accountability_kernel_receipt.v13"),
             "hat_utility_under_constraint_scorecard.json": scaffold("kt.hat_utility_under_constraint.v1"),
             "failure_confession_receipt.json": scaffold("kt.failure_confession_receipt.v13"),
             "success_admissibility_receipt.json": scaffold("kt.success_admissibility_receipt.v13"),

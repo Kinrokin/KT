@@ -3,11 +3,9 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
-import subprocess
 import zipfile
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any
 
 from accountability_common import (
     CLAIM_CEILING,
@@ -17,12 +15,10 @@ from accountability_common import (
     git_head,
     read_json,
     repo_root,
-    run_text,
     surface_inventory,
     utc_now,
     worktree_clean,
     write_json,
-    write_jsonl,
 )
 
 
@@ -246,8 +242,8 @@ def import_v12_evidence(root: Path) -> dict[str, Any]:
     return receipt
 
 
-def replay_v12_specialist_route_derivation(root: Path) -> dict[str, Any]:
-    imported = import_v12_evidence(root)
+def replay_v12_specialist_route_derivation(root: Path, imported: dict[str, Any] | None = None) -> dict[str, Any]:
+    imported = imported or import_v12_evidence(root)
     base_raw_correct = int(imported["base_raw_correct_count"])
     base_raw_math_correct = int(imported["base_raw_gsm8k_correct_count"])
     math_adapter_correct = int(imported["formal_math_adapter_gsm8k_correct_count"])
@@ -283,8 +279,8 @@ def replay_v12_specialist_route_derivation(root: Path) -> dict[str, Any]:
     return receipt
 
 
-def build_formal_math_specialist_router_rule(root: Path) -> dict[str, Any]:
-    derivation = replay_v12_specialist_route_derivation(root)
+def build_formal_math_specialist_router_rule(root: Path, derivation: dict[str, Any] | None = None) -> dict[str, Any]:
+    derivation = derivation or replay_v12_specialist_route_derivation(root)
     plan = {
         "schema_id": "kt.formal_math_specialist_router_plan.v13",
         "created_utc": utc_now(),
@@ -596,6 +592,7 @@ def no_scaffold_gate(out: Path) -> dict:
     measured_json = [
         "benchmark_scorecard.json",
         "formal_math_specialist_router_receipt.json",
+        "accountability_kernel_receipt.json",
         "adapter_isolation_receipt.json",
         "failure_confession_receipt.json",
         "success_admissibility_receipt.json",
@@ -785,6 +782,15 @@ def main() -> int:
                 "requires_followup_measurement": False,
                 "claim_ceiling_preserved": True,
             }},
+            "accountability_kernel_receipt.json": {{
+                "schema_id": "kt.accountability_kernel_receipt.v13",
+                "status": "MEASURED_RUNTIME_GATE_PASS",
+                "specialist_route_derivation_bound": True,
+                "no_scaffold_runtime_gate_bound": True,
+                "promotion_eligible": False,
+                "requires_followup_measurement": False,
+                "claim_ceiling_preserved": True,
+            }},
             "hat_utility_under_constraint_scorecard.json": {{
                 "schema_id": "kt.hat_utility_under_constraint.v1",
                 "status": "MEASURED_RUNTIME_GATE_PASS",
@@ -824,6 +830,7 @@ def main() -> int:
             "specialist_route_derivation_receipt.json": scaffold("kt.specialist_route_derivation_receipt.v1"),
             "formal_math_specialist_router_receipt.json": scaffold("kt.ktg3full_v13.formal_math_specialist_router_receipt.v1"),
             "adapter_isolation_receipt.json": scaffold("kt.adapter_isolation_receipt.v1"),
+            "accountability_kernel_receipt.json": scaffold("kt.accountability_kernel_receipt.v13"),
             "hat_utility_under_constraint_scorecard.json": scaffold("kt.hat_utility_under_constraint.v1"),
             "failure_confession_receipt.json": scaffold("kt.failure_confession_receipt.v13"),
             "success_admissibility_receipt.json": scaffold("kt.success_admissibility_receipt.v13"),
@@ -966,7 +973,7 @@ def run_v13_superlane(root: Path | None = None, audit_clean: bool | None = None)
         write_json(root / "BLOCKER_RECEIPT.json", blocker)
         return blocker
     imported = import_v12_evidence(root)
-    derivation = replay_v12_specialist_route_derivation(root)
+    derivation = replay_v12_specialist_route_derivation(root, imported=imported)
     if not derivation["replay_status"].startswith("PASS"):
         blocker = {
             "schema_id": "kt.v13.blocker_receipt.v1",
@@ -976,7 +983,7 @@ def run_v13_superlane(root: Path | None = None, audit_clean: bool | None = None)
         }
         write_json(root / "BLOCKER_RECEIPT.json", blocker)
         return blocker
-    plan = build_formal_math_specialist_router_rule(root)
+    plan = build_formal_math_specialist_router_rule(root, derivation=derivation)
     isolation = build_adapter_isolation(root)
     kernel = build_accountability_binding(root)
     no_scaffold = build_no_scaffold_runtime_gate(root)
