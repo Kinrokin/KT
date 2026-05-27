@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "packet_path": {},
+    "packet_sha256": {},
+    "schema_id": {}
+  },
+  "required": [
+    "schema_id",
+    "packet_path",
+    "packet_sha256"
+  ],
+  "title": "kt.runtime_packet_selection_receipt.v1",
+  "type": "object"
+}

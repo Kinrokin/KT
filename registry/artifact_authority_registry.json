@@ -612,6 +612,28 @@
       "validation_status": "PASS"
     },
     {
+      "artifact_id": "KT_V14_V13_SCORE_RECONCILIATION_RECEIPT",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
+      "notes": "V13 measured internal result binding; no promotion, superiority, or commercial authority.",
+      "path": "reports/v13_score_reconciliation_receipt.json",
+      "role": "v13_measured_score_reconciliation",
+      "sha256": "4c093e9833b1947f10198e3774867db33574561e1d6b5cffb51ca981f59652de",
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KTG3FULL_V14_ATLAS_PACKET",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
+      "notes": "Runtime packet prepared; no runtime evidence earned until measured assessment passes.",
+      "path": "packets/ktg3full_v14_atlas.zip",
+      "role": "future_process_isolated_ood_specialist_admission_packet",
+      "sha256": "f653ba5a43249737f13f3bcd82634c101163076413907b45ab5763329e846fc5",
+      "validation_status": "PASS"
+    },
+    {
       "artifact_id": "KT_13_LOBE_7B_TRANCHE_CONFIG",
       "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
       "claim_authority": "INTERNAL_SHADOW",
@@ -651,7 +673,7 @@
       "validation_status": "PASS"
     }
   ],
-  "current_head": "3a33250e4eab661446282463caf51e8c2cd4f7e8",
-  "generated_utc": "2026-05-27T15:06:39Z",
+  "current_head": "2881db8ce300384201d95572ee13e9ec3ac9fa19",
+  "generated_utc": "2026-05-27T23:34:11Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }
