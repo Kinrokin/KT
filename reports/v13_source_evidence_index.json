@@ -1,0 +1,51 @@
+{
+  "claim_ceiling_status": "UNCHANGED",
+  "created_utc": "2026-05-27T15:00:17Z",
+  "current_branch": "codex/kt-v13-admission-control-v2",
+  "current_head": "9cabdf3a977ec4a6b1e681dc19832f3c7f8b2c2d",
+  "external_research_claim_policy": "ADVISORY_UNTIL_INDEXED_NO_CAPABILITY_CLAIM",
+  "schema_id": "kt.v13.source_evidence_index.v1",
+  "source_packet": {
+    "id": "source_packet:ktv13_admit_v2.zip",
+    "sha256": "98136cb9466bf6aae51eba72e17d43d8dde391343db668a6475eae56fe7c7d8d"
+  },
+  "v12_evidence_sources": [
+    "reports/latest_g3full_measured_evidence_import.json",
+    "reports/formal_math_specialist_router_plan.json",
+    "evidence/G3FULL_RESULTS_SUMMARY.md"
+  ],
+  "v12_summary_values_to_verify": {
+    "base_raw": {
+      "accuracy": 0.555,
+      "correct": 111,
+      "total": 200
+    },
+    "base_raw_gsm8k": {
+      "accuracy": 0.04,
+      "correct": 2,
+      "total": 50
+    },
+    "claim_ceiling_preserved": true,
+    "formal_math_adapter_gsm8k": {
+      "accuracy": 0.26,
+      "correct": 13,
+      "total": 50
+    },
+    "formal_math_global_adapter": {
+      "accuracy": 0.44,
+      "correct": 88,
+      "total": 200
+    },
+    "formal_math_router_specialist": {
+      "accuracy": 0.61,
+      "correct": 122,
+      "total": 200
+    },
+    "oracle_math_router": {
+      "accuracy": 0.655,
+      "correct": 131,
+      "total": 200
+    },
+    "route_regret_closure": 0.0
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {},
+    "current_head": {},
+    "direct_corpus_interaction_pass": {},
+    "schema_id": {}
+  },
+  "required": [
+    "schema_id",
+    "current_head",
+    "direct_corpus_interaction_pass",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.dci_trace_receipt.v1",
+  "type": "object"
+}

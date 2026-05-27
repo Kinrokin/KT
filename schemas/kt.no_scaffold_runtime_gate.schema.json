@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "accountability_receipts_present": {
+      "type": "boolean"
+    },
+    "benchmark_predictions_non_empty": {
+      "type": "boolean"
+    },
+    "gate_pass": {
+      "type": "boolean"
+    },
+    "route_regret_non_empty": {
+      "type": "boolean"
+    },
+    "schema_id": {},
+    "scorecards_measured": {
+      "type": "boolean"
+    },
+    "signal_density_non_empty": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_id",
+    "gate_pass"
+  ],
+  "title": "kt.no_scaffold_runtime_gate.v1",
+  "type": "object"
+}

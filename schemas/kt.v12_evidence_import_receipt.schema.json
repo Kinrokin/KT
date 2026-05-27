@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "benchmark_predictions_rows": {
+      "type": "integer"
+    },
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "import_status": {},
+    "raw_prediction_rows_present": {
+      "type": "boolean"
+    },
+    "schema_id": {},
+    "source_hf_url_or_artifact_path": {}
+  },
+  "required": [
+    "schema_id",
+    "source_hf_url_or_artifact_path",
+    "benchmark_predictions_rows",
+    "import_status",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.v12_evidence_import_receipt.v1",
+  "type": "object"
+}

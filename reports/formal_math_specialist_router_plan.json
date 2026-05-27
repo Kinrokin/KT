@@ -1,25 +1,32 @@
 {
-  "acceptance_criteria": [
-    "formal_math_router_specialist > base_raw on GSM8K",
-    "formal_math_router_specialist >= base_raw globally or regression explicitly bounded and non-promotable",
-    "formal_math_global_adapter remains quarantined if global negative transfer persists",
-    "adapter isolation receipt proves no PEFT leakage between arms"
-  ],
+  "activation_decision_required": true,
   "arms": [
     "base_raw",
-    "base_kt_hat_compact",
-    "formal_math_global_adapter",
     "formal_math_router_specialist",
-    "oracle_math_router",
-    "adapter_isolation_probe"
+    "oracle_math_router"
+  ],
+  "base_raw_correct_count": 111,
+  "blocked_task_families": [
+    "global_general_reasoning",
+    "truthfulness",
+    "commercial",
+    "regulated_domain",
+    "red_assault"
   ],
   "claim_ceiling_preserved": true,
-  "created_utc": "2026-05-26T20:06:34Z",
-  "schema_id": "kt.formal_math_specialist_router_plan.v1",
-  "specialist_route": {
-    "fallback_route": "base_raw",
-    "selected_adapter": "adapter_g3_formal_math_repair_adapter",
-    "task_family": "formal_math",
-    "verifier_gate_required": true
-  }
+  "created_utc": "2026-05-27T15:00:17Z",
+  "derivation_receipt": "reports/v12_specialist_route_derivation_receipt.json",
+  "eligible_task_families": [
+    "formal_math",
+    "gsm8k_like"
+  ],
+  "fallback_route": "base_raw",
+  "formal_math_router_specialist_correct_count": 122,
+  "not_adapter_promotion": true,
+  "not_router_superiority": true,
+  "route_authority": "CANONICAL_CANDIDATE_ROUTE_RULE",
+  "route_id": "formal_math_router_specialist",
+  "schema_id": "kt.formal_math_specialist_router_plan.v13",
+  "selected_adapter": "adapter_g3_formal_math_repair_adapter",
+  "verifier_required": true
 }
