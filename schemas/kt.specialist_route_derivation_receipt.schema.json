@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "base_raw_correct_count": {
+      "type": "integer"
+    },
+    "claim_ceiling_preserved": {
+      "type": "boolean"
+    },
+    "formal_math_router_specialist_correct_count": {
+      "type": "integer"
+    },
+    "oracle_math_router_correct_count": {
+      "type": "integer"
+    },
+    "replay_status": {},
+    "schema_id": {}
+  },
+  "required": [
+    "schema_id",
+    "base_raw_correct_count",
+    "formal_math_router_specialist_correct_count",
+    "replay_status",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.specialist_route_derivation_receipt.v1",
+  "type": "object"
+}
