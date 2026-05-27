@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "base_raw_correct": {},
+    "formal_math_router_specialist_correct": {},
+    "oracle_math_router_correct": {},
+    "reconciliation_status": {},
+    "schema_id": {}
+  },
+  "required": [
+    "schema_id",
+    "base_raw_correct",
+    "formal_math_router_specialist_correct",
+    "oracle_math_router_correct",
+    "reconciliation_status"
+  ],
+  "title": "kt.v13_score_reconciliation.v1",
+  "type": "object"
+}
