@@ -6,7 +6,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-PACKET_BUILD_HEAD = "2881db8ce300384201d95572ee13e9ec3ac9fa19"
+PACKET_BUILD_HEAD = "ae97973c68c1b6a1ed5f7a4aa6690f3804cb5df1"
 PROGRAM_ID = "KT_V14_GOVERNED_ADMITTANCE_MASTER_OMNIBUS_V1_4"
 SCAFFOLD_STATUS = "SCAFFOLD_EMITTED_NOT_EARNED"
 
