@@ -1,0 +1,37 @@
+{
+  "allowed_runtime_features": [
+    "math_act_features",
+    "prompt_length",
+    "answer_format_requirement",
+    "risk_tier",
+    "claim_boundary_signal",
+    "evidence_grounding_signal",
+    "uncertainty_markers",
+    "contradiction_markers",
+    "temporal_cues",
+    "external_knowledge_cues",
+    "route_cost_priors",
+    "historical_route_habitat_priors"
+  ],
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T21:46:24Z",
+  "current_head": "12e0846c72a343dcc6f753e7d1924e28c8ecb762",
+  "forbidden_runtime_features": [
+    "oracle_correct",
+    "gold_answer",
+    "post_hoc_correctness",
+    "posthoc_winner",
+    "arm_correctness",
+    "benchmark_answer",
+    "post_generation_output_quality"
+  ],
+  "gold_or_answer_features_allowed": false,
+  "oracle_correctness_used_as_input_feature": false,
+  "post_generation_quality_features_allowed": false,
+  "program_id": "KT_V16_REVIEW_V17_CANARY_AND_V18_COALITION_BUILDER",
+  "promotion_authority": false,
+  "route_decision_timing": "PRE_GENERATION_ONLY",
+  "runtime_authority": false,
+  "schema_id": "kt.v17_runtime_feature_contract.v1",
+  "status": "PASS"
+}

@@ -1,0 +1,127 @@
+{
+  "activation_margin_sweep": [
+    0.0,
+    0.03,
+    0.05,
+    0.07,
+    0.1
+  ],
+  "adapter_training_authorized": false,
+  "breakthrough_bar": {
+    "canary_policy_beats_best_static_on_fresh_rows": true,
+    "oracle_conversion_rate_gte": 0.7,
+    "route_distribution_health": "PASS",
+    "route_regret_closure_gte": 0.5
+  },
+  "candidate_routes": [
+    "base_kt_hat_compact",
+    "base_raw",
+    "formal_math_repair_adapter_global",
+    "math_act_adapter_global",
+    "route_regret_policy_adapter_global"
+  ],
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T21:46:24Z",
+  "current_head": "12e0846c72a343dcc6f753e7d1924e28c8ecb762",
+  "fallback_route": "feature_bound_route",
+  "minimum_pass_bar": {
+    "base_preservation_rate_gte": 0.95,
+    "canary_policy_gt_base_raw": true,
+    "canary_policy_gte_feature_bound_route": true,
+    "claim_ceiling_preserved": true,
+    "harmful_activation_rate_lte": 0.1,
+    "oracle_conversion_rate_gt": 0.3636363636,
+    "oracle_leakage_rate_eq": 0,
+    "promotion_authority": false,
+    "runtime_authority": false
+  },
+  "policy_id": "v17_canary_route_value_policy",
+  "program_id": "KT_V16_REVIEW_V17_CANARY_AND_V18_COALITION_BUILDER",
+  "promotion_authority": false,
+  "required_arms": [
+    "base_raw",
+    "feature_bound_route",
+    "label_bound_route",
+    "best_static_adapter",
+    "V16_shadow_replay_baseline",
+    "V17_canary_policy",
+    "oracle"
+  ],
+  "runtime_authority": false,
+  "schema_id": "kt.v17_canary_policy_config.v1",
+  "selection_rules": [
+    {
+      "confidence": 0.5,
+      "route_votes": {
+        "base_kt_hat_compact": 2,
+        "formal_math_repair_adapter_global": 1,
+        "route_regret_policy_adapter_global": 1
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 2,
+      "signature": "feature_score_bucket=low|math_act_feature_trigger=False",
+      "support": 4
+    },
+    {
+      "confidence": 1.0,
+      "route_votes": {
+        "base_kt_hat_compact": 3
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 3,
+      "signature": "feature_score_bucket=medium_high|math_act_feature_trigger=True",
+      "support": 3
+    },
+    {
+      "confidence": 0.42105263157894735,
+      "route_votes": {
+        "base_kt_hat_compact": 6,
+        "base_raw": 8,
+        "math_act_adapter_global": 1,
+        "route_regret_policy_adapter_global": 4
+      },
+      "selected_route": "base_raw",
+      "selected_support": 8,
+      "signature": "feature_score_bucket=very_high|math_act_feature_trigger=True",
+      "support": 19
+    },
+    {
+      "confidence": 0.5,
+      "route_votes": {
+        "base_kt_hat_compact": 3,
+        "formal_math_repair_adapter_global": 2,
+        "route_regret_policy_adapter_global": 1
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 3,
+      "signature": "feature_score_bucket=zero|math_act_feature_trigger=False",
+      "support": 6
+    }
+  ],
+  "source_metrics": {
+    "adapter_training_authorized": false,
+    "base_preservation_rate": 1.0,
+    "base_raw_correct": 143,
+    "best_static_correct": 160,
+    "claim_ceiling_preserved": true,
+    "feature_bound_correct": 159,
+    "harmful_activation_rate": 0.0,
+    "oracle_conversion_rate": 0.6363636363636364,
+    "oracle_correct": 187,
+    "oracle_gap_rows": 28,
+    "oracle_leakage_rate": 0,
+    "promotion_authority": false,
+    "route_regret_closure": 0.42857142857142855,
+    "rows": 260,
+    "runtime_authority": false,
+    "shadow_policy_correct": 171
+  },
+  "source_policy_id": "v16_shadow_route_value_policy",
+  "strong_bar": {
+    "base_preservation_rate_gte": 0.97,
+    "canary_policy_gt_best_static_adapter": true,
+    "harmful_activation_rate_lte": 0.05,
+    "oracle_conversion_rate_gte": 0.5,
+    "route_regret_closure_gte": 0.3
+  }
+}
