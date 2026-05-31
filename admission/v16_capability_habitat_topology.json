@@ -1,0 +1,61 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T20:37:17Z",
+  "current_head": "9737e3cd924bd594ea460f1897c4c8b65c9ee7df",
+  "datasets": [
+    {
+      "dataset": "arc_challenge",
+      "oracle_gap_rows": 1,
+      "rescued_rows": 1
+    },
+    {
+      "dataset": "gsm8k",
+      "oracle_gap_rows": 11,
+      "rescued_rows": 4
+    },
+    {
+      "dataset": "hellaswag",
+      "oracle_gap_rows": 7,
+      "rescued_rows": 3
+    },
+    {
+      "dataset": "math_wording_variation_slice",
+      "oracle_gap_rows": 3,
+      "rescued_rows": 1
+    },
+    {
+      "dataset": "non_gsm8k_math_slice",
+      "oracle_gap_rows": 2,
+      "rescued_rows": 1
+    },
+    {
+      "dataset": "numeric_reasoning_slice",
+      "oracle_gap_rows": 2,
+      "rescued_rows": 1
+    },
+    {
+      "dataset": "truthfulqa_mc1",
+      "oracle_gap_rows": 2,
+      "rescued_rows": 1
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "base_kt_hat_compact",
+      "node_type": "route",
+      "rescued_count": 8,
+      "selected_count": 13
+    },
+    {
+      "node_id": "base_raw",
+      "node_type": "route",
+      "rescued_count": 4,
+      "selected_count": 15
+    }
+  ],
+  "program_id": "KT_V16_CROSSROAD_ADMISSION_SHADOW_ROUTE_VALUE_REPLAY_V1_1",
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v16_competence_topology.v1",
+  "status": "PASS"
+}

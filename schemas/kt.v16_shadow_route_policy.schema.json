@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": { "const": false },
+    "oracle_correctness_used_as_input_feature": { "const": false },
+    "promotion_authority": { "const": false },
+    "runtime_authority": { "const": false },
+    "schema_id": { "const": "kt.v16_shadow_route_policy.v1" },
+    "selection_rules": { "minItems": 1, "type": "array" }
+  },
+  "required": ["schema_id", "runtime_authority", "promotion_authority", "adapter_training_authorized", "selection_rules"],
+  "title": "kt.v16_shadow_route_policy.v1",
+  "type": "object"
+}
