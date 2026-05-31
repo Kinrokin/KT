@@ -1,0 +1,109 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T20:37:17Z",
+  "current_head": "9737e3cd924bd594ea460f1897c4c8b65c9ee7df",
+  "gate_pass": true,
+  "program_id": "KT_V16_CROSSROAD_ADMISSION_SHADOW_ROUTE_VALUE_REPLAY_V1_1",
+  "schema_id": "kt.v16_functional_implementation_receipt.v1",
+  "script_status": [
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/build_v16_shadow_route_policy.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/replay_v16_shadow_policy.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/scan_v16_oracle_leakage.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/score_v16_ocr_and_rrc.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/score_v16_base_preservation_and_har.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/score_v16_route_distribution_health.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/build_v16_competence_topology.py"
+    },
+    {
+      "exists": true,
+      "has_main": true,
+      "has_write_output": true,
+      "path": "scripts/validate_v16_functional_implementation.py"
+    }
+  ],
+  "status": "PASS",
+  "test_status": [
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_functional_implementation_gate.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_oracle_leakage_adversarial.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_shadow_policy_build.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_shadow_replay.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_ocr_rrc.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_base_preservation_har.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_route_distribution_health.py"
+    },
+    {
+      "exists": true,
+      "invokes_script_or_reads_outputs": true,
+      "non_placeholder": true,
+      "path": "tests/test_v16_competence_topology.py"
+    }
+  ]
+}

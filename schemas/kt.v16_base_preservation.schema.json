@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "base_preservation_rate": { "type": "number" },
+    "schema_id": { "const": "kt.v16_base_preservation.v1" },
+    "status": { "enum": ["PASS", "FAIL"] }
+  },
+  "required": ["schema_id", "base_preservation_rate", "status"],
+  "title": "kt.v16_base_preservation.v1",
+  "type": "object"
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "gate_pass": { "type": "boolean" },
+    "schema_id": { "const": "kt.v16_functional_implementation_receipt.v1" },
+    "status": { "enum": ["PASS", "FAIL"] }
+  },
+  "required": ["schema_id", "gate_pass", "status"],
+  "title": "kt.v16_functional_implementation_receipt.v1",
+  "type": "object"
+}

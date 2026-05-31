@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "route_distribution": { "type": "object" },
+    "route_entropy": { "type": "number" },
+    "schema_id": { "const": "kt.v16_route_distribution_health.v1" },
+    "status": { "enum": ["PASS", "FAIL"] }
+  },
+  "required": ["schema_id", "route_distribution", "route_entropy", "status"],
+  "title": "kt.v16_route_distribution_health.v1",
+  "type": "object"
+}

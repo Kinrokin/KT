@@ -1,0 +1,98 @@
+{
+  "adapter_training_authorized": false,
+  "allowed_runtime_features": [
+    "feature_score_bucket",
+    "math_act_feature_trigger"
+  ],
+  "base_preservation_route": "base_raw",
+  "candidate_routes": [
+    "base_kt_hat_compact",
+    "base_raw",
+    "formal_math_repair_adapter_global",
+    "math_act_adapter_global",
+    "route_regret_policy_adapter_global"
+  ],
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T20:37:17Z",
+  "current_head": "9737e3cd924bd594ea460f1897c4c8b65c9ee7df",
+  "fallback_route": "formal_math_router_math_act_feature_bound",
+  "forbidden_runtime_features": [
+    "answer_match",
+    "arm_correctness",
+    "benchmark_answer",
+    "gold_answer",
+    "oracle_correct",
+    "oracle_route_correctness",
+    "post_generation_output_quality",
+    "posthoc_winner"
+  ],
+  "oracle_correctness_used_as_input_feature": false,
+  "policy_id": "v16_shadow_route_value_policy",
+  "program_id": "KT_V16_CROSSROAD_ADMISSION_SHADOW_ROUTE_VALUE_REPLAY_V1_1",
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v16_shadow_route_policy.v1",
+  "selection_rule": "match exact pre-generation feature signature; otherwise fall back to feature-bound route; oracle labels are evaluation targets only",
+  "selection_rules": [
+    {
+      "confidence": 0.5,
+      "route_votes": {
+        "base_kt_hat_compact": 2,
+        "formal_math_repair_adapter_global": 1,
+        "route_regret_policy_adapter_global": 1
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 2,
+      "signature": "feature_score_bucket=low|math_act_feature_trigger=False",
+      "support": 4
+    },
+    {
+      "confidence": 1.0,
+      "route_votes": {
+        "base_kt_hat_compact": 3
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 3,
+      "signature": "feature_score_bucket=medium_high|math_act_feature_trigger=True",
+      "support": 3
+    },
+    {
+      "confidence": 0.42105263157894735,
+      "route_votes": {
+        "base_kt_hat_compact": 6,
+        "base_raw": 8,
+        "math_act_adapter_global": 1,
+        "route_regret_policy_adapter_global": 4
+      },
+      "selected_route": "base_raw",
+      "selected_support": 8,
+      "signature": "feature_score_bucket=very_high|math_act_feature_trigger=True",
+      "support": 19
+    },
+    {
+      "confidence": 0.5,
+      "route_votes": {
+        "base_kt_hat_compact": 3,
+        "formal_math_repair_adapter_global": 2,
+        "route_regret_policy_adapter_global": 1
+      },
+      "selected_route": "base_kt_hat_compact",
+      "selected_support": 3,
+      "signature": "feature_score_bucket=zero|math_act_feature_trigger=False",
+      "support": 6
+    }
+  ],
+  "source_artifacts": [
+    "admission/oracle_gap_matrix.jsonl",
+    "admission/oracle_winner_attribution.jsonl",
+    "admission/oracle_pairwise_route_preferences.jsonl",
+    "admission/oracle_negative_route_preferences.jsonl",
+    "admission/base_preservation_preferences.jsonl",
+    "admission/route_value_training_rows.jsonl",
+    "admission/shadow_route_policy_spec.json",
+    "reports/oracle_conversion_rate_scorecard.json",
+    "reports/do_not_train_oracle_receipt.json",
+    "reports/v15_result_review_receipt.json"
+  ],
+  "source_row_count": 32
+}

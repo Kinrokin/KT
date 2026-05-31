@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "oracle_leakage_rate": { "type": "number" },
+    "schema_id": { "const": "kt.v16_oracle_leakage_scan.v1" },
+    "status": { "enum": ["PASS", "FAIL"] },
+    "violations": { "type": "array" }
+  },
+  "required": ["schema_id", "oracle_leakage_rate", "violations", "status"],
+  "title": "kt.v16_oracle_leakage_scan.v1",
+  "type": "object"
+}

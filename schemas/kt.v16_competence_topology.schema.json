@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "nodes": { "minItems": 1, "type": "array" },
+    "promotion_authority": { "const": false },
+    "runtime_authority": { "const": false },
+    "schema_id": { "const": "kt.v16_competence_topology.v1" },
+    "status": { "enum": ["PASS", "FAIL"] }
+  },
+  "required": ["schema_id", "nodes", "runtime_authority", "promotion_authority", "claim_ceiling_preserved", "status"],
+  "title": "kt.v16_competence_topology.v1",
+  "type": "object"
+}
