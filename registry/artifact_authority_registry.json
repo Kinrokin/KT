@@ -727,12 +727,37 @@
       "path": "admission/v16_capability_habitat_topology.json",
       "promotion_authority": false,
       "runtime_authority": false
+    },
+    {
+      "artifact_id": "v17_canary_policy_config",
+      "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_expansion": false,
+      "path": "admission/v17_canary_policy_config.json",
+      "promotion_authority": false,
+      "runtime_authority": false
+    },
+    {
+      "artifact_id": "v17_canary_route_value_packet",
+      "authority": "LIVE_CURRENT_HEAD_COMPUTE_PACKET_PREP_ONLY",
+      "claim_expansion": false,
+      "path": "packets/ktg3full_v17_canary_route_value.zip",
+      "promotion_authority": false,
+      "runtime_authority": false,
+      "sha256": "048618bc273ea211c00830b17f7d539bb97c8aaa104dc3fcdee34c0a734d5926"
+    },
+    {
+      "artifact_id": "v18_coalition_admission_atlas",
+      "authority": "LIVE_CURRENT_HEAD_LAB_PREP_ONLY",
+      "claim_expansion": false,
+      "path": "capability/capability_habitat_topology.json",
+      "promotion_authority": false,
+      "runtime_authority": false
     }
   ],
   "claim_ceiling_preserved": true,
   "current_head": "7751fb39ba165f92aea1136991f487531a87da48",
   "generated_utc": "2026-05-31T18:47:36Z",
   "schema_id": "kt.artifact_authority_registry.v3",
-  "updated_by": "KT_V16_CROSSROAD_ADMISSION_SHADOW_ROUTE_VALUE_REPLAY_V1_1",
-  "updated_utc": "2026-05-31T20:45:30Z"
+  "updated_by": "KT_V16_REVIEW_V17_CANARY_AND_V18_COALITION_BUILDER",
+  "updated_utc": "2026-05-31T21:46:24Z"
 }

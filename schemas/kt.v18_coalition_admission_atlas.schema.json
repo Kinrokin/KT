@@ -1,0 +1,31 @@
+{
+  "$id": "kt.v18_coalition_admission_atlas",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "program_id": {
+      "const": "KT_V16_REVIEW_V17_CANARY_AND_V18_COALITION_BUILDER"
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "program_id",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
