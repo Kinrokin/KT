@@ -6,7 +6,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-PACKET_BUILD_HEAD = "380ba22ecb4c380d90d267e414603c89168c2e76"
+PACKET_BUILD_HEAD = "43d9012670018eae84e85ff63ff6bcc357a52f43"
 EXPECTED_PACKET_PATH = "packets/ktg3full_v15_truth_route.zip"
 SCAFFOLD_STATUS = "SCAFFOLD_EMITTED_NOT_EARNED"
 REQUIRED_ARMS = [
