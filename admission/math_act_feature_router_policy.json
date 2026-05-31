@@ -1,0 +1,29 @@
+{
+  "allowed_features": [
+    "numeric_quantities",
+    "operation_words",
+    "multi_step_arithmetic_cues",
+    "final_numeric_answer_requirement",
+    "verifier_required_flag",
+    "formal_calculation_language",
+    "question_structure"
+  ],
+  "claim_ceiling_preserved": true,
+  "forbidden_features": [
+    "dataset_name",
+    "benchmark_name",
+    "task_family_label",
+    "category_label",
+    "gold_answer",
+    "post_generation_correctness"
+  ],
+  "required_runtime_proof": [
+    "pre_generation_feature_extraction_receipt",
+    "dataset_label_blind_route_decision_receipt",
+    "math_act_feature_router_receipt",
+    "non_gsm8k_math_slice_result",
+    "math_wording_variation_slice_result"
+  ],
+  "route_claim_status": "CANDIDATE_ONLY_NO_STRUCTURE_BOUND_CLAIM",
+  "schema_id": "kt.math_act_feature_router_policy.v1"
+}

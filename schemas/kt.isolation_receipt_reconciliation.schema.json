@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_promotion_authorized": { "const": false },
+    "claim_ceiling_preserved": { "const": true },
+    "process_isolated_claim_authorized": { "const": false },
+    "resolved_isolation_tier": { "type": "string" },
+    "schema_id": { "const": "kt.isolation_receipt_reconciliation.v1" },
+    "status": { "type": "string" }
+  },
+  "required": ["schema_id", "status", "resolved_isolation_tier", "process_isolated_claim_authorized", "adapter_promotion_authorized", "claim_ceiling_preserved"],
+  "title": "kt.isolation_receipt_reconciliation.v1",
+  "type": "object"
+}

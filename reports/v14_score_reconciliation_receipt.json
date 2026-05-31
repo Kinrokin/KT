@@ -1,0 +1,39 @@
+{
+  "base_raw_correct": 111,
+  "claim_ceiling_preserved": true,
+  "conflicts_detected": [],
+  "created_utc": "2026-05-31T02:07:54Z",
+  "row_count": 200,
+  "schema_id": "kt.v14_score_reconciliation_receipt.v1",
+  "scores": {
+    "base_kt_hat_compact": {
+      "accuracy": 0.43,
+      "correct": 86,
+      "total": 200
+    },
+    "base_raw": {
+      "accuracy": 0.555,
+      "correct": 111,
+      "total": 200
+    },
+    "formal_math_global": {
+      "accuracy": 0.54,
+      "correct": 108,
+      "total": 200
+    },
+    "formal_math_router_specialist": {
+      "accuracy": 0.585,
+      "correct": 117,
+      "total": 200
+    },
+    "oracle_math_router": {
+      "accuracy": 0.635,
+      "correct": 127,
+      "total": 200
+    }
+  },
+  "status": "PASS_RECONCILED",
+  "v13_formal_math_router_specialist_correct": 122,
+  "v13_to_v14_delta_correct": -5,
+  "v14_formal_math_router_specialist_correct": 117
+}

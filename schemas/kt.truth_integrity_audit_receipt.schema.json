@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "defects": { "type": "array" },
+    "release_authority": { "const": "BLOCK_STRONG_CLAIMS" },
+    "schema_id": { "const": "kt.truth_integrity_audit_receipt.v1" },
+    "truth_integrity_status": { "type": "string" }
+  },
+  "required": ["schema_id", "truth_integrity_status", "defects", "release_authority", "claim_ceiling_preserved"],
+  "title": "kt.truth_integrity_audit_receipt.v1",
+  "type": "object"
+}

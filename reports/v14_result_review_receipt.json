@@ -1,0 +1,60 @@
+{
+  "actual_head": "380ba22ecb4c380d90d267e414603c89168c2e76",
+  "allowed_claim": "Internal measured V14 evidence shows formal-math specialist admission improved over base_raw on this 200-row slice while preserving the claim ceiling; adapter identity, process isolation, and structure-bound routing require repair before stronger claims.",
+  "assessment_sha256": "f7c98b9c39f629cab23b3c09df3ca44e51c58ca21a9f2f7307066d1e07e624eb",
+  "assessment_zip_name": "ktg3full_v14_atlas_20260530-235543_ASSESSMENT_ONLY.zip",
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T02:07:54Z",
+  "forbidden_claims": [
+    "adapter promotion",
+    "learned-router superiority",
+    "router superiority",
+    "structure-bound routing proven",
+    "formal_math_adapter success claim",
+    "commercial readiness",
+    "production readiness",
+    "external validation",
+    "S-tier",
+    "frontier parity",
+    "7B amplification",
+    "multi-lobe superiority"
+  ],
+  "hf_dataset": "https://huggingface.co/datasets/Kinrokin/kt-g3full-v14-atlas-20260530-235543",
+  "known_defects": [
+    "formal_math_adapter arm appears to have loaded adapter_g3_1_route_regret_policy instead of g3_formal_math_repair_adapter",
+    "STRUCTURE_BOUND classification is overstrong because routing uses dataset/task-family/benchmark/category fields",
+    "outer process isolation and inner arm receipts disagree on isolation authority"
+  ],
+  "packet_sha256": "3154cef894804c48aad707332d0e4ec10390924a68ba4c8c195aebf061ba1a84",
+  "promotion_eligible": false,
+  "rows": 200,
+  "schema_id": "kt.v14_result_review_receipt.v1",
+  "scores": {
+    "base_kt_hat_compact": {
+      "accuracy": 0.43,
+      "correct": 86,
+      "total": 200
+    },
+    "base_raw": {
+      "accuracy": 0.555,
+      "correct": 111,
+      "total": 200
+    },
+    "formal_math_global": {
+      "accuracy": 0.54,
+      "correct": 108,
+      "total": 200
+    },
+    "formal_math_router_specialist": {
+      "accuracy": 0.585,
+      "correct": 117,
+      "total": 200
+    },
+    "oracle_math_router": {
+      "accuracy": 0.635,
+      "correct": 127,
+      "total": 200
+    }
+  },
+  "v14_gate_pass": true
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "schema_id": { "const": "kt.emergency_repair_subprotocol_receipt.v1" },
+    "standalone_ambulance_subsystem_created": { "const": false },
+    "status": { "type": "string" },
+    "truth_engine_contract_path": { "const": "governance/truth_engine_contract.json" }
+  },
+  "required": ["schema_id", "status", "truth_engine_contract_path", "standalone_ambulance_subsystem_created", "claim_ceiling_preserved"],
+  "title": "kt.emergency_repair_subprotocol_receipt.v1",
+  "type": "object"
+}

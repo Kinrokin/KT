@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "allowed_features": { "type": "array" },
+    "claim_ceiling_preserved": { "const": true },
+    "forbidden_features": { "type": "array" },
+    "schema_id": { "const": "kt.dataset_label_blind_routing_test.v1" },
+    "status": { "type": "string" }
+  },
+  "required": ["schema_id", "status", "allowed_features", "forbidden_features", "claim_ceiling_preserved"],
+  "title": "kt.dataset_label_blind_routing_test.v1",
+  "type": "object"
+}
