@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_authority": { "const": "NONE" },
+    "schema_id": { "const": "kt.oracle_winner_attribution.v1" }
+  },
+  "required": ["schema_id", "sample_id", "oracle_route", "rescuer_family", "claim_authority"],
+  "title": "kt.oracle_winner_attribution.v1",
+  "type": "object"
+}

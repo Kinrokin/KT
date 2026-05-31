@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": { "const": false },
+    "claim_ceiling_preserved": { "const": true },
+    "oracle_rows_authorize_adapter_training": { "const": false },
+    "schema_id": { "const": "kt.do_not_train_oracle_receipt.v1" },
+    "status": { "const": "PASS" }
+  },
+  "required": ["schema_id", "status", "adapter_training_authorized", "oracle_rows_authorize_adapter_training", "claim_ceiling_preserved"],
+  "title": "kt.do_not_train_oracle_receipt.v1",
+  "type": "object"
+}

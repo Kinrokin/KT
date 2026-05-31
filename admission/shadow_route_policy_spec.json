@@ -1,0 +1,28 @@
+{
+  "adapter_promotion_authority": false,
+  "claim_authority": "NONE",
+  "claim_ceiling_preserved": true,
+  "forbidden_features": [
+    "answer",
+    "chosen_correct",
+    "correct",
+    "generated_answer",
+    "gold_answer",
+    "oracle_correct",
+    "oracle_correctness",
+    "oracle_gain",
+    "oracle_route",
+    "prediction",
+    "raw_output"
+  ],
+  "input_features": [
+    "feature_score_bucket",
+    "math_act_feature_trigger"
+  ],
+  "oracle_route_deployable": false,
+  "policy_id": "v16_shadow_route_value_replay_candidate",
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.shadow_route_policy.v1",
+  "source_rows": "admission/route_value_training_rows.jsonl"
+}

@@ -1,0 +1,55 @@
+{
+  "assessment_sha256": "b8ba3955fda4ec263f9ee9ae7138fdd1c3512389fc6f9d2cef35ecadbcbc1a59",
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T18:42:41Z",
+  "current_head": "b7404e6e7abaa192d9b14c1d4d11f8f781d064c2",
+  "feature_route_over_base_correct_delta": 16,
+  "hf_dataset": "https://huggingface.co/datasets/Kinrokin/kt-g3full-v15-truth-route-20260531-133102",
+  "oracle_over_base_correct_delta": 44,
+  "oracle_over_feature_route_correct_delta": 28,
+  "promotion_eligible": false,
+  "rows": 260,
+  "schema_id": "kt.v15_result_review_receipt.v1",
+  "scores": {
+    "base_kt_hat_compact": {
+      "accuracy": 0.4346153846153846,
+      "correct": 113,
+      "total": 260
+    },
+    "base_raw": {
+      "accuracy": 0.55,
+      "correct": 143,
+      "total": 260
+    },
+    "formal_math_repair_adapter_global": {
+      "accuracy": 0.6153846153846154,
+      "correct": 160,
+      "total": 260
+    },
+    "formal_math_router_label_bound": {
+      "accuracy": 0.6115384615384616,
+      "correct": 159,
+      "total": 260
+    },
+    "formal_math_router_math_act_feature_bound": {
+      "accuracy": 0.6115384615384616,
+      "correct": 159,
+      "total": 260
+    },
+    "math_act_adapter_global": {
+      "accuracy": 0.5653846153846154,
+      "correct": 147,
+      "total": 260
+    },
+    "oracle_math_router": {
+      "accuracy": 0.7192307692307692,
+      "correct": 187,
+      "total": 260
+    },
+    "route_regret_policy_adapter_global": {
+      "accuracy": 0.5846153846153846,
+      "correct": 152,
+      "total": 260
+    }
+  }
+}

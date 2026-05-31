@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "oracle_correctness_used_as_feature": { "const": false },
+    "schema_id": { "const": "kt.oracle_leakage_scan_receipt.v1" },
+    "status": { "const": "PASS" }
+  },
+  "required": ["schema_id", "status", "oracle_correctness_used_as_feature", "forbidden_feature_hits", "claim_ceiling_preserved"],
+  "title": "kt.oracle_leakage_scan_receipt.v1",
+  "type": "object"
+}

@@ -6,9 +6,9 @@
     "claim_authority": { "const": "NONE" },
     "oracle_correctness_used_as_feature": { "const": false },
     "runtime_legal_features_only": { "const": true },
-    "schema_id": { "const": "kt.route_value_training_row.v1" }
+    "schema_id": { "const": "kt.oracle_gap_row.v1" }
   },
-  "required": ["schema_id", "sample_id", "candidate_routes", "preferred_route", "runtime_legal_features_only", "oracle_correctness_used_as_feature", "adapter_training_forbidden", "claim_authority"],
-  "title": "kt.route_value_training_row.v1",
+  "required": ["schema_id", "sample_id", "oracle_route", "runtime_legal_features_only", "oracle_correctness_used_as_feature", "adapter_training_forbidden", "claim_authority"],
+  "title": "kt.oracle_gap_row.v1",
   "type": "object"
 }
