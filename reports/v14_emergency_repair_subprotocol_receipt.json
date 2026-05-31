@@ -1,0 +1,25 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T02:07:54Z",
+  "required_actions": [
+    "block_release",
+    "preserve_failed_state",
+    "classify_defect",
+    "emit_repair_receipt",
+    "rerun_validation",
+    "compare_receipts",
+    "release_only_if_gate_passes"
+  ],
+  "schema_id": "kt.emergency_repair_subprotocol_receipt.v1",
+  "standalone_ambulance_subsystem_created": false,
+  "status": "INSTALLED_IN_TRUTH_ENGINE_CONTRACT",
+  "triggers": [
+    "adapter_identity_conflict",
+    "receipt_contradiction",
+    "claim_evidence_mismatch",
+    "stale_truth_surface",
+    "release_blocker",
+    "replay_inconsistency"
+  ],
+  "truth_engine_contract_path": "governance/truth_engine_contract.json"
+}

@@ -671,9 +671,31 @@
       "superseded_by": null,
       "supersedes": [],
       "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KT_V14_1_TRUTH_REPAIR_RECEIPT",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
+      "notes": "V14.1 truth repair / V15 packet prep only; no promotion, superiority, external, commercial, 7B, or production authority.",
+      "path": "reports/v14_truth_integrity_audit_receipt.json",
+      "role": "v14_1_truth_integrity_repair",
+      "sha256": "18e820362d0f1d96a72e1380fbcc7e685fd40935a96e51c328c04e3a75c6ff9e",
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_id": "KTG3FULL_V15_TRUTH_ROUTE_PACKET",
+      "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+      "claim_authority": "NONE",
+      "controls_execution": false,
+      "notes": "V14.1 truth repair / V15 packet prep only; no promotion, superiority, external, commercial, 7B, or production authority.",
+      "path": "packets/ktg3full_v15_truth_route.zip",
+      "role": "future_truth_route_runtime_packet",
+      "sha256": "44e613117a32cdbef047f2761fdae4d873743f23ea83cc3bd9bce6439969149b",
+      "validation_status": "PASS"
     }
   ],
-  "current_head": "ae97973c68c1b6a1ed5f7a4aa6690f3804cb5df1",
-  "generated_utc": "2026-05-27T23:44:22Z",
+  "current_head": "380ba22ecb4c380d90d267e414603c89168c2e76",
+  "generated_utc": "2026-05-31T02:07:55Z",
   "schema_id": "kt.artifact_authority_registry.v3"
 }

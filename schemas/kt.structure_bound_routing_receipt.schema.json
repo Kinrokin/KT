@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "blind_feature_routing_required_for_structure_bound_claim": { "const": true },
+    "claim_ceiling_preserved": { "const": true },
+    "current_classification": { "type": "string" },
+    "schema_id": { "const": "kt.structure_bound_routing_receipt.v1" },
+    "structure_bound_routing_claim_authorized": { "const": false }
+  },
+  "required": ["schema_id", "current_classification", "structure_bound_routing_claim_authorized", "blind_feature_routing_required_for_structure_bound_claim", "claim_ceiling_preserved"],
+  "title": "kt.structure_bound_routing_receipt.v1",
+  "type": "object"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_promotion_authorized": { "const": false },
+    "claim_ceiling_preserved": { "const": true },
+    "defects": { "type": "array" },
+    "formal_math_adapter_success_claim_authorized": { "const": false },
+    "schema_id": { "const": "kt.adapter_identity_adjudication_receipt.v1" },
+    "status": { "type": "string" }
+  },
+  "required": ["schema_id", "status", "defects", "formal_math_adapter_success_claim_authorized", "adapter_promotion_authorized", "claim_ceiling_preserved"],
+  "title": "kt.adapter_identity_adjudication_receipt.v1",
+  "type": "object"
+}

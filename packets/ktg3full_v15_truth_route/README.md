@@ -1,0 +1,1 @@
+# KTG3FULL V15 Truth Route Packet\n\nRepo-side packet spec only. This packet does not train, promote adapters, promote routes, or authorize structure-bound, learned-router, commercial, frontier, S-tier, 7B, or multi-lobe claims.\n

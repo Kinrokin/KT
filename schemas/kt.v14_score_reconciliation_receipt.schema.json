@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "conflicts_detected": { "type": "array" },
+    "schema_id": { "const": "kt.v14_score_reconciliation_receipt.v1" },
+    "status": { "type": "string" },
+    "v13_to_v14_delta_correct": { "type": "integer" }
+  },
+  "required": ["schema_id", "status", "conflicts_detected", "v13_to_v14_delta_correct", "claim_ceiling_preserved"],
+  "title": "kt.v14_score_reconciliation_receipt.v1",
+  "type": "object"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assessment_sha256": { "type": "string" },
+    "claim_ceiling_preserved": { "const": true },
+    "hf_dataset": { "type": "string" },
+    "promotion_eligible": { "const": false },
+    "rows": { "const": 200 },
+    "schema_id": { "const": "kt.v14_result_review_receipt.v1" },
+    "scores": { "type": "object" }
+  },
+  "required": ["schema_id", "hf_dataset", "assessment_sha256", "rows", "scores", "claim_ceiling_preserved", "promotion_eligible"],
+  "title": "kt.v14_result_review_receipt.v1",
+  "type": "object"
+}

@@ -1,0 +1,32 @@
+{
+  "claim_ceiling_preserved": true,
+  "emergency_repair_subprotocol": {
+    "authority": "truth_engine_subprotocol",
+    "enabled": true,
+    "forbidden": [
+      "standalone_ambulance_subsystem",
+      "release_without_revalidation",
+      "claim_repair_without_receipt"
+    ],
+    "required_actions": [
+      "block_release",
+      "preserve_failed_state",
+      "classify_defect",
+      "emit_repair_receipt",
+      "rerun_validation",
+      "compare_receipts",
+      "release_only_if_gate_passes"
+    ],
+    "subsystem_created": false,
+    "triggers": [
+      "adapter_identity_conflict",
+      "receipt_contradiction",
+      "claim_evidence_mismatch",
+      "stale_truth_surface",
+      "release_blocker",
+      "replay_inconsistency"
+    ]
+  },
+  "schema_id": "kt.truth_engine_contract.v14_1",
+  "truth_engine_law_changed": false
+}

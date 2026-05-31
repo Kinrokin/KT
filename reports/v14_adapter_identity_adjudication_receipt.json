@@ -1,0 +1,30 @@
+{
+  "adapter_promotion_authorized": false,
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-05-31T02:07:54Z",
+  "defects": [
+    {
+      "arm": "formal_math_repair_adapter_global",
+      "claim_impact": "blocks named adapter success and adapter promotion",
+      "expected_adapter_id": "g3_formal_math_repair_adapter",
+      "observed_adapter_id": "adapter_g3_1_route_regret_policy"
+    },
+    {
+      "arm": "route_regret_policy_adapter_global",
+      "claim_impact": "blocks named adapter success and adapter promotion",
+      "expected_adapter_id": "g3_1_route_regret_policy",
+      "observed_adapter_id": "adapter_g3_1_route_regret_policy"
+    },
+    {
+      "arm": "math_act_adapter_global",
+      "claim_impact": "blocks named adapter success and adapter promotion",
+      "expected_adapter_id": "g3_1_math_act_adapter",
+      "observed_adapter_id": "NOT_MEASURED_IN_V14"
+    }
+  ],
+  "expected_bindings_path": "admission/adapter_identity_expected_bindings.json",
+  "formal_math_adapter_success_claim_authorized": false,
+  "remediation": "V15 must load each arm from its expected adapter path and emit adapter_identity_receipt.json before scoring.",
+  "schema_id": "kt.adapter_identity_adjudication_receipt.v1",
+  "status": "DEFECT_CONFIRMED_STRONG_ADAPTER_CLAIMS_BLOCKED"
+}

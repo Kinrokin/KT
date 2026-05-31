@@ -1,0 +1,24 @@
+{
+  "allowed_pre_generation_inputs": [
+    "numeric_quantities",
+    "operation_words",
+    "multi_step_arithmetic_cues",
+    "final_numeric_answer_requirement",
+    "verifier_required_flag",
+    "formal_calculation_language",
+    "question_structure"
+  ],
+  "blind_router_required": true,
+  "claim_ceiling_preserved": true,
+  "forbidden_pre_generation_inputs": [
+    "dataset_name",
+    "benchmark_name",
+    "task_family_label",
+    "category_label",
+    "gold_answer",
+    "post_generation_correctness"
+  ],
+  "label_bound_route_status": "ALLOWED_AS_BASELINE_ONLY",
+  "schema_id": "kt.dataset_label_blind_routing_requirements.v1",
+  "structure_bound_route_status": "BLOCKED_UNTIL_BLIND_FEATURE_ROUTING_PROVES_IT"
+}

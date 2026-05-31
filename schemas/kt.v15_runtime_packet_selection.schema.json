@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "packet_path": { "const": "packets/ktg3full_v15_truth_route.zip" },
+    "packet_sha256": { "type": "string" },
+    "required_arms": { "type": "array" },
+    "required_slices": { "type": "array" },
+    "schema_id": { "const": "kt.v15_runtime_packet_selection.v1" },
+    "status": { "type": "string" }
+  },
+  "required": ["schema_id", "status", "packet_path", "packet_sha256", "required_arms", "required_slices", "claim_ceiling_preserved"],
+  "title": "kt.v15_runtime_packet_selection.v1",
+  "type": "object"
+}
