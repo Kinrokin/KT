@@ -4,7 +4,7 @@ Dataset name: `ktg3full-v17-canary-route-value`
 
 Packet: `packets/ktg3full_v17_canary_route_value.zip`
 
-SHA256: `048618bc273ea211c00830b17f7d539bb97c8aaa104dc3fcdee34c0a734d5926`
+SHA256: `1b09aefb07ed3670a1aee16df76a01d077a41c74d131c231d7f86c436454f320`
 
 This is a canary route-value benchmark packet. It does not train, promote adapters, promote routes, or claim learned-router superiority.
 
