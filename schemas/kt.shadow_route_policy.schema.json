@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_promotion_authority": { "const": false },
+    "claim_authority": { "const": "NONE" },
+    "oracle_route_deployable": { "const": false },
+    "promotion_authority": { "const": false },
+    "runtime_authority": { "const": false },
+    "schema_id": { "const": "kt.shadow_route_policy.v1" }
+  },
+  "required": ["schema_id", "runtime_authority", "promotion_authority", "adapter_promotion_authority", "claim_authority", "oracle_route_deployable", "forbidden_features"],
+  "title": "kt.shadow_route_policy.v1",
+  "type": "object"
+}

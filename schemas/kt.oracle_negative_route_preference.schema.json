@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_forbidden": { "const": true },
+    "claim_authority": { "const": "NONE" },
+    "oracle_correctness_used_as_feature": { "const": false },
+    "schema_id": { "const": "kt.oracle_negative_route_preference.v1" }
+  },
+  "required": ["schema_id", "sample_id", "harmful_route", "preferred_route", "adapter_training_forbidden", "oracle_correctness_used_as_feature", "claim_authority"],
+  "title": "kt.oracle_negative_route_preference.v1",
+  "type": "object"
+}

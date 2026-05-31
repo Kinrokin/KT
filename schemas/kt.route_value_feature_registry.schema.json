@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "oracle_correctness_used_as_feature": { "const": false },
+    "runtime_legal_features_only": { "const": true },
+    "schema_id": { "const": "kt.route_value_feature_registry.v1" }
+  },
+  "required": ["schema_id", "allowed_features", "forbidden_features", "oracle_correctness_used_as_feature", "runtime_legal_features_only", "claim_ceiling_preserved"],
+  "title": "kt.route_value_feature_registry.v1",
+  "type": "object"
+}
