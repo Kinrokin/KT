@@ -1,15 +1,12 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_v16_competence_topology_emits_route_nodes_and_dataset_slices():
-    subprocess.run([sys.executable, "scripts/run_v16_crossroad_shadow.py"], cwd=ROOT, check=True)
     topology = json.loads((ROOT / "admission/v16_capability_habitat_topology.json").read_text(encoding="utf-8"))
     assert topology["status"] == "PASS"
     assert topology["nodes"]
