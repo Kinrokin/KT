@@ -4,7 +4,7 @@ Dataset: `ktg3full-v17-e2e-v1-2`
 
 Packet: `packets/ktg3full_v17_e2e_v1_2.zip`
 
-SHA256: `79d63ddc66c3fa471ed38373a91446cde61fb9a3f790e7353a1ca2434f65735e`
+SHA256: `e40584759b889869b62cfbbf7af6a63d0f410a5304b9b0898a1e5b83f67f277a`
 
 ```python
 import pathlib, subprocess, sys, zipfile
