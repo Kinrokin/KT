@@ -1,0 +1,38 @@
+{
+  "claim_ceiling_preserved": true,
+  "route_thresholds": {
+    "base_kt_hat_compact": {
+      "activation_margin": 0.1,
+      "feature_requirements": [
+        "claim_boundary_signal_or_uncertainty_or_evidence_grounding"
+      ],
+      "patch_reason": "admit_hat_on_claim_boundary_or_uncertainty_signal_when_margin_beats_base_and_route_regret_support_is_weak"
+    },
+    "base_raw": {
+      "activation_margin": 0.0,
+      "preserve_if_base_confident": true
+    },
+    "formal_math_repair_adapter_global": {
+      "activation_margin": 0.08,
+      "feature_requirements": [
+        "math_act_feature_score>=0.55"
+      ]
+    },
+    "math_act_adapter_global": {
+      "activation_margin": 0.1,
+      "feature_requirements": [
+        "final_numeric_answer_required_or_math_act_feature_score>=0.65"
+      ],
+      "patch_reason": "admit_math_act_on_numeric_final_answer_or_high_math_act_feature_score_when_margin_beats_base"
+    },
+    "route_regret_policy_adapter_global": {
+      "activation_margin": 0.16,
+      "feature_requirements": [
+        "route_regret_prior_supported",
+        "not_overdominant_without_margin"
+      ],
+      "patch_reason": "decrease_route_regret_prior_when_margin_or_feature_support_is_weak"
+    }
+  },
+  "schema_id": "kt.v17_6.route_thresholds.v1"
+}

@@ -1,0 +1,15 @@
+{
+  "claim_ceiling_preserved": true,
+  "create_assessment_only_before_bulky_packaging": true,
+  "create_partial_measured_outputs_first": true,
+  "excluded_by_default": [
+    "extracted repo trees",
+    "packet extraction dirs",
+    "process-isolated arm directories",
+    "model caches",
+    "adapter safetensors",
+    "full debug logs unless KT_INCLUDE_DEBUG_ARTIFACTS=1"
+  ],
+  "schema_id": "kt.v17_6.lean_packaging_contract.v1",
+  "status": "PASS"
+}

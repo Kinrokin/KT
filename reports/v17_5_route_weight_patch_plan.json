@@ -1,0 +1,15 @@
+{
+  "claim_ceiling_preserved": true,
+  "hat_patch": "admit_hat_on_claim_boundary_or_uncertainty_signal_when_margin_beats_base_and_route_regret_support_is_weak",
+  "math_act_patch": "admit_math_act_on_numeric_final_answer_or_high_math_act_feature_score_when_margin_beats_base",
+  "patch_counts": {
+    "admit_hat_on_signal": 14,
+    "admit_math_act_on_signal": 1,
+    "fallback_base": 4,
+    "increase_route_regret_prior": 6,
+    "lower_margin_for_route": 1
+  },
+  "route_regret_patch": "decrease_route_regret_prior_when_margin_or_feature_support_is_weak",
+  "schema_id": "kt.v17_5.route_weight_patch_plan.v1",
+  "status": "PASS"
+}
