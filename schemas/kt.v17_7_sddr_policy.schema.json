@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7 SDDR Policy Config",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "policy_kind",
+    "config",
+    "forbidden_runtime_features",
+    "candidate_routes",
+    "policy_status",
+    "oracle_correctness_used_as_input_feature",
+    "claim_ceiling_preserved",
+    "runtime_authority",
+    "promotion_authority"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7.sddr_policy_config.v1"
+    },
+    "policy_kind": {
+      "const": "SIGNAL_LAYER_PLUS_DETERMINISTIC_DECISION_LAYER"
+    },
+    "config": {
+      "type": "object"
+    },
+    "forbidden_runtime_features": {
+      "type": "array",
+      "minItems": 1
+    },
+    "candidate_routes": {
+      "type": "array",
+      "minItems": 3
+    },
+    "policy_status": {
+      "enum": [
+        "INTERNAL_REPLAY_ONLY_NOT_CANARY_READY",
+        "INTERNAL_REPLAY_ONLY_CANARY_SPEC_ELIGIBLE"
+      ]
+    },
+    "oracle_correctness_used_as_input_feature": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    }
+  }
+}

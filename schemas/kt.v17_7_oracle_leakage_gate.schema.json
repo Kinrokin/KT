@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7 Oracle Leakage Adversarial Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "injected_forbidden_fields",
+    "failed_closed",
+    "status",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7.oracle_leakage_adversarial_receipt.v1"
+    },
+    "failed_closed": {
+      "const": true
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}

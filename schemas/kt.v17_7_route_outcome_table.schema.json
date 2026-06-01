@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7 Route Outcome Row",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "sample_id",
+    "dataset",
+    "task_family",
+    "route_correctness",
+    "v17_7_route",
+    "v17_7_correct",
+    "oracle_correctness_used_as_input_feature",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7.route_outcome_row.v1"
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "task_family": {
+      "type": "string"
+    },
+    "route_correctness": {
+      "type": "object"
+    },
+    "v17_7_route": {
+      "type": "string"
+    },
+    "v17_7_correct": {
+      "type": "boolean"
+    },
+    "oracle_correctness_used_as_input_feature": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}
