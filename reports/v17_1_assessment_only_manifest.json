@@ -1,0 +1,29 @@
+{
+  "claim_ceiling_preserved": true,
+  "excluded_unless_debug": [
+    "raw arm logs",
+    "full text dumps",
+    "redundant prediction copies"
+  ],
+  "included": [
+    "ASSESSMENT_ONLY.zip",
+    "final/final_summary.json or final/BLOCKER_RECEIPT.json",
+    "final/PARTIAL_MEASURED_OUTPUTS.zip if finalization fails",
+    "aggregated_measured_rows/benchmark_predictions.jsonl",
+    "aggregated_measured_rows/benchmark_scorecard.json",
+    "aggregated_measured_rows/v17_1_canary_route_decisions.jsonl",
+    "aggregated_measured_rows/v17_1_activation_margin_sweep.json",
+    "aggregated_measured_rows/v17_scorecard_source_reconciliation_receipt.json",
+    "aggregated_measured_rows/v17_decision_prediction_consistency_receipt.json",
+    "aggregated_measured_rows/v17_1_policy_provenance_receipt.json",
+    "aggregated_measured_rows/v17_1_degenerate_fallback_scan.json",
+    "aggregated_measured_rows/v17_1_margin_pareto_frontier.json",
+    "aggregated_measured_rows/v17_1_score_source_authority_receipt.json",
+    "aggregated_measured_rows/v17_1_base_preservation_receipt.json",
+    "aggregated_measured_rows/v17_1_harmful_activation_receipt.json",
+    "aggregated_measured_rows/v17_1_oracle_leakage_scan.json",
+    "aggregated_measured_rows/v17_1_claim_admissibility_casefile.json"
+  ],
+  "schema_id": "kt.v17_1_assessment_only_manifest.v1",
+  "status": "PASS"
+}

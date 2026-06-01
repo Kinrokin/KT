@@ -1,0 +1,36 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-01T02:13:55Z",
+  "current_head": "5f550e5719d3679abe293bb895d3b1ce3622acef",
+  "frontier_points": [
+    {
+      "BPR": 0.9580419581,
+      "HAR": 0.020979020949999982,
+      "OCR": 0.4772727272727273,
+      "OLR": 0,
+      "accuracy": 0.6307692307692307,
+      "activation_margin": 0.1,
+      "canary_policy_correct": 164,
+      "passes_minimum": true,
+      "route_diversity": 3,
+      "tokens_per_correct": 3.95
+    },
+    {
+      "BPR": 0.965,
+      "HAR": 0.017500000000000016,
+      "OCR": 0.45454545454545453,
+      "OLR": 0,
+      "accuracy": 0.6269230769230769,
+      "activation_margin": 0.12,
+      "canary_policy_correct": 163,
+      "passes_minimum": true,
+      "route_diversity": 3,
+      "tokens_per_correct": 3.97
+    }
+  ],
+  "program_id": "KT_V17_1_CANARY_ROUTE_VALUE_REPAIR_AND_REPLAY_BUILDER_V1_1",
+  "schema_id": "kt.v17_1.margin_pareto_frontier.v1",
+  "selected_margin": 0.1,
+  "selection_reason": "highest repaired canary correctness with BPR >= 0.95 and non-collapsed routing",
+  "status": "PASS"
+}
