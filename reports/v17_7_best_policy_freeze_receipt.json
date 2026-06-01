@@ -1,0 +1,43 @@
+{
+  "claim_ceiling_preserved": true,
+  "cross_validation_status": "FAIL",
+  "frozen_for_internal_replay_only": true,
+  "full_replay_scorecard": {
+    "BPR": 0.9790209790209791,
+    "HAR": 0.011538461538461539,
+    "OCR": 0.4318181818181818,
+    "OLR": 0.0,
+    "base_raw_correct": 143,
+    "canary_correct": 162,
+    "claim_ceiling_preserved": true,
+    "delta_vs_v17_5": 1,
+    "feature_bound_correct": 159,
+    "latency_per_correct_ms": 8877.012345679012,
+    "learned_router_superiority_claim": false,
+    "minimum_pass": true,
+    "oracle_correct": 187,
+    "oracle_correctness_used_as_input_feature": false,
+    "promotion_authority": false,
+    "remaining_oracle_gap": 25,
+    "route_distribution": {
+      "base_raw": 44,
+      "formal_math_repair_adapter_global": 84,
+      "math_act_adapter_global": 18,
+      "route_regret_policy_adapter_global": 114
+    },
+    "route_distribution_distinct_count": 4,
+    "route_entropy": 1.7486071731276887,
+    "route_regret_closure": -0.004155725080327244,
+    "rows": 260,
+    "runtime_authority": false,
+    "schema_id": "kt.v17_7.policy_replay_scorecard.v1",
+    "strong_pass": false,
+    "tokens_per_correct": 61.72839506172839,
+    "v17_5_canary_correct": 161
+  },
+  "learned_router_superiority_claim": false,
+  "policy_status": "INTERNAL_REPLAY_ONLY_NOT_CANARY_READY",
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7.best_policy_freeze_receipt.v1"
+}

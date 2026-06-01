@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7 Zero-GPU Router Validation Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "rows_replayed",
+    "avg_route_latency_ms",
+    "dependency_findings",
+    "status",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7.zero_gpu_router_validation_receipt.v1"
+    },
+    "rows_replayed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dependency_findings": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "status": {
+      "const": "PASS"
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}

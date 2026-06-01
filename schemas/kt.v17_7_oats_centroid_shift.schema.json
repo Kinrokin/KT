@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7 OATS Centroid Shift Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "alpha",
+    "beta",
+    "feature_names",
+    "routes",
+    "oracle_correctness_used_as_input_feature",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7.oats_centroid_shift_receipt.v1"
+    },
+    "alpha": {
+      "type": "number"
+    },
+    "beta": {
+      "type": "number"
+    },
+    "feature_names": {
+      "type": "array",
+      "minItems": 1
+    },
+    "routes": {
+      "type": "object",
+      "minProperties": 3
+    },
+    "oracle_correctness_used_as_input_feature": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}
