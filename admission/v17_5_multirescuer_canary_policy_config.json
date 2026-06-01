@@ -1,0 +1,53 @@
+{
+  "adapter_training_authorized": false,
+  "candidate_routes": [
+    "base_raw",
+    "base_kt_hat_compact",
+    "math_act_adapter_global",
+    "route_regret_policy_adapter_global",
+    "formal_math_repair_adapter_global"
+  ],
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-01T16:43:31Z",
+  "current_head": "5ab8003dfbedd3a9736c644bd5669392db3ebf30",
+  "forbidden_runtime_features": [
+    "oracle_correct",
+    "gold_answer",
+    "post_hoc_correctness",
+    "posthoc_winner",
+    "arm_correctness",
+    "benchmark_answer",
+    "post_generation_output_quality"
+  ],
+  "learned_router_superiority_claim": false,
+  "minimum_route_distribution": {
+    "degenerate_fallback_blocked": true,
+    "distinct_candidate_routes_required": 3,
+    "minimum_non_base_route_decisions_env": "KT_MIN_CANARY_ROUTE_DECISIONS"
+  },
+  "oracle_correctness_as_feature": false,
+  "policy_logic": [
+    "estimate_route_value_for_every_candidate",
+    "select_non_base_only_if_margin_over_base_exceeds_route_threshold",
+    "preserve_base_unless_rescuer_value_is_decisive",
+    "abstain_or_fallback_if_no_route_earns_activation"
+  ],
+  "program_id": "KT_V17_4_RESULT_REVIEW_AND_V17_5_MULTI_RESCUER_CANARY_BUILDER",
+  "promotion_authority": false,
+  "route_thresholds": {
+    "base_kt_hat_compact": {
+      "min_margin_over_base": 0.12
+    },
+    "formal_math_repair_adapter_global": {
+      "min_margin_over_base": 0.1
+    },
+    "math_act_adapter_global": {
+      "min_margin_over_base": 0.08
+    },
+    "route_regret_policy_adapter_global": {
+      "min_margin_over_base": 0.08
+    }
+  },
+  "runtime_authority": false,
+  "schema_id": "kt.v17_5.multirescuer_canary_policy_config.v1"
+}
