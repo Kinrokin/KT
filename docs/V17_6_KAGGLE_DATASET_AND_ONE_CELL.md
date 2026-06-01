@@ -4,7 +4,7 @@ Dataset: `ktv176-e2e-v1`
 
 Packet: `packets/ktv176_e2e_v1.zip`
 
-SHA256: `50fb5acdab6c62aaead9f6ed2d74a8762fc258caac8de63ffed8dedbc89348ae`
+SHA256: `d0a607a7bf6b9c35c928f4e3bf13dd97e643751b632bf4ef59c74f2cd60ab604`
 
 This packet is no-training, no-promotion, no learned-router-superiority, and no V18 runtime authority. Supply V17.5 measured rows through `PARTIAL_MEASURED_OUTPUTS.zip` or a non-empty `benchmark_predictions.jsonl`.
 
