@@ -1,0 +1,24 @@
+{
+  "$id": "kt.v17_degenerate_fallback_scan",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

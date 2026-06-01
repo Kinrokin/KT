@@ -1,0 +1,37 @@
+{
+  "adapter_training_authorized": false,
+  "base_preservation_epsilon": 0.08,
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-01T02:13:55Z",
+  "current_head": "5f550e5719d3679abe293bb895d3b1ce3622acef",
+  "default_activation_margin": 0.1,
+  "no_override_base_protection": true,
+  "pass_blocks": {
+    "BPR_lt_0_95": true,
+    "HAR_gt_0_10": true,
+    "OCR_lte_0_363636": true,
+    "OLR_ne_0": true,
+    "canary_policy_correct_lt_feature_bound_route": true
+  },
+  "policy_source": "REPAIRED_REFERENCE_POLICY",
+  "program_id": "KT_V17_1_CANARY_ROUTE_VALUE_REPAIR_AND_REPLAY_BUILDER_V1_1",
+  "promotion_authority": false,
+  "route_confidence_thresholds": {
+    "base_kt_hat_compact": {
+      "min_margin_over_base": 0.12
+    },
+    "formal_math_repair_adapter_global": {
+      "min_margin_over_base": 0.1
+    },
+    "math_act_adapter_global": {
+      "min_margin_over_base": 0.08
+    },
+    "route_regret_policy_adapter_global": {
+      "min_margin_over_base": 0.08
+    }
+  },
+  "runtime_authority": false,
+  "schema_id": "kt.v17_1_canary_policy_config.v1",
+  "source_v16_policy_artifact": "admission/v16_shadow_route_policy.json",
+  "source_v16_policy_sha256": "e3cb4b8833100ec872336da915aa4287ff7175321fdfea3e44384bfcaa6797a9"
+}

@@ -1,0 +1,29 @@
+{
+  "authority_order": [
+    "benchmark_predictions.jsonl recomputation",
+    "canary decision rows",
+    "benchmark_scorecard.json",
+    "final_summary.json"
+  ],
+  "claim_ceiling_preserved": true,
+  "lower_layers_downgraded_if_disagree": true,
+  "recomputed_scorecard": {
+    "BPR": 0.9300699301,
+    "HAR": 0.0384615385,
+    "OCR": 0.22727272727272727,
+    "OLR": 0,
+    "RRC": -0.21428571428571427,
+    "base_raw_correct": 143,
+    "best_static_correct": 160,
+    "canary_policy_correct": 153,
+    "claim_ceiling_preserved": true,
+    "feature_bound_correct": 159,
+    "oracle_correct": 187,
+    "promotion_authority": false,
+    "rows": 260,
+    "runtime_authority": false,
+    "schema_id": "kt.v17_1.recomputed_scorecard.v1"
+  },
+  "schema_id": "kt.v17_scorecard_source_reconciliation_receipt.v1",
+  "status": "PASS"
+}
