@@ -1,0 +1,146 @@
+{
+  "adapter_training_authorized": false,
+  "base_preservation_policy": {
+    "fallback_route": "base_raw",
+    "max_har": 0.1,
+    "minimum_bpr": 0.95,
+    "minimum_rescuer_margin": 0.08
+  },
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "oracle_gap_rows_mined": 26,
+  "pass_targets": {
+    "minimum": {
+      "BPR_gte": 0.95,
+      "HAR_lte": 0.1,
+      "OCR_gt": 0.4090909090909091,
+      "OLR": 0.0,
+      "canary_gt": 161,
+      "route_distribution_distinct_count_gte": 3
+    },
+    "strong": {
+      "BPR_gte": 0.97,
+      "HAR_lte": 0.05,
+      "OCR_gte": 0.5,
+      "canary_gte": 165,
+      "remaining_oracle_gap_lte": 22
+    }
+  },
+  "policy_kind": "ORACLE_AUTOPSY_PATCHED_CANARY_PREP_ONLY",
+  "policy_rules": [
+    "preserve base unless rescuer margin is decisive",
+    "reduce route_regret overdominance when feature support or margin is weak",
+    "admit hat only on row features matching hat salvage signal",
+    "admit math_act only on row features matching math-act rescue signal",
+    "keep formal_math when formal_math has strongest route-value habitat",
+    "use no oracle correctness, gold answer, posthoc winner, or arm correctness at runtime"
+  ],
+  "program_id": "KT_V17_6_ORACLE_AUTOPSY_LEAN_FURNACE_AND_POLICY_REWRITE_SUPERLANE_V2",
+  "promotion_authority": false,
+  "route_thresholds": {
+    "base_kt_hat_compact": {
+      "activation_margin": 0.1,
+      "feature_requirements": [
+        "claim_boundary_signal_or_uncertainty_or_evidence_grounding"
+      ],
+      "patch_reason": "admit_hat_on_claim_boundary_or_uncertainty_signal_when_margin_beats_base_and_route_regret_support_is_weak"
+    },
+    "base_raw": {
+      "activation_margin": 0.0,
+      "preserve_if_base_confident": true
+    },
+    "formal_math_repair_adapter_global": {
+      "activation_margin": 0.08,
+      "feature_requirements": [
+        "math_act_feature_score>=0.55"
+      ]
+    },
+    "math_act_adapter_global": {
+      "activation_margin": 0.1,
+      "feature_requirements": [
+        "final_numeric_answer_required_or_math_act_feature_score>=0.65"
+      ],
+      "patch_reason": "admit_math_act_on_numeric_final_answer_or_high_math_act_feature_score_when_margin_beats_base"
+    },
+    "route_regret_policy_adapter_global": {
+      "activation_margin": 0.16,
+      "feature_requirements": [
+        "route_regret_prior_supported",
+        "not_overdominant_without_margin"
+      ],
+      "patch_reason": "decrease_route_regret_prior_when_margin_or_feature_support_is_weak"
+    }
+  },
+  "runtime_authority": false,
+  "runtime_feature_registry": {
+    "claim_ceiling_preserved": true,
+    "forbidden_runtime_features": [
+      "arm_correctness",
+      "benchmark_answer",
+      "gold_answer",
+      "oracle_correct",
+      "oracle_correctness",
+      "oracle_route",
+      "post_generation_output_quality",
+      "post_hoc_correctness",
+      "posthoc_winner",
+      "union_oracle_route"
+    ],
+    "oracle_correctness_used_as_feature": false,
+    "runtime_legal_features": [
+      "choice_count",
+      "prompt_length",
+      "numbers_count",
+      "operation_cue_count",
+      "quantity_cue_count",
+      "math_act_feature_score",
+      "math_act_features",
+      "final_numeric_answer_required",
+      "multi_step_cue_present",
+      "claim_boundary_signal",
+      "evidence_grounding_signal",
+      "uncertainty_markers",
+      "option_comparison_signal",
+      "temporal_signal",
+      "external_knowledge_signal",
+      "contradiction_markers"
+    ],
+    "schema_id": "kt.v17_6.runtime_feature_registry.v1"
+  },
+  "schema_id": "kt.v17_6.oracle_autopsy_patched_policy.v1",
+  "source_scorecard": {
+    "BPR": 0.972027972027972,
+    "HAR": 0.015384615384615385,
+    "OCR": 0.4090909090909091,
+    "OLR": 0.0,
+    "adapter_training_authorized": false,
+    "base_correct_preserved_by_canary": 139,
+    "base_raw_correct": 143,
+    "best_single_static_arm": "formal_math_repair_adapter_global",
+    "best_single_static_arm_correct": 160,
+    "canary_policy_correct": 161,
+    "claim_ceiling_preserved": true,
+    "feature_bound_correct": 159,
+    "harmful_activation_count": 4,
+    "learned_router_superiority_claim": false,
+    "oracle_correct": 187,
+    "promotion_authority": false,
+    "remaining_oracle_gap": 26,
+    "route_distribution": {
+      "base_raw": 5,
+      "formal_math_repair_adapter_global": 103,
+      "route_regret_policy_adapter_global": 152
+    },
+    "route_distribution_distinct_count": 3,
+    "rows": 260,
+    "runtime_authority": false,
+    "schema_id": "kt.v17_5.row_recomputed_scorecard.v2",
+    "static_arm_counts": {
+      "base_kt_hat_compact": 113,
+      "base_raw": 143,
+      "formal_math_repair_adapter_global": 160,
+      "math_act_adapter_global": 147,
+      "route_regret_policy_adapter_global": 152
+    }
+  }
+}

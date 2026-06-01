@@ -1,0 +1,47 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-01T21:20:24Z",
+  "current_head": "a9e60a309d0e415fc4329c92b6df76b67a55cef6",
+  "program_id": "KT_V17_6_ORACLE_AUTOPSY_LEAN_FURNACE_AND_POLICY_REWRITE_SUPERLANE_V2",
+  "promotion_authority": false,
+  "rows": 260,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_5.result_review_receipt.v1",
+  "scientific_result": "MINIMUM_PASS_NOT_BREAKTHROUGH",
+  "scorecard": {
+    "BPR": 0.972027972027972,
+    "HAR": 0.015384615384615385,
+    "OCR": 0.4090909090909091,
+    "OLR": 0.0,
+    "adapter_training_authorized": false,
+    "base_correct_preserved_by_canary": 139,
+    "base_raw_correct": 143,
+    "best_single_static_arm": "formal_math_repair_adapter_global",
+    "best_single_static_arm_correct": 160,
+    "canary_policy_correct": 161,
+    "claim_ceiling_preserved": true,
+    "feature_bound_correct": 159,
+    "harmful_activation_count": 4,
+    "learned_router_superiority_claim": false,
+    "oracle_correct": 187,
+    "promotion_authority": false,
+    "remaining_oracle_gap": 26,
+    "route_distribution": {
+      "base_raw": 5,
+      "formal_math_repair_adapter_global": 103,
+      "route_regret_policy_adapter_global": 152
+    },
+    "route_distribution_distinct_count": 3,
+    "rows": 260,
+    "runtime_authority": false,
+    "schema_id": "kt.v17_5.row_recomputed_scorecard.v2",
+    "static_arm_counts": {
+      "base_kt_hat_compact": 113,
+      "base_raw": 143,
+      "formal_math_repair_adapter_global": 160,
+      "math_act_adapter_global": 147,
+      "route_regret_policy_adapter_global": 152
+    }
+  },
+  "status": "PASS"
+}

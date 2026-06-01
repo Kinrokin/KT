@@ -1,0 +1,19 @@
+{
+  "claim_ceiling_preserved": true,
+  "excluded_members": [
+    "extracted repo trees",
+    "packet extraction dirs",
+    "process-isolated arm directories",
+    "model caches",
+    "adapter safetensors",
+    "full debug logs unless KT_INCLUDE_DEBUG_ARTIFACTS=1"
+  ],
+  "required_members": [
+    "final/final_summary.json or final/BLOCKER_RECEIPT.json",
+    "v17_6_measured_rows/benchmark_scorecard.json",
+    "v17_6_measured_rows/v17_6_oracle_gap_autopsy_summary.json",
+    "final/runtime_telemetry_receipt.json"
+  ],
+  "schema_id": "kt.v17_6.assessment_only_manifest.v1",
+  "status": "PASS"
+}

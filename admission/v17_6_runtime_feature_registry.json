@@ -1,0 +1,35 @@
+{
+  "claim_ceiling_preserved": true,
+  "forbidden_runtime_features": [
+    "arm_correctness",
+    "benchmark_answer",
+    "gold_answer",
+    "oracle_correct",
+    "oracle_correctness",
+    "oracle_route",
+    "post_generation_output_quality",
+    "post_hoc_correctness",
+    "posthoc_winner",
+    "union_oracle_route"
+  ],
+  "oracle_correctness_used_as_feature": false,
+  "runtime_legal_features": [
+    "choice_count",
+    "prompt_length",
+    "numbers_count",
+    "operation_cue_count",
+    "quantity_cue_count",
+    "math_act_feature_score",
+    "math_act_features",
+    "final_numeric_answer_required",
+    "multi_step_cue_present",
+    "claim_boundary_signal",
+    "evidence_grounding_signal",
+    "uncertainty_markers",
+    "option_comparison_signal",
+    "temporal_signal",
+    "external_knowledge_signal",
+    "contradiction_markers"
+  ],
+  "schema_id": "kt.v17_6.runtime_feature_registry.v1"
+}
