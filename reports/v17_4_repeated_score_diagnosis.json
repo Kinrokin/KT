@@ -1,0 +1,45 @@
+{
+  "canary_new_information": true,
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-01T16:43:31Z",
+  "feature_bound_equivalent": false,
+  "jaccard_overlap_by_policy_pair": {
+    "V16_shadow_replay_baseline__V17_canary_policy": 1.0,
+    "V16_shadow_replay_baseline__feature_bound_route": 0.8909090909090909,
+    "V16_shadow_replay_baseline__label_bound_route": 0.8181818181818182,
+    "V17_canary_policy__feature_bound_route": 0.8909090909090909,
+    "V17_canary_policy__label_bound_route": 0.8181818181818182,
+    "feature_bound_route__label_bound_route": 0.898989898989899
+  },
+  "margin_sweep_route_distribution_delta": null,
+  "policies": [
+    "feature_bound_route",
+    "label_bound_route",
+    "V16_shadow_replay_baseline",
+    "V17_canary_policy"
+  ],
+  "policy_correct_counts": {
+    "V16_shadow_replay_baseline": 159,
+    "V17_canary_policy": 159,
+    "feature_bound_route": 159,
+    "label_bound_route": 159
+  },
+  "policy_equivalence_determined_from_rows": true,
+  "program_id": "KT_V17_4_RESULT_REVIEW_AND_V17_5_MULTI_RESCUER_CANARY_BUILDER",
+  "same_score_different_rows": true,
+  "same_score_same_rows": false,
+  "schema_id": "kt.v17_4.repeated_score_diagnosis.v1",
+  "selected_row_count": {
+    "V16_shadow_replay_baseline": 110,
+    "V17_canary_policy": 110,
+    "feature_bound_route": 98,
+    "label_bound_route": 90
+  },
+  "selected_row_sha256": {
+    "V16_shadow_replay_baseline": "70dceb47371af7d93d59239bac941335bd1b118683519286aaa36552582dc146",
+    "V17_canary_policy": "70dceb47371af7d93d59239bac941335bd1b118683519286aaa36552582dc146",
+    "feature_bound_route": "1f20134262c7e930fa70ac914c32d2eb9a6a8f45450d474c0e8724f882c3b0d8",
+    "label_bound_route": "17c93598e4ded0af902e702caf50dfdfac6ab2fec24a7ea85c2befd9763c55b8"
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,179 @@
+{
+  "claim_ceiling_preserved": true,
+  "features": [
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": true,
+      "expected_route_relevance": "length/cost prior and answer complexity",
+      "feature_id": "prompt_length",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "multiple-choice substrate routing",
+      "feature_id": "choice_count",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "math and quantitative reasoning signal",
+      "feature_id": "numeric_density",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "operation-selection signal",
+      "feature_id": "operation_cue_count",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "quantity extraction signal",
+      "feature_id": "quantity_cue_count",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "multi-step reasoning signal",
+      "feature_id": "multi_hop_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "temporal/chronology routing signal",
+      "feature_id": "temporal_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "knowledge-heavy task signal",
+      "feature_id": "external_knowledge_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "claim discipline routing signal",
+      "feature_id": "claim_boundary_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "grounded-evidence routing signal",
+      "feature_id": "evidence_grounding_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "contradiction/paradox routing signal",
+      "feature_id": "contradiction_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "abstention or verifier-heavy routing signal",
+      "feature_id": "uncertainty_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "final answer formatting risk",
+      "feature_id": "format_risk_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "answer modality cue",
+      "feature_id": "answer_type_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": false,
+      "expected_route_relevance": "choice comparison signal",
+      "feature_id": "option_comparison_signal",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": true,
+      "expected_route_relevance": "math act pipeline signal",
+      "feature_id": "math_act_features",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": true,
+      "expected_route_relevance": "cost-aware routing prior",
+      "feature_id": "route_cost_priors",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    },
+    {
+      "available_before_generation": true,
+      "blocked_if_missing": true,
+      "expected_route_relevance": "historical non-oracle route habitat prior",
+      "feature_id": "historical_route_habitat_priors",
+      "oracle_leakage_risk": "LOW",
+      "runtime_legal": true,
+      "source": "pre_generation_prompt_or_non_oracle_habitat_prior"
+    }
+  ],
+  "forbidden_runtime_features": [
+    "oracle_correct",
+    "gold_answer",
+    "post_hoc_correctness",
+    "posthoc_winner",
+    "arm_correctness",
+    "benchmark_answer",
+    "post_generation_output_quality"
+  ],
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_5.route_value_feature_registry_v2.v1"
+}
