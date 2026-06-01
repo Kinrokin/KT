@@ -4,7 +4,7 @@ Dataset: `ktg3full-v17-5-multirescuer-e2e-v1`
 
 Packet: `packets/ktg3full_v17_5_multirescuer_e2e_v1.zip`
 
-SHA256: `f450bf0d42cfa42d62e3c6143e4699a369626e09a82d97ed861883a07e8d0e18`
+SHA256: `37480d832451732e1aa7af76869e362cb87fca1fcadb8362517f72ec965feb61`
 
 This packet is assessment-only, no-training, no-promotion, no learned-router-superiority.
 
