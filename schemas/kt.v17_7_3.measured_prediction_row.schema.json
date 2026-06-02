@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "available_arm_scores": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "best_arm": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "learned_router_superiority_claim": {
+      "const": false
+    },
+    "measurement_status": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "policy_optimization_authorized": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "router_training_authorized": {
+      "const": false
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "sample_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "v18_runtime_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "sample_id",
+    "available_arm_scores",
+    "best_arm",
+    "measurement_status"
+  ],
+  "type": "object"
+}

@@ -9,3 +9,14 @@ def test_v17_7_3_final_decision_preserves_claim_ceiling() -> None:
     assert summary["kaggle_dataset_name"] == "ktv1773-evidence-v1"
     assert_no_authority(final)
     assert_no_authority(summary)
+
+
+def test_v17_7_3_armfix_preserves_claim_ceiling() -> None:
+    final = read_json("reports/v17_7_3_armfix_final_decision_receipt.json")
+    summary = read_json("reports/v17_7_3_armfix_builder_summary.json")
+    assert final["outcome"] == "KTG3FULL_V17_7_3_MEASURED_ARM_EXECUTION_READY__RUN_EVIDENCE_FURNACE_NEXT__CLAIM_CEILING_PRESERVED"
+    assert final["next_lawful_move"] == "RUN_EVIDENCE_FURNACE_NEXT"
+    assert summary["kaggle_dataset_name"] == "ktv1773-arm-v1"
+    assert summary["packet_path"] == "packets/ktv1773_measured_arm_v1.zip"
+    assert_no_authority(final)
+    assert_no_authority(summary)

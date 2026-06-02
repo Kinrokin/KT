@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "learned_router_superiority_claim": {
+      "const": false
+    },
+    "policy_optimization_authorized": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "router_training_authorized": {
+      "const": false
+    },
+    "row_level_recomputed": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "v18_runtime_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "row_level_recomputed"
+  ],
+  "type": "object"
+}

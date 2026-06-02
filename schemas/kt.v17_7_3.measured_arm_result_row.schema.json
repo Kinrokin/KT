@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "arm_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "latency_ms": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "learned_router_superiority_claim": {
+      "const": false
+    },
+    "measurement_status": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "model_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "output_hash": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "policy_optimization_authorized": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "prompt_hash": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "router_training_authorized": {
+      "const": false
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "sample_id": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "score": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "tokens_in": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "tokens_out": {
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "v18_runtime_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "run_id",
+    "sample_id",
+    "arm_id",
+    "model_id",
+    "adapter_id",
+    "prompt_hash",
+    "output_hash",
+    "score",
+    "tokens_in",
+    "tokens_out",
+    "latency_ms",
+    "measurement_status"
+  ],
+  "type": "object"
+}
