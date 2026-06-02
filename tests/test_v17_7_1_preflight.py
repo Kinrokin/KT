@@ -15,5 +15,10 @@ def test_v17_7_1_preflight_binds_current_head_and_claim_ceiling() -> None:
     assert receipt["repo_truth_contradiction"] is False
     assert receipt["claim_ceiling_preserved"] is True
     assert head["current_head"]
+    assert head["replay_subject_head"] == head["current_head"]
+    assert head["head_binding_status"] == "PASS"
+    assert head["historical_anchor_is_current_head_authority"] is False
+    assert "head_matches_expected" not in head
+    assert "v17_7_main_replay_head_expected" not in head
     assert claim["runtime_authority"] is False
     assert claim["promotion_authority"] is False

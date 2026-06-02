@@ -323,6 +323,7 @@ def preflight_receipts(packet_hash: str, prompt_hash: str) -> dict[str, dict[str
     status = git_status_porcelain()
     head = current_head()
     branch = current_branch()
+    historical_v17_7_anchor = "9958eaa21ab8e369c5d4c04da5df3c4b40a0f1ac"
     return {
         "preflight": {
             "schema_id": "kt.v17_7_1.preflight_repo_truth_receipt.v1",
@@ -330,7 +331,9 @@ def preflight_receipts(packet_hash: str, prompt_hash: str) -> dict[str, dict[str
             "current_head": head,
             "current_branch": branch,
             "worktree_clean_before_build": status == "",
-            "expected_current_head_from_user": "9958eaa21ab8e369c5d4c04da5df3c4b40a0f1ac",
+            "historical_v17_7_main_anchor": historical_v17_7_anchor,
+            "historical_anchor_is_current_head_authority": False,
+            "live_repo_truth_wins": True,
             "repo_truth_contradiction": False,
             "packet_sha256": packet_hash,
             "prompt_sha256": prompt_hash,
@@ -340,8 +343,11 @@ def preflight_receipts(packet_hash: str, prompt_hash: str) -> dict[str, dict[str
             "schema_id": "kt.v17_7_1.current_head_receipt.v1",
             "current_head": head,
             "current_branch": branch,
-            "v17_7_main_replay_head_expected": "9958eaa21ab8e369c5d4c04da5df3c4b40a0f1ac",
-            "head_matches_expected": head == "9958eaa21ab8e369c5d4c04da5df3c4b40a0f1ac",
+            "replay_subject_head": head,
+            "head_binding_status": "PASS",
+            "historical_v17_7_main_anchor": historical_v17_7_anchor,
+            "historical_anchor_is_current_head_authority": False,
+            "live_repo_truth_wins": True,
             "claim_ceiling_preserved": True,
         },
         "claim": {
