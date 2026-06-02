@@ -1,0 +1,37 @@
+{
+  "adapter_training_authorized": false,
+  "boundaries": [
+    {
+      "boundary_id": "base_raw__route_regret",
+      "designed_count": 236,
+      "target": 50
+    },
+    {
+      "boundary_id": "base_raw__formal_math",
+      "designed_count": 311,
+      "target": 50
+    },
+    {
+      "boundary_id": "route_regret__formal_math",
+      "designed_count": 210,
+      "target": 30
+    },
+    {
+      "boundary_id": "hat_act_boundary",
+      "designed_count": 50,
+      "target": 30
+    },
+    {
+      "boundary_id": "math_act_boundary",
+      "designed_count": 100,
+      "target": 30
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.route_boundary_matrix.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

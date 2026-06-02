@@ -1,0 +1,425 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "eig_summary": {
+    "max": 0.761,
+    "mean": 0.5735140625,
+    "median": 0.568,
+    "min": 0.407
+  },
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "row_count": 400,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.eig_scorecard.v1",
+  "selection_method": "EIG_NOT_RANDOM",
+  "status": "PASS",
+  "top_rows": [
+    {
+      "acquisition_row_id": "v1773-acq-0001",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__route_regret",
+        "hat_act_boundary",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.64,
+        "expected_OPE_support_gain": 0.28,
+        "expected_P_fail_reduction": 0.74,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.01
+      },
+      "eig_score": 0.761,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "ARC",
+        "ambiguous",
+        "borderline",
+        "evidence_grounding"
+      ],
+      "source_seed_dataset": "arc_challenge",
+      "source_seed_sample_id": "arc:42",
+      "split": "training_search",
+      "state_diff_required": true,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0002",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.9,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.57
+      },
+      "eig_score": 0.751,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "HellaSwag",
+        "borderline"
+      ],
+      "source_seed_dataset": "hellaswag",
+      "source_seed_sample_id": "hellaswag:23",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0003",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__route_regret",
+        "math_act_boundary",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.64,
+        "expected_OPE_support_gain": 0.28,
+        "expected_P_fail_reduction": 0.74,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.14
+      },
+      "eig_score": 0.735,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "borderline",
+        "math_numeric"
+      ],
+      "source_seed_dataset": "gsm8k",
+      "source_seed_sample_id": "gsm8k:22",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0004",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "hat_act_boundary",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.9,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.65
+      },
+      "eig_score": 0.735,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "HellaSwag",
+        "borderline"
+      ],
+      "source_seed_dataset": "hellaswag",
+      "source_seed_sample_id": "hellaswag:31",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0005",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.4,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 0.7,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.04
+      },
+      "eig_score": 0.732,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "ARC",
+        "borderline"
+      ],
+      "source_seed_dataset": "arc_challenge",
+      "source_seed_sample_id": "arc:13",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0006",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__route_regret",
+        "hat_act_boundary",
+        "math_act_boundary"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.64,
+        "expected_OPE_support_gain": 0.28,
+        "expected_P_fail_reduction": 0.74,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.16
+      },
+      "eig_score": 0.731,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "borderline",
+        "evidence_grounding",
+        "math_numeric"
+      ],
+      "source_seed_dataset": "gsm8k",
+      "source_seed_sample_id": "gsm8k:24",
+      "split": "training_search",
+      "state_diff_required": true,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0007",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "hat_act_boundary",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.9,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.68
+      },
+      "eig_score": 0.729,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "HellaSwag",
+        "borderline"
+      ],
+      "source_seed_dataset": "hellaswag",
+      "source_seed_sample_id": "hellaswag:34",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0008",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.9,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 1.0,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.7
+      },
+      "eig_score": 0.725,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "HellaSwag",
+        "ambiguous",
+        "borderline"
+      ],
+      "source_seed_dataset": "hellaswag",
+      "source_seed_sample_id": "hellaswag:36",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0009",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret",
+        "route_regret__formal_math"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.4,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 0.7,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.1
+      },
+      "eig_score": 0.72,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "ARC",
+        "borderline"
+      ],
+      "source_seed_dataset": "arc_challenge",
+      "source_seed_sample_id": "arc:2",
+      "split": "training_search",
+      "state_diff_required": false,
+      "v18_runtime_authority": false
+    },
+    {
+      "acquisition_row_id": "v1773-acq-0010",
+      "adapter_training_authorized": false,
+      "boundary_tags": [
+        "base_raw__formal_math",
+        "base_raw__route_regret"
+      ],
+      "claim_ceiling_preserved": true,
+      "eig_components": {
+        "compute_cost": 1.0,
+        "expected_DGS_improvement": 0.8,
+        "expected_OPE_support_gain": 0.8,
+        "expected_P_fail_reduction": 0.4,
+        "expected_boundary_resolution": 0.9,
+        "expected_conformal_width_reduction": 0.7,
+        "expected_uncertainty_reduction": 0.7,
+        "leakage_risk": 0.02,
+        "redundancy_penalty": 0.11
+      },
+      "eig_score": 0.718,
+      "learned_router_superiority_claim": false,
+      "measurement_authority": "EVIDENCE_ACQUISITION_ONLY",
+      "oracle_correctness_used_as_input_feature": false,
+      "oracle_label_required": true,
+      "primary_band": "B1_base_raw_vs_route_regret_boundary",
+      "promotion_authority": false,
+      "row_status": "DESIGNED_NOT_MEASURED",
+      "runtime_authority": false,
+      "schema_id": "kt.v17_7_3.targeted_boundary_row.v1",
+      "slice_tags": [
+        "ARC",
+        "borderline"
+      ],
+      "source_seed_dataset": "arc_challenge",
+      "source_seed_sample_id": "arc:20",
+      "split": "training_search",
+      "state_diff_required": true,
+      "v18_runtime_authority": false
+    }
+  ],
+  "v18_runtime_authority": false
+}
