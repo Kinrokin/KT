@@ -1,0 +1,324 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "matrix": {
+    "B10_perturbation_families": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.466667,
+          "correct": 7,
+          "total": 15
+        },
+        "base_raw": {
+          "accuracy": 0.4,
+          "correct": 6,
+          "total": 15
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.733333,
+          "correct": 11,
+          "total": 15
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.466667,
+          "correct": 7,
+          "total": 15
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.533333,
+          "correct": 8,
+          "total": 15
+        }
+      },
+      "oracle_correct": 13,
+      "row_count": 15
+    },
+    "B1_base_raw_vs_route_regret_boundary": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.355556,
+          "correct": 16,
+          "total": 45
+        },
+        "base_raw": {
+          "accuracy": 0.533333,
+          "correct": 24,
+          "total": 45
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.533333,
+          "correct": 24,
+          "total": 45
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.577778,
+          "correct": 26,
+          "total": 45
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.577778,
+          "correct": 26,
+          "total": 45
+        }
+      },
+      "oracle_correct": 45,
+      "row_count": 45
+    },
+    "B2_base_raw_vs_formal_math_boundary": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.333333,
+          "correct": 15,
+          "total": 45
+        },
+        "base_raw": {
+          "accuracy": 0.822222,
+          "correct": 37,
+          "total": 45
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.844444,
+          "correct": 38,
+          "total": 45
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.866667,
+          "correct": 39,
+          "total": 45
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.888889,
+          "correct": 40,
+          "total": 45
+        }
+      },
+      "oracle_correct": 41,
+      "row_count": 45
+    },
+    "B3_math_numeric_slice": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.542857,
+          "correct": 38,
+          "total": 70
+        },
+        "base_raw": {
+          "accuracy": 0.471429,
+          "correct": 33,
+          "total": 70
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.728571,
+          "correct": 51,
+          "total": 70
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.485714,
+          "correct": 34,
+          "total": 70
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.542857,
+          "correct": 38,
+          "total": 70
+        }
+      },
+      "oracle_correct": 53,
+      "row_count": 70
+    },
+    "B4_claim_boundary_slice": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.644444,
+          "correct": 29,
+          "total": 45
+        },
+        "base_raw": {
+          "accuracy": 0.711111,
+          "correct": 32,
+          "total": 45
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.711111,
+          "correct": 32,
+          "total": 45
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.711111,
+          "correct": 32,
+          "total": 45
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.711111,
+          "correct": 32,
+          "total": 45
+        }
+      },
+      "oracle_correct": 33,
+      "row_count": 45
+    },
+    "B5_ambiguous_borderline_rows": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.6,
+          "correct": 21,
+          "total": 35
+        },
+        "base_raw": {
+          "accuracy": 0.6,
+          "correct": 21,
+          "total": 35
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.6,
+          "correct": 21,
+          "total": 35
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.6,
+          "correct": 21,
+          "total": 35
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.6,
+          "correct": 21,
+          "total": 35
+        }
+      },
+      "oracle_correct": 21,
+      "row_count": 35
+    },
+    "B6_hat_act_candidate_rows": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 1.0,
+          "correct": 25,
+          "total": 25
+        },
+        "base_raw": {
+          "accuracy": 0.04,
+          "correct": 1,
+          "total": 25
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.08,
+          "correct": 2,
+          "total": 25
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.04,
+          "correct": 1,
+          "total": 25
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.04,
+          "correct": 1,
+          "total": 25
+        }
+      },
+      "oracle_correct": 25,
+      "row_count": 25
+    },
+    "B7_math_act_candidate_rows": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.24,
+          "correct": 6,
+          "total": 25
+        },
+        "base_raw": {
+          "accuracy": 0.68,
+          "correct": 17,
+          "total": 25
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.56,
+          "correct": 14,
+          "total": 25
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.72,
+          "correct": 18,
+          "total": 25
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.72,
+          "correct": 18,
+          "total": 25
+        }
+      },
+      "oracle_correct": 25,
+      "row_count": 25
+    },
+    "B8_ARC_slice": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.272727,
+          "correct": 15,
+          "total": 55
+        },
+        "base_raw": {
+          "accuracy": 0.890909,
+          "correct": 49,
+          "total": 55
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.818182,
+          "correct": 45,
+          "total": 55
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.927273,
+          "correct": 51,
+          "total": 55
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.909091,
+          "correct": 50,
+          "total": 55
+        }
+      },
+      "oracle_correct": 53,
+      "row_count": 55
+    },
+    "B9_evidence_grounding_rows": {
+      "arms": {
+        "base_kt_hat_compact": {
+          "accuracy": 0.6,
+          "correct": 24,
+          "total": 40
+        },
+        "base_raw": {
+          "accuracy": 0.575,
+          "correct": 23,
+          "total": 40
+        },
+        "formal_math_repair_adapter_global": {
+          "accuracy": 0.9,
+          "correct": 36,
+          "total": 40
+        },
+        "math_act_adapter_global": {
+          "accuracy": 0.575,
+          "correct": 23,
+          "total": 40
+        },
+        "route_regret_policy_adapter_global": {
+          "accuracy": 0.65,
+          "correct": 26,
+          "total": 40
+        }
+      },
+      "oracle_correct": 36,
+      "row_count": 40
+    }
+  },
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.per_band_arm_win_matrix.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,30 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "current_tier": "TIER_2_SOURCE_ROUTE_OUTCOME_REPLAY",
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.evidence_tier_transition_table.v1",
+  "status": "PASS",
+  "transitions": [
+    {
+      "from": "TIER_2_SOURCE_ROUTE_OUTCOME_REPLAY",
+      "requires": "frozen model outputs with output hashes and deterministic scorer",
+      "to": "TIER_3_MODEL_EVAL_REPLAY"
+    },
+    {
+      "from": "TIER_3_MODEL_EVAL_REPLAY",
+      "requires": "fresh constrained furnace inference with model/adapter bindings",
+      "to": "TIER_4_FRESH_MODEL_GENERATION"
+    },
+    {
+      "from": "TIER_4_FRESH_MODEL_GENERATION",
+      "requires": "external reproduction",
+      "to": "TIER_5_EXTERNAL_REPRODUCED_GENERATION"
+    }
+  ],
+  "v18_runtime_authority": false
+}

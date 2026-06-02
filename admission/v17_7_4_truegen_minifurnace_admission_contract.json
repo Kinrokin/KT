@@ -1,19 +1,21 @@
 {
   "adapter_training_authorized": false,
-  "blockers": [],
   "claim_ceiling_preserved": true,
   "learned_router_superiority_claim": false,
-  "next_lawful_move": "RUN_KTV1774_TRUEGEN_MINIFURNACE_PACKET",
-  "outcome": "KTG3FULL_V17_7_3_MEASUREMENT_AUTHORITY_ADJUDICATED__NEXT_EVIDENCE_MOVE_SELECTED__CLAIM_CEILING_PRESERVED",
   "packet_path": "packets/ktv1774_truegen_minifurnace_v1.zip",
   "packet_sha256": "a128dea677ba31f49abff56fa85206487557d1a5827f1daecda295d7f898ca64",
   "policy_optimization_authorized": false,
   "promotion_authority": false,
+  "required_before_higher_authority": [
+    "fresh arm generation rows",
+    "output hashes",
+    "scorer determinism",
+    "assessment zip import"
+  ],
   "router_training_authorized": false,
   "runtime_authority": false,
-  "schema_id": "kt.v17_7_3.final_decision_receipt.v1",
-  "selected_decision": "TRUE_GENERATION_MINI_FURNACE_REQUIRED",
-  "selected_decision_outcome": "KTG3FULL_V17_7_3_TRUE_GENERATION_MINI_FURNACE_REQUIRED__CLAIM_CEILING_PRESERVED",
+  "schema_id": "kt.v17_7_4.truegen_minifurnace_admission_contract.v1",
+  "source_decision": "TRUE_GENERATION_MINI_FURNACE_REQUIRED",
   "status": "PASS",
   "v18_runtime_authority": false
 }

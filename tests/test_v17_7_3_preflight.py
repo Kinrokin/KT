@@ -6,6 +6,7 @@ def test_v17_7_3_preflight_binds_current_repo_and_packet() -> None:
     assert receipt["status"] == "PASS"
     assert receipt["current_head"]
     assert receipt["current_branch"]
-    assert receipt["packet_sha256"] == "c593b7eca57da9b6087146b6c8a592515228eb37bd6ecc89fff64848ee34e47c"
-    assert receipt["prompt_sha256"] == "219774b9a8595492e19080c3169a709afb8e2c842e8e9fa741c9dbb6950e8a15"
+    assert receipt["program_id"] == "KT_V17_7_3_MEASUREMENT_AUTHORITY_ADJUDICATION_AND_NEXT_EVIDENCE_MOVE_V1_1"
+    assert receipt["packet_sha256"] == "a213b692753edd74d2e4479d7918ac0cb9491d6587b365d7d353fd34fe3ea88d"
+    assert receipt["prompt_sha256"] == "bbd15571a970aaa5948adce62e587be7d6f94fc5645b224f9ae83430ce64d4fe"
     assert_no_authority(receipt)
