@@ -1,0 +1,13 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "real_config": "configs/v17_7_4/arm_model_config.json",
+  "real_config_base_model": "Qwen/Qwen2.5-7B-Instruct",
+  "real_config_packet": "packets/ktv1774_real_arm_truegen_v1.zip",
+  "runtime_fail_closed_rule": "real_arm_authority_requested cannot use smoke base models or base-only adapter arms",
+  "schema_id": "kt.v17_7_4.smoke_vs_real_config_separation_receipt.v1",
+  "smoke_config": "configs/v17_7_4/arm_model_config.example.json",
+  "smoke_config_base_model": "sshleifer/tiny-gpt2",
+  "smoke_evidence_authority": "DIAGNOSTIC_ONLY",
+  "status": "PASS"
+}

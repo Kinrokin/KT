@@ -5,6 +5,45 @@
   "properties": {
     "arms": {
       "items": {
+        "properties": {
+          "adapter_binding_status": {
+            "type": "string"
+          },
+          "adapter_hf_repo": {
+            "type": "string"
+          },
+          "adapter_path": {
+            "type": "string"
+          },
+          "adapter_required_for_real_authority": {
+            "type": "boolean"
+          },
+          "adapter_sha256_optional": {
+            "type": "string"
+          },
+          "arm_id": {
+            "type": "string"
+          },
+          "arm_kind": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "max_new_tokens": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "model_repo_or_base": {
+            "type": "string"
+          },
+          "prompt_template_id": {
+            "type": "string"
+          },
+          "scoring_method": {
+            "type": "string"
+          }
+        },
         "required": [
           "arm_id",
           "model_repo_or_base",
@@ -20,6 +59,12 @@
       },
       "minItems": 5,
       "type": "array"
+    },
+    "adapter_root_default": {
+      "type": "string"
+    },
+    "adapter_root_env": {
+      "type": "string"
     },
     "base_model_repo": {
       "minLength": 1,
@@ -44,6 +89,15 @@
     },
     "torch_dtype": {
       "type": "string"
+    },
+    "config_profile": {
+      "type": "string"
+    },
+    "real_arm_authority_requested": {
+      "type": "boolean"
+    },
+    "smoke_config": {
+      "type": "boolean"
     }
   },
   "required": [

@@ -1,0 +1,36 @@
+{
+  "adapter_training_authorized": false,
+  "adapter_source_authority": "LOCAL_OR_KAGGLE_DATASET_ADAPTER_PATHS_FROM_PRIOR_7B_ADAPTER_WEIGHT_MANIFEST",
+  "adapter_source_limitations": [
+    "Bindings are runtime-load obligations, not adapter promotion.",
+    "If the Kaggle dataset does not contain adapter_config.json and adapter_model.safetensors at the bound paths, the runner must fail closed.",
+    "Specialist V17 arm names are mapped to nearest canonical 7B adapter sources; this is evaluation binding, not a claim of learned-router superiority."
+  ],
+  "bound_adapter_arms": [
+    {
+      "adapter_path": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/learning_delta_lobe",
+      "adapter_sha256_optional": "826bb70f6fe5a862e99f14f6fc6b2fbecd02f840dd11df9d3ef9e2dc42f412e3",
+      "arm_id": "route_regret_policy_adapter_global",
+      "source_adapter_id": "learning_delta_lobe"
+    },
+    {
+      "adapter_path": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/formal_proof_reasoning_lobe",
+      "adapter_sha256_optional": "80f81db5815a17f154286748825881ba116941ca9d319c57d9f4c003fd6928a8",
+      "arm_id": "formal_math_repair_adapter_global",
+      "source_adapter_id": "formal_proof_reasoning_lobe"
+    },
+    {
+      "adapter_path": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/cohort_pass2_delta_scar",
+      "adapter_sha256_optional": "6fde587c24a20f059e49bafbcc4ad031796e6f40b07d63704edf79ed8b90cc4a",
+      "arm_id": "math_act_adapter_global",
+      "source_adapter_id": "cohort_pass2_delta_scar"
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.adapter_source_authority_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
