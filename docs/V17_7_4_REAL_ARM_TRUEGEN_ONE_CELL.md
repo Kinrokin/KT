@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_real_arm_truegen_v1.zip`
 
 Kaggle dataset name: `ktv1774-real-arms-v1`
 
-SHA256: `bd72fe1b292897ea8e4eaeb432dba13d8b134110bf69b6731af4386f3ef3dee1`
+SHA256: `3352af22e6cfc247c69e9836668591948ab04df47b1dff38b91b73c4e3b4d481`
 
 This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing.
 
