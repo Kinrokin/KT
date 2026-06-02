@@ -2,12 +2,10 @@ from tests.v17_7_3_utils import assert_no_authority, read_json
 
 
 def test_v17_7_3_final_decision_preserves_claim_ceiling() -> None:
-    final = read_json("reports/v17_7_3_final_decision_receipt.json")
     summary = read_json("reports/v17_7_3_builder_summary.json")
-    assert final["outcome"] == "KTG3FULL_V17_7_3_EVIDENCE_ACQUISITION_READY__RUN_TARGETED_BOUNDARY_ROW_FURNACE_NEXT__CLAIM_CEILING_PRESERVED"
-    assert final["next_lawful_move"] == "RUN_TARGETED_BOUNDARY_ROW_FURNACE_NEXT"
+    assert summary["outcome"] == "KTG3FULL_V17_7_3_EVIDENCE_ACQUISITION_READY__RUN_TARGETED_BOUNDARY_ROW_FURNACE_NEXT__CLAIM_CEILING_PRESERVED"
+    assert summary["next_lawful_move"] == "RUN_TARGETED_BOUNDARY_ROW_FURNACE_NEXT"
     assert summary["kaggle_dataset_name"] == "ktv1773-evidence-v1"
-    assert_no_authority(final)
     assert_no_authority(summary)
 
 
@@ -20,3 +18,17 @@ def test_v17_7_3_armfix_preserves_claim_ceiling() -> None:
     assert summary["packet_path"] == "packets/ktv1773_measured_arm_v1.zip"
     assert_no_authority(final)
     assert_no_authority(summary)
+
+
+def test_v17_7_3_measurement_authority_preserves_claim_ceiling() -> None:
+    final = read_json("reports/v17_7_3_final_decision_receipt.json")
+    summary = read_json("reports/v17_7_3_measurement_authority_builder_summary.json")
+    claim = read_json("reports/v17_7_3_claim_ceiling_receipt.json")
+    assert final["outcome"] == "KTG3FULL_V17_7_3_MEASUREMENT_AUTHORITY_ADJUDICATED__NEXT_EVIDENCE_MOVE_SELECTED__CLAIM_CEILING_PRESERVED"
+    assert final["selected_decision"] == "TRUE_GENERATION_MINI_FURNACE_REQUIRED"
+    assert summary["next_lawful_move"] == "RUN_KTV1774_TRUEGEN_MINIFURNACE_PACKET"
+    assert claim["no_training"] is True
+    assert claim["no_v18"] is True
+    assert_no_authority(final)
+    assert_no_authority(summary)
+    assert_no_authority(claim)

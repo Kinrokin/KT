@@ -1,0 +1,74 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "high_level_summary_non_authoritative_if_mismatch": true,
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "recomputed": {
+    "accuracies": {
+      "base_kt_hat_compact": 0.49,
+      "base_raw": 0.6075,
+      "formal_math_repair_adapter_global": 0.685,
+      "math_act_adapter_global": 0.63,
+      "route_regret_policy_adapter_global": 0.65
+    },
+    "arm_counts": {
+      "base_kt_hat_compact": 400,
+      "base_raw": 400,
+      "formal_math_repair_adapter_global": 400,
+      "math_act_adapter_global": 400,
+      "route_regret_policy_adapter_global": 400
+    },
+    "arm_rows": 2000,
+    "base_raw_correct_count": 243,
+    "best_static_accuracy": 0.685,
+    "best_static_arm": "formal_math_repair_adapter_global",
+    "best_static_correct_count": 274,
+    "correct_counts": {
+      "base_kt_hat_compact": 196,
+      "base_raw": 243,
+      "formal_math_repair_adapter_global": 274,
+      "math_act_adapter_global": 252,
+      "route_regret_policy_adapter_global": 260
+    },
+    "oracle_accuracy": 0.8625,
+    "oracle_correct_count": 345,
+    "prediction_recompute_mismatches": [],
+    "row_count": 400,
+    "status": "PASS"
+  },
+  "router_training_authorized": false,
+  "row_level_recomputed": true,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.scorecard_recomputation_receipt.v1",
+  "source_scorecard": {
+    "adapter_training_authorized": false,
+    "arm_accuracy": {
+      "base_kt_hat_compact": 0.49,
+      "base_raw": 0.6075,
+      "formal_math_repair_adapter_global": 0.685,
+      "math_act_adapter_global": 0.63,
+      "route_regret_policy_adapter_global": 0.65
+    },
+    "arm_rows": 2000,
+    "base_raw_correct_count": 243,
+    "best_static_arm": "formal_math_repair_adapter_global",
+    "claim_ceiling_preserved": true,
+    "learned_router_superiority_claim": false,
+    "measurement_status": "MODEL_SCORED",
+    "oracle_correct_count": 345,
+    "policy_optimization_authorized": false,
+    "promotion_authority": false,
+    "router_training_authorized": false,
+    "row_count": 400,
+    "row_level_recomputed": true,
+    "run_id": "ktv1773_measured_arm_9b94ac80519c",
+    "runtime_authority": false,
+    "schema_id": "kt.v17_7_3.measured_benchmark_scorecard.v1",
+    "status": "PASS",
+    "v18_runtime_authority": false
+  },
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
