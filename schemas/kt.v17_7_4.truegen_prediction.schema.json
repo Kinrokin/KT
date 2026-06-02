@@ -1,0 +1,37 @@
+{
+  "$id": "kt.v17_7_4.truegen_prediction.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "router_training_authorized": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "v18_runtime_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "measurement_source",
+    "measurement_status",
+    "generation_artifacts_present",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

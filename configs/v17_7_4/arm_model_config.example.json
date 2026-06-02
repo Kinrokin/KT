@@ -1,0 +1,76 @@
+{
+  "adapter_training_authorized": false,
+  "arms": [
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "base_raw",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "raw",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "route_regret_policy_adapter_global",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "route_regret",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "formal_math_repair_adapter_global",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "formal_math",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "base_kt_hat_compact",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "kt_hat_compact",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "math_act_adapter_global",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "math_act",
+      "scoring_method": "contains_expected_label"
+    }
+  ],
+  "base_model_repo": "sshleifer/tiny-gpt2",
+  "batch_size": 1,
+  "claim_ceiling_preserved": true,
+  "device_map": "auto",
+  "generation_seed": 1337,
+  "learned_router_superiority_claim": false,
+  "load_in_4bit": false,
+  "max_new_tokens": 32,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "row_limit": 100,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.arm_model_config.example.v1",
+  "torch_dtype": "auto",
+  "v18_runtime_authority": false
+}

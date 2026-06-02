@@ -1,0 +1,55 @@
+{
+  "$id": "kt.v17_7_4.truegen_row.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "holdout_status": {
+      "enum": [
+        "TRAINING_SEARCH_DIAGNOSTIC",
+        "HELDOUT_NOT_FOR_PROMOTION"
+      ]
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "prompt_hash": {
+      "type": "string"
+    },
+    "router_training_authorized": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.truegen_row.v1"
+    },
+    "v18_runtime_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "dataset",
+    "task_family",
+    "prompt_hash",
+    "prompt",
+    "expected_label_or_oracle_label",
+    "label_source",
+    "scoring_rule",
+    "holdout_status",
+    "source_replay_reference_if_any",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
