@@ -20,6 +20,7 @@ PACKET_NAME = "ktv1773_evidence_acquisition_e2e_v1.zip"
 KAGGLE_DATASET = "ktv1773-evidence-v1"
 PACKET_PATH = r"d:\user\rober\Downloads\ktv1773_evidence_acquisition_v1.zip"
 PROMPT_PATH = r"d:\user\rober\Downloads\COPY_PASTE_NOW_ktv1773_evidence_acquisition_v1.txt"
+FIXED_ZIP_TIME = (2026, 1, 1, 0, 0, 0)
 
 EIG_WEIGHTS = {
     "w1_expected_uncertainty_reduction": 0.25,
@@ -594,12 +595,17 @@ with zipfile.ZipFile(PACKET) as z:
 os.environ["KT_RUNTIME_MODE"] = "{RUNTIME_MODE}"
 subprocess.check_call([sys.executable, str(work / "KTV1773_MICRO_FURNACE_MASTER_RUNNER.py")])
 '''
-    with zipfile.ZipFile(packet_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("KTV1773_MICRO_FURNACE_MASTER_RUNNER.py", runner)
-        archive.writestr("ONE_CELL_KAGGLE_BOOTSTRAP.py", one_cell)
-        archive.writestr("README.md", f"# KT V17.7.3 Evidence Acquisition Micro-Furnace\n\nDataset: `{KAGGLE_DATASET}`\nRuntime: `{RUNTIME_MODE}`\nAuthority: evidence-only; no policy optimization, no training, no promotion.\n")
-        archive.writestr("runtime_inputs/targeted_boundary_row_manifest.json", json.dumps({"rows": json_safe(target_rows), **AUTHORITY_FALSE}, indent=2, sort_keys=True) + "\n")
-        archive.writestr("runtime_inputs/arm_execution_plan.json", json.dumps(json_safe(arm_plan), indent=2, sort_keys=True) + "\n")
+    def stable_writestr(archive: zipfile.ZipFile, name: str, content: str) -> None:
+        info = zipfile.ZipInfo(name, date_time=FIXED_ZIP_TIME)
+        info.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(info, content)
+
+    with zipfile.ZipFile(packet_path, "w") as archive:
+        stable_writestr(archive, "KTV1773_MICRO_FURNACE_MASTER_RUNNER.py", runner)
+        stable_writestr(archive, "ONE_CELL_KAGGLE_BOOTSTRAP.py", one_cell)
+        stable_writestr(archive, "README.md", f"# KT V17.7.3 Evidence Acquisition Micro-Furnace\n\nDataset: `{KAGGLE_DATASET}`\nRuntime: `{RUNTIME_MODE}`\nAuthority: evidence-only; no policy optimization, no training, no promotion.\n")
+        stable_writestr(archive, "runtime_inputs/targeted_boundary_row_manifest.json", json.dumps({"rows": json_safe(target_rows), **AUTHORITY_FALSE}, indent=2, sort_keys=True) + "\n")
+        stable_writestr(archive, "runtime_inputs/arm_execution_plan.json", json.dumps(json_safe(arm_plan), indent=2, sort_keys=True) + "\n")
     return packet_path, sha256_file(packet_path)
 
 
@@ -693,16 +699,16 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
     return delta_path
 
 
-def build_receipts(root: Path, inputs: dict[str, Any]) -> tuple[dict[Path, dict[str, Any]], list[dict[str, Any]], str]:
+def build_receipts(root: Path, inputs: dict[str, Any], preflight: dict[str, Any]) -> tuple[dict[Path, dict[str, Any]], list[dict[str, Any]], str]:
     validate_v1772(inputs)
     candidates = build_gap_candidates(inputs)
     target_rows = build_target_manifest(candidates)
     slice_counts = count_tags(target_rows, "slice_tags")
     boundary_counts = count_tags(target_rows, "boundary_tags")
     packet_path_placeholder = root / "packets" / PACKET_NAME
-    current = current_head()
-    branch = current_branch()
-    status = git_status_porcelain()
+    current = preflight["current_head"]
+    branch = preflight["current_branch"]
+    status = preflight["git_status_porcelain"]
     summary = inputs["v1772_summary"]
     active = inputs["v1772_active_learning"]
     p_fail = inputs["v1772_pfail"]["P_fail"]
@@ -897,8 +903,13 @@ def write_fixtures(root: Path, target_rows: list[dict[str, Any]], packet_sha: st
 def build_all() -> dict[str, Any]:
     root = repo_root()
     inputs = load_inputs(root)
+    preflight = {
+        "current_head": current_head(),
+        "current_branch": current_branch(),
+        "git_status_porcelain": git_status_porcelain(),
+    }
     schema_paths = write_schemas(root)
-    receipts, target_rows, packet_hash = build_receipts(root, inputs)
+    receipts, target_rows, packet_hash = build_receipts(root, inputs, preflight)
     for path, payload in receipts.items():
         write_json(path, payload)
     fixture_paths = write_fixtures(root, target_rows, packet_hash)
