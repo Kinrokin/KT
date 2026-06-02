@@ -1,0 +1,4021 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "row_count": 100,
+  "row_target_allowed": [
+    50,
+    200
+  ],
+  "row_target_default": 100,
+  "rows": [
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:24",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0006",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6768,
+          "math_act_adapter_global": 0.6086,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:24"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:24",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0244",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6768,
+          "math_act_adapter_global": 0.6086,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:24"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:32",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0011",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.849,
+          "math_act_adapter_global": 0.7655,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:32"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:32",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0246",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.849,
+          "math_act_adapter_global": 0.7655,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:32"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:32",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0262",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.849,
+          "math_act_adapter_global": 0.7655,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:32"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:42",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0016",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:42"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:44",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0019",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:44"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:44",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0251",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:44"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0253",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.825,
+          "math_act_adapter_global": 0.77,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:7"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "numeric_reasoning_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "numeric_reasoning_slice:8",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=numeric_reasoning_slice; boundaries=base_raw__formal_math,base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e624d7c58169543fdc3e02bc76f4689e8da2c7f1eecc2847d722b703c1529298",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0280",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8578,
+          "math_act_adapter_global": 0.7531,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "numeric_reasoning_slice:8"
+      },
+      "task_family": "numeric_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "dfc17e9ae7daada25884ba601dd3a637715a099601dc42c4e1fab6d82a5bc39d",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0256",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:1"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B8_ARC_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "dfc17e9ae7daada25884ba601dd3a637715a099601dc42c4e1fab6d82a5bc39d",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0296",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:1"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:24",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0260",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6768,
+          "math_act_adapter_global": 0.6086,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:24"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "88157b16094d34923fa175756bf2a6e96589af5637dc51355a9fa72da251da9b",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0012",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.85,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:1"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "88157b16094d34923fa175756bf2a6e96589af5637dc51355a9fa72da251da9b",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0247",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.85,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:1"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "88157b16094d34923fa175756bf2a6e96589af5637dc51355a9fa72da251da9b",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0263",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.85,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:1"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:40",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0014",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.716,
+          "math_act_adapter_global": 0.6695,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:40"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:40",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0248",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.716,
+          "math_act_adapter_global": 0.6695,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:40"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:40",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0264",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.716,
+          "math_act_adapter_global": 0.6695,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:40"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:42",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0249",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:42"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:42",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "733960c4d737177cef8a558ea260043824364787c95e77367fefec3f90b8ebcb",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0265",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:42"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:44",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0267",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:44"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0021",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:1"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:48",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0022",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.54,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:48"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:48",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0252",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.54,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:48"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:48",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0270",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.54,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:48"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:49",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0271",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "math_act_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:49"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0024",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.825,
+          "math_act_adapter_global": 0.77,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:7"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "28dc1d106872b20c961769f7c8b5de1779262d7cb2f6304603c7e1bb032fb8d7",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0272",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.825,
+          "math_act_adapter_global": 0.77,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:7"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0026",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:7"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "84c656d2b1a6cd560800ed77d159471b2dcbfdbeeb06c110d2f18a7d8835f7fb",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0276",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "route_regret_policy_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:0"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:8",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "066c8cb8a0ead64fc284917ec22ba985eb37eb961a57cfa0c970b23c8a7c6691",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0030",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:8"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:8",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "383854749893bd824a9ab7a36c8ebbc179af780c2a835216ad76dc63fc14412d",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0254",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:8"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:8",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "066c8cb8a0ead64fc284917ec22ba985eb37eb961a57cfa0c970b23c8a7c6691",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0279",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:8"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B8_ARC_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:8",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "066c8cb8a0ead64fc284917ec22ba985eb37eb961a57cfa0c970b23c8a7c6691",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0292",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:8"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:11",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "afd23169c4c66b2c5b78a8fcca6042ebf3bad3426fc5dd7db4d57e027a61022c",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0281",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:11"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "78458efd7426d4562c5147376c6b4096419c7876fa7d0849b72cbe8894e43409",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0034",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:1"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,hat_act_boundary,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "dfc17e9ae7daada25884ba601dd3a637715a099601dc42c4e1fab6d82a5bc39d",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0283",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:1"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:10",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "aae2a73c7c6dd43223b8f2e74169101806dd6b21e5ad75437329bf47023c7435",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0036",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:10"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B8_ARC_slice",
+      "expected_label_or_oracle_label": "gsm8k:10",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "d84ffb5f3eb1bd190abf630cbe2a9ea8ed1c5daa4df1d98ce542317c3f1443ca",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0298",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:10"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:29",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "afd23169c4c66b2c5b78a8fcca6042ebf3bad3426fc5dd7db4d57e027a61022c",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0286",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:29"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:34",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "afd23169c4c66b2c5b78a8fcca6042ebf3bad3426fc5dd7db4d57e027a61022c",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0289",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:34"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:22",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0003",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "route_regret_policy_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:22"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0269",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:1"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:49",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0023",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "math_act_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:49"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:2",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0025",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "formal_math_repair_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:2"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:2",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0273",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "formal_math_repair_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:2"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0275",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:7"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0354",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:6"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "84c656d2b1a6cd560800ed77d159471b2dcbfdbeeb06c110d2f18a7d8835f7fb",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0027",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "route_regret_policy_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:0"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:10",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "044098d869b351d7c422b786a16658eadbc8cc311f0ef4320dd1aca9e68ea7eb",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0277",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.62,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6096,
+          "math_act_adapter_global": 0.5592,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:10"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "evidence_grounding_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "evidence_grounding_slice:5",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=evidence_grounding_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "edfd4c6a66435504167dfed9d3dc1597f0d7c5274b6e12fd1bf2c8deb0242841",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0282",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.66,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.5864,
+          "math_act_adapter_global": 0.6028,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "evidence_grounding_slice:5"
+      },
+      "task_family": "evidence_grounding",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "evidence_grounding_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "evidence_grounding_slice:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=evidence_grounding_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "edfd4c6a66435504167dfed9d3dc1597f0d7c5274b6e12fd1bf2c8deb0242841",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0284",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.661,
+          "math_act_adapter_global": 0.637,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "evidence_grounding_slice:7"
+      },
+      "task_family": "evidence_grounding",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:2",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0365",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:2"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:10",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "aae2a73c7c6dd43223b8f2e74169101806dd6b21e5ad75437329bf47023c7435",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0285",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.645
+        },
+        "source_seed_sample_id": "gsm8k:10"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:3",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0106",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8608,
+          "math_act_adapter_global": 0.7891,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:3"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:3",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0367",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8608,
+          "math_act_adapter_global": 0.7891,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:3"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "gsm8k:18",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0038",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8094,
+          "math_act_adapter_global": 0.7113,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:18"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "gsm8k:18",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0287",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8094,
+          "math_act_adapter_global": 0.7113,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:18"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B8_ARC_slice",
+      "expected_label_or_oracle_label": "gsm8k:18",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0300",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8094,
+          "math_act_adapter_global": 0.7113,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:18"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:4",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0109",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:4"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:4",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0370",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:4"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:32",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "044098d869b351d7c422b786a16658eadbc8cc311f0ef4320dd1aca9e68ea7eb",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0288",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6096,
+          "math_act_adapter_global": 0.5592,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:32"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:5",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0111",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:5"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:5",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "00d9e025e4620fb36266841486b25019b92126554828c869fdb7110e13d36ae8",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0372",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8314,
+          "math_act_adapter_global": 0.7303,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:5"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0373",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:7"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:9",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "84c656d2b1a6cd560800ed77d159471b2dcbfdbeeb06c110d2f18a7d8835f7fb",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0375",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.849,
+          "math_act_adapter_global": 0.7655,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:9"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "99171e3736277ecf9f070b72b4a071ec76bed86c0e13800f816270f175b31d8d",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0116",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:6"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:3",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "a95cb6008c70a2d8a9a2494f27736b234b1483a2cd48703c1d23fd96527ecd1e",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0376",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:3"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "99171e3736277ecf9f070b72b4a071ec76bed86c0e13800f816270f175b31d8d",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0377",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:6"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:4",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0118",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:4"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:4",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0379",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:4"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:5",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0381",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:5"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B9_evidence_grounding_rows",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:9",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0383",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "formal_math_repair_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:9"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:39",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "98ab8360386c345a190a3fe51b02167e0b682e4fb496e23ee7abd9bea9c013c2",
+      "route_boundary_class": "base_raw__formal_math+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0266",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.46,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6096,
+          "math_act_adapter_global": 0.5592,
+          "route_regret_policy_adapter_global": 0.7
+        },
+        "source_seed_sample_id": "arc:39"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "gsm8k:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0151",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.85,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:0"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "gsm8k:19",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0154",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:19"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B1_base_raw_vs_route_regret_boundary",
+      "expected_label_or_oracle_label": "arc:42",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__route_regret,hat_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "997d2495d43f5d1cfdcf6e84759f2959bcb44d937f8acfe1ccf146a240c0a8db",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0001",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.7832,
+          "math_act_adapter_global": 0.7189,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:42"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B6_hat_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:42",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__route_regret,hat_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "997d2495d43f5d1cfdcf6e84759f2959bcb44d937f8acfe1ccf146a240c0a8db",
+      "route_boundary_class": "base_raw__route_regret+hat_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0241",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.7832,
+          "math_act_adapter_global": 0.7189,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "arc:42"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "gsm8k:35",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "d84ffb5f3eb1bd190abf630cbe2a9ea8ed1c5daa4df1d98ce542317c3f1443ca",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0077",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "route_regret_policy_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:35"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B8_ARC_slice",
+      "expected_label_or_oracle_label": "gsm8k:35",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0344",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "route_regret_policy_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:35"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "evidence_grounding_slice",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "evidence_grounding_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=evidence_grounding_slice; boundaries=base_raw__formal_math,base_raw__route_regret; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "b2171844ba99de24a32b57272ea5432657e5f985d96ed35e3536e1ef4edd04ab",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0051",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.54,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "evidence_grounding_slice:1"
+      },
+      "task_family": "evidence_grounding",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "evidence_grounding_slice",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "evidence_grounding_slice:3",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=evidence_grounding_slice; boundaries=base_raw__formal_math,base_raw__route_regret,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "1316f67d9d3ad84d1ec87d26e4ae0781ca954427d69e5cecb489d4776a739b5a",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0055",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6096,
+          "math_act_adapter_global": 0.5592,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "evidence_grounding_slice:3"
+      },
+      "task_family": "evidence_grounding",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "0a76c334cef30b588ec0a462a359041e7b0c2074e7e00721181cebfaeb188236",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0087",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:6"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0093",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:6"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "hellaswag",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "hellaswag:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=hellaswag; boundaries=base_raw__formal_math,base_raw__route_regret; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "907d09c30097a7bf6186492740a219f08afd9cd70449b205ead6884e3050e124",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0064",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "hellaswag:0"
+      },
+      "task_family": "commonsense_completion",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:2",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0104",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:2"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:7",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0112",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:7"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "math_wording_variation_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "math_wording_variation_slice:9",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=math_wording_variation_slice; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e3fa629937378d5f625e904f8104b174cd726b3c7bc15dd6dffe85fd67c1ceff",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0114",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.849,
+          "math_act_adapter_global": 0.7655,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "math_wording_variation_slice:9"
+      },
+      "task_family": "formal_math_wording_variation",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "hellaswag",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "hellaswag:37",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=hellaswag; boundaries=base_raw__formal_math,base_raw__route_regret,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "bf5063a13fb824a41d70902c58d442b89d9e0b1a069dea36293cc13d27ee165f",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0071",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6742,
+          "math_act_adapter_global": 0.6484,
+          "route_regret_policy_adapter_global": 0.67
+        },
+        "source_seed_sample_id": "hellaswag:37"
+      },
+      "task_family": "commonsense_completion",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:3",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "a95cb6008c70a2d8a9a2494f27736b234b1483a2cd48703c1d23fd96527ecd1e",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0115",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:3"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:5",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0120",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:5"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "non_gsm8k_math_slice",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "non_gsm8k_math_slice:9",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=non_gsm8k_math_slice; boundaries=base_raw__formal_math,base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "ecc77ae1b189b4b31f74318c7ce2df316ca48a1344a0a8b2e07d68dedeafcdde",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0122",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "formal_math_repair_adapter_global",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.86,
+          "math_act_adapter_global": 0.775,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "non_gsm8k_math_slice:9"
+      },
+      "task_family": "formal_math_ood",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "arc_challenge",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "arc:43",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=arc_challenge; boundaries=base_raw__formal_math,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "e6da4f1844d52e1b83ad4f6be438671734c5417e4ef4aece00e7b7484f6e5040",
+      "route_boundary_class": "base_raw__formal_math+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0268",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.62,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.535,
+          "math_act_adapter_global": 0.525,
+          "route_regret_policy_adapter_global": 0.7
+        },
+        "source_seed_sample_id": "arc:43"
+      },
+      "task_family": "science_reasoning",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B5_ambiguous_borderline_rows",
+      "expected_label_or_oracle_label": "gsm8k:6",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0206",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:6"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "gsm8k:12",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "4665776d0053ca258d70465fedb7c413252e0309dec6f58da3071e806bcee837",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0144",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.47,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.885,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.565
+        },
+        "source_seed_sample_id": "gsm8k:12"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "claim_boundary_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "claim_boundary_slice:1",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=claim_boundary_slice; boundaries=math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "344c0253670cc960d775f5106294366713a873e50bc7c4ea7741b28479b7127e",
+      "route_boundary_class": "math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0274",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.66,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.7094,
+          "math_act_adapter_global": 0.6638,
+          "route_regret_policy_adapter_global": 0.75
+        },
+        "source_seed_sample_id": "claim_boundary_slice:1"
+      },
+      "task_family": "claim_boundary",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "gsm8k",
+      "evidence_band": "B3_math_numeric_slice",
+      "expected_label_or_oracle_label": "gsm8k:13",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=gsm8k; boundaries=base_raw__route_regret,math_act_boundary; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "624ef900a32a05c83a906ec5dc83f5364487cb8450714ebc07b97859fd572188",
+      "route_boundary_class": "base_raw__route_regret+math_act_boundary",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0147",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": false,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.875,
+          "math_act_adapter_global": 0.83,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "gsm8k:13"
+      },
+      "task_family": "formal_math",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "logic_quantitative_slice",
+      "evidence_band": "B2_base_raw_vs_formal_math_boundary",
+      "expected_label_or_oracle_label": "logic_quantitative_slice:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=logic_quantitative_slice; boundaries=base_raw__formal_math,base_raw__route_regret,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "36cc747e4e6a454d2e24330b8317106b58f8b32e7cca7d2f420f39d1df98ce63",
+      "route_boundary_class": "base_raw__formal_math+base_raw__route_regret+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0086",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_kt_hat_compact",
+        "route_correctness": {
+          "base_kt_hat_compact": true,
+          "base_raw": false,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": false,
+          "route_regret_policy_adapter_global": false
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.43,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.8828,
+          "math_act_adapter_global": 0.8081,
+          "route_regret_policy_adapter_global": 0.535
+        },
+        "source_seed_sample_id": "logic_quantitative_slice:0"
+      },
+      "task_family": "logic_quantitative",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "claim_ceiling_preserved": true,
+      "dataset": "evidence_grounding_slice",
+      "evidence_band": "B7_math_act_candidate_rows",
+      "expected_label_or_oracle_label": "evidence_grounding_slice:0",
+      "holdout_status": "TRAINING_SEARCH_DIAGNOSTIC",
+      "label_source": "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL",
+      "learned_router_superiority_claim": false,
+      "policy_optimization_authorized": false,
+      "promotion_authority": false,
+      "prompt": "Fresh-generation diagnostic boundary row. dataset=evidence_grounding_slice; boundaries=base_raw__formal_math,math_act_boundary,route_regret__formal_math; produce a concise answer without making promotion, superiority, or deployment claims.",
+      "prompt_hash": "9ef067e0bc0a35b6bad1c86a76a7f612e306a0004a481f54e3d8ff01e4d8bf80",
+      "route_boundary_class": "base_raw__formal_math+math_act_boundary+route_regret__formal_math",
+      "router_training_authorized": false,
+      "runtime_authority": false,
+      "sample_id": "v1773-acq-0278",
+      "schema_id": "kt.v17_7_4.truegen_row.v1",
+      "scoring_rule": "contains_expected_label",
+      "source_replay_reference_if_any": {
+        "oracle_route_for_evaluation_only": "base_raw",
+        "route_correctness": {
+          "base_kt_hat_compact": false,
+          "base_raw": true,
+          "formal_math_repair_adapter_global": true,
+          "math_act_adapter_global": true,
+          "route_regret_policy_adapter_global": true
+        },
+        "route_values_pre_generation": {
+          "base_kt_hat_compact": 0.62,
+          "base_raw": 0.55,
+          "formal_math_repair_adapter_global": 0.6096,
+          "math_act_adapter_global": 0.5592,
+          "route_regret_policy_adapter_global": 0.695
+        },
+        "source_seed_sample_id": "evidence_grounding_slice:0"
+      },
+      "task_family": "evidence_grounding",
+      "v18_runtime_authority": false
+    }
+  ],
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.truegen_row_manifest.v1",
+  "selection_source": "V17.7.3 authority decision needs",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

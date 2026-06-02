@@ -1,0 +1,60 @@
+{
+  "$id": "kt.v17_7_4.arm_model_config.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "arms": {
+      "items": {
+        "required": [
+          "arm_id",
+          "model_repo_or_base",
+          "adapter_hf_repo",
+          "adapter_path",
+          "adapter_sha256_optional",
+          "enabled",
+          "prompt_template_id",
+          "scoring_method",
+          "max_new_tokens"
+        ],
+        "type": "object"
+      },
+      "minItems": 5,
+      "type": "array"
+    },
+    "base_model_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "batch_size": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "device_map": {
+      "type": "string"
+    },
+    "generation_seed": {
+      "type": "integer"
+    },
+    "load_in_4bit": {
+      "type": "boolean"
+    },
+    "max_new_tokens": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "torch_dtype": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "base_model_repo",
+    "load_in_4bit",
+    "torch_dtype",
+    "max_new_tokens",
+    "batch_size",
+    "device_map",
+    "generation_seed",
+    "arms"
+  ],
+  "type": "object"
+}
