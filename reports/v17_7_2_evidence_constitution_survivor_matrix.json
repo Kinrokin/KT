@@ -1,0 +1,38 @@
+{
+  "adapter_training_authorized": false,
+  "all_required_replay_ready_gates_pass": false,
+  "claim_ceiling_preserved": true,
+  "gates": [
+    {
+      "gate": "null_model",
+      "pass": true,
+      "source": "reports/v17_7_1_null_policy_baseline.json"
+    },
+    {
+      "gate": "fdr_q_lte_0_10",
+      "pass": false,
+      "source": "reports/v17_7_1_multiple_comparison_correction_receipt.json"
+    },
+    {
+      "gate": "mde_power",
+      "pass": false,
+      "source": "reports/v17_7_1_power_and_mde_receipt.json"
+    },
+    {
+      "gate": "nested_cv",
+      "pass": false,
+      "source": "reports/v17_7_1_nested_cv_receipt.json"
+    },
+    {
+      "gate": "ope_corrected_gain",
+      "pass": false,
+      "source": "reports/v17_7_2_ope_baseline.json"
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.evidence_constitution_survivor_matrix.v1",
+  "status": "FAIL_DIAGNOSTIC_ONLY",
+  "v18_runtime_authority": false
+}

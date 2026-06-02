@@ -1,0 +1,40 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "edges": [
+    [
+      "pre_generation_features",
+      "route_scores"
+    ],
+    [
+      "route_scores",
+      "candidate_route"
+    ],
+    [
+      "candidate_route",
+      "outcome"
+    ],
+    [
+      "candidate_route",
+      "harm"
+    ],
+    [
+      "candidate_route",
+      "base_preservation"
+    ]
+  ],
+  "learned_router_superiority_claim": false,
+  "nodes": [
+    "pre_generation_features",
+    "route_scores",
+    "candidate_route",
+    "outcome",
+    "harm",
+    "base_preservation"
+  ],
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.route_topology_causal_graph.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,24 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.policy_premortem.v1",
+  "status": "PASS",
+  "tripwires": [
+    {
+      "future_block_label": "KTG3FULL_V17_7_3_BLOCKED__MHM_BLIND_SPOT",
+      "tripwire_id": "TW1_unpredicted_v1773_failure"
+    },
+    {
+      "future_block_label": "KTG3FULL_V17_7_3_BLOCKED__PFAIL_CALIBRATION_DEFECT",
+      "tripwire_id": "TW2_pfail_underestimated"
+    },
+    {
+      "future_block_label": "KTG3FULL_V17_7_3_BLOCKED__DGS_FALSE_POSITIVE",
+      "tripwire_id": "TW3_dgs_positive_but_replay_loss"
+    }
+  ],
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,27 @@
+{
+  "P_fail": 0.9895594256814249,
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "components": {
+    "base_preservation_loss": 0.012422360248447228,
+    "cognitive_velocity": 0.25,
+    "cv_generalization_risk": 0.5461538461538461,
+    "feature_ablation_collapse": 0.07692307692307693,
+    "low_rule_to_row_leverage": 1.0,
+    "metacognition_overfit_signal": 1.0,
+    "negative_entropy_delta": 0.0,
+    "perturbation_flip_rate": 0.01,
+    "predictive_uncertainty": 0.9603174603174603,
+    "route_distribution_kl_shift": 1.0,
+    "worst_slice_loss": 0.023076923076923078
+  },
+  "decision": "DIAGNOSTIC_ONLY",
+  "formula": "sigmoid(w1*cv_generalization_delta + w2*worst_slice_loss + w3*feature_ablation_collapse + w4*perturbation_flip_rate + w5*route_distribution_kl_shift + w6*cognitive_velocity + w7*max(0,-policy_entropy_delta) + w8*base_preservation_loss + w9*low_rule_to_row_leverage + w10*predictive_uncertainty + w11*metacognition_overfit_signal)",
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "raw_score": 4.551560227212401,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.predictive_failure_probability.v1",
+  "status": "FAIL_RISK_HIGH",
+  "v18_runtime_authority": false
+}

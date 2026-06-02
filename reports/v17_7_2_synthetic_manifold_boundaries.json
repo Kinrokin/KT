@@ -1,0 +1,69 @@
+{
+  "adapter_training_authorized": false,
+  "boundaries": [
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "100_percent_route_regret"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "100_percent_base_raw"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "100_percent_formal_math"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "zero_hysteresis"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "excessive_hysteresis"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "feature_count_50"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "rrl_below_0_01"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "perturbation_flip_rate_above_0_20"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "high_kl_route_shift"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "high_entropy_collapse"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "base_preservation_violation"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "random_route_policy"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "single_rare_row_rule"
+    },
+    {
+      "authority": "NEGATIVE_CONTROL_ONLY",
+      "boundary_id": "holdout_label_leak_policy"
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.synthetic_manifold_boundaries.v1",
+  "status": "PASS",
+  "synthetic_success_zones_allowed": false,
+  "v18_runtime_authority": false
+}

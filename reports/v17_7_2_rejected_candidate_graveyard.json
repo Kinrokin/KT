@@ -1,0 +1,26 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "rejected_candidates": [
+    {
+      "hypothesis_id": "H1_replay_gain_is_durable",
+      "post_hoc": false,
+      "pre_registered": true,
+      "rejection_reason": "V17.7.1 MDE, FDR, and nested-CV gates failed",
+      "survives": false,
+      "tests": [
+        "FDR",
+        "MDE",
+        "nested_CV",
+        "OPE",
+        "DGS"
+      ]
+    }
+  ],
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.rejected_candidate_graveyard.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
