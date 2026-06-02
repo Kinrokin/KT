@@ -1,0 +1,17 @@
+{
+  "adapter_training_authorized": false,
+  "capability_authority": "DIAGNOSTIC_ONLY",
+  "claim_ceiling_preserved": true,
+  "limitations": [
+    "Smoke config used sshleifer/tiny-gpt2, not Qwen/KT intended base.",
+    "All adapter arms were BASE-only prompt-template variants.",
+    "Zero arm accuracy does not adjudicate KT adapters.",
+    "Fresh-generation label alone is insufficient for real-arm authority."
+  ],
+  "next_lawful_move": "RUN_KTV1774_REAL_ARM_TRUEGEN_PACKET",
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.truegen_smoke_limitations_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -32,6 +32,22 @@ ARM_IDS = [
     "math_act_adapter_global",
 ]
 
+ADAPTER_ARM_IDS = {
+    "route_regret_policy_adapter_global",
+    "formal_math_repair_adapter_global",
+    "math_act_adapter_global",
+}
+
+SMOKE_BASE_MODELS = {
+    "sshleifer/tiny-gpt2",
+    "__KT_LOCAL_TEST_BACKEND__",
+}
+
+INTENDED_REAL_BASE_MODELS = {
+    "Qwen/Qwen2.5-7B-Instruct",
+    "Qwen/Qwen2.5-0.5B-Instruct",
+}
+
 ASSESSMENT_FILES = [
     "truegen_predictions.jsonl",
     "truegen_arm_result_matrix.jsonl",
@@ -152,9 +168,27 @@ def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
         arm_id = arm.get("arm_id")
         if arm_id:
             seen.add(arm_id)
+        if config.get("real_arm_authority_requested") is True and arm.get("enabled") is True:
+            if arm_id in ADAPTER_ARM_IDS:
+                adapter_ref = arm.get("adapter_path") or arm.get("adapter_hf_repo")
+                if not adapter_ref:
+                    defects.append(f"arms[{index}].real_arm_missing_adapter_source:{arm_id}")
+                if arm.get("adapter_binding_status") != "REAL_ADAPTER_SOURCE_BOUND":
+                    defects.append(f"arms[{index}].real_arm_adapter_binding_not_bound:{arm_id}")
+            if arm_id == "base_kt_hat_compact" and arm.get("arm_kind") not in {"prompt_overlay", "adapter"}:
+                defects.append("base_kt_hat_compact_requires_prompt_overlay_or_adapter_kind")
     missing_arms = [arm for arm in ARM_IDS if arm not in seen]
     if missing_arms:
         defects.append(f"missing_required_arms:{','.join(missing_arms)}")
+    if config.get("real_arm_authority_requested") is True:
+        if config.get("config_profile") == "SMOKE" or config.get("smoke_config") is True:
+            defects.append("real_arm_authority_requested_with_smoke_config")
+        if config.get("base_model_repo") in SMOKE_BASE_MODELS:
+            defects.append(f"real_arm_base_model_must_not_be_smoke:{config.get('base_model_repo')}")
+        if config.get("base_model_repo") not in INTENDED_REAL_BASE_MODELS:
+            defects.append(f"real_arm_base_model_not_in_intended_allowlist:{config.get('base_model_repo')}")
+    if os.environ.get("KT_TRUEGEN_REQUIRE_REAL_ARM_CONFIG") == "1" and config.get("real_arm_authority_requested") is not True:
+        defects.append("KT_TRUEGEN_REQUIRE_REAL_ARM_CONFIG set but config is not real-arm authority config")
     return defects
 
 
@@ -202,12 +236,30 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
     )
 
 
+def expand_runtime_path(value: str, config: dict[str, Any]) -> str:
+    adapter_root = os.environ.get(config.get("adapter_root_env", "KT_TRUEGEN_ADAPTER_ROOT"), config.get("adapter_root_default", ""))
+    expanded = value.replace("${KT_TRUEGEN_ADAPTER_ROOT}", adapter_root).replace("$KT_TRUEGEN_ADAPTER_ROOT", adapter_root)
+    return os.path.expandvars(expanded)
+
+
+def adapter_ref_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
+    raw_path = arm.get("adapter_path") or ""
+    if raw_path:
+        return expand_runtime_path(raw_path, config)
+    return arm.get("adapter_hf_repo") or ""
+
+
+def model_repo_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
+    model_repo = arm.get("model_repo_or_base") or config["base_model_repo"]
+    return config["base_model_repo"] if model_repo == "BASE" else model_repo
+
+
 class GenerationBackend:
     def __init__(self) -> None:
         self._model_cache: dict[str, Any] = {}
 
     def generate(self, prompt: str, arm: dict[str, Any], config: dict[str, Any], row: dict[str, Any]) -> tuple[str, str]:
-        model_repo = arm.get("model_repo_or_base") or config["base_model_repo"]
+        model_repo = model_repo_for_arm(arm, config)
         if model_repo == "__KT_LOCAL_TEST_BACKEND__":
             if os.environ.get("KT_TRUEGEN_ALLOW_TEST_BACKEND") != "1":
                 raise RuntimeError("local test backend requested without KT_TRUEGEN_ALLOW_TEST_BACKEND=1")
@@ -222,10 +274,9 @@ class GenerationBackend:
         except Exception as exc:  # noqa: BLE001
             raise RuntimeError(f"missing transformers/torch runtime dependencies: {exc}") from exc
 
-        model_repo = arm.get("model_repo_or_base") or config["base_model_repo"]
-        if model_repo == "BASE":
-            model_repo = config["base_model_repo"]
-        cache_key = f"{model_repo}::{arm.get('adapter_hf_repo') or arm.get('adapter_path') or 'base'}"
+        model_repo = model_repo_for_arm(arm, config)
+        adapter_ref = adapter_ref_for_arm(arm, config)
+        cache_key = f"{model_repo}::{adapter_ref or 'base'}"
         if cache_key not in self._model_cache:
             dtype_name = str(config.get("torch_dtype", "auto"))
             dtype = getattr(torch, dtype_name, "auto") if dtype_name != "auto" else "auto"
@@ -236,7 +287,6 @@ class GenerationBackend:
             if config.get("load_in_4bit") is True:
                 kwargs["load_in_4bit"] = True
             model = AutoModelForCausalLM.from_pretrained(model_repo, **kwargs)
-            adapter_ref = arm.get("adapter_path") or arm.get("adapter_hf_repo")
             adapter_status = "BASE_MODEL_ONLY"
             if adapter_ref:
                 try:
@@ -248,6 +298,8 @@ class GenerationBackend:
                     raise RuntimeError(f"adapter load failed for {arm['arm_id']}: {exc}") from exc
             else:
                 adapter_status = "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE" if arm["arm_id"] not in {"base_raw", "base_kt_hat_compact"} else "BASE_MODEL_ONLY"
+            if config.get("real_arm_authority_requested") is True and arm["arm_id"] in ADAPTER_ARM_IDS and adapter_status != "ADAPTER_LOADED":
+                raise RuntimeError(f"real-arm authority requires adapter load for {arm['arm_id']}; got {adapter_status}")
             model.eval()
             self._model_cache[cache_key] = (tokenizer, model, adapter_status)
         tokenizer, model, adapter_status = self._model_cache[cache_key]
@@ -301,8 +353,8 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
                     evidence_band=row["evidence_band"],
                     route_boundary_class=row["route_boundary_class"],
                     arm_id=arm["arm_id"],
-                    model_repo=arm.get("model_repo_or_base") or config["base_model_repo"],
-                    adapter_ref=arm.get("adapter_path") or arm.get("adapter_hf_repo") or "",
+                    model_repo=model_repo_for_arm(arm, config),
+                    adapter_ref=adapter_ref_for_arm(arm, config),
                     adapter_source_status=adapter_source_status,
                     prompt_hash=sha256_text(prompt),
                     output_text=output_text[:2000],
@@ -540,7 +592,11 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 schema_id="kt.v17_7_4.arm_model_config_receipt.v1",
                 status="PASS",
                 config_path=str(config_path),
+                config_profile=config.get("config_profile", "UNDECLARED"),
+                real_arm_authority_requested=config.get("real_arm_authority_requested") is True,
+                base_model_repo=config.get("base_model_repo"),
                 enabled_arms=[arm["arm_id"] for arm in enabled_arms(config)],
+                enabled_adapter_arms=[arm["arm_id"] for arm in enabled_arms(config) if arm["arm_id"] in ADAPTER_ARM_IDS],
                 bundled_example_config_used=config_path.name.endswith(".example.json"),
             ),
         )
