@@ -1,0 +1,25 @@
+{
+  "adapter_training_authorized": false,
+  "additional_runtime_modules": [
+    "perturbation_suite",
+    "adversarial_boundary_probing",
+    "state_diff_agentic_evaluator",
+    "oracle_label_integrity_checker"
+  ],
+  "arms": [
+    "base_raw",
+    "route_regret_policy_adapter_global",
+    "formal_math_repair_adapter_global",
+    "base_kt_hat_compact",
+    "math_act_adapter_global"
+  ],
+  "claim_ceiling_preserved": true,
+  "evidence_only": true,
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.arm_execution_plan.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

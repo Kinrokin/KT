@@ -1,0 +1,21 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "do_not_stop_if": [
+    "P_fail > 0.70",
+    "DGS < -1.0",
+    "OPE_variance > 0.10"
+  ],
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_3.stopping_rule_contract.v1",
+  "status": "PASS",
+  "stop_if": [
+    "P_fail < 0.45 and DGS > 0 on validation",
+    "marginal_EIG < 0.01 for 3 consecutive batches",
+    "budget exhausted at 600 rows",
+    "P_fail plateaus for 2 consecutive batches"
+  ],
+  "v18_runtime_authority": false
+}
