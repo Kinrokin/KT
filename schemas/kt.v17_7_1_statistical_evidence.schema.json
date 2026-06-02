@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.1 Statistical Evidence Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "candidate_status",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "pattern": "^kt\\.v17_7_1\\."
+    },
+    "candidate_status": {
+      "enum": [
+        "DIAGNOSTIC_ONLY",
+        "SCAR_TISSUE_DIAGNOSTIC_ONLY"
+      ]
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}

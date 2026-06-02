@@ -1,0 +1,24 @@
+{
+  "allowed_perturbations": [
+    "case shift",
+    "punctuation shift",
+    "format shift",
+    "irrelevant phrase insertion",
+    "token dropout in non-critical text",
+    "route-neutral paraphrase",
+    "minor distractor injection preserving task identity"
+  ],
+  "blocked_perturbations": [
+    "changes gold answer",
+    "changes numeric quantities",
+    "changes answer options",
+    "changes task family",
+    "changes factual premise",
+    "turns math into non-math",
+    "turns claim-boundary item into different claim",
+    "changes required reasoning target"
+  ],
+  "claim_ceiling_preserved": true,
+  "schema_id": "kt.v17_7_1.perturbation_validity_contract.v1",
+  "status": "PASS"
+}

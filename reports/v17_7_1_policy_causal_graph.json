@@ -1,0 +1,56 @@
+{
+  "claim_ceiling_preserved": true,
+  "durable_improvement_or_artifact": "dataset_slice_artifact_risk_not_ruled_out",
+  "edges": [
+    [
+      "features",
+      "rules"
+    ],
+    [
+      "rules",
+      "route decision"
+    ],
+    [
+      "route decision",
+      "selected route"
+    ],
+    [
+      "selected route",
+      "score outcome"
+    ],
+    [
+      "slice/dataset",
+      "score outcome"
+    ],
+    [
+      "selected route",
+      "base preservation"
+    ],
+    [
+      "selected route",
+      "harmful activation"
+    ],
+    [
+      "oracle gap",
+      "score outcome"
+    ],
+    [
+      "perturbation stability",
+      "route decision"
+    ]
+  ],
+  "nodes": [
+    "features",
+    "rules",
+    "route decision",
+    "route margin",
+    "selected route",
+    "base preservation",
+    "harmful activation",
+    "oracle gap",
+    "slice/dataset",
+    "perturbation stability",
+    "score outcome"
+  ],
+  "schema_id": "kt.v17_7_1.policy_causal_graph.v1"
+}

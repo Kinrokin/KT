@@ -1,0 +1,174 @@
+{
+  "claim_ceiling_preserved": true,
+  "failed_folds": [
+    {
+      "BPR": 0.5,
+      "HAR": 0.02,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "gsm8k",
+      "heldout_rows": 50,
+      "policy_correct": 1,
+      "status": "FAIL",
+      "v17_5_correct": 2
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": -6,
+      "fold_type": "leave_one_dataset",
+      "heldout": "logic_quantitative_slice",
+      "heldout_rows": 10,
+      "policy_correct": 3,
+      "status": "FAIL",
+      "v17_5_correct": 9
+    },
+    {
+      "BPR": 0.8333333333333334,
+      "HAR": 0.1,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "math_wording_variation_slice",
+      "heldout_rows": 10,
+      "policy_correct": 7,
+      "status": "FAIL",
+      "v17_5_correct": 7
+    },
+    {
+      "BPR": 0.5,
+      "HAR": 0.1,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "non_gsm8k_math_slice",
+      "heldout_rows": 10,
+      "policy_correct": 5,
+      "status": "FAIL",
+      "v17_5_correct": 6
+    },
+    {
+      "BPR": 0.75,
+      "HAR": 0.1,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "numeric_reasoning_slice",
+      "heldout_rows": 10,
+      "policy_correct": 7,
+      "status": "FAIL",
+      "v17_5_correct": 8
+    }
+  ],
+  "folds": [
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "arc_challenge",
+      "heldout_rows": 50,
+      "policy_correct": 42,
+      "status": "PASS",
+      "v17_5_correct": 42
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "claim_boundary_slice",
+      "heldout_rows": 10,
+      "policy_correct": 10,
+      "status": "PASS",
+      "v17_5_correct": 10
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "evidence_grounding_slice",
+      "heldout_rows": 10,
+      "policy_correct": 8,
+      "status": "PASS",
+      "v17_5_correct": 8
+    },
+    {
+      "BPR": 0.5,
+      "HAR": 0.02,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "gsm8k",
+      "heldout_rows": 50,
+      "policy_correct": 1,
+      "status": "FAIL",
+      "v17_5_correct": 2
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "hellaswag",
+      "heldout_rows": 50,
+      "policy_correct": 32,
+      "status": "PASS",
+      "v17_5_correct": 32
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": -6,
+      "fold_type": "leave_one_dataset",
+      "heldout": "logic_quantitative_slice",
+      "heldout_rows": 10,
+      "policy_correct": 3,
+      "status": "FAIL",
+      "v17_5_correct": 9
+    },
+    {
+      "BPR": 0.8333333333333334,
+      "HAR": 0.1,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "math_wording_variation_slice",
+      "heldout_rows": 10,
+      "policy_correct": 7,
+      "status": "FAIL",
+      "v17_5_correct": 7
+    },
+    {
+      "BPR": 0.5,
+      "HAR": 0.1,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "non_gsm8k_math_slice",
+      "heldout_rows": 10,
+      "policy_correct": 5,
+      "status": "FAIL",
+      "v17_5_correct": 6
+    },
+    {
+      "BPR": 0.75,
+      "HAR": 0.1,
+      "delta_vs_v17_5": -1,
+      "fold_type": "leave_one_dataset",
+      "heldout": "numeric_reasoning_slice",
+      "heldout_rows": 10,
+      "policy_correct": 7,
+      "status": "FAIL",
+      "v17_5_correct": 8
+    },
+    {
+      "BPR": 1.0,
+      "HAR": 0.0,
+      "delta_vs_v17_5": 0,
+      "fold_type": "leave_one_dataset",
+      "heldout": "truthfulqa_mc1",
+      "heldout_rows": 50,
+      "policy_correct": 37,
+      "status": "PASS",
+      "v17_5_correct": 37
+    }
+  ],
+  "schema_id": "kt.v17_7.leave_one_dataset_failure_matrix.v1",
+  "status": "FAIL"
+}

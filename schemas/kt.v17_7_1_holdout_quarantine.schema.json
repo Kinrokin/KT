@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.1 Holdout Quarantine Manifest",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "holdout_count",
+    "holdout_sample_hash",
+    "holdout_labels_inspected_during_policy_construction",
+    "holdout_policy_search_used",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7_1.holdout_quarantine_manifest.v1"
+    },
+    "holdout_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "holdout_labels_inspected_during_policy_construction": {
+      "const": false
+    },
+    "holdout_policy_search_used": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}

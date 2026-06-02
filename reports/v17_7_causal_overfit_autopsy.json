@@ -1,0 +1,53 @@
+{
+  "causal_vs_decorative": "DIAGNOSTIC_ONLY_UNDER_CV_FAILURE",
+  "claim_ceiling_preserved": true,
+  "decision": "freeze_and_distill_scar_tissue",
+  "net_gain": 1,
+  "right_to_wrong": [
+    {
+      "dataset": "gsm8k",
+      "route_change": "formal_math_repair_adapter_global->math_act_adapter_global",
+      "sample_id": "gsm8k:1",
+      "task_family": "formal_math",
+      "v17_5_route": "formal_math_repair_adapter_global",
+      "v17_7_route": "math_act_adapter_global"
+    },
+    {
+      "dataset": "non_gsm8k_math_slice",
+      "route_change": "formal_math_repair_adapter_global->math_act_adapter_global",
+      "sample_id": "non_gsm8k_math_slice:2",
+      "task_family": "formal_math_ood",
+      "v17_5_route": "formal_math_repair_adapter_global",
+      "v17_7_route": "math_act_adapter_global"
+    }
+  ],
+  "right_to_wrong_count": 2,
+  "schema_id": "kt.v17_7.causal_overfit_autopsy.v1",
+  "wrong_to_right": [
+    {
+      "dataset": "gsm8k",
+      "route_change": "formal_math_repair_adapter_global->math_act_adapter_global",
+      "sample_id": "gsm8k:10",
+      "task_family": "formal_math",
+      "v17_5_route": "formal_math_repair_adapter_global",
+      "v17_7_route": "math_act_adapter_global"
+    },
+    {
+      "dataset": "gsm8k",
+      "route_change": "formal_math_repair_adapter_global->math_act_adapter_global",
+      "sample_id": "gsm8k:35",
+      "task_family": "formal_math",
+      "v17_5_route": "formal_math_repair_adapter_global",
+      "v17_7_route": "math_act_adapter_global"
+    },
+    {
+      "dataset": "numeric_reasoning_slice",
+      "route_change": "formal_math_repair_adapter_global->math_act_adapter_global",
+      "sample_id": "numeric_reasoning_slice:3",
+      "task_family": "numeric_reasoning",
+      "v17_5_route": "formal_math_repair_adapter_global",
+      "v17_7_route": "math_act_adapter_global"
+    }
+  ],
+  "wrong_to_right_count": 3
+}
