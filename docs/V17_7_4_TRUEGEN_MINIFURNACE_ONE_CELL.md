@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_truegen_e2e_v1.zip`
 
 Kaggle dataset name: `ktv1774-truegen-v1`
 
-SHA256: `fb4ce9987eb1cd8891b750c9215f764a3c1a1b7ef89723b24fbd01d1c224c96f`
+SHA256: `11015e8cf588d4fbd56fcb56578b481221dd6b40cb458f4c904b2548a510e633`
 
 This runner performs fresh generation or fails closed. It does not train, promote routes/adapters, authorize V18, or expand the claim ceiling.
 
