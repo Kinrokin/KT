@@ -1,0 +1,51 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_replay_gain_is_durable",
+      "post_hoc": false,
+      "pre_registered": true,
+      "rejection_reason": "V17.7.1 MDE, FDR, and nested-CV gates failed",
+      "survives": false,
+      "tests": [
+        "FDR",
+        "MDE",
+        "nested_CV",
+        "OPE",
+        "DGS"
+      ]
+    },
+    {
+      "decision": "EVIDENCE_ACQUISITION_NEXT",
+      "hypothesis_id": "H2_active_learning_can_reduce_uncertainty",
+      "post_hoc": false,
+      "pre_registered": true,
+      "survives": true,
+      "tests": [
+        "VoI",
+        "conformal",
+        "premortem"
+      ]
+    },
+    {
+      "decision": "DO_NOT_PROMOTE_REPLAY_POLICY",
+      "hypothesis_id": "H3_do_nothing_is_competitive",
+      "post_hoc": false,
+      "pre_registered": true,
+      "survives": true,
+      "tests": [
+        "do_nothing_counterfactual",
+        "minimum_detectable_effect"
+      ]
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "lock_status": "PASS",
+  "post_hoc_hypotheses_allowed": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.pre_registered_hypotheses.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

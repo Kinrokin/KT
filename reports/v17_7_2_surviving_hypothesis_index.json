@@ -1,0 +1,36 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "evidence_candidate_survived": false,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.surviving_hypothesis_index.v1",
+  "status": "NO_REPLAY_READY_SURVIVOR",
+  "surviving_hypotheses": [
+    {
+      "decision": "EVIDENCE_ACQUISITION_NEXT",
+      "hypothesis_id": "H2_active_learning_can_reduce_uncertainty",
+      "post_hoc": false,
+      "pre_registered": true,
+      "survives": true,
+      "tests": [
+        "VoI",
+        "conformal",
+        "premortem"
+      ]
+    },
+    {
+      "decision": "DO_NOT_PROMOTE_REPLAY_POLICY",
+      "hypothesis_id": "H3_do_nothing_is_competitive",
+      "post_hoc": false,
+      "pre_registered": true,
+      "survives": true,
+      "tests": [
+        "do_nothing_counterfactual",
+        "minimum_detectable_effect"
+      ]
+    }
+  ],
+  "v18_runtime_authority": false
+}

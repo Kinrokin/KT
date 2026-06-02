@@ -1,0 +1,38 @@
+{
+  "adapter_training_authorized": false,
+  "branches": [
+    {
+      "branch": "base_preservation",
+      "pruned": false,
+      "risk": 0.22,
+      "samples": 40
+    },
+    {
+      "branch": "math_slice_shift",
+      "pruned": false,
+      "risk": 0.74,
+      "samples": 80
+    },
+    {
+      "branch": "rare_rule_dependency",
+      "pruned": false,
+      "risk": 0.81,
+      "samples": 80
+    },
+    {
+      "branch": "do_nothing",
+      "pruned": true,
+      "risk": 0.18,
+      "samples": 20
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "formula": "E_hat[L_p] + c * sqrt(ln(N) / n_p)",
+  "high_risk_pruned_before_sampling": false,
+  "learned_router_superiority_claim": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_2.forward_rollout_simulator_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
