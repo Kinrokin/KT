@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.1 Final Decision Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "outcome",
+    "next_lawful_move",
+    "runtime_authority",
+    "promotion_authority",
+    "adapter_training_authorized",
+    "learned_router_superiority_claim",
+    "v18_runtime_authority",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "kt.v17_7_1.final_decision_receipt.v1"
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "adapter_training_authorized": {
+      "const": false
+    },
+    "learned_router_superiority_claim": {
+      "const": false
+    },
+    "v18_runtime_authority": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  }
+}

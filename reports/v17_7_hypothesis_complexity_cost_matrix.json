@@ -1,0 +1,306 @@
+{
+  "claim_ceiling_preserved": true,
+  "rows": [
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H1 route regret underactivated",
+      "complexity_cost": 0.06666666666666667,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H1_route_regret_underactivated",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H2 base raw overpreserved",
+      "complexity_cost": 0.13333333333333333,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H2_base_raw_overpreserved",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H3 oracle gap semantic clusters",
+      "complexity_cost": 0.2,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H3_oracle_gap_semantic_clusters",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H4 brittle feature dependency",
+      "complexity_cost": 0.26666666666666666,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H4_brittle_feature_dependency",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H5 adapter boundary misclassified",
+      "complexity_cost": 0.3333333333333333,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H5_adapter_boundary_misclassified",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H6 sample size too sparse",
+      "complexity_cost": 0.4,
+      "decision": "KEEP_AS_SCAR_HYPOTHESIS",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H6_sample_size_too_sparse",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.25
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H7 perturbation fragility",
+      "complexity_cost": 0.4666666666666667,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H7_perturbation_fragility",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H8 route distribution shift too violent",
+      "complexity_cost": 0.5333333333333333,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H8_route_distribution_shift_too_violent",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H9 replay harness artifact",
+      "complexity_cost": 0.6,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H9_replay_harness_artifact",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H10 hysteresis too weak",
+      "complexity_cost": 0.6666666666666666,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H10_hysteresis_too_weak",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H11 candidate depends on rare rows",
+      "complexity_cost": 0.7333333333333333,
+      "decision": "KEEP_AS_SCAR_HYPOTHESIS",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H11_candidate_depends_on_rare_rows",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.25
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H12 feature ablation carries gain",
+      "complexity_cost": 0.8,
+      "decision": "KEEP_AS_SCAR_HYPOTHESIS",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H12_feature_ablation_carries_gain",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.25
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H13 route priors underregularized",
+      "complexity_cost": 0.8666666666666667,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H13_route_priors_underregularized",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H14 oracle closure not separable from regression",
+      "complexity_cost": 0.9333333333333333,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H14_oracle_closure_not_separable_from_regression",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    },
+    {
+      "ablation_result": 1,
+      "actual_nested_cv_delta": -142,
+      "actual_replay_delta": 1,
+      "claim": "H15 human anchor enrichment required",
+      "complexity_cost": 1.0,
+      "decision": "LOW_PRIORITY",
+      "expected_failure_mode": "overfit or insufficient power",
+      "expected_gain_mechanism": "reduce brittle policy dependence",
+      "hypothesis_id": "H15_human_anchor_enrichment_required",
+      "minimal_policy_change": "simplify_and_retest",
+      "perturbation_result": 0.0,
+      "required_tests": [
+        "nested_cv",
+        "feature_ablation",
+        "null_baseline",
+        "holdout_integrity"
+      ],
+      "survival_score": 0.1
+    }
+  ],
+  "schema_id": "kt.v17_7.hypothesis_complexity_cost_matrix.v1"
+}
