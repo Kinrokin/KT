@@ -28,6 +28,7 @@ def test_adapter_path_resolution_and_sha_validation(tmp_path, monkeypatch) -> No
     monkeypatch.setenv("KT_TRUEGEN_ADAPTER_ROOT", str(tmp_path))
 
     config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
+    config["adapter_source_preference"] = "LOCAL_PATH_FIRST"
     arm = next(arm for arm in config["arms"] if arm["arm_id"] == "route_regret_policy_adapter_global")
     arm["adapter_path"] = "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/learning_delta_lobe"
     arm["adapter_sha256_optional"] = expected_sha
@@ -42,7 +43,9 @@ def test_missing_adapter_path_fails_closed(tmp_path, monkeypatch) -> None:
     core = _core()
     monkeypatch.setenv("KT_TRUEGEN_ADAPTER_ROOT", str(tmp_path))
     config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
+    config["adapter_source_preference"] = "LOCAL_PATH_FIRST"
     arm = next(arm for arm in config["arms"] if arm["arm_id"] == "formal_math_repair_adapter_global")
+    arm["adapter_hf_repo"] = ""
     arm["adapter_path"] = "${KT_TRUEGEN_ADAPTER_ROOT}/missing/formal_proof_reasoning_lobe"
     try:
         core.validate_adapter_source(arm, config)

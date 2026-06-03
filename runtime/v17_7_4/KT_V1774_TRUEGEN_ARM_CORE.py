@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import gc
 import json
 import math
 import os
@@ -81,6 +82,14 @@ ASSESSMENT_FILES = [
     "arm_model_config_receipt.json",
     "model_loader_receipt.json",
     "adapter_loader_receipt.json",
+    "hf_vault_adapter_manifest_receipt.json",
+    "hf_vault_adapter_source_receipt.json",
+    "memory_execution_policy_receipt.json",
+    "gpu_memory_ledger.jsonl",
+    "row_ladder_receipt.json",
+    "streaming_generation_receipt.json",
+    "partial_output_rescue_receipt.json",
+    "assessment_only_packaging_receipt.json",
     "final_summary.json",
 ]
 
@@ -106,6 +115,10 @@ ADAPTER_LOADER_PEFT = "PEFT_MODEL_FROM_PRETRAINED"
 ADAPTER_LOADER_BASE = "BASE_MODEL_ONLY"
 ADAPTER_LOADER_PROMPT_OVERLAY = "PROMPT_OVERLAY_ONLY"
 ADAPTER_LOADER_BLOCKED_BASE_FALLBACK = "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE"
+ADAPTER_SOURCE_HF_VAULT = "HF_VAULT_ADAPTER_SOURCE"
+ADAPTER_SOURCE_LOCAL_PATH = "LOCAL_ADAPTER_SOURCE"
+ADAPTER_SOURCE_NONE = "NO_ADAPTER_SOURCE"
+DEFAULT_ROW_LADDER = [3, 10, 25, 50, 100]
 
 G2_COMPRESSION_ANCHOR = {
     "base_raw": {
@@ -165,6 +178,12 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text("".join(json.dumps(row, sort_keys=True) + "\n" for row in rows), encoding="utf-8")
 
 
+def append_jsonl(path: Path, row: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(row, sort_keys=True) + "\n")
+
+
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
@@ -176,6 +195,12 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 def stable_hash(value: Any) -> str:
     text = json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def count_jsonl_rows(path: Path) -> int:
+    if not path.exists():
+        return 0
+    return sum(1 for line in path.read_text(encoding="utf-8-sig").splitlines() if line.strip())
 
 
 def sha256_text(text: str) -> str:
@@ -310,6 +335,8 @@ def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
                 adapter_ref = arm.get("adapter_path") or arm.get("adapter_hf_repo")
                 if not adapter_ref:
                     defects.append(f"arms[{index}].real_arm_missing_adapter_source:{arm_id}")
+                if config.get("hf_vault_adapter_required") is True and not arm.get("adapter_hf_repo"):
+                    defects.append(f"arms[{index}].hf_vault_adapter_required_missing_repo:{arm_id}")
                 if arm.get("adapter_binding_status") != "REAL_ADAPTER_SOURCE_BOUND":
                     defects.append(f"arms[{index}].real_arm_adapter_binding_not_bound:{arm_id}")
             if arm_id == "base_kt_hat_compact" and arm.get("arm_kind") not in {"prompt_overlay", "adapter"}:
@@ -383,11 +410,49 @@ def expand_runtime_path(value: str, config: dict[str, Any]) -> str:
     return os.path.normpath(os.path.expandvars(expanded))
 
 
-def adapter_ref_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
-    raw_path = arm.get("adapter_path") or ""
+def adapter_source_preference(config: dict[str, Any]) -> str:
+    env_value = os.environ.get("KT_TRUEGEN_ADAPTER_SOURCE", "").strip().upper()
+    if env_value in {"HF", "HF_VAULT", "HF_VAULT_FIRST"}:
+        return "HF_VAULT_FIRST"
+    if env_value in {"LOCAL", "LOCAL_PATH", "LOCAL_PATH_FIRST"}:
+        return "LOCAL_PATH_FIRST"
+    return str(config.get("adapter_source_preference") or "LOCAL_PATH_FIRST").strip().upper()
+
+
+def adapter_source_kind_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
+    hf_repo = str(arm.get("adapter_hf_repo") or "").strip()
+    raw_path = str(arm.get("adapter_path") or "").strip()
+    preference = adapter_source_preference(config)
+    if preference == "HF_VAULT_FIRST" and hf_repo:
+        return ADAPTER_SOURCE_HF_VAULT
     if raw_path:
+        return ADAPTER_SOURCE_LOCAL_PATH
+    if hf_repo:
+        return ADAPTER_SOURCE_HF_VAULT
+    return ADAPTER_SOURCE_NONE
+
+
+def adapter_ref_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
+    kind = adapter_source_kind_for_arm(arm, config)
+    if kind == ADAPTER_SOURCE_HF_VAULT:
+        return str(arm.get("adapter_hf_repo") or "").strip()
+    raw_path = str(arm.get("adapter_path") or "").strip()
+    if kind == ADAPTER_SOURCE_LOCAL_PATH and raw_path:
         return expand_runtime_path(raw_path, config)
-    return arm.get("adapter_hf_repo") or ""
+    return ""
+
+
+def adapter_load_kwargs_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    if adapter_source_kind_for_arm(arm, config) != ADAPTER_SOURCE_HF_VAULT:
+        return {}
+    kwargs: dict[str, Any] = {}
+    subfolder = str(arm.get("adapter_hf_subfolder") or "").strip()
+    if subfolder:
+        kwargs["subfolder"] = subfolder
+    revision = str(arm.get("adapter_hf_revision") or config.get("adapter_hf_revision") or "").strip()
+    if revision:
+        kwargs["revision"] = revision
+    return kwargs
 
 
 def model_repo_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
@@ -449,6 +514,8 @@ def adapter_weight_file(adapter_dir: Path) -> Path | None:
 def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
     arm_id = arm["arm_id"]
     adapter_ref = adapter_ref_for_arm(arm, config)
+    adapter_source_kind = adapter_source_kind_for_arm(arm, config)
+    adapter_hf_subfolder = str(arm.get("adapter_hf_subfolder") or "").strip()
     if arm_id not in ADAPTER_ARM_IDS:
         return authority(
             schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
@@ -456,19 +523,27 @@ def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict
             adapter_ref=adapter_ref,
             adapter_loader_mode=ADAPTER_LOADER_PROMPT_OVERLAY if arm_id == "base_kt_hat_compact" else ADAPTER_LOADER_BASE,
             adapter_source_status="ADAPTER_NOT_REQUIRED_FOR_ARM",
+            adapter_source_kind=ADAPTER_SOURCE_NONE,
             adapter_required=False,
         )
     if not adapter_ref:
         raise RuntimeError(f"adapter_load_contract_failed: real adapter arm {arm_id} has no adapter source")
-    if arm.get("adapter_hf_repo") and not arm.get("adapter_path"):
+    if adapter_source_kind == ADAPTER_SOURCE_HF_VAULT:
         return authority(
             schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
             arm_id=arm_id,
             adapter_ref=adapter_ref,
+            adapter_hf_repo=arm.get("adapter_hf_repo"),
+            adapter_hf_subfolder=adapter_hf_subfolder,
             adapter_loader_mode=ADAPTER_LOADER_PEFT,
             adapter_source_status="HF_ADAPTER_SOURCE_BOUND_RUNTIME_LOAD_REQUIRED",
+            adapter_source_kind=ADAPTER_SOURCE_HF_VAULT,
+            adapter_source_preference=adapter_source_preference(config),
             adapter_required=True,
             local_path_checked=False,
+            hf_vault_source_of_truth=True,
+            adapter_sha256_expected=arm.get("adapter_sha256_optional") or "",
+            adapter_sha256_verification_scope="HF_MANIFEST_OR_RUNTIME_DOWNLOAD_RECEIPT_REQUIRED",
         )
     adapter_path = Path(adapter_ref)
     if not adapter_path.exists():
@@ -491,6 +566,8 @@ def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict
         adapter_ref=adapter_ref,
         adapter_loader_mode=ADAPTER_LOADER_PEFT,
         adapter_source_status="LOCAL_ADAPTER_SOURCE_VALIDATED",
+        adapter_source_kind=ADAPTER_SOURCE_LOCAL_PATH,
+        adapter_source_preference=adapter_source_preference(config),
         adapter_required=True,
         local_path_checked=True,
         adapter_config_present=True,
@@ -505,6 +582,21 @@ class GenerationBackend:
         self._model_cache: dict[str, Any] = {}
         self.model_loader_receipts: list[dict[str, Any]] = []
         self.adapter_loader_receipts: list[dict[str, Any]] = []
+
+    def close(self) -> None:
+        self._model_cache.clear()
+        gc.collect()
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                try:
+                    torch.cuda.ipc_collect()
+                except Exception:
+                    pass
+        except Exception:
+            pass
 
     def generate(self, prompt: str, arm: dict[str, Any], config: dict[str, Any], row: dict[str, Any]) -> tuple[str, str, str, str]:
         model_repo = model_repo_for_arm(arm, config)
@@ -529,7 +621,8 @@ class GenerationBackend:
 
         model_repo = model_repo_for_arm(arm, config)
         adapter_ref = adapter_ref_for_arm(arm, config)
-        cache_key = f"{model_repo}::{adapter_ref or 'base'}"
+        adapter_kwargs = adapter_load_kwargs_for_arm(arm, config)
+        cache_key = f"{model_repo}::{adapter_ref or 'base'}::{stable_hash(adapter_kwargs)}"
         if cache_key not in self._model_cache:
             tokenizer = AutoTokenizer.from_pretrained(model_repo)
             kwargs, model_loader_mode = build_model_loader_kwargs(config, torch)
@@ -546,6 +639,7 @@ class GenerationBackend:
                     load_in_4bit_forwarded_as_bad_kwarg=False,
                     from_pretrained_kwarg_keys=sorted(kwargs),
                     qwen_constructor_path_used=False,
+                    arm_isolation_mode=str(config.get("arm_isolation_mode", "ARM_MAJOR_UNLOAD_AFTER_EACH_ARM")),
                 )
             )
             adapter_status = ADAPTER_LOADER_BASE
@@ -555,7 +649,7 @@ class GenerationBackend:
                 try:
                     from peft import PeftModel
 
-                    model = PeftModel.from_pretrained(model, adapter_ref)
+                    model = PeftModel.from_pretrained(model, adapter_ref, **adapter_kwargs)
                     adapter_status = "ADAPTER_LOADED"
                     adapter_loader_mode = ADAPTER_LOADER_PEFT
                 except Exception as exc:  # noqa: BLE001
@@ -564,6 +658,7 @@ class GenerationBackend:
                     adapter_load_status=adapter_status,
                     adapter_loader_mode=adapter_loader_mode,
                     peft_model_from_pretrained=True,
+                    peft_from_pretrained_kwargs=sorted(adapter_kwargs),
                 )
                 self.adapter_loader_receipts.append(adapter_contract)
             else:
@@ -613,82 +708,197 @@ def score_output(text: str, parsed_answer: str, row: dict[str, Any], method: str
     return (1.0 if correct else 0.0), correct
 
 
-def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
-    backend = GenerationBackend()
+def accelerator_memory_snapshot(label: str, arm_id: str | None = None) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "schema_id": "kt.v17_7_4.gpu_memory_ledger_row.v1",
+        "label": label,
+        "arm_id": arm_id,
+        "timestamp_unix": round(time.time(), 6),
+        "cuda_available": False,
+    }
+    try:
+        import torch
+
+        payload["cuda_available"] = bool(torch.cuda.is_available())
+        if torch.cuda.is_available():
+            device = torch.cuda.current_device()
+            free_bytes, total_bytes = torch.cuda.mem_get_info(device)
+            payload.update(
+                device_index=device,
+                device_name=torch.cuda.get_device_name(device),
+                free_bytes=int(free_bytes),
+                total_bytes=int(total_bytes),
+                allocated_bytes=int(torch.cuda.memory_allocated(device)),
+                reserved_bytes=int(torch.cuda.memory_reserved(device)),
+            )
+    except Exception as exc:  # noqa: BLE001
+        payload.update(cuda_probe_error=repr(exc))
+    return payload
+
+
+def resolve_effective_row_limit(config: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    if os.environ.get("KT_TRUEGEN_ROW_LIMIT"):
+        row_limit = int(os.environ["KT_TRUEGEN_ROW_LIMIT"])
+        source = "KT_TRUEGEN_ROW_LIMIT"
+    else:
+        ladder = config.get("row_ladder") or DEFAULT_ROW_LADDER
+        if not isinstance(ladder, list) or not ladder:
+            ladder = DEFAULT_ROW_LADDER
+        if os.environ.get("KT_TRUEGEN_LADDER_STAGE"):
+            row_limit = int(os.environ["KT_TRUEGEN_LADDER_STAGE"])
+            source = "KT_TRUEGEN_LADDER_STAGE"
+        elif config.get("default_row_ladder_stage") is not None:
+            row_limit = int(config["default_row_ladder_stage"])
+            source = "config.default_row_ladder_stage"
+        else:
+            row_limit = int(config.get("row_limit", 100))
+            source = "config.row_limit"
+        allowed = sorted({int(value) for value in ladder})
+        if source != "config.row_limit" and allowed:
+            row_limit = min((value for value in allowed if value >= row_limit), default=max(allowed))
+    max_rows = int(config.get("row_limit", row_limit))
+    row_limit = max(1, min(row_limit, max_rows))
+    receipt = authority(
+        schema_id="kt.v17_7_4.row_ladder_receipt.v1",
+        status="PASS",
+        row_limit=row_limit,
+        row_limit_source=source,
+        row_ladder=config.get("row_ladder") or DEFAULT_ROW_LADDER,
+        max_configured_rows=max_rows,
+        ladder_policy="3_TO_10_TO_25_TO_50_TO_100_BY_ENV_OR_CONFIG_DEFAULT",
+    )
+    return row_limit, receipt
+
+
+def build_arm_result_row(
+    row: dict[str, Any],
+    arm: dict[str, Any],
+    config: dict[str, Any],
+    run_id: str,
+    output_text: str,
+    adapter_source_status: str,
+    model_loader_mode: str,
+    adapter_loader_mode: str,
+    latency_ms: int,
+) -> dict[str, Any]:
+    prompt = materialize_prompt(row, arm)
+    parsed = parse_answer(output_text)
+    score, correct = score_output(output_text, parsed, row, arm.get("scoring_method", "contains_expected_label"))
+    tokens_in = count_tokens(prompt)
+    tokens_out = count_tokens(output_text)
+    total_tokens = tokens_in + tokens_out
+    prompt_components = prompt_overhead_components(prompt, row, arm)
+    answer_tokens = max(count_tokens(parsed), 1)
+    route_overhead_tokens = sum(prompt_components.values())
+    parser_format_failure = output_contains_expected(output_text, row) and not exact_expected_match(parsed, row)
+    row_metrics = {
+        **prompt_components,
+        "tokens_in": tokens_in,
+        "tokens_out": tokens_out,
+        "total_tokens": total_tokens,
+        "answer_tokens": answer_tokens,
+        "route_overhead_tokens": route_overhead_tokens,
+        "hat_overhead_ratio": safe_ratio(prompt_components["hat_tokens"], answer_tokens),
+        "correct": bool(correct),
+        "parser_format_failure": parser_format_failure,
+        "adapter_loader_mode": adapter_loader_mode,
+    }
+    return authority(
+        schema_id="kt.v17_7_4.truegen_arm_result.v1",
+        run_id=run_id,
+        sample_id=row["sample_id"],
+        dataset=row["dataset"],
+        task_family=row["task_family"],
+        evidence_band=row["evidence_band"],
+        route_boundary_class=row["route_boundary_class"],
+        arm_id=arm["arm_id"],
+        route_id=ABLATION_LADDER.get(arm["arm_id"], arm["arm_id"]),
+        model_repo=model_repo_for_arm(arm, config),
+        adapter_ref=adapter_ref_for_arm(arm, config),
+        adapter_source_kind=adapter_source_kind_for_arm(arm, config),
+        adapter_source_status=adapter_source_status,
+        model_loader_mode=model_loader_mode,
+        adapter_loader_mode=adapter_loader_mode,
+        prompt_hash=sha256_text(prompt),
+        output_text=output_text[:2000],
+        output_hash=sha256_text(output_text),
+        parsed_answer=parsed,
+        score=score,
+        correct=correct,
+        tokens_in=tokens_in,
+        tokens_out=tokens_out,
+        total_tokens=total_tokens,
+        tokens_per_correct=safe_ratio(total_tokens, 1 if correct else 0),
+        verified_work_per_token=safe_ratio(1 if correct else 0, total_tokens),
+        latency_per_correct=safe_ratio(latency_ms, 1 if correct else 0),
+        answer_tokens=answer_tokens,
+        router_tokens=prompt_components["router_tokens"],
+        hat_tokens=prompt_components["hat_tokens"],
+        tribunal_tokens=prompt_components["tribunal_tokens"],
+        repair_tokens=prompt_components["repair_tokens"],
+        route_overhead_tokens=route_overhead_tokens,
+        hat_overhead_ratio=row_metrics["hat_overhead_ratio"],
+        parser_format_failure=parser_format_failure,
+        final_answer_marker_present=bool(re.search(r"(?:answer|final)\s*[:=]", output_text, flags=re.IGNORECASE)),
+        bloat_class=classify_bloat(row_metrics),
+        latency_ms=latency_ms,
+        generation_seed=config["generation_seed"],
+        measurement_source=FRESH_SOURCE,
+        measurement_status=FRESH_STATUS,
+        generation_artifacts_present=True,
+    )
+
+
+def generate_arm_rows(
+    manifest: dict[str, Any],
+    config: dict[str, Any],
+    run_id: str,
+    stream_path: Path | None = None,
+    memory_ledger_path: Path | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     rows: list[dict[str, Any]] = []
-    for row in manifest["rows"]:
-        for arm in enabled_arms(config):
-            prompt = materialize_prompt(row, arm)
-            start = time.perf_counter()
-            output_text, adapter_source_status, model_loader_mode, adapter_loader_mode = backend.generate(prompt, arm, config, row)
-            latency_ms = int((time.perf_counter() - start) * 1000)
-            parsed = parse_answer(output_text)
-            score, correct = score_output(output_text, parsed, row, arm.get("scoring_method", "contains_expected_label"))
-            tokens_in = count_tokens(prompt)
-            tokens_out = count_tokens(output_text)
-            total_tokens = tokens_in + tokens_out
-            prompt_components = prompt_overhead_components(prompt, row, arm)
-            answer_tokens = max(count_tokens(parsed), 1)
-            route_overhead_tokens = sum(prompt_components.values())
-            parser_format_failure = output_contains_expected(output_text, row) and not exact_expected_match(parsed, row)
-            row_metrics = {
-                **prompt_components,
-                "tokens_in": tokens_in,
-                "tokens_out": tokens_out,
-                "total_tokens": total_tokens,
-                "answer_tokens": answer_tokens,
-                "route_overhead_tokens": route_overhead_tokens,
-                "hat_overhead_ratio": safe_ratio(prompt_components["hat_tokens"], answer_tokens),
-                "correct": bool(correct),
-                "parser_format_failure": parser_format_failure,
-                "adapter_loader_mode": adapter_loader_mode,
-            }
-            rows.append(
-                authority(
-                    schema_id="kt.v17_7_4.truegen_arm_result.v1",
+    model_loader_receipts: list[dict[str, Any]] = []
+    adapter_loader_receipts: list[dict[str, Any]] = []
+    if stream_path is not None:
+        stream_path.parent.mkdir(parents=True, exist_ok=True)
+        stream_path.write_text("", encoding="utf-8")
+    if memory_ledger_path is not None:
+        memory_ledger_path.parent.mkdir(parents=True, exist_ok=True)
+        memory_ledger_path.write_text("", encoding="utf-8")
+        append_jsonl(memory_ledger_path, accelerator_memory_snapshot("run_start"))
+    for arm in enabled_arms(config):
+        backend = GenerationBackend()
+        if memory_ledger_path is not None:
+            append_jsonl(memory_ledger_path, accelerator_memory_snapshot("arm_start", arm["arm_id"]))
+        try:
+            for row in manifest["rows"]:
+                prompt = materialize_prompt(row, arm)
+                start = time.perf_counter()
+                output_text, adapter_source_status, model_loader_mode, adapter_loader_mode = backend.generate(prompt, arm, config, row)
+                latency_ms = int((time.perf_counter() - start) * 1000)
+                result_row = build_arm_result_row(
+                    row=row,
+                    arm=arm,
+                    config=config,
                     run_id=run_id,
-                    sample_id=row["sample_id"],
-                    dataset=row["dataset"],
-                    task_family=row["task_family"],
-                    evidence_band=row["evidence_band"],
-                    route_boundary_class=row["route_boundary_class"],
-                    arm_id=arm["arm_id"],
-                    route_id=ABLATION_LADDER.get(arm["arm_id"], arm["arm_id"]),
-                    model_repo=model_repo_for_arm(arm, config),
-                    adapter_ref=adapter_ref_for_arm(arm, config),
+                    output_text=output_text,
                     adapter_source_status=adapter_source_status,
                     model_loader_mode=model_loader_mode,
                     adapter_loader_mode=adapter_loader_mode,
-                    prompt_hash=sha256_text(prompt),
-                    output_text=output_text[:2000],
-                    output_hash=sha256_text(output_text),
-                    parsed_answer=parsed,
-                    score=score,
-                    correct=correct,
-                    tokens_in=tokens_in,
-                    tokens_out=tokens_out,
-                    total_tokens=total_tokens,
-                    tokens_per_correct=safe_ratio(total_tokens, 1 if correct else 0),
-                    verified_work_per_token=safe_ratio(1 if correct else 0, total_tokens),
-                    latency_per_correct=safe_ratio(latency_ms, 1 if correct else 0),
-                    answer_tokens=answer_tokens,
-                    router_tokens=prompt_components["router_tokens"],
-                    hat_tokens=prompt_components["hat_tokens"],
-                    tribunal_tokens=prompt_components["tribunal_tokens"],
-                    repair_tokens=prompt_components["repair_tokens"],
-                    route_overhead_tokens=route_overhead_tokens,
-                    hat_overhead_ratio=row_metrics["hat_overhead_ratio"],
-                    parser_format_failure=parser_format_failure,
-                    final_answer_marker_present=bool(re.search(r"(?:answer|final)\s*[:=]", output_text, flags=re.IGNORECASE)),
-                    bloat_class=classify_bloat(row_metrics),
                     latency_ms=latency_ms,
-                    generation_seed=config["generation_seed"],
-                    measurement_source=FRESH_SOURCE,
-                    measurement_status=FRESH_STATUS,
-                    generation_artifacts_present=True,
                 )
-            )
-    return rows, backend.model_loader_receipts, backend.adapter_loader_receipts
+                rows.append(result_row)
+                if stream_path is not None:
+                    append_jsonl(stream_path, result_row)
+        finally:
+            model_loader_receipts.extend(backend.model_loader_receipts)
+            adapter_loader_receipts.extend(backend.adapter_loader_receipts)
+            backend.close()
+            if memory_ledger_path is not None:
+                append_jsonl(memory_ledger_path, accelerator_memory_snapshot("arm_unloaded", arm["arm_id"]))
+    if memory_ledger_path is not None:
+        append_jsonl(memory_ledger_path, accelerator_memory_snapshot("run_end"))
+    return rows, model_loader_receipts, adapter_loader_receipts
 
 
 def enforce_fresh_rows(arm_rows: list[dict[str, Any]], predictions: list[dict[str, Any]] | None = None) -> None:
@@ -1037,6 +1247,119 @@ def efficiency_claim_boundary_receipt(compression_gate: dict[str, Any]) -> dict[
     )
 
 
+def hf_vault_adapter_manifest_receipt(config: dict[str, Any]) -> dict[str, Any]:
+    adapter_arms = []
+    for arm in enabled_arms(config):
+        if arm["arm_id"] not in ADAPTER_ARM_IDS:
+            continue
+        adapter_arms.append(
+            {
+                "arm_id": arm["arm_id"],
+                "expected_adapter_id": arm.get("expected_adapter_id"),
+                "adapter_hf_repo": arm.get("adapter_hf_repo") or "",
+                "adapter_hf_subfolder": arm.get("adapter_hf_subfolder") or "",
+                "adapter_path_fallback": arm.get("adapter_path") or "",
+                "adapter_sha256_expected": arm.get("adapter_sha256_optional") or "",
+                "selected_source_kind": adapter_source_kind_for_arm(arm, config),
+            }
+        )
+    return authority(
+        schema_id="kt.v17_7_4.hf_vault_adapter_manifest_receipt.v1",
+        status="PASS",
+        adapter_source_preference=adapter_source_preference(config),
+        hf_vault_adapter_required=config.get("hf_vault_adapter_required") is True,
+        hf_vault_repo=config.get("hf_vault_repo", ""),
+        adapter_arms=adapter_arms,
+        source_of_truth="HF_VAULT_FIRST_WHEN_REPO_BOUND",
+        local_adapter_payload_required=False,
+        no_safetensors_packaged_back=True,
+    )
+
+
+def hf_vault_adapter_source_receipt(config: dict[str, Any], adapter_loader_receipts: list[dict[str, Any]]) -> dict[str, Any]:
+    selected = {
+        row.get("arm_id"): {
+            "adapter_source_kind": row.get("adapter_source_kind"),
+            "adapter_source_status": row.get("adapter_source_status"),
+            "adapter_ref": row.get("adapter_ref"),
+            "adapter_hf_subfolder": row.get("adapter_hf_subfolder", ""),
+            "adapter_load_status": row.get("adapter_load_status"),
+        }
+        for row in adapter_loader_receipts
+        if row.get("arm_id") in ADAPTER_ARM_IDS
+    }
+    return authority(
+        schema_id="kt.v17_7_4.hf_vault_adapter_source_receipt.v1",
+        status="PASS",
+        adapter_source_preference=adapter_source_preference(config),
+        selected_sources=selected,
+        hf_vault_selected_for_adapter_arms=all(
+            payload.get("adapter_source_kind") == ADAPTER_SOURCE_HF_VAULT for payload in selected.values()
+        )
+        if selected
+        else False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def memory_execution_policy_receipt(config: dict[str, Any]) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.memory_execution_policy_receipt.v1",
+        status="PASS",
+        policy="KT13_HF_VAULT_ARM_ISOLATED_STREAMING",
+        arm_execution_order="ARM_MAJOR_ONE_ARM_AT_A_TIME",
+        model_cache_scope="ONE_GENERATION_BACKEND_PER_ARM",
+        unload_between_arms=True,
+        torch_empty_cache_after_arm=True,
+        stream_rows_to_disk=bool(config.get("stream_rows_to_disk", True)),
+        partial_output_rescue=True,
+        no_heavy_artifact_return=True,
+        row_ladder=config.get("row_ladder") or DEFAULT_ROW_LADDER,
+        default_row_ladder_stage=config.get("default_row_ladder_stage"),
+        max_new_tokens=config.get("max_new_tokens"),
+    )
+
+
+def streaming_generation_receipt(out: Path, run_id: str, stream_path: Path) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.streaming_generation_receipt.v1",
+        status="PASS",
+        run_id=run_id,
+        stream_path=stream_path.as_posix(),
+        streamed_arm_rows=count_jsonl_rows(stream_path),
+        row_streaming_enabled=True,
+        flush_policy="APPEND_JSONL_AFTER_EACH_ARM_ROW",
+    )
+
+
+def partial_output_rescue_receipt(out: Path, run_id: str, status: str = "PASS") -> dict[str, Any]:
+    stream_path = out / "truegen_arm_result_matrix.jsonl"
+    return authority(
+        schema_id="kt.v17_7_4.partial_output_rescue_receipt.v1",
+        status=status,
+        run_id=run_id,
+        partial_rows_preserved=count_jsonl_rows(stream_path),
+        stream_path=stream_path.as_posix(),
+        assessment_zip_attempted=True,
+        no_restart_from_scratch_policy=True,
+    )
+
+
+def assessment_only_packaging_receipt(out: Path, assessment: Path | None = None) -> dict[str, Any]:
+    heavy_suffixes = (".safetensors", ".bin", ".pt", ".pth")
+    included = [name for name in ASSESSMENT_FILES if (out / name).exists()]
+    return authority(
+        schema_id="kt.v17_7_4.assessment_only_packaging_receipt.v1",
+        status="PASS",
+        assessment_zip=assessment.as_posix() if assessment else "",
+        included_files=included,
+        excluded_heavy_suffixes=list(heavy_suffixes),
+        heavy_artifacts_packaged=False,
+        cache_artifacts_packaged=False,
+        assessment_only_return_discipline=True,
+    )
+
+
 def write_assessment(out: Path) -> Path:
     assessment = out / "KTV1774_TRUEGEN_MINIFURNACE_ASSESSMENT_ONLY.zip"
     with zipfile.ZipFile(assessment, "w", compression=zipfile.ZIP_DEFLATED) as archive:
@@ -1051,6 +1374,7 @@ def write_assessment(out: Path) -> Path:
 
 
 def write_blocker(out: Path, run_id: str, reason: str, defects: list[str] | None = None) -> dict[str, Any]:
+    write_json(out / "partial_output_rescue_receipt.json", partial_output_rescue_receipt(out, run_id, status="BLOCKED"))
     payload = authority(
         schema_id="kt.v17_7_4.truegen_blocker_receipt.v1",
         status="BLOCKED",
@@ -1058,9 +1382,12 @@ def write_blocker(out: Path, run_id: str, reason: str, defects: list[str] | None
         outcome="KTG3FULL_V17_7_4_BLOCKED__GENERATION_FAILURE",
         reason=reason,
         defects=defects or [],
+        partial_rows_preserved=count_jsonl_rows(out / "truegen_arm_result_matrix.jsonl"),
         next_lawful_move="FIX_TRUEGEN_RUNTIME_INPUTS_AND_RERUN",
     )
     write_json(out / "BLOCKER_RECEIPT.json", payload)
+    assessment = write_assessment(out)
+    write_json(out / "assessment_only_packaging_receipt.json", assessment_only_packaging_receipt(out, assessment))
     write_assessment(out)
     return payload
 
@@ -1086,8 +1413,11 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         defects = validate_arm_model_config(config)
         if defects:
             return write_blocker(out, run_id, "arm model config contract failed", defects)
-        row_limit = int(os.environ.get("KT_TRUEGEN_ROW_LIMIT", str(config.get("row_limit", 100))))
+        row_limit, row_ladder = resolve_effective_row_limit(config)
         manifest = load_row_manifest(row_manifest_path, row_limit=row_limit)
+        write_json(out / "row_ladder_receipt.json", row_ladder)
+        write_json(out / "memory_execution_policy_receipt.json", memory_execution_policy_receipt(config))
+        write_json(out / "hf_vault_adapter_manifest_receipt.json", hf_vault_adapter_manifest_receipt(config))
         write_json(
             out / "arm_model_config_receipt.json",
             authority(
@@ -1100,9 +1430,22 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 enabled_arms=[arm["arm_id"] for arm in enabled_arms(config)],
                 enabled_adapter_arms=[arm["arm_id"] for arm in enabled_arms(config) if arm["arm_id"] in ADAPTER_ARM_IDS],
                 bundled_example_config_used=config_path.name.endswith(".example.json"),
+                adapter_source_preference=adapter_source_preference(config),
+                effective_row_limit=row_limit,
+                row_ladder=row_ladder,
+                stream_rows_to_disk=bool(config.get("stream_rows_to_disk", True)),
+                arm_isolation_mode=str(config.get("arm_isolation_mode", "ARM_MAJOR_UNLOAD_AFTER_EACH_ARM")),
             ),
         )
-        arm_rows, model_loader_receipts, adapter_loader_receipts = generate_arm_rows(manifest, config, run_id)
+        stream_path = out / "truegen_arm_result_matrix.jsonl"
+        memory_ledger_path = out / "gpu_memory_ledger.jsonl"
+        arm_rows, model_loader_receipts, adapter_loader_receipts = generate_arm_rows(
+            manifest,
+            config,
+            run_id,
+            stream_path=stream_path if config.get("stream_rows_to_disk", True) is True else None,
+            memory_ledger_path=memory_ledger_path,
+        )
         predictions = aggregate_predictions(arm_rows, run_id)
         scorecards = recompute_scorecards(arm_rows, predictions)
         correlation = replay_correlation(arm_rows, manifest["rows"])
@@ -1131,6 +1474,9 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 receipts=adapter_loader_receipts,
             ),
         )
+        write_json(out / "hf_vault_adapter_source_receipt.json", hf_vault_adapter_source_receipt(config, adapter_loader_receipts))
+        write_json(out / "streaming_generation_receipt.json", streaming_generation_receipt(out, run_id, out / "truegen_arm_result_matrix.jsonl"))
+        write_json(out / "partial_output_rescue_receipt.json", partial_output_rescue_receipt(out, run_id))
         write_json(out / "truegen_benchmark_scorecard.json", scorecards["benchmark"])
         write_json(out / "truegen_replay_correlation_scorecard.json", correlation)
         write_json(out / "truegen_negative_transfer_by_arm.json", scorecards["negative_transfer"])
@@ -1185,11 +1531,16 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
             elapsed_seconds=round(time.perf_counter() - started, 6),
             row_count=len(predictions),
             arm_rows=len(arm_rows),
+            effective_row_limit=row_limit,
+            arm_isolation_mode=str(config.get("arm_isolation_mode", "ARM_MAJOR_UNLOAD_AFTER_EACH_ARM")),
+            gpu_memory_ledger_path=(out / "gpu_memory_ledger.jsonl").as_posix(),
             measurement_source=FRESH_SOURCE,
             measurement_status=FRESH_STATUS,
         )
         write_json(out / "runtime_telemetry_receipt.json", telemetry)
         assessment = write_assessment(out)
+        write_json(out / "assessment_only_packaging_receipt.json", assessment_only_packaging_receipt(out, assessment))
+        write_assessment(out)
         frontier_next = scorecards["compression_frontier"]["outcome"] if scorecards["compression_frontier"]["status"] == "BLOCKED" else decision
         summary = authority(
             schema_id="kt.v17_7_4.truegen_final_summary.v1",
