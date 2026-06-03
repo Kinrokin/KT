@@ -50,6 +50,13 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def write_zip_member(archive: zipfile.ZipFile, name: str, data: bytes) -> None:
+    info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+    info.compress_type = zipfile.ZIP_DEFLATED
+    info.external_attr = 0o644 << 16
+    archive.writestr(info, data)
+
+
 def run_git(args: list[str]) -> str:
     return subprocess.check_output(["git", *args], cwd=root(), text=True, stderr=subprocess.DEVNULL).strip()
 
@@ -112,7 +119,7 @@ def write_packet(repo: Path) -> tuple[Path, str]:
     }
     with zipfile.ZipFile(packet, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, data in members.items():
-            archive.writestr(name, data)
+            write_zip_member(archive, name, data)
     return packet, sha256_file(packet)
 
 
