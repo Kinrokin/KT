@@ -49,6 +49,7 @@ def test_real_arm_config_fails_if_adapter_source_removed() -> None:
     for arm in config["arms"]:
         if arm["arm_id"] == "formal_math_repair_adapter_global":
             arm["adapter_path"] = ""
+            arm["adapter_hf_repo"] = ""
     defects = core.validate_arm_model_config(config)
     assert any("real_arm_missing_adapter_source:formal_math_repair_adapter_global" in defect for defect in defects)
 

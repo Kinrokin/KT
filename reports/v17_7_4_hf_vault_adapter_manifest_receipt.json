@@ -1,0 +1,37 @@
+{
+  "adapter_arms": [
+    {
+      "adapter_hf_repo": "Kinrokin/kt13-full-e2e-final-only-20260524-174447",
+      "adapter_hf_subfolder": "adapters/learning_delta_lobe",
+      "adapter_path_fallback": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/learning_delta_lobe",
+      "adapter_sha256_expected": "826bb70f6fe5a862e99f14f6fc6b2fbecd02f840dd11df9d3ef9e2dc42f412e3",
+      "arm_id": "route_regret_policy_adapter_global"
+    },
+    {
+      "adapter_hf_repo": "Kinrokin/kt13-full-e2e-final-only-20260524-174447",
+      "adapter_hf_subfolder": "adapters/formal_proof_reasoning_lobe",
+      "adapter_path_fallback": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/formal_proof_reasoning_lobe",
+      "adapter_sha256_expected": "80f81db5815a17f154286748825881ba116941ca9d319c57d9f4c003fd6928a8",
+      "arm_id": "formal_math_repair_adapter_global"
+    },
+    {
+      "adapter_hf_repo": "Kinrokin/kt13-full-e2e-final-only-20260524-174447",
+      "adapter_hf_subfolder": "adapters/cohort_pass2_delta_scar",
+      "adapter_path_fallback": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/cohort_pass2_delta_scar",
+      "adapter_sha256_expected": "6fde587c24a20f059e49bafbcc4ad031796e6f40b07d63704edf79ed8b90cc4a",
+      "arm_id": "math_act_adapter_global"
+    }
+  ],
+  "adapter_source_preference": "HF_VAULT_FIRST",
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "hf_vault_repo": "Kinrokin/kt13-full-e2e-final-only-20260524-174447",
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.hf_vault_adapter_manifest_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -8,11 +8,11 @@ from pathlib import Path
 from typing import Any
 
 
-PROGRAM_ID = "AUTHOR_KT_COMPRESSION_FRONTIER_RECAPTURE_PACKET"
-OUTCOME = "KT_COMPRESSION_FRONTIER_RECAPTURED__TRUEGEN_EFFICIENCY_GATE_NEXT__CLAIM_CEILING_PRESERVED"
-NEXT_LAWFUL_MOVE = "RUN_KTV1774_COMPRESSION_FRONTIER_TRUEGEN_PACKET_V1"
-PACKET_NAME = "ktv1774_compression_frontier_v1.zip"
-KAGGLE_DATASET_NAME = "ktv1774-compression-frontier-v1"
+PROGRAM_ID = "AUTHOR_KT_V17_7_4_REINHERIT_PROVEN_KT13_HF_VAULT_AND_MEMORY_EXECUTION_PATTERN"
+OUTCOME = "KT_V17_7_4_HF_VAULT_MEMORY_PATTERN_REINHERITED__RUN_MEMORY_SAFE_COMPRESSION_FRONTIER_NEXT__CLAIM_CEILING_PRESERVED"
+NEXT_LAWFUL_MOVE = "RUN_KTV1774_HF_VAULT_MEMORY_SAFE_TRUEGEN_PACKET_V1"
+PACKET_NAME = "ktv1774_hf_vault_memory_v1.zip"
+KAGGLE_DATASET_NAME = "ktv1774-hf-vault-memory-v1"
 
 AUTHORITY_FALSE = {
     "claim_ceiling_preserved": True,
@@ -82,15 +82,18 @@ def write_packet(repo: Path) -> tuple[Path, str]:
     packet.parent.mkdir(parents=True, exist_ok=True)
     members = {
         "README.md": (
-            "# KTV1774 Compression Frontier True-Generation Mini-Furnace V1\n\n"
-            "This packet preserves the V17.7.4 real-arm model-load repair and adds compression-frontier measurement. "
-            "It binds the truegen runner to the intended Qwen 7B substrate and real adapter-source paths. "
+            "# KTV1774 HF-Vault Memory-Safe Compression Frontier True-Generation Mini-Furnace V1\n\n"
+            "This packet preserves the V17.7.4 real-arm model-load repair and re-inherits the proven KT13 HF-vault "
+            "and assessment-only execution pattern. It binds the truegen runner to the intended Qwen 7B substrate, "
+            "prefers the HF final-only adapter vault, keeps local adapter paths as fallback only, and runs arms one at a time. "
             "The model loader uses `AutoModelForCausalLM.from_pretrained` and places 4-bit loading inside "
             "`BitsAndBytesConfig(..., load_in_4bit=True)` via `quantization_config`. It never forwards "
             "`load_in_4bit` as a raw Qwen constructor/from_pretrained kwarg. It performs fresh generation or fails closed. "
             "It measures token economics, ablation-ladder performance, bloat attribution, parser drift, and compression frontier status. "
+            "It streams rows to disk, writes a GPU memory ledger, rescues partial rows on blockers, and returns only an assessment ZIP. "
             "It does not train, promote, authorize V18, or claim learned-router superiority.\n\n"
-            "Set `KT_TRUEGEN_ADAPTER_ROOT` if the Kaggle adapter dataset path differs from the bundled default.\n"
+            "Default row ladder stage is 3 rows. Set `KT_TRUEGEN_LADDER_STAGE=10`, `25`, `50`, or `100` only after memory telemetry passes. "
+            "Set `KT_TRUEGEN_ADAPTER_SOURCE=local` and `KT_TRUEGEN_ADAPTER_ROOT` only if HF vault access is unavailable.\n"
         ).encode("utf-8"),
         "KTV1774_TRUEGEN_MINIFURNACE_MASTER_RUNNER.py": (repo / "runtime" / "v17_7_4" / "KTV1774_TRUEGEN_MINIFURNACE_MASTER_RUNNER.py").read_bytes(),
         "KT_V1774_TRUEGEN_ARM_CORE.py": (repo / "runtime" / "v17_7_4" / "KT_V1774_TRUEGEN_ARM_CORE.py").read_bytes(),
@@ -106,12 +109,22 @@ def write_packet(repo: Path) -> tuple[Path, str]:
                 quantization_contract="BitsAndBytesConfig via quantization_config",
                 bad_load_in_4bit_kwarg_forwarded=False,
                 compression_frontier_gate_required=True,
+                hf_vault_source_of_truth=True,
+                adapter_source_preference="HF_VAULT_FIRST",
+                arm_isolation_mode="ARM_MAJOR_UNLOAD_AFTER_EACH_ARM",
+                stream_rows_to_disk=True,
+                row_ladder=[3, 10, 25, 50, 100],
+                default_row_ladder_stage=3,
+                partial_output_rescue_required=True,
+                gpu_memory_ledger_required=True,
+                assessment_only_return_required=True,
                 g2_compression_anchor_internal_sentinel=True,
                 token_economics_required=True,
                 ablation_ladder_required=True,
                 real_arm_authority_requested=True,
                 require_real_arm_config=True,
-                required_adapter_root_env="KT_TRUEGEN_ADAPTER_ROOT",
+                required_adapter_source_env="KT_TRUEGEN_ADAPTER_SOURCE",
+                optional_adapter_root_env="KT_TRUEGEN_ADAPTER_ROOT",
                 default_adapter_root="/kaggle/input/datasets/robertking1995/adapterssafetensors",
                 kaggle_dataset_name=KAGGLE_DATASET_NAME,
                 no_training=True,
@@ -130,7 +143,7 @@ def write_packet(repo: Path) -> tuple[Path, str]:
 
 
 def write_doc(repo: Path, packet_sha: str) -> Path:
-    text = f"""# V17.7.4 Compression Frontier Truegen One Cell
+    text = f"""# V17.7.4 HF-Vault Memory-Safe Compression Frontier Truegen One Cell
 
 Packet: `packets/{PACKET_NAME}`
 
@@ -138,7 +151,7 @@ Kaggle dataset name: `{KAGGLE_DATASET_NAME}`
 
 SHA256: `{packet_sha}`
 
-This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
+This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It prefers the HF final-only adapter vault, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 
 ```python
 from pathlib import Path
@@ -154,7 +167,12 @@ os.environ["KT_NO_V18"] = "1"
 os.environ["KT_TRUEGEN_REQUIRE_REAL_ARM_CONFIG"] = "1"
 os.environ["KT_FORBID_SMOKE_CONFIG"] = "1"
 os.environ["KT_FORBID_BASE_FALLBACK_AS_ADAPTER"] = "1"
-os.environ.setdefault("KT_TRUEGEN_ADAPTER_ROOT", "/kaggle/input/datasets/robertking1995/adapterssafetensors")
+os.environ.setdefault("KT_TRUEGEN_ADAPTER_SOURCE", "hf")
+os.environ.setdefault("KT_TRUEGEN_LADDER_STAGE", "3")
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True,max_split_size_mb:64")
+# Use local only if HF is unavailable and a Kaggle adapter dataset is attached.
+# os.environ["KT_TRUEGEN_ADAPTER_SOURCE"] = "local"
+# os.environ.setdefault("KT_TRUEGEN_ADAPTER_ROOT", "/kaggle/input/datasets/robertking1995/adapterssafetensors")
 
 candidates = [
     Path("/kaggle/input/{KAGGLE_DATASET_NAME}/{PACKET_NAME}"),
@@ -164,7 +182,7 @@ packet = next((p for p in candidates if p.exists()), None)
 if packet is None:
     raise FileNotFoundError("missing {PACKET_NAME}")
 
-work = Path("/kaggle/working/ktv1774_real_arm_truegen_packet")
+work = Path("/kaggle/working/ktv1774_hf_vault_memory_packet")
 work.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(packet) as archive:
     archive.extractall(work)
@@ -177,7 +195,7 @@ print("assessment outputs:", sorted(Path("/kaggle/working").glob("**/KTV1774_TRU
 print("hf_dataset_url:", os.environ.get("KT_HF_DATASET_URL", "HF_UPLOAD_NOT_RUN_BY_REPO_SIDE_LANE"))
 ```
 """
-    return write_text(repo / "docs" / "V17_7_4_COMPRESSION_FRONTIER_TRUEGEN_ONE_CELL.md", text)
+    return write_text(repo / "docs" / "V17_7_4_HF_VAULT_MEMORY_TRUEGEN_ONE_CELL.md", text)
 
 
 def write_text(path: Path, text: str) -> Path:
@@ -194,8 +212,8 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     additions = [
         (repo / "configs" / "v17_7_4" / "arm_model_config.json", "real_arm_model_config"),
         (repo / "runtime" / "v17_7_4" / "KT_V1774_TRUEGEN_ARM_CORE.py", "truegen_model_loader_runtime"),
-        (packet, "compression_frontier_truegen_runtime_packet"),
-        (doc, "compression_frontier_truegen_one_cell_runbook"),
+        (packet, "hf_vault_memory_safe_truegen_runtime_packet"),
+        (doc, "hf_vault_memory_safe_truegen_one_cell_runbook"),
         (repo / "reports" / "g2_compression_anchor_receipt.json", "g2_compression_anchor_receipt"),
         (repo / "reports" / "kt_system_wiring_map.json", "kt_system_wiring_map"),
         (repo / "reports" / "kt_hat_compact_contract_receipt.json", "kt_hat_compact_contract_receipt"),
@@ -212,6 +230,9 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
         (repo / "reports" / "v17_7_4_smoke_vs_real_config_separation_receipt.json", "smoke_vs_real_config_separation_receipt"),
         (repo / "reports" / "v17_7_4_truegen_smoke_assessment_import_receipt.json", "smoke_assessment_import_receipt"),
         (repo / "reports" / "v17_7_4_truegen_smoke_limitations_receipt.json", "smoke_limitations_receipt"),
+        (repo / "reports" / "v17_7_4_hf_vault_memory_pattern_receipt.json", "hf_vault_memory_pattern_receipt"),
+        (repo / "reports" / "v17_7_4_hf_vault_adapter_manifest_receipt.json", "hf_vault_adapter_manifest_receipt"),
+        (repo / "reports" / "v17_7_4_memory_execution_policy_receipt.json", "memory_execution_policy_receipt"),
     ]
     changed = []
     for path, role in additions:
@@ -254,6 +275,60 @@ def build() -> dict[str, Any]:
     repo = root()
     packet, packet_sha = write_packet(repo)
     doc = write_doc(repo, packet_sha)
+    config = read_json(repo / "configs" / "v17_7_4" / "arm_model_config.json")
+    write_json(
+        repo / "reports" / "v17_7_4_hf_vault_memory_pattern_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.hf_vault_memory_pattern_receipt.v1",
+            status="PASS",
+            historical_pattern_reinherited="KT13_FINAL_ONLY_HF_VAULT_ASSESSMENT_ONLY",
+            hf_vault_source_of_truth=True,
+            adapter_source_preference=config.get("adapter_source_preference"),
+            arm_isolation_mode=config.get("arm_isolation_mode"),
+            stream_rows_to_disk=config.get("stream_rows_to_disk") is True,
+            row_ladder=config.get("row_ladder"),
+            default_row_ladder_stage=config.get("default_row_ladder_stage"),
+            no_heavy_artifact_return=True,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        repo / "reports" / "v17_7_4_hf_vault_adapter_manifest_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.hf_vault_adapter_manifest_receipt.v1",
+            status="PASS",
+            hf_vault_repo=config.get("hf_vault_repo"),
+            adapter_source_preference=config.get("adapter_source_preference"),
+            adapter_arms=[
+                {
+                    "arm_id": arm.get("arm_id"),
+                    "adapter_hf_repo": arm.get("adapter_hf_repo"),
+                    "adapter_hf_subfolder": arm.get("adapter_hf_subfolder", ""),
+                    "adapter_path_fallback": arm.get("adapter_path", ""),
+                    "adapter_sha256_expected": arm.get("adapter_sha256_optional", ""),
+                }
+                for arm in config.get("arms", [])
+                if arm.get("adapter_required_for_real_authority") is True
+            ],
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        repo / "reports" / "v17_7_4_memory_execution_policy_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.memory_execution_policy_receipt.v1",
+            status="PASS",
+            arm_execution_order="ARM_MAJOR_ONE_ARM_AT_A_TIME",
+            unload_between_arms=True,
+            gpu_memory_ledger_required=True,
+            partial_output_rescue_required=True,
+            assessment_only_return_required=True,
+            row_ladder=config.get("row_ladder"),
+            default_row_ladder_stage=config.get("default_row_ladder_stage"),
+            max_new_tokens=config.get("max_new_tokens"),
+            claim_ceiling_preserved=True,
+        ),
+    )
     registry_delta = update_registry(repo, packet, packet_sha, doc)
     summary = authority(
         schema_id="kt.v17_7_4.compression_frontier_builder_summary.v1",
