@@ -1,0 +1,39 @@
+{
+  "$id": "kt.v17_7_4.model_loader_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "bad_load_in_4bit_kwarg_forwarded": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "loader_contract": {
+      "const": "AutoModelForCausalLM.from_pretrained"
+    },
+    "quantization_contract": {
+      "const": "BitsAndBytesConfig via quantization_config when load_in_4bit=true"
+    },
+    "receipts": {
+      "items": {
+        "$ref": "kt.v17_7_4.model_loader_contract.v1"
+      },
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "BLOCKED"
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "loader_contract",
+    "quantization_contract",
+    "bad_load_in_4bit_kwarg_forwarded",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

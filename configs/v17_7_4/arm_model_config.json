@@ -83,12 +83,16 @@
   ],
   "base_model_repo": "Qwen/Qwen2.5-7B-Instruct",
   "batch_size": 1,
+  "bnb_4bit_compute_dtype": "float16",
+  "bnb_4bit_quant_type": "nf4",
+  "bnb_4bit_use_double_quant": true,
   "claim_ceiling_preserved": true,
   "config_profile": "REAL_ARM",
   "device_map": "auto",
   "generation_seed": 1337,
   "learned_router_superiority_claim": false,
   "load_in_4bit": true,
+  "low_cpu_mem_usage": true,
   "max_new_tokens": 128,
   "policy_optimization_authorized": false,
   "promotion_authority": false,
@@ -99,5 +103,6 @@
   "schema_id": "kt.v17_7_4.arm_model_config.real_arm.v1",
   "smoke_config": false,
   "torch_dtype": "auto",
+  "trust_remote_code": false,
   "v18_runtime_authority": false
 }

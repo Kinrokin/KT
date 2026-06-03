@@ -1,0 +1,41 @@
+{
+  "$id": "kt.v17_7_4.adapter_load_contract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_loader_mode": {
+      "enum": [
+        "PEFT_MODEL_FROM_PRETRAINED",
+        "BASE_MODEL_ONLY",
+        "PROMPT_OVERLAY_ONLY",
+        "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE",
+        "LOCAL_TEST_BACKEND_NO_ADAPTER_AUTHORITY"
+      ]
+    },
+    "adapter_ref": {
+      "type": "string"
+    },
+    "adapter_required": {
+      "type": "boolean"
+    },
+    "adapter_source_status": {
+      "type": "string"
+    },
+    "arm_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    }
+  },
+  "required": [
+    "arm_id",
+    "adapter_ref",
+    "adapter_loader_mode",
+    "adapter_source_status",
+    "adapter_required",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
