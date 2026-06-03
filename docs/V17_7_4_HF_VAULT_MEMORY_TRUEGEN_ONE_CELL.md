@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_hf_vault_memory_v1.zip`
 
 Kaggle dataset name: `ktv1774-hf-vault-memory-v1`
 
-SHA256: `b1c189b1fe981e7a5f0a2256e13d5f4dc4d6d8b03768c791b7503b1987754b27`
+SHA256: `4209a8f9745418779bd844a10a26845d77e39bbe2ffb8216c3572670d7525556`
 
 This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It uses the HF final-only adapter vault, prefers a wrapper-normalized local adapter root when present, otherwise loads HF adapter subfolders, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 

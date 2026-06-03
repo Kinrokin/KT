@@ -55,6 +55,7 @@ INTENDED_REAL_BASE_MODELS = {
 ASSESSMENT_FILES = [
     "truegen_predictions.jsonl",
     "truegen_arm_result_matrix.jsonl",
+    "truegen_prompt_manifest.jsonl",
     "truegen_benchmark_scorecard.json",
     "truegen_replay_correlation_scorecard.json",
     "truegen_negative_transfer_by_arm.json",
@@ -87,6 +88,12 @@ ASSESSMENT_FILES = [
     "memory_execution_policy_receipt.json",
     "gpu_memory_ledger.jsonl",
     "row_ladder_receipt.json",
+    "v17_7_4_row_authority_receipt.json",
+    "v17_7_4_benchmark_source_integrity_receipt.json",
+    "v17_7_4_prompt_integrity_receipt.json",
+    "g2_sentinel_replay_manifest.json",
+    "g2_sentinel_sample_id_manifest.json",
+    "g2_sentinel_replay_scorecard.json",
     "streaming_generation_receipt.json",
     "partial_output_rescue_receipt.json",
     "assessment_only_packaging_receipt.json",
@@ -119,6 +126,16 @@ ADAPTER_SOURCE_HF_VAULT = "HF_VAULT_ADAPTER_SOURCE"
 ADAPTER_SOURCE_LOCAL_PATH = "LOCAL_ADAPTER_SOURCE"
 ADAPTER_SOURCE_NONE = "NO_ADAPTER_SOURCE"
 DEFAULT_ROW_LADDER = [3, 10, 25, 50, 100]
+REAL_BENCHMARK_MODE = "REAL_BENCHMARK_GAUGE"
+G2_SENTINEL_MODE = "G2_COMPRESSION_SENTINEL"
+DIAGNOSTIC_MODE = "DIAGNOSTIC_BOUNDARY_MINIFURNACE"
+ROW_REQUEST_ENVS = [
+    "KT_TRUEGEN_TARGET_ROWS",
+    "KT_MINIFURNACE_ROWS",
+    "KT_TRUEGEN_MIN_ROWS",
+    "KT_BENCH_SAMPLES_PER_DATASET",
+    "KT_TRUEGEN_ROW_LIMIT",
+]
 
 G2_COMPRESSION_ANCHOR = {
     "base_raw": {
@@ -229,13 +246,34 @@ def safe_ratio(numerator: float, denominator: float) -> float:
     return round(float(numerator) / max(float(denominator), 1.0), 6)
 
 
+def expected_answer_for_row(row: dict[str, Any]) -> str:
+    return str(
+        row.get("expected_answer")
+        or row.get("expected_label_or_oracle_label")
+        or row.get("answer")
+        or ""
+    ).strip()
+
+
+def question_text_for_row(row: dict[str, Any]) -> str:
+    return str(row.get("question_text") or row.get("question") or row.get("prompt") or "").strip()
+
+
+def row_measurement_mode(config: dict[str, Any]) -> str:
+    return str(
+        os.environ.get("KT_TRUEGEN_MEASUREMENT_MODE")
+        or config.get("measurement_mode")
+        or DIAGNOSTIC_MODE
+    ).strip().upper()
+
+
 def exact_expected_match(value: str, row: dict[str, Any]) -> bool:
-    expected = str(row.get("expected_label_or_oracle_label", ""))
+    expected = expected_answer_for_row(row)
     return bool(expected) and normalize_answer(value) == normalize_answer(expected)
 
 
 def output_contains_expected(value: str, row: dict[str, Any]) -> bool:
-    expected = str(row.get("expected_label_or_oracle_label", ""))
+    expected = expected_answer_for_row(row)
     return bool(expected) and normalize_answer(expected) in normalize_answer(value)
 
 
@@ -378,6 +416,153 @@ def load_row_manifest(path: Path, row_limit: int | None = None) -> dict[str, Any
     return manifest
 
 
+def prompt_contains_only_metadata(row: dict[str, Any]) -> bool:
+    question = question_text_for_row(row)
+    sample_id = str(row.get("sample_id", ""))
+    diagnostic_markers = [
+        "fresh-generation diagnostic boundary row",
+        "boundaries=",
+        "route-boundary",
+        "source_seed_sample_id",
+    ]
+    if sample_id.startswith("v1773-acq-"):
+        return True
+    normalized = normalize_answer(question)
+    return any(marker in normalized for marker in diagnostic_markers)
+
+
+def validate_benchmark_source_integrity(manifest: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    mode = row_measurement_mode(config)
+    defects: list[dict[str, Any]] = []
+    rows = manifest.get("rows", [])
+    for row in rows:
+        question_present = bool(str(row.get("question_text") or "").strip())
+        expected_present = bool(expected_answer_for_row(row))
+        benchmark_source = row.get("benchmark_source", "")
+        metadata_only = prompt_contains_only_metadata(row)
+        if mode == REAL_BENCHMARK_MODE:
+            row_defects = []
+            if benchmark_source != "REAL_BENCHMARK_ROW":
+                row_defects.append("benchmark_source_not_real")
+            if not question_present:
+                row_defects.append("question_text_missing")
+            if not expected_present:
+                row_defects.append("expected_answer_missing")
+            if metadata_only:
+                row_defects.append("prompt_contains_only_metadata")
+            if row_defects:
+                defects.append({"sample_id": row.get("sample_id"), "dataset": row.get("dataset"), "defects": row_defects})
+    status = "PASS" if not defects else "BLOCKED"
+    return authority(
+        schema_id="kt.v17_7_4.benchmark_source_integrity_receipt.v1",
+        status=status,
+        measurement_mode=mode,
+        row_count=len(rows),
+        real_benchmark_rows=sum(1 for row in rows if row.get("benchmark_source") == "REAL_BENCHMARK_ROW"),
+        diagnostic_rows=sum(1 for row in rows if str(row.get("sample_id", "")).startswith("v1773-acq-")),
+        defects=defects[:50],
+        claim_ceiling_preserved=True,
+    )
+
+
+def build_prompt_manifest_rows(manifest: dict[str, Any], config: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for row in manifest.get("rows", []):
+        question = question_text_for_row(row)
+        expected = expected_answer_for_row(row)
+        for arm in enabled_arms(config):
+            prompt = materialize_prompt(row, arm)
+            expected_revealed = bool(
+                expected
+                and (
+                    f"expected answer: {expected}".lower() in prompt.lower()
+                    or f"correct answer: {expected}".lower() in prompt.lower()
+                    or f"#### {expected}" in prompt
+                )
+            )
+            rows.append(
+                authority(
+                    schema_id="kt.v17_7_4.truegen_prompt_manifest_row.v1",
+                    sample_id=row.get("sample_id"),
+                    dataset=row.get("dataset"),
+                    task_family=row.get("task_family"),
+                    arm_id=arm.get("arm_id"),
+                    question_text_hash=sha256_text(question),
+                    expected_answer_hash=sha256_text(expected),
+                    prompt_hash=sha256_text(prompt),
+                    benchmark_question_present=bool(question),
+                    expected_answer_present=bool(expected),
+                    prompt_contains_question_text=bool(question) and question in prompt,
+                    prompt_contains_expected_answer_for_scoring_only=bool(expected) and not expected_revealed,
+                    expected_answer_visible_to_model=expected_revealed,
+                    prompt_contains_only_metadata=prompt_contains_only_metadata(row),
+                    answer_format_contract=row.get("answer_format_contract") or row.get("answer_type") or "emit final answer only",
+                    scorer_contract=arm.get("scoring_method", row.get("scoring_rule", "contains_expected_label")),
+                    claim_ceiling_preserved=True,
+                )
+            )
+    return rows
+
+
+def validate_prompt_integrity(prompt_rows: list[dict[str, Any]], config: dict[str, Any]) -> dict[str, Any]:
+    mode = row_measurement_mode(config)
+    defects = []
+    if not prompt_rows:
+        defects.append({"sample_id": "", "arm_id": "", "defects": ["prompt_manifest_incomplete"]})
+    for row in prompt_rows:
+        row_defects = []
+        if not row["prompt_contains_question_text"]:
+            row_defects.append("prompt_lacks_question_text")
+        if not row["expected_answer_present"]:
+            row_defects.append("expected_answer_missing")
+        if row["expected_answer_visible_to_model"]:
+            row_defects.append("expected_answer_visible_to_model")
+        if mode == REAL_BENCHMARK_MODE and row["prompt_contains_only_metadata"]:
+            row_defects.append("prompt_contains_only_metadata")
+        if row_defects:
+            defects.append({"sample_id": row["sample_id"], "arm_id": row["arm_id"], "defects": row_defects})
+    status = "PASS" if not defects else "BLOCKED"
+    return authority(
+        schema_id="kt.v17_7_4.prompt_integrity_receipt.v1",
+        status=status,
+        measurement_mode=mode,
+        prompt_rows=len(prompt_rows),
+        defects=defects[:50],
+        prompt_manifest_complete=bool(prompt_rows),
+        claim_ceiling_preserved=True,
+    )
+
+
+def g2_sentinel_manifest_receipt(runtime_root: Path) -> dict[str, Any]:
+    candidates = [
+        Path(os.environ["KT_G2_SENTINEL_MANIFEST"]) if os.environ.get("KT_G2_SENTINEL_MANIFEST") else None,
+        runtime_root / "runtime_inputs" / "g2_sentinel_sample_id_manifest.json",
+        runtime_root / "runtime_inputs" / "g2_sentinel_replay_manifest.json",
+    ]
+    existing = [path for path in candidates if path is not None and path.exists()]
+    if not existing:
+        return authority(
+            schema_id="kt.v17_7_4.g2_sentinel_replay_manifest.v1",
+            status="BLOCKED",
+            outcome="KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+            exact_g2_sample_ids_recovered=False,
+            required_rows=G2_COMPRESSION_ANCHOR["base_raw"]["total"],
+            claim_ceiling_preserved=True,
+        )
+    payload = read_json(existing[0])
+    rows = payload.get("rows") or payload.get("sample_ids") or []
+    return authority(
+        schema_id="kt.v17_7_4.g2_sentinel_replay_manifest.v1",
+        status="PASS" if len(rows) >= G2_COMPRESSION_ANCHOR["base_raw"]["total"] else "BLOCKED",
+        outcome="G2_SENTINEL_SOURCE_BOUND" if len(rows) >= G2_COMPRESSION_ANCHOR["base_raw"]["total"] else "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+        manifest_path=str(existing[0]),
+        exact_g2_sample_ids_recovered=len(rows) >= G2_COMPRESSION_ANCHOR["base_raw"]["total"],
+        recovered_rows=len(rows),
+        required_rows=G2_COMPRESSION_ANCHOR["base_raw"]["total"],
+        claim_ceiling_preserved=True,
+    )
+
+
 def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
     template = arm.get("prompt_template_id", "raw")
     prefix = {
@@ -391,6 +576,17 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
         "routed_hat_repair": "Use compact repair discipline only if needed. Emit final answer clearly.",
         "routed_tribunal": "Use minimal tribunal checking for contradictions. Emit final answer clearly.",
     }.get(template, "Answer directly.")
+    question = question_text_for_row(row)
+    answer_format = str(row.get("answer_format_contract") or row.get("answer_type") or "emit final answer only").strip()
+    if row.get("benchmark_source") == "REAL_BENCHMARK_ROW":
+        return "\n".join(
+            [
+                prefix,
+                f"Question: {question}",
+                f"Answer format: {answer_format}",
+                "Final:",
+            ]
+        )
     return "\n".join(
         [
             prefix,
@@ -398,7 +594,7 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
             f"Dataset: {row['dataset']}",
             f"Task family: {row['task_family']}",
             f"Boundary: {row['route_boundary_class']}",
-            f"Question: {row['prompt']}",
+            f"Question: {question}",
             "Final:",
         ]
     )
@@ -720,11 +916,16 @@ class GenerationBackend:
 
 
 def score_output(text: str, parsed_answer: str, row: dict[str, Any], method: str) -> tuple[float, bool]:
-    expected = str(row.get("expected_label_or_oracle_label", ""))
+    expected = expected_answer_for_row(row)
     if method == "nonempty_generation":
         correct = bool(text.strip())
     elif method == "exact_normalized":
         correct = normalize_answer(parsed_answer) == normalize_answer(expected)
+    elif method == "multiple_choice_letter":
+        normalized_expected = normalize_answer(expected)
+        normalized_parsed = normalize_answer(parsed_answer)
+        first_token = normalize_answer((parsed_answer.strip()[:1] or text.strip()[:1]))
+        correct = normalized_parsed == normalized_expected or first_token == normalized_expected
     else:
         correct = normalize_answer(expected) in normalize_answer(text) if expected else False
     return (1.0 if correct else 0.0), correct
@@ -758,36 +959,61 @@ def accelerator_memory_snapshot(label: str, arm_id: str | None = None) -> dict[s
     return payload
 
 
+def first_row_request_env() -> tuple[int | None, str]:
+    for env_name in ROW_REQUEST_ENVS:
+        value = os.environ.get(env_name)
+        if value:
+            return int(value), env_name
+    return None, ""
+
+
 def resolve_effective_row_limit(config: dict[str, Any]) -> tuple[int, dict[str, Any]]:
-    if os.environ.get("KT_TRUEGEN_ROW_LIMIT"):
-        row_limit = int(os.environ["KT_TRUEGEN_ROW_LIMIT"])
-        source = "KT_TRUEGEN_ROW_LIMIT"
-    else:
-        ladder = config.get("row_ladder") or DEFAULT_ROW_LADDER
-        if not isinstance(ladder, list) or not ladder:
-            ladder = DEFAULT_ROW_LADDER
-        if os.environ.get("KT_TRUEGEN_LADDER_STAGE"):
-            row_limit = int(os.environ["KT_TRUEGEN_LADDER_STAGE"])
-            source = "KT_TRUEGEN_LADDER_STAGE"
-        elif config.get("default_row_ladder_stage") is not None:
-            row_limit = int(config["default_row_ladder_stage"])
-            source = "config.default_row_ladder_stage"
-        else:
-            row_limit = int(config.get("row_limit", 100))
-            source = "config.row_limit"
-        allowed = sorted({int(value) for value in ladder})
-        if source != "config.row_limit" and allowed:
+    requested, source = first_row_request_env()
+    memory_gate_override_used = False
+    reason_if_not_honored = ""
+    ladder = config.get("row_ladder") or DEFAULT_ROW_LADDER
+    if not isinstance(ladder, list) or not ladder:
+        ladder = DEFAULT_ROW_LADDER
+    allowed = sorted({int(value) for value in ladder})
+    max_rows = int(config.get("row_limit", requested or config.get("row_limit", 100)))
+
+    if requested is not None:
+        row_limit = requested
+    elif os.environ.get("KT_TRUEGEN_LADDER_STAGE"):
+        row_limit = int(os.environ["KT_TRUEGEN_LADDER_STAGE"])
+        source = "KT_TRUEGEN_LADDER_STAGE"
+        if allowed:
             row_limit = min((value for value in allowed if value >= row_limit), default=max(allowed))
-    max_rows = int(config.get("row_limit", row_limit))
-    row_limit = max(1, min(row_limit, max_rows))
+    elif config.get("default_row_ladder_stage") is not None:
+        row_limit = int(config["default_row_ladder_stage"])
+        source = "config.default_row_ladder_stage"
+        if allowed:
+            row_limit = min((value for value in allowed if value >= row_limit), default=max(allowed))
+    else:
+        row_limit = int(config.get("row_limit", 100))
+        source = "config.row_limit"
+
+    if row_limit < 1:
+        row_limit = 1
+    if row_limit > max_rows:
+        reason_if_not_honored = f"requested row limit {row_limit} exceeds config.row_limit {max_rows}"
+        row_limit = max_rows
+
+    row_limit_honored = requested is None or row_limit == requested
     receipt = authority(
-        schema_id="kt.v17_7_4.row_ladder_receipt.v1",
-        status="PASS",
+        schema_id="kt.v17_7_4.row_authority_receipt.v1",
+        status="PASS" if row_limit_honored else "BLOCKED",
+        requested_row_limit=requested,
+        effective_row_limit=row_limit,
         row_limit=row_limit,
         row_limit_source=source,
-        row_ladder=config.get("row_ladder") or DEFAULT_ROW_LADDER,
+        row_limit_honored=row_limit_honored,
+        memory_gate_override_used=memory_gate_override_used,
+        reason_if_not_honored=reason_if_not_honored,
+        operator_env_snapshot={name: os.environ.get(name, "") for name in [*ROW_REQUEST_ENVS, "KT_TRUEGEN_LADDER_STAGE", "KT_TRUEGEN_MEASUREMENT_MODE"]},
+        row_ladder=ladder,
         max_configured_rows=max_rows,
-        ladder_policy="3_TO_10_TO_25_TO_50_TO_100_BY_ENV_OR_CONFIG_DEFAULT",
+        ladder_policy="ENV_ROW_REQUEST_OVERRIDES_DEFAULT_ROW_LADDER_STAGE_EXACTLY",
     )
     return row_limit, receipt
 
@@ -841,6 +1067,9 @@ def build_arm_result_row(
         adapter_source_status=adapter_source_status,
         model_loader_mode=model_loader_mode,
         adapter_loader_mode=adapter_loader_mode,
+        benchmark_source=row.get("benchmark_source", ""),
+        question_text_hash=sha256_text(question_text_for_row(row)),
+        expected_answer_hash=sha256_text(expected_answer_for_row(row)),
         prompt_hash=sha256_text(prompt),
         output_text=output_text[:2000],
         output_hash=sha256_text(output_text),
@@ -1397,11 +1626,22 @@ def write_assessment(out: Path) -> Path:
 
 def write_blocker(out: Path, run_id: str, reason: str, defects: list[str] | None = None) -> dict[str, Any]:
     write_json(out / "partial_output_rescue_receipt.json", partial_output_rescue_receipt(out, run_id, status="BLOCKED"))
+    outcome = "KTG3FULL_V17_7_4_BLOCKED__GENERATION_FAILURE"
+    for marker in [
+        "KT_BLOCKED__ROW_REQUEST_NOT_HONORED",
+        "KT_BLOCKED__BENCHMARK_PROMPT_INTEGRITY_DEFECT",
+        "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+        "KT_BLOCKED__PROMPT_MANIFEST_INCOMPLETE",
+        "KT_BLOCKED__CLAIM_CEILING_DRIFT",
+    ]:
+        if marker in reason:
+            outcome = marker
+            break
     payload = authority(
         schema_id="kt.v17_7_4.truegen_blocker_receipt.v1",
         status="BLOCKED",
         run_id=run_id,
-        outcome="KTG3FULL_V17_7_4_BLOCKED__GENERATION_FAILURE",
+        outcome=outcome,
         reason=reason,
         defects=defects or [],
         partial_rows_preserved=count_jsonl_rows(out / "truegen_arm_result_matrix.jsonl"),
@@ -1436,8 +1676,36 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         if defects:
             return write_blocker(out, run_id, "arm model config contract failed", defects)
         row_limit, row_ladder = resolve_effective_row_limit(config)
-        manifest = load_row_manifest(row_manifest_path, row_limit=row_limit)
         write_json(out / "row_ladder_receipt.json", row_ladder)
+        write_json(out / "v17_7_4_row_authority_receipt.json", row_ladder)
+        if row_ladder["status"] != "PASS":
+            raise RuntimeError(f"KT_BLOCKED__ROW_REQUEST_NOT_HONORED: {row_ladder.get('reason_if_not_honored', '')}")
+        manifest = load_row_manifest(row_manifest_path, row_limit=row_limit)
+        measurement_mode = row_measurement_mode(config)
+        if measurement_mode == G2_SENTINEL_MODE:
+            g2_receipt = g2_sentinel_manifest_receipt(runtime_root)
+            write_json(out / "g2_sentinel_replay_manifest.json", g2_receipt)
+            write_json(out / "g2_sentinel_sample_id_manifest.json", g2_receipt)
+            write_json(
+                out / "g2_sentinel_replay_scorecard.json",
+                authority(
+                    schema_id="kt.v17_7_4.g2_sentinel_replay_scorecard.v1",
+                    status=g2_receipt["status"],
+                    outcome=g2_receipt["outcome"],
+                    anchor=G2_COMPRESSION_ANCHOR,
+                    claim_ceiling_preserved=True,
+                ),
+            )
+            if g2_receipt["status"] != "PASS":
+                raise RuntimeError("KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING: exact G2 sentinel sample IDs/prompts are not bound")
+        source_integrity = validate_benchmark_source_integrity(manifest, config)
+        prompt_manifest_rows = build_prompt_manifest_rows(manifest, config)
+        prompt_integrity = validate_prompt_integrity(prompt_manifest_rows, config)
+        write_json(out / "v17_7_4_benchmark_source_integrity_receipt.json", source_integrity)
+        write_json(out / "v17_7_4_prompt_integrity_receipt.json", prompt_integrity)
+        write_jsonl(out / "truegen_prompt_manifest.jsonl", prompt_manifest_rows)
+        if source_integrity["status"] != "PASS" or prompt_integrity["status"] != "PASS":
+            raise RuntimeError("KT_BLOCKED__BENCHMARK_PROMPT_INTEGRITY_DEFECT: real benchmark source or prompt integrity failed")
         write_json(out / "memory_execution_policy_receipt.json", memory_execution_policy_receipt(config))
         write_json(out / "hf_vault_adapter_manifest_receipt.json", hf_vault_adapter_manifest_receipt(config))
         write_json(
@@ -1453,8 +1721,10 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 enabled_adapter_arms=[arm["arm_id"] for arm in enabled_arms(config) if arm["arm_id"] in ADAPTER_ARM_IDS],
                 bundled_example_config_used=config_path.name.endswith(".example.json"),
                 adapter_source_preference=adapter_source_preference(config),
+                measurement_mode=measurement_mode,
                 effective_row_limit=row_limit,
                 row_ladder=row_ladder,
+                row_limit_honored=row_ladder.get("row_limit_honored"),
                 stream_rows_to_disk=bool(config.get("stream_rows_to_disk", True)),
                 arm_isolation_mode=str(config.get("arm_isolation_mode", "ARM_MAJOR_UNLOAD_AFTER_EACH_ARM")),
             ),
