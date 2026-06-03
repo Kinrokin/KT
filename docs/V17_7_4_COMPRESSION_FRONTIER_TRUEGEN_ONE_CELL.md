@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_compression_frontier_v1.zip`
 
 Kaggle dataset name: `ktv1774-compression-frontier-v1`
 
-SHA256: `1ebf04d518589f22a6944692d316553b9255ebaff75793c2ae3386530ba84851`
+SHA256: `2bf503adc99187c03fbdc646a0c6a6bbdff7e47f607974d6dc42fc562f87b8e2`
 
 This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 
