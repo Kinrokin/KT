@@ -4,9 +4,9 @@ Packet: `packets/ktv1774_hf_vault_memory_v1.zip`
 
 Kaggle dataset name: `ktv1774-hf-vault-memory-v1`
 
-SHA256: `4c2353bcfa8594499e2f34724c5bd33a6b84ef383272edf476a4f89243490ce1`
+SHA256: `b1c189b1fe981e7a5f0a2256e13d5f4dc4d6d8b03768c791b7503b1987754b27`
 
-This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It prefers the HF final-only adapter vault, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
+This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It uses the HF final-only adapter vault, prefers a wrapper-normalized local adapter root when present, otherwise loads HF adapter subfolders, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 
 ```python
 from pathlib import Path
@@ -25,9 +25,9 @@ os.environ["KT_FORBID_BASE_FALLBACK_AS_ADAPTER"] = "1"
 os.environ.setdefault("KT_TRUEGEN_ADAPTER_SOURCE", "hf")
 os.environ.setdefault("KT_TRUEGEN_LADDER_STAGE", "3")
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True,max_split_size_mb:64")
-# Use local only if HF is unavailable and a Kaggle adapter dataset is attached.
-# os.environ["KT_TRUEGEN_ADAPTER_SOURCE"] = "local"
-# os.environ.setdefault("KT_TRUEGEN_ADAPTER_ROOT", "/kaggle/input/datasets/robertking1995/adapterssafetensors")
+# If the wrapper sets KT_TRUEGEN_ADAPTER_ROOT after normalizing the HF vault,
+# the runtime automatically prefers that local adapter root over HF direct load.
+# Direct HF fallback still requires adapter_hf_subfolder and never loads the repo root alone.
 
 candidates = [
     Path("/kaggle/input/ktv1774-hf-vault-memory-v1/ktv1774_hf_vault_memory_v1.zip"),

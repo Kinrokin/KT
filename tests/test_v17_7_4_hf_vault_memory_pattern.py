@@ -47,8 +47,10 @@ def _test_config(core, row_limit: int = 2) -> dict:
     }
 
 
-def test_real_config_prefers_hf_vault_adapter_refs() -> None:
+def test_real_config_uses_hf_vault_subfolders_when_no_local_root(monkeypatch) -> None:
     core = _core()
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_ROOT", raising=False)
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_SOURCE", raising=False)
     config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
     assert config["adapter_source_preference"] == "HF_VAULT_FIRST"
     assert config["hf_vault_adapter_required"] is True
@@ -61,6 +63,21 @@ def test_real_config_prefers_hf_vault_adapter_refs() -> None:
         receipt = core.validate_adapter_source(arm, config)
         assert receipt["adapter_source_status"] == "HF_ADAPTER_SOURCE_BOUND_RUNTIME_LOAD_REQUIRED"
         assert receipt["hf_vault_source_of_truth"] is True
+
+
+def test_real_config_prefers_normalized_local_adapter_root_when_present(tmp_path, monkeypatch) -> None:
+    core = _core()
+    monkeypatch.setenv("KT_TRUEGEN_ADAPTER_ROOT", str(tmp_path))
+    monkeypatch.setenv("KT_TRUEGEN_ADAPTER_SOURCE", "hf")
+    config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
+
+    for arm in config["arms"]:
+        if arm["arm_id"] not in core.ADAPTER_ARM_IDS:
+            continue
+        expected = arm["expected_adapter_id"]
+        assert core.adapter_source_kind_for_arm(arm, config) == core.ADAPTER_SOURCE_LOCAL_PATH
+        assert core.adapter_ref_for_arm(arm, config) == str(tmp_path / "adapters" / expected)
+        assert core.adapter_load_kwargs_for_arm(arm, config) == {}
 
 
 def test_row_ladder_defaults_to_three_for_memory_safe_entry() -> None:
@@ -135,4 +152,3 @@ def test_blocked_runtime_preserves_partial_rows_and_assessment(tmp_path, monkeyp
     assert "truegen_arm_result_matrix.jsonl" in names
     assert "partial_output_rescue_receipt.json" in names
     assert "BLOCKER_RECEIPT.json" in names
-
