@@ -62,6 +62,8 @@ ASSESSMENT_FILES = [
     "truegen_claim_admissibility_casefile.json",
     "runtime_telemetry_receipt.json",
     "arm_model_config_receipt.json",
+    "model_loader_receipt.json",
+    "adapter_loader_receipt.json",
     "final_summary.json",
 ]
 
@@ -81,6 +83,12 @@ FORBIDDEN_SUCCESS_STATUSES = {
 FRESH_SOURCE = "FRESH_MODEL_GENERATION"
 FRESH_STATUS = "MODEL_GENERATED_AND_SCORED"
 BLOCKED_STATUS = "BLOCKED_FRESH_GENERATION_FAILED"
+MODEL_LOADER_AUTO_BNB_4BIT = "AUTO_MODEL_FOR_CAUSAL_LM_FROM_PRETRAINED_WITH_BNB_QUANTIZATION_CONFIG"
+MODEL_LOADER_AUTO_STANDARD = "AUTO_MODEL_FOR_CAUSAL_LM_FROM_PRETRAINED"
+ADAPTER_LOADER_PEFT = "PEFT_MODEL_FROM_PRETRAINED"
+ADAPTER_LOADER_BASE = "BASE_MODEL_ONLY"
+ADAPTER_LOADER_PROMPT_OVERLAY = "PROMPT_OVERLAY_ONLY"
+ADAPTER_LOADER_BLOCKED_BASE_FALLBACK = "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE"
 
 
 def authority(**extra: Any) -> dict[str, Any]:
@@ -239,7 +247,7 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
 def expand_runtime_path(value: str, config: dict[str, Any]) -> str:
     adapter_root = os.environ.get(config.get("adapter_root_env", "KT_TRUEGEN_ADAPTER_ROOT"), config.get("adapter_root_default", ""))
     expanded = value.replace("${KT_TRUEGEN_ADAPTER_ROOT}", adapter_root).replace("$KT_TRUEGEN_ADAPTER_ROOT", adapter_root)
-    return os.path.expandvars(expanded)
+    return os.path.normpath(os.path.expandvars(expanded))
 
 
 def adapter_ref_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
@@ -254,20 +262,132 @@ def model_repo_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
     return config["base_model_repo"] if model_repo == "BASE" else model_repo
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def build_model_loader_kwargs(config: dict[str, Any], torch_module: Any, bnb_config_cls: Any | None = None) -> tuple[dict[str, Any], str]:
+    kwargs: dict[str, Any] = {"device_map": config.get("device_map", "auto")}
+    dtype_name = str(config.get("torch_dtype", "auto"))
+    dtype = getattr(torch_module, dtype_name, "auto") if dtype_name != "auto" else "auto"
+    if dtype != "auto":
+        kwargs["torch_dtype"] = dtype
+    if config.get("low_cpu_mem_usage", True) is True:
+        kwargs["low_cpu_mem_usage"] = True
+    if "trust_remote_code" in config:
+        kwargs["trust_remote_code"] = bool(config["trust_remote_code"])
+    if "max_memory" in config:
+        kwargs["max_memory"] = config["max_memory"]
+    loader_mode = MODEL_LOADER_AUTO_STANDARD
+    if config.get("load_in_4bit") is True:
+        if bnb_config_cls is None:
+            try:
+                from transformers import BitsAndBytesConfig as bnb_config_cls
+            except Exception as exc:  # noqa: BLE001
+                raise RuntimeError(f"dependency_missing: BitsAndBytesConfig unavailable for 4-bit real-arm load: {exc}") from exc
+        compute_dtype_name = str(config.get("bnb_4bit_compute_dtype", "float16"))
+        compute_dtype = getattr(torch_module, compute_dtype_name, None)
+        if compute_dtype is None:
+            raise RuntimeError(f"invalid bnb_4bit_compute_dtype: {compute_dtype_name}")
+        kwargs["quantization_config"] = bnb_config_cls(
+            load_in_4bit=True,
+            bnb_4bit_quant_type=str(config.get("bnb_4bit_quant_type", "nf4")),
+            bnb_4bit_compute_dtype=compute_dtype,
+            bnb_4bit_use_double_quant=bool(config.get("bnb_4bit_use_double_quant", True)),
+        )
+        loader_mode = MODEL_LOADER_AUTO_BNB_4BIT
+    if "load_in_4bit" in kwargs:
+        raise RuntimeError("bad model loader contract: load_in_4bit must be inside BitsAndBytesConfig, not from_pretrained kwargs")
+    return kwargs, loader_mode
+
+
+def adapter_weight_file(adapter_dir: Path) -> Path | None:
+    for name in ("adapter_model.safetensors", "adapter_model.bin", "pytorch_model.bin"):
+        candidate = adapter_dir / name
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    arm_id = arm["arm_id"]
+    adapter_ref = adapter_ref_for_arm(arm, config)
+    if arm_id not in ADAPTER_ARM_IDS:
+        return authority(
+            schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
+            arm_id=arm_id,
+            adapter_ref=adapter_ref,
+            adapter_loader_mode=ADAPTER_LOADER_PROMPT_OVERLAY if arm_id == "base_kt_hat_compact" else ADAPTER_LOADER_BASE,
+            adapter_source_status="ADAPTER_NOT_REQUIRED_FOR_ARM",
+            adapter_required=False,
+        )
+    if not adapter_ref:
+        raise RuntimeError(f"adapter_load_contract_failed: real adapter arm {arm_id} has no adapter source")
+    if arm.get("adapter_hf_repo") and not arm.get("adapter_path"):
+        return authority(
+            schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
+            arm_id=arm_id,
+            adapter_ref=adapter_ref,
+            adapter_loader_mode=ADAPTER_LOADER_PEFT,
+            adapter_source_status="HF_ADAPTER_SOURCE_BOUND_RUNTIME_LOAD_REQUIRED",
+            adapter_required=True,
+            local_path_checked=False,
+        )
+    adapter_path = Path(adapter_ref)
+    if not adapter_path.exists():
+        raise RuntimeError(f"adapter_load_contract_failed: adapter path missing for {arm_id}: {adapter_path}")
+    config_file = adapter_path / "adapter_config.json"
+    if not config_file.exists():
+        raise RuntimeError(f"adapter_load_contract_failed: adapter_config.json missing for {arm_id}: {adapter_path}")
+    weight_path = adapter_weight_file(adapter_path)
+    if weight_path is None:
+        raise RuntimeError(f"adapter_load_contract_failed: adapter weights missing for {arm_id}: {adapter_path}")
+    expected_sha = str(arm.get("adapter_sha256_optional") or "")
+    actual_sha = sha256_file(weight_path)
+    if expected_sha and actual_sha != expected_sha:
+        raise RuntimeError(
+            f"adapter_load_contract_failed: adapter sha mismatch for {arm_id}: expected {expected_sha}, got {actual_sha}"
+        )
+    return authority(
+        schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
+        arm_id=arm_id,
+        adapter_ref=adapter_ref,
+        adapter_loader_mode=ADAPTER_LOADER_PEFT,
+        adapter_source_status="LOCAL_ADAPTER_SOURCE_VALIDATED",
+        adapter_required=True,
+        local_path_checked=True,
+        adapter_config_present=True,
+        adapter_weight_file=weight_path.name,
+        adapter_weight_sha256=actual_sha,
+        adapter_sha256_verified=bool(expected_sha),
+    )
+
+
 class GenerationBackend:
     def __init__(self) -> None:
         self._model_cache: dict[str, Any] = {}
+        self.model_loader_receipts: list[dict[str, Any]] = []
+        self.adapter_loader_receipts: list[dict[str, Any]] = []
 
-    def generate(self, prompt: str, arm: dict[str, Any], config: dict[str, Any], row: dict[str, Any]) -> tuple[str, str]:
+    def generate(self, prompt: str, arm: dict[str, Any], config: dict[str, Any], row: dict[str, Any]) -> tuple[str, str, str, str]:
         model_repo = model_repo_for_arm(arm, config)
         if model_repo == "__KT_LOCAL_TEST_BACKEND__":
             if os.environ.get("KT_TRUEGEN_ALLOW_TEST_BACKEND") != "1":
                 raise RuntimeError("local test backend requested without KT_TRUEGEN_ALLOW_TEST_BACKEND=1")
             expected = row.get("expected_label_or_oracle_label", "")
-            return f"answer: {expected}", "LOCAL_TEST_BACKEND_NOT_KT_EVIDENCE"
+            return (
+                f"answer: {expected}",
+                "LOCAL_TEST_BACKEND_NOT_KT_EVIDENCE",
+                "LOCAL_TEST_BACKEND_NO_MODEL_AUTHORITY",
+                "LOCAL_TEST_BACKEND_NO_ADAPTER_AUTHORITY",
+            )
         return self._generate_with_transformers(prompt, arm, config)
 
-    def _generate_with_transformers(self, prompt: str, arm: dict[str, Any], config: dict[str, Any]) -> tuple[str, str]:
+    def _generate_with_transformers(self, prompt: str, arm: dict[str, Any], config: dict[str, Any]) -> tuple[str, str, str, str]:
         try:
             import torch
             from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -278,31 +398,59 @@ class GenerationBackend:
         adapter_ref = adapter_ref_for_arm(arm, config)
         cache_key = f"{model_repo}::{adapter_ref or 'base'}"
         if cache_key not in self._model_cache:
-            dtype_name = str(config.get("torch_dtype", "auto"))
-            dtype = getattr(torch, dtype_name, "auto") if dtype_name != "auto" else "auto"
             tokenizer = AutoTokenizer.from_pretrained(model_repo)
-            kwargs: dict[str, Any] = {"device_map": config.get("device_map", "auto")}
-            if dtype != "auto":
-                kwargs["torch_dtype"] = dtype
-            if config.get("load_in_4bit") is True:
-                kwargs["load_in_4bit"] = True
+            kwargs, model_loader_mode = build_model_loader_kwargs(config, torch)
             model = AutoModelForCausalLM.from_pretrained(model_repo, **kwargs)
-            adapter_status = "BASE_MODEL_ONLY"
+            self.model_loader_receipts.append(
+                authority(
+                    schema_id="kt.v17_7_4.model_loader_contract_row.v1",
+                    arm_id=arm["arm_id"],
+                    model_repo=model_repo,
+                    loader_mode=model_loader_mode,
+                    auto_model_for_causal_lm=True,
+                    from_pretrained=True,
+                    quantization_config_used="quantization_config" in kwargs,
+                    load_in_4bit_forwarded_as_bad_kwarg=False,
+                    from_pretrained_kwarg_keys=sorted(kwargs),
+                    qwen_constructor_path_used=False,
+                )
+            )
+            adapter_status = ADAPTER_LOADER_BASE
+            adapter_loader_mode = ADAPTER_LOADER_BASE
             if adapter_ref:
+                adapter_contract = validate_adapter_source(arm, config)
                 try:
                     from peft import PeftModel
 
                     model = PeftModel.from_pretrained(model, adapter_ref)
                     adapter_status = "ADAPTER_LOADED"
+                    adapter_loader_mode = ADAPTER_LOADER_PEFT
                 except Exception as exc:  # noqa: BLE001
                     raise RuntimeError(f"adapter load failed for {arm['arm_id']}: {exc}") from exc
+                adapter_contract.update(
+                    adapter_load_status=adapter_status,
+                    adapter_loader_mode=adapter_loader_mode,
+                    peft_model_from_pretrained=True,
+                )
+                self.adapter_loader_receipts.append(adapter_contract)
             else:
-                adapter_status = "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE" if arm["arm_id"] not in {"base_raw", "base_kt_hat_compact"} else "BASE_MODEL_ONLY"
+                adapter_status = (
+                    ADAPTER_LOADER_BLOCKED_BASE_FALLBACK
+                    if arm["arm_id"] not in {"base_raw", "base_kt_hat_compact"}
+                    else ADAPTER_LOADER_BASE
+                )
+                adapter_loader_mode = ADAPTER_LOADER_PROMPT_OVERLAY if arm["arm_id"] == "base_kt_hat_compact" else ADAPTER_LOADER_BASE
+                adapter_contract = validate_adapter_source(arm, config)
+                adapter_contract.update(adapter_load_status=adapter_status, adapter_loader_mode=adapter_loader_mode)
+                self.adapter_loader_receipts.append(adapter_contract)
             if config.get("real_arm_authority_requested") is True and arm["arm_id"] in ADAPTER_ARM_IDS and adapter_status != "ADAPTER_LOADED":
                 raise RuntimeError(f"real-arm authority requires adapter load for {arm['arm_id']}; got {adapter_status}")
             model.eval()
-            self._model_cache[cache_key] = (tokenizer, model, adapter_status)
-        tokenizer, model, adapter_status = self._model_cache[cache_key]
+            self._model_cache[cache_key] = (tokenizer, model, adapter_status, model_loader_mode, adapter_loader_mode)
+        tokenizer, model, adapter_status, model_loader_mode, adapter_loader_mode = self._model_cache[cache_key]
+        if not adapter_ref:
+            adapter_status = ADAPTER_LOADER_BASE
+            adapter_loader_mode = ADAPTER_LOADER_PROMPT_OVERLAY if arm["arm_id"] == "base_kt_hat_compact" else ADAPTER_LOADER_BASE
         seed = int(config.get("generation_seed", 1337))
         random.seed(seed)
         try:
@@ -318,7 +466,7 @@ class GenerationBackend:
         with torch.no_grad():
             output_ids = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
         generated = tokenizer.decode(output_ids[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True)
-        return generated.strip(), adapter_status
+        return generated.strip(), adapter_status, model_loader_mode, adapter_loader_mode
 
 
 def score_output(text: str, parsed_answer: str, row: dict[str, Any], method: str) -> tuple[float, bool]:
@@ -332,14 +480,14 @@ def score_output(text: str, parsed_answer: str, row: dict[str, Any], method: str
     return (1.0 if correct else 0.0), correct
 
 
-def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: str) -> list[dict[str, Any]]:
+def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     backend = GenerationBackend()
     rows: list[dict[str, Any]] = []
     for row in manifest["rows"]:
         for arm in enabled_arms(config):
             prompt = materialize_prompt(row, arm)
             start = time.perf_counter()
-            output_text, adapter_source_status = backend.generate(prompt, arm, config, row)
+            output_text, adapter_source_status, model_loader_mode, adapter_loader_mode = backend.generate(prompt, arm, config, row)
             latency_ms = int((time.perf_counter() - start) * 1000)
             parsed = parse_answer(output_text)
             score, correct = score_output(output_text, parsed, row, arm.get("scoring_method", "contains_expected_label"))
@@ -356,6 +504,8 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
                     model_repo=model_repo_for_arm(arm, config),
                     adapter_ref=adapter_ref_for_arm(arm, config),
                     adapter_source_status=adapter_source_status,
+                    model_loader_mode=model_loader_mode,
+                    adapter_loader_mode=adapter_loader_mode,
                     prompt_hash=sha256_text(prompt),
                     output_text=output_text[:2000],
                     output_hash=sha256_text(output_text),
@@ -371,7 +521,7 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
                     generation_artifacts_present=True,
                 )
             )
-    return rows
+    return rows, backend.model_loader_receipts, backend.adapter_loader_receipts
 
 
 def enforce_fresh_rows(arm_rows: list[dict[str, Any]], predictions: list[dict[str, Any]] | None = None) -> None:
@@ -600,12 +750,35 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 bundled_example_config_used=config_path.name.endswith(".example.json"),
             ),
         )
-        arm_rows = generate_arm_rows(manifest, config, run_id)
+        arm_rows, model_loader_receipts, adapter_loader_receipts = generate_arm_rows(manifest, config, run_id)
         predictions = aggregate_predictions(arm_rows, run_id)
         scorecards = recompute_scorecards(arm_rows, predictions)
         correlation = replay_correlation(arm_rows, manifest["rows"])
         write_jsonl(out / "truegen_arm_result_matrix.jsonl", arm_rows)
         write_jsonl(out / "truegen_predictions.jsonl", predictions)
+        write_json(
+            out / "model_loader_receipt.json",
+            authority(
+                schema_id="kt.v17_7_4.model_loader_receipt.v1",
+                status="PASS",
+                run_id=run_id,
+                loader_contract="AutoModelForCausalLM.from_pretrained",
+                quantization_contract="BitsAndBytesConfig via quantization_config when load_in_4bit=true",
+                bad_load_in_4bit_kwarg_forwarded=False,
+                receipts=model_loader_receipts,
+            ),
+        )
+        write_json(
+            out / "adapter_loader_receipt.json",
+            authority(
+                schema_id="kt.v17_7_4.adapter_loader_receipt.v1",
+                status="PASS",
+                run_id=run_id,
+                loader_contract="PeftModel.from_pretrained for adapter arms",
+                base_fallback_as_adapter_evidence_allowed=False,
+                receipts=adapter_loader_receipts,
+            ),
+        )
         write_json(out / "truegen_benchmark_scorecard.json", scorecards["benchmark"])
         write_json(out / "truegen_replay_correlation_scorecard.json", correlation)
         write_json(out / "truegen_negative_transfer_by_arm.json", scorecards["negative_transfer"])

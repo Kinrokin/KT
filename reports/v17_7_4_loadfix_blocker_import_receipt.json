@@ -1,0 +1,15 @@
+{
+  "adapter_training_authorized": false,
+  "blocker": "Qwen2ForCausalLM.__init__() got an unexpected keyword argument 'load_in_4bit'",
+  "blocker_class": "MODEL_LOADER_KWARG_CONTRACT_DEFECT",
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "repair_contract": "Use AutoModelForCausalLM.from_pretrained with BitsAndBytesConfig supplied through quantization_config.",
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.loadfix_blocker_import_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

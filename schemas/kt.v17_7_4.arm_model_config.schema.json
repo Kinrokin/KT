@@ -74,6 +74,24 @@
       "minimum": 1,
       "type": "integer"
     },
+    "bnb_4bit_compute_dtype": {
+      "enum": [
+        "float16",
+        "bfloat16",
+        "float32"
+      ],
+      "type": "string"
+    },
+    "bnb_4bit_quant_type": {
+      "enum": [
+        "nf4",
+        "fp4"
+      ],
+      "type": "string"
+    },
+    "bnb_4bit_use_double_quant": {
+      "type": "boolean"
+    },
     "device_map": {
       "type": "string"
     },
@@ -83,12 +101,18 @@
     "load_in_4bit": {
       "type": "boolean"
     },
+    "low_cpu_mem_usage": {
+      "type": "boolean"
+    },
     "max_new_tokens": {
       "minimum": 1,
       "type": "integer"
     },
     "torch_dtype": {
       "type": "string"
+    },
+    "trust_remote_code": {
+      "type": "boolean"
     },
     "config_profile": {
       "type": "string"

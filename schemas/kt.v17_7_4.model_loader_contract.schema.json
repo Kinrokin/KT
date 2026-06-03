@@ -1,0 +1,42 @@
+{
+  "$id": "kt.v17_7_4.model_loader_contract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "auto_model_for_causal_lm": {
+      "const": true
+    },
+    "bad_load_in_4bit_kwarg_forwarded": {
+      "const": false
+    },
+    "from_pretrained": {
+      "const": true
+    },
+    "loader_mode": {
+      "enum": [
+        "AUTO_MODEL_FOR_CAUSAL_LM_FROM_PRETRAINED",
+        "AUTO_MODEL_FOR_CAUSAL_LM_FROM_PRETRAINED_WITH_BNB_QUANTIZATION_CONFIG"
+      ]
+    },
+    "model_repo": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "quantization_config_used": {
+      "type": "boolean"
+    },
+    "qwen_constructor_path_used": {
+      "const": false
+    }
+  },
+  "required": [
+    "loader_mode",
+    "model_repo",
+    "auto_model_for_causal_lm",
+    "from_pretrained",
+    "bad_load_in_4bit_kwarg_forwarded",
+    "qwen_constructor_path_used",
+    "quantization_config_used"
+  ],
+  "type": "object"
+}
