@@ -62,8 +62,12 @@ def test_runner_executes_fresh_generation_contract_with_local_test_backend(tmp_p
     assert summary["measurement_source"] == core.FRESH_SOURCE
     assert summary["generation_artifacts_present"] is True
     rows = core.read_jsonl(tmp_path / "out" / "truegen_arm_result_matrix.jsonl")
-    assert len(rows) == 10
+    assert len(rows) == len(core.ARM_IDS) * 2
     assert {row["measurement_status"] for row in rows} == {core.FRESH_STATUS}
     assert {row["measurement_source"] for row in rows} == {core.FRESH_SOURCE}
     assert all(row["prompt_hash"] and row["output_hash"] and row["generation_artifacts_present"] for row in rows)
+    assert all("total_tokens" in row and "verified_work_per_token" in row and "bloat_class" in row for row in rows)
+    assert (tmp_path / "out" / "g2_compression_anchor_receipt.json").exists()
+    assert (tmp_path / "out" / "truegen_compression_frontier_gate.json").exists()
+    assert (tmp_path / "out" / "truegen_verified_work_per_token_scorecard.json").exists()
     assert (tmp_path / "out" / "KTV1774_TRUEGEN_MINIFURNACE_ASSESSMENT_ONLY.zip").exists()

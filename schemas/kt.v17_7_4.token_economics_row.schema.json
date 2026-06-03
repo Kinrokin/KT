@@ -1,0 +1,49 @@
+{
+  "$id": "kt.v17_7_4.token_economics_row.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "answer_tokens": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "bloat_class": {
+      "type": "string"
+    },
+    "hat_overhead_ratio": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "latency_per_correct": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "route_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "route_overhead_tokens": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "total_tokens": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "verified_work_per_token": {
+      "minimum": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "route_id",
+    "total_tokens",
+    "verified_work_per_token",
+    "latency_per_correct",
+    "route_overhead_tokens",
+    "hat_overhead_ratio",
+    "answer_tokens",
+    "bloat_class"
+  ],
+  "type": "object"
+}

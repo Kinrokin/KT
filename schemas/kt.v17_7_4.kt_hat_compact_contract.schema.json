@@ -1,0 +1,30 @@
+{
+  "$id": "kt.v17_7_4.kt_hat_compact_contract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "contract": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.kt_hat_compact_contract_receipt.v1"
+    },
+    "status": {
+      "const": "PASS"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "contract",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
