@@ -65,6 +65,36 @@
       "scoring_method": "contains_expected_label"
     },
     {
+      "adapter_binding_status": "PROMPT_OVERLAY_ONLY_NO_ADAPTER_REQUIRED",
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_required_for_real_authority": false,
+      "adapter_sha256_optional": "",
+      "arm_id": "routed_no_hat",
+      "arm_kind": "prompt_overlay",
+      "enabled": true,
+      "max_new_tokens": 96,
+      "model_repo_or_base": "BASE",
+      "prompt_overlay_authority": "COMPRESSION_ABLATION_ROUTED_NO_HAT",
+      "prompt_template_id": "routed_no_hat",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_binding_status": "PROMPT_OVERLAY_ONLY_NO_ADAPTER_REQUIRED",
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_required_for_real_authority": false,
+      "adapter_sha256_optional": "",
+      "arm_id": "routed_hat_full",
+      "arm_kind": "prompt_overlay",
+      "enabled": true,
+      "max_new_tokens": 128,
+      "model_repo_or_base": "BASE",
+      "prompt_overlay_authority": "COMPRESSION_ABLATION_ROUTED_HAT_FULL",
+      "prompt_template_id": "kt_hat_full",
+      "scoring_method": "contains_expected_label"
+    },
+    {
       "adapter_binding_status": "REAL_ADAPTER_SOURCE_BOUND",
       "adapter_hf_repo": "",
       "adapter_path": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/cohort_pass2_delta_scar",
@@ -78,6 +108,21 @@
       "max_new_tokens": 128,
       "model_repo_or_base": "BASE",
       "prompt_template_id": "math_act",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_binding_status": "PROMPT_OVERLAY_ONLY_NO_ADAPTER_REQUIRED",
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_required_for_real_authority": false,
+      "adapter_sha256_optional": "",
+      "arm_id": "routed_tribunal",
+      "arm_kind": "prompt_overlay",
+      "enabled": true,
+      "max_new_tokens": 128,
+      "model_repo_or_base": "BASE",
+      "prompt_overlay_authority": "COMPRESSION_ABLATION_ROUTED_TRIBUNAL",
+      "prompt_template_id": "routed_tribunal",
       "scoring_method": "contains_expected_label"
     }
   ],

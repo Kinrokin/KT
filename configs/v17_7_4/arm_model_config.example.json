@@ -49,11 +49,44 @@
       "adapter_hf_repo": "",
       "adapter_path": "",
       "adapter_sha256_optional": "",
+      "arm_id": "routed_no_hat",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "routed_no_hat",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "routed_hat_full",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "kt_hat_full",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
       "arm_id": "math_act_adapter_global",
       "enabled": true,
       "max_new_tokens": 32,
       "model_repo_or_base": "BASE",
       "prompt_template_id": "math_act",
+      "scoring_method": "contains_expected_label"
+    },
+    {
+      "adapter_hf_repo": "",
+      "adapter_path": "",
+      "adapter_sha256_optional": "",
+      "arm_id": "routed_tribunal",
+      "enabled": true,
+      "max_new_tokens": 32,
+      "model_repo_or_base": "BASE",
+      "prompt_template_id": "routed_tribunal",
       "scoring_method": "contains_expected_label"
     }
   ],

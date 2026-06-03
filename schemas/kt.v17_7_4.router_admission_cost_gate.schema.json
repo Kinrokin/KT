@@ -1,0 +1,32 @@
+{
+  "$id": "kt.v17_7_4.router_admission_cost_gate.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "direct_compact_default": {
+      "const": true
+    },
+    "learned_router_superiority_claim": {
+      "const": false
+    },
+    "schema_id": {
+      "enum": [
+        "kt.v17_7_4.router_admission_cost_gate.v1",
+        "kt.v17_7_4.router_admission_cost_gate_receipt.v1"
+      ]
+    },
+    "status": {
+      "const": "PASS"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "direct_compact_default",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

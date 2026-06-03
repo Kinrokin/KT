@@ -1,0 +1,44 @@
+{
+  "$id": "kt.v17_7_4.compression_frontier_gate.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "best_efficiency_arm": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "blocked_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "outcome": {
+      "enum": [
+        "KT_COMPRESSION_FRONTIER_RECAPTURED__TRUEGEN_EFFICIENCY_GATE_NEXT__CLAIM_CEILING_PRESERVED",
+        "KT_BLOCKED__COMPRESSION_FRONTIER_REGRESSION"
+      ]
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.truegen_compression_frontier_gate.v1"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "BLOCKED"
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "outcome",
+    "best_efficiency_arm",
+    "blocked_reasons",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

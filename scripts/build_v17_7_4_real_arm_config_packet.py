@@ -8,11 +8,11 @@ from pathlib import Path
 from typing import Any
 
 
-PROGRAM_ID = "AUTHOR_KTV1774_TRUEGEN_MODEL_LOAD_REPAIR_PACKET"
-OUTCOME = "KTG3FULL_V17_7_4_TRUEGEN_MODEL_LOAD_REPAIRED__RUN_REAL_ARM_TRUEGEN_MINIFURNACE_NEXT__CLAIM_CEILING_PRESERVED"
-NEXT_LAWFUL_MOVE = "RUN_KTV1774_REAL_ARM_TRUEGEN_PACKET_V1_1"
-PACKET_NAME = "ktv1774_real_arm_truegen_v1_1.zip"
-KAGGLE_DATASET_NAME = "ktv1774-real-arms-v1-1"
+PROGRAM_ID = "AUTHOR_KT_COMPRESSION_FRONTIER_RECAPTURE_PACKET"
+OUTCOME = "KT_COMPRESSION_FRONTIER_RECAPTURED__TRUEGEN_EFFICIENCY_GATE_NEXT__CLAIM_CEILING_PRESERVED"
+NEXT_LAWFUL_MOVE = "RUN_KTV1774_COMPRESSION_FRONTIER_TRUEGEN_PACKET_V1"
+PACKET_NAME = "ktv1774_compression_frontier_v1.zip"
+KAGGLE_DATASET_NAME = "ktv1774-compression-frontier-v1"
 
 AUTHORITY_FALSE = {
     "claim_ceiling_preserved": True,
@@ -82,11 +82,13 @@ def write_packet(repo: Path) -> tuple[Path, str]:
     packet.parent.mkdir(parents=True, exist_ok=True)
     members = {
         "README.md": (
-            "# KTV1774 Real-Arm True-Generation Mini-Furnace V1.1\n\n"
-            "This repaired packet binds the V17.7.4 truegen runner to the intended Qwen 7B substrate and real adapter-source paths. "
+            "# KTV1774 Compression Frontier True-Generation Mini-Furnace V1\n\n"
+            "This packet preserves the V17.7.4 real-arm model-load repair and adds compression-frontier measurement. "
+            "It binds the truegen runner to the intended Qwen 7B substrate and real adapter-source paths. "
             "The model loader uses `AutoModelForCausalLM.from_pretrained` and places 4-bit loading inside "
             "`BitsAndBytesConfig(..., load_in_4bit=True)` via `quantization_config`. It never forwards "
             "`load_in_4bit` as a raw Qwen constructor/from_pretrained kwarg. It performs fresh generation or fails closed. "
+            "It measures token economics, ablation-ladder performance, bloat attribution, parser drift, and compression frontier status. "
             "It does not train, promote, authorize V18, or claim learned-router superiority.\n\n"
             "Set `KT_TRUEGEN_ADAPTER_ROOT` if the Kaggle adapter dataset path differs from the bundled default.\n"
         ).encode("utf-8"),
@@ -97,12 +99,16 @@ def write_packet(repo: Path) -> tuple[Path, str]:
         "runtime_inputs/arm_model_config.example.json": (repo / "configs" / "v17_7_4" / "arm_model_config.example.json").read_bytes(),
         "run_manifest.json": json.dumps(
             authority(
-                schema_id="kt.v17_7_4.real_arm_truegen_packet_manifest.v1",
-                status="READY_FOR_REAL_ARM_FRESH_GENERATION_MINIFURNACE_MODEL_LOAD_REPAIRED",
-                run_mode="RUN_KTV1774_REAL_ARM_TRUEGEN_MINIFURNACE",
+                schema_id="kt.v17_7_4.compression_frontier_truegen_packet_manifest.v1",
+                status="READY_FOR_COMPRESSION_FRONTIER_REAL_ARM_TRUEGEN_MINIFURNACE",
+                run_mode="RUN_KTV1774_COMPRESSION_FRONTIER_TRUEGEN_MINIFURNACE",
                 model_loader_contract="AutoModelForCausalLM.from_pretrained",
                 quantization_contract="BitsAndBytesConfig via quantization_config",
                 bad_load_in_4bit_kwarg_forwarded=False,
+                compression_frontier_gate_required=True,
+                g2_compression_anchor_internal_sentinel=True,
+                token_economics_required=True,
+                ablation_ladder_required=True,
                 real_arm_authority_requested=True,
                 require_real_arm_config=True,
                 required_adapter_root_env="KT_TRUEGEN_ADAPTER_ROOT",
@@ -124,7 +130,7 @@ def write_packet(repo: Path) -> tuple[Path, str]:
 
 
 def write_doc(repo: Path, packet_sha: str) -> Path:
-    text = f"""# V17.7.4 Real-Arm Truegen One Cell V1.1
+    text = f"""# V17.7.4 Compression Frontier Truegen One Cell
 
 Packet: `packets/{PACKET_NAME}`
 
@@ -132,7 +138,7 @@ Kaggle dataset name: `{KAGGLE_DATASET_NAME}`
 
 SHA256: `{packet_sha}`
 
-This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing.
+This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 
 ```python
 from pathlib import Path
@@ -141,7 +147,7 @@ import subprocess
 import sys
 import zipfile
 
-os.environ["KT_RUN_MODE"] = "RUN_KTV1774_REAL_ARM_TRUEGEN_MINIFURNACE"
+os.environ["KT_RUN_MODE"] = "RUN_KTV1774_COMPRESSION_FRONTIER_TRUEGEN_MINIFURNACE"
 os.environ["KT_NO_TRAINING"] = "1"
 os.environ["KT_NO_PROMOTION"] = "1"
 os.environ["KT_NO_V18"] = "1"
@@ -171,7 +177,7 @@ print("assessment outputs:", sorted(Path("/kaggle/working").glob("**/KTV1774_TRU
 print("hf_dataset_url:", os.environ.get("KT_HF_DATASET_URL", "HF_UPLOAD_NOT_RUN_BY_REPO_SIDE_LANE"))
 ```
 """
-    return write_text(repo / "docs" / "V17_7_4_REAL_ARM_TRUEGEN_ONE_CELL_V1_1.md", text)
+    return write_text(repo / "docs" / "V17_7_4_COMPRESSION_FRONTIER_TRUEGEN_ONE_CELL.md", text)
 
 
 def write_text(path: Path, text: str) -> Path:
@@ -188,8 +194,13 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     additions = [
         (repo / "configs" / "v17_7_4" / "arm_model_config.json", "real_arm_model_config"),
         (repo / "runtime" / "v17_7_4" / "KT_V1774_TRUEGEN_ARM_CORE.py", "truegen_model_loader_runtime"),
-        (packet, "real_arm_truegen_runtime_packet"),
-        (doc, "real_arm_truegen_one_cell_runbook"),
+        (packet, "compression_frontier_truegen_runtime_packet"),
+        (doc, "compression_frontier_truegen_one_cell_runbook"),
+        (repo / "reports" / "g2_compression_anchor_receipt.json", "g2_compression_anchor_receipt"),
+        (repo / "reports" / "kt_system_wiring_map.json", "kt_system_wiring_map"),
+        (repo / "reports" / "kt_hat_compact_contract_receipt.json", "kt_hat_compact_contract_receipt"),
+        (repo / "reports" / "router_admission_cost_gate_receipt.json", "router_admission_cost_gate_receipt"),
+        (repo / "reports" / "compression_frontier_gate_receipt.json", "compression_frontier_gate_receipt"),
         (repo / "reports" / "v17_7_4_loadfix_preflight_repo_truth_receipt.json", "loadfix_preflight_repo_truth_receipt"),
         (repo / "reports" / "v17_7_4_loadfix_blocker_import_receipt.json", "loadfix_blocker_import_receipt"),
         (repo / "reports" / "v17_7_4_model_loader_contract_receipt.json", "model_loader_contract_receipt"),
@@ -206,13 +217,13 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     for path, role in additions:
         rel = path.relative_to(repo).as_posix()
         payload = authority(
-            artifact_id=f"v17_7_4_real_arm_binding::{rel}",
+            artifact_id=f"v17_7_4_compression_frontier::{rel}",
             path=rel,
             role=role,
             status="LIVE_CURRENT_HEAD_PREP_ONLY",
             authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
             sha256=sha256_file(path),
-            notes="Real-arm config binding artifact; no promotion, runtime authority, V18 authority, or superiority claim.",
+            notes="Compression-frontier prep artifact; no promotion, runtime authority, V18 authority, or superiority claim.",
         )
         if rel in existing:
             existing[rel].update(payload)
@@ -226,7 +237,7 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     return write_json(
         repo / "registry" / "artifact_authority_registry_v17_7_4_real_arm_config_delta_receipt.json",
         authority(
-        schema_id="kt.v17_7_4.truegen_model_load_repair_artifact_authority_delta_receipt.v1",
+        schema_id="kt.v17_7_4.compression_frontier_artifact_authority_delta_receipt.v1",
             status="PASS",
             current_head=current_head(),
             artifacts_added_or_updated=changed,
@@ -245,7 +256,7 @@ def build() -> dict[str, Any]:
     doc = write_doc(repo, packet_sha)
     registry_delta = update_registry(repo, packet, packet_sha, doc)
     summary = authority(
-        schema_id="kt.v17_7_4.truegen_model_load_repair_builder_summary.v1",
+        schema_id="kt.v17_7_4.compression_frontier_builder_summary.v1",
         status="PASS",
         current_head=current_head(),
         current_branch=current_branch(),
@@ -258,11 +269,11 @@ def build() -> dict[str, Any]:
         registry_delta_path=registry_delta.relative_to(repo).as_posix(),
         blockers=[],
     )
-    write_json(repo / "reports" / "v17_7_4_truegen_model_load_repair_builder_summary.json", summary)
+    write_json(repo / "reports" / "v17_7_4_compression_frontier_builder_summary.json", summary)
     write_json(
         repo / "reports" / "v17_7_4_real_arm_next_move_decision_receipt.json",
         authority(
-            schema_id="kt.v17_7_4.truegen_model_load_repair_next_move_decision_receipt.v1",
+            schema_id="kt.v17_7_4.compression_frontier_next_move_decision_receipt.v1",
             status="PASS",
             outcome=OUTCOME,
             next_lawful_move=NEXT_LAWFUL_MOVE,

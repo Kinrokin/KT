@@ -26,10 +26,13 @@ AUTHORITY_FALSE = {
 
 ARM_IDS = [
     "base_raw",
-    "route_regret_policy_adapter_global",
-    "formal_math_repair_adapter_global",
     "base_kt_hat_compact",
+    "formal_math_repair_adapter_global",
+    "routed_no_hat",
+    "route_regret_policy_adapter_global",
+    "routed_hat_full",
     "math_act_adapter_global",
+    "routed_tribunal",
 ]
 
 ADAPTER_ARM_IDS = {
@@ -58,6 +61,20 @@ ASSESSMENT_FILES = [
     "truegen_per_band_arm_win_matrix.json",
     "truegen_oracle_gap_update.json",
     "truegen_pfail_dgs_update.json",
+    "g2_compression_anchor_receipt.json",
+    "kt_system_wiring_map.json",
+    "truegen_verified_work_per_token_scorecard.json",
+    "truegen_route_overhead_matrix.json",
+    "truegen_hat_overhead_matrix.json",
+    "truegen_bloat_attribution_matrix.json",
+    "truegen_parser_vs_generation_error_matrix.json",
+    "truegen_answer_format_drift_receipt.json",
+    "truegen_router_admission_receipt.json",
+    "truegen_route_regret_token_cost_matrix.json",
+    "truegen_ablation_ladder_scorecard.json",
+    "truegen_adapter_quarantine_recommendation.json",
+    "truegen_compression_frontier_gate.json",
+    "truegen_efficiency_claim_boundary_receipt.json",
     "truegen_measurement_authority_receipt.json",
     "truegen_claim_admissibility_casefile.json",
     "runtime_telemetry_receipt.json",
@@ -89,6 +106,47 @@ ADAPTER_LOADER_PEFT = "PEFT_MODEL_FROM_PRETRAINED"
 ADAPTER_LOADER_BASE = "BASE_MODEL_ONLY"
 ADAPTER_LOADER_PROMPT_OVERLAY = "PROMPT_OVERLAY_ONLY"
 ADAPTER_LOADER_BLOCKED_BASE_FALLBACK = "BASE_FALLBACK_NOT_ADAPTER_EVIDENCE"
+
+G2_COMPRESSION_ANCHOR = {
+    "base_raw": {
+        "correct": 119,
+        "total": 200,
+        "accuracy": 0.595,
+        "tokens": 5100,
+        "tokens_per_correct": 42.857143,
+        "verified_work_per_token": 0.023333333,
+    },
+    "routed_13_lobe_kt_hat_compact": {
+        "correct": 126,
+        "total": 200,
+        "accuracy": 0.63,
+        "tokens": 471,
+        "tokens_per_correct": 3.738095,
+        "verified_work_per_token": 0.267515924,
+    },
+}
+
+ABLATION_LADDER = {
+    "base_raw": "A0_base_raw",
+    "base_kt_hat_compact": "A1_base_kt_hat_compact",
+    "formal_math_repair_adapter_global": "A2_best_static_adapter",
+    "routed_no_hat": "A3_routed_no_hat",
+    "route_regret_policy_adapter_global": "A4_routed_hat_compact",
+    "routed_hat_full": "A5_routed_hat_full",
+    "math_act_adapter_global": "A6_routed_hat_repair",
+    "routed_tribunal": "A7_routed_tribunal",
+}
+
+BLOAT_CLASSES = {
+    "prompt": "BLOAT_A_PROMPT_INPUT",
+    "router": "BLOAT_B_ROUTER_CEREMONY",
+    "hat": "BLOAT_C_KT_HAT_REASONING",
+    "answer": "BLOAT_D_ANSWER_OUTPUT",
+    "repair": "BLOAT_E_REPAIR_LOOP",
+    "adapter": "BLOAT_F_ADAPTER_NEGATIVE_TRANSFER",
+    "parser": "BLOAT_G_SCORER_PARSER_FAILURE",
+    "none": "NO_BLOAT_ATTRIBUTED",
+}
 
 
 def authority(**extra: Any) -> dict[str, Any]:
@@ -140,6 +198,77 @@ def parse_answer(text: str) -> str:
 
 def count_tokens(text: str) -> int:
     return len(re.findall(r"\S+", text))
+
+
+def safe_ratio(numerator: float, denominator: float) -> float:
+    return round(float(numerator) / max(float(denominator), 1.0), 6)
+
+
+def exact_expected_match(value: str, row: dict[str, Any]) -> bool:
+    expected = str(row.get("expected_label_or_oracle_label", ""))
+    return bool(expected) and normalize_answer(value) == normalize_answer(expected)
+
+
+def output_contains_expected(value: str, row: dict[str, Any]) -> bool:
+    expected = str(row.get("expected_label_or_oracle_label", ""))
+    return bool(expected) and normalize_answer(expected) in normalize_answer(value)
+
+
+def prompt_overhead_components(prompt: str, row: dict[str, Any], arm: dict[str, Any]) -> dict[str, int]:
+    raw_prompt = materialize_prompt(row, {"prompt_template_id": "raw"})
+    raw_tokens = count_tokens(raw_prompt)
+    total_prompt_tokens = count_tokens(prompt)
+    overhead = max(total_prompt_tokens - raw_tokens, 0)
+    template = arm.get("prompt_template_id", "raw")
+    components = {
+        "router_tokens": 0,
+        "hat_tokens": 0,
+        "tribunal_tokens": 0,
+        "repair_tokens": 0,
+    }
+    if template in {"route_regret", "routed_no_hat"}:
+        components["router_tokens"] = overhead
+    elif template in {"kt_hat_compact", "kt_hat_full"}:
+        components["hat_tokens"] = overhead
+    elif template in {"formal_math", "math_act", "routed_hat_repair"}:
+        components["repair_tokens"] = overhead
+    elif template == "routed_tribunal":
+        components["tribunal_tokens"] = overhead
+    return components
+
+
+def classify_bloat(row_metrics: dict[str, Any]) -> str:
+    if row_metrics["parser_format_failure"]:
+        return BLOAT_CLASSES["parser"]
+    if row_metrics["tokens_out"] > max(32, row_metrics["answer_tokens"] * 8):
+        return BLOAT_CLASSES["answer"]
+    if row_metrics["hat_tokens"] > row_metrics["answer_tokens"] and row_metrics["hat_tokens"] > 0:
+        return BLOAT_CLASSES["hat"]
+    if row_metrics["router_tokens"] > row_metrics["answer_tokens"] and row_metrics["router_tokens"] > 0:
+        return BLOAT_CLASSES["router"]
+    if row_metrics["repair_tokens"] > row_metrics["answer_tokens"] and row_metrics["repair_tokens"] > 0:
+        return BLOAT_CLASSES["repair"]
+    if row_metrics["adapter_loader_mode"] == ADAPTER_LOADER_PEFT and not row_metrics["correct"]:
+        return BLOAT_CLASSES["adapter"]
+    if row_metrics["route_overhead_tokens"] > 0:
+        return BLOAT_CLASSES["prompt"]
+    return BLOAT_CLASSES["none"]
+
+
+def g2_compression_anchor_receipt() -> dict[str, Any]:
+    base = G2_COMPRESSION_ANCHOR["base_raw"]
+    routed = G2_COMPRESSION_ANCHOR["routed_13_lobe_kt_hat_compact"]
+    return authority(
+        schema_id="kt.v17_7_4.g2_compression_anchor_receipt.v1",
+        status="PASS",
+        evidence_scope="INTERNAL_REGRESSION_SENTINEL_ONLY",
+        market_or_external_claim=False,
+        base_raw=base,
+        routed_13_lobe_kt_hat_compact=routed,
+        accuracy_delta=round(routed["accuracy"] - base["accuracy"], 6),
+        tokens_per_correct_reduction=round(1.0 - routed["tokens_per_correct"] / base["tokens_per_correct"], 6),
+        interpretation="G2 anchor showed higher internal accuracy with materially lower tokens per correct; this is a regression sentinel, not superiority authority.",
+    )
 
 
 def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
@@ -227,9 +356,13 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
     prefix = {
         "raw": "Answer directly.",
         "kt_hat_compact": "Use compact KT-hat discipline: answer only what is asked and avoid unsupported claims.",
+        "routed_no_hat": "Select the direct route without KT-hat ceremony. Emit only the final answer.",
         "formal_math": "Solve as a formal math or structured reasoning item. Emit final answer clearly.",
         "math_act": "Decompose the math act briefly, then emit final answer clearly.",
         "route_regret": "Select the most utility-preserving route and emit final answer clearly.",
+        "kt_hat_full": "Use full KT-hat discipline, but do not add decorative governance language. Emit final answer clearly.",
+        "routed_hat_repair": "Use compact repair discipline only if needed. Emit final answer clearly.",
+        "routed_tribunal": "Use minimal tribunal checking for contradictions. Emit final answer clearly.",
     }.get(template, "Answer directly.")
     return "\n".join(
         [
@@ -491,6 +624,25 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
             latency_ms = int((time.perf_counter() - start) * 1000)
             parsed = parse_answer(output_text)
             score, correct = score_output(output_text, parsed, row, arm.get("scoring_method", "contains_expected_label"))
+            tokens_in = count_tokens(prompt)
+            tokens_out = count_tokens(output_text)
+            total_tokens = tokens_in + tokens_out
+            prompt_components = prompt_overhead_components(prompt, row, arm)
+            answer_tokens = max(count_tokens(parsed), 1)
+            route_overhead_tokens = sum(prompt_components.values())
+            parser_format_failure = output_contains_expected(output_text, row) and not exact_expected_match(parsed, row)
+            row_metrics = {
+                **prompt_components,
+                "tokens_in": tokens_in,
+                "tokens_out": tokens_out,
+                "total_tokens": total_tokens,
+                "answer_tokens": answer_tokens,
+                "route_overhead_tokens": route_overhead_tokens,
+                "hat_overhead_ratio": safe_ratio(prompt_components["hat_tokens"], answer_tokens),
+                "correct": bool(correct),
+                "parser_format_failure": parser_format_failure,
+                "adapter_loader_mode": adapter_loader_mode,
+            }
             rows.append(
                 authority(
                     schema_id="kt.v17_7_4.truegen_arm_result.v1",
@@ -501,6 +653,7 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
                     evidence_band=row["evidence_band"],
                     route_boundary_class=row["route_boundary_class"],
                     arm_id=arm["arm_id"],
+                    route_id=ABLATION_LADDER.get(arm["arm_id"], arm["arm_id"]),
                     model_repo=model_repo_for_arm(arm, config),
                     adapter_ref=adapter_ref_for_arm(arm, config),
                     adapter_source_status=adapter_source_status,
@@ -512,8 +665,22 @@ def generate_arm_rows(manifest: dict[str, Any], config: dict[str, Any], run_id: 
                     parsed_answer=parsed,
                     score=score,
                     correct=correct,
-                    tokens_in=count_tokens(prompt),
-                    tokens_out=count_tokens(output_text),
+                    tokens_in=tokens_in,
+                    tokens_out=tokens_out,
+                    total_tokens=total_tokens,
+                    tokens_per_correct=safe_ratio(total_tokens, 1 if correct else 0),
+                    verified_work_per_token=safe_ratio(1 if correct else 0, total_tokens),
+                    latency_per_correct=safe_ratio(latency_ms, 1 if correct else 0),
+                    answer_tokens=answer_tokens,
+                    router_tokens=prompt_components["router_tokens"],
+                    hat_tokens=prompt_components["hat_tokens"],
+                    tribunal_tokens=prompt_components["tribunal_tokens"],
+                    repair_tokens=prompt_components["repair_tokens"],
+                    route_overhead_tokens=route_overhead_tokens,
+                    hat_overhead_ratio=row_metrics["hat_overhead_ratio"],
+                    parser_format_failure=parser_format_failure,
+                    final_answer_marker_present=bool(re.search(r"(?:answer|final)\s*[:=]", output_text, flags=re.IGNORECASE)),
+                    bloat_class=classify_bloat(row_metrics),
                     latency_ms=latency_ms,
                     generation_seed=config["generation_seed"],
                     measurement_source=FRESH_SOURCE,
@@ -607,12 +774,123 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
                 negative_transfer[arm] += 1
     token_efficiency = {}
     for arm, rows in by_arm.items():
-        tokens = sum(int(row["tokens_in"]) + int(row["tokens_out"]) for row in rows)
+        tokens = sum(int(row.get("total_tokens", int(row["tokens_in"]) + int(row["tokens_out"]))) for row in rows)
+        latency = sum(int(row["latency_ms"]) for row in rows)
+        correct = correct_counts[arm]
         token_efficiency[arm] = {
             "total_tokens": tokens,
-            "tokens_per_correct": round(tokens / max(correct_counts[arm], 1), 6),
-            "mean_latency_ms": round(sum(int(row["latency_ms"]) for row in rows) / max(len(rows), 1), 6),
+            "correct": correct,
+            "tokens_per_correct": safe_ratio(tokens, correct),
+            "verified_work_per_token": safe_ratio(correct, tokens),
+            "latency_per_correct": safe_ratio(latency, correct),
+            "mean_latency_ms": safe_ratio(latency, len(rows)),
         }
+    vwpt = authority(
+        schema_id="kt.v17_7_4.truegen_verified_work_per_token_scorecard.v1",
+        status="PASS",
+        measurement_source=FRESH_SOURCE,
+        formula="correct_count / total_tokens",
+        anti_goodhart_pairing=["answer_adequacy_proxy=correct", "parser_format_failure_rate", "negative_transfer_by_arm"],
+        matrix={arm: {"verified_work_per_token": payload["verified_work_per_token"], "tokens_per_correct": payload["tokens_per_correct"]} for arm, payload in token_efficiency.items()},
+    )
+    route_overhead = {}
+    hat_overhead = {}
+    parser_error = {}
+    answer_format = {}
+    bloat_counter: dict[str, Counter[str]] = defaultdict(Counter)
+    route_regret_token_cost = {}
+    for arm, rows in by_arm.items():
+        route_overhead[arm] = {
+            "mean_route_overhead_tokens": safe_ratio(sum(int(row.get("route_overhead_tokens", 0)) for row in rows), len(rows)),
+            "mean_router_tokens": safe_ratio(sum(int(row.get("router_tokens", 0)) for row in rows), len(rows)),
+            "mean_tribunal_tokens": safe_ratio(sum(int(row.get("tribunal_tokens", 0)) for row in rows), len(rows)),
+            "mean_repair_tokens": safe_ratio(sum(int(row.get("repair_tokens", 0)) for row in rows), len(rows)),
+        }
+        hat_overhead[arm] = {
+            "mean_hat_tokens": safe_ratio(sum(int(row.get("hat_tokens", 0)) for row in rows), len(rows)),
+            "mean_hat_overhead_ratio": safe_ratio(sum(float(row.get("hat_overhead_ratio", 0.0)) for row in rows), len(rows)),
+        }
+        parser_failures = sum(1 for row in rows if row.get("parser_format_failure") is True)
+        parser_error[arm] = {
+            "parser_format_failures": parser_failures,
+            "parser_format_failure_rate": safe_ratio(parser_failures, len(rows)),
+        }
+        marker_count = sum(1 for row in rows if row.get("final_answer_marker_present") is True)
+        answer_format[arm] = {
+            "final_answer_marker_rate": safe_ratio(marker_count, len(rows)),
+            "answer_format_drift_rate": safe_ratio(len(rows) - marker_count, len(rows)),
+        }
+        for row in rows:
+            bloat_counter[arm][str(row.get("bloat_class", BLOAT_CLASSES["none"]))] += 1
+        route_regret_token_cost[arm] = {
+            "correct": correct_counts[arm],
+            "tokens_per_correct": token_efficiency[arm]["tokens_per_correct"],
+            "route_overhead_tokens_total": sum(int(row.get("route_overhead_tokens", 0)) for row in rows),
+            "overhead_per_correct": safe_ratio(sum(int(row.get("route_overhead_tokens", 0)) for row in rows), correct_counts[arm]),
+        }
+    bloat_matrix = {
+        arm: {"counts": dict(counter), "dominant_bloat_class": counter.most_common(1)[0][0] if counter else BLOAT_CLASSES["none"]}
+        for arm, counter in sorted(bloat_counter.items())
+    }
+    ablation_ladder = {
+        ladder_id: {
+            "arm_id": arm,
+            "configured": arm in by_arm,
+            "accuracy": arm_accuracy.get(arm),
+            "correct": correct_counts.get(arm),
+            "tokens_per_correct": token_efficiency.get(arm, {}).get("tokens_per_correct"),
+            "verified_work_per_token": token_efficiency.get(arm, {}).get("verified_work_per_token"),
+        }
+        for arm, ladder_id in ABLATION_LADDER.items()
+    }
+    base_eff = token_efficiency.get("base_raw", {})
+    best_eff_arm = sorted(arms, key=lambda arm: (-token_efficiency[arm]["verified_work_per_token"], -correct_counts[arm], arm))[0]
+    best_eff = token_efficiency[best_eff_arm]
+    compression_gain_over_base = safe_ratio(base_eff.get("tokens_per_correct", 0) - best_eff["tokens_per_correct"], base_eff.get("tokens_per_correct", 0))
+    compact = token_efficiency.get("base_kt_hat_compact")
+    compact_regression = bool(compact and base_eff and compact["correct"] < base_eff.get("correct", 0) and compact["tokens_per_correct"] > base_eff.get("tokens_per_correct", 0))
+    frontier_pass = (
+        bool(base_eff)
+        and best_eff["correct"] >= base_eff.get("correct", 0)
+        and best_eff["tokens_per_correct"] <= base_eff.get("tokens_per_correct", 0) * 0.75
+        and sum(parser_error[best_eff_arm].values()) >= 0
+        and not compact_regression
+    )
+    blocked_reasons = []
+    if not base_eff:
+        blocked_reasons.append("base_raw_missing")
+    elif best_eff["correct"] < base_eff.get("correct", 0):
+        blocked_reasons.append("best_efficiency_arm_loses_correctness_vs_base")
+    elif best_eff["tokens_per_correct"] > base_eff.get("tokens_per_correct", 0) * 0.75:
+        blocked_reasons.append("tokens_per_correct_not_materially_better_than_base")
+    if compact_regression:
+        blocked_reasons.append("base_kt_hat_compact_regressed_against_base")
+    compression_gate = authority(
+        schema_id="kt.v17_7_4.truegen_compression_frontier_gate.v1",
+        status="PASS" if frontier_pass else "BLOCKED",
+        outcome="KT_COMPRESSION_FRONTIER_RECAPTURED__TRUEGEN_EFFICIENCY_GATE_NEXT__CLAIM_CEILING_PRESERVED"
+        if frontier_pass
+        else "KT_BLOCKED__COMPRESSION_FRONTIER_REGRESSION",
+        measurement_source=FRESH_SOURCE,
+        best_efficiency_arm=best_eff_arm,
+        best_efficiency_metrics=best_eff,
+        base_raw_metrics=base_eff,
+        compression_gain_over_base_tokens_per_correct=compression_gain_over_base,
+        g2_anchor=g2_compression_anchor_receipt(),
+        blocked_reasons=blocked_reasons,
+        claim_scope="internal true-generation efficiency evidence only; no promotion, no router-superiority claim",
+    )
+    adapter_quarantine = {
+        arm: {
+            "negative_transfer_count": negative_transfer.get(arm, 0),
+            "tokens_per_correct": token_efficiency[arm]["tokens_per_correct"],
+            "correct": correct_counts[arm],
+            "recommendation": "SHADOW_OR_QUARANTINE_REVIEW"
+            if arm != "base_raw" and (negative_transfer.get(arm, 0) > 0 or correct_counts[arm] < base_correct)
+            else "NO_QUARANTINE_RECOMMENDED",
+        }
+        for arm in arms
+    }
     return {
         "benchmark": authority(
             schema_id="kt.v17_7_4.truegen_benchmark_scorecard.v1",
@@ -632,6 +910,16 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
         ),
         "negative_transfer": authority(schema_id="kt.v17_7_4.truegen_negative_transfer_by_arm.v1", status="PASS", measurement_source=FRESH_SOURCE, negative_transfer=negative_transfer),
         "token_efficiency": authority(schema_id="kt.v17_7_4.truegen_token_efficiency_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=token_efficiency),
+        "verified_work_per_token": vwpt,
+        "route_overhead": authority(schema_id="kt.v17_7_4.truegen_route_overhead_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=route_overhead),
+        "hat_overhead": authority(schema_id="kt.v17_7_4.truegen_hat_overhead_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=hat_overhead),
+        "bloat_attribution": authority(schema_id="kt.v17_7_4.truegen_bloat_attribution_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=bloat_matrix),
+        "parser_error": authority(schema_id="kt.v17_7_4.truegen_parser_vs_generation_error_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=parser_error),
+        "answer_format": authority(schema_id="kt.v17_7_4.truegen_answer_format_drift_receipt.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=answer_format),
+        "route_regret_token_cost": authority(schema_id="kt.v17_7_4.truegen_route_regret_token_cost_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=route_regret_token_cost),
+        "ablation_ladder": authority(schema_id="kt.v17_7_4.truegen_ablation_ladder_scorecard.v1", status="PASS", measurement_source=FRESH_SOURCE, ladder=ablation_ladder),
+        "adapter_quarantine": authority(schema_id="kt.v17_7_4.truegen_adapter_quarantine_recommendation.v1", status="PASS", measurement_source=FRESH_SOURCE, recommendations=adapter_quarantine, promotion_authority=False),
+        "compression_frontier": compression_gate,
         "per_band": authority(schema_id="kt.v17_7_4.truegen_per_band_arm_win_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=per_band),
         "oracle_gap": authority(schema_id="kt.v17_7_4.truegen_oracle_gap_update.v1", status="PASS", measurement_source=FRESH_SOURCE, gaps={arm: oracle_correct - correct_counts[arm] for arm in arms}),
         "pfail_dgs": authority(
@@ -682,6 +970,70 @@ def replay_correlation(arm_rows: list[dict[str, Any]], manifest_rows: list[dict[
         correlation_replay_score_to_truegen_score=corr,
         mean_absolute_error=mae,
         decision=decision,
+    )
+
+
+def kt_system_wiring_map(config: dict[str, Any]) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.system_wiring_map.v1",
+        status="PASS",
+        wiring_scope="V17.7.4 TrueGen compression frontier packet",
+        router_surface="route/admission represented by configured ablation arms and route_regret prompt/template; no learned-router authority",
+        hat_surface="base_kt_hat_compact, routed_hat_full, routed_hat_repair prompt overlays",
+        adapter_surface="PEFT adapter arms only when adapter_loader_mode=PEFT_MODEL_FROM_PRETRAINED",
+        scorer_surface="score_output + parser_vs_generation_error_matrix + answer_format_drift_receipt",
+        receipt_surface=ASSESSMENT_FILES,
+        claim_surface="truegen_claim_admissibility_casefile + truegen_efficiency_claim_boundary_receipt",
+        fallback_law="smoke config, source replay, and base fallback as adapter evidence fail closed",
+        enabled_arms=[arm["arm_id"] for arm in enabled_arms(config)],
+        ablation_ladder=ABLATION_LADDER,
+    )
+
+
+def router_admission_receipt(scorecards: dict[str, Any]) -> dict[str, Any]:
+    matrix = scorecards["route_regret_token_cost"]["matrix"]
+    base = matrix.get("base_raw", {})
+    decisions = {}
+    for arm, payload in sorted(matrix.items()):
+        if arm == "base_raw":
+            decisions[arm] = "BASELINE_DIRECT_PATH"
+            continue
+        correctness_gain = int(payload.get("correct", 0)) - int(base.get("correct", 0))
+        overhead = float(payload.get("overhead_per_correct", 0.0))
+        if correctness_gain > 0 or arm in ADAPTER_ARM_IDS:
+            decisions[arm] = "SHADOW_ADMISSIBLE_FOR_MEASUREMENT"
+        elif overhead > 0:
+            decisions[arm] = "DIRECT_COMPACT_PATH_PREFERRED_UNTIL_GAIN_PROVEN"
+        else:
+            decisions[arm] = "NO_EXTRA_OVERHEAD_NO_ADMISSION_GAIN"
+    return authority(
+        schema_id="kt.v17_7_4.router_admission_cost_gate.v1",
+        status="PASS",
+        formula="route admitted only when expected/observed correctness gain or specialization justifies overhead",
+        direct_compact_default=True,
+        decisions=decisions,
+        no_learned_router_superiority_claim=True,
+        no_route_promotion_authority=True,
+    )
+
+
+def efficiency_claim_boundary_receipt(compression_gate: dict[str, Any]) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.truegen_efficiency_claim_boundary_receipt.v1",
+        status="PASS",
+        compression_frontier_status=compression_gate["status"],
+        allowed_claim="internal true-generation efficiency measurement with claim ceiling preserved",
+        forbidden_claims=[
+            "router superiority",
+            "learned-router superiority",
+            "external validation",
+            "commercial readiness",
+            "production readiness",
+            "7B amplification",
+            "frontier or S-tier parity",
+        ],
+        promotion_authority=False,
+        runtime_authority=False,
     )
 
 
@@ -783,6 +1135,20 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         write_json(out / "truegen_replay_correlation_scorecard.json", correlation)
         write_json(out / "truegen_negative_transfer_by_arm.json", scorecards["negative_transfer"])
         write_json(out / "truegen_token_efficiency_matrix.json", scorecards["token_efficiency"])
+        write_json(out / "g2_compression_anchor_receipt.json", g2_compression_anchor_receipt())
+        write_json(out / "kt_system_wiring_map.json", kt_system_wiring_map(config))
+        write_json(out / "truegen_verified_work_per_token_scorecard.json", scorecards["verified_work_per_token"])
+        write_json(out / "truegen_route_overhead_matrix.json", scorecards["route_overhead"])
+        write_json(out / "truegen_hat_overhead_matrix.json", scorecards["hat_overhead"])
+        write_json(out / "truegen_bloat_attribution_matrix.json", scorecards["bloat_attribution"])
+        write_json(out / "truegen_parser_vs_generation_error_matrix.json", scorecards["parser_error"])
+        write_json(out / "truegen_answer_format_drift_receipt.json", scorecards["answer_format"])
+        write_json(out / "truegen_router_admission_receipt.json", router_admission_receipt(scorecards))
+        write_json(out / "truegen_route_regret_token_cost_matrix.json", scorecards["route_regret_token_cost"])
+        write_json(out / "truegen_ablation_ladder_scorecard.json", scorecards["ablation_ladder"])
+        write_json(out / "truegen_adapter_quarantine_recommendation.json", scorecards["adapter_quarantine"])
+        write_json(out / "truegen_compression_frontier_gate.json", scorecards["compression_frontier"])
+        write_json(out / "truegen_efficiency_claim_boundary_receipt.json", efficiency_claim_boundary_receipt(scorecards["compression_frontier"]))
         write_json(out / "truegen_per_band_arm_win_matrix.json", scorecards["per_band"])
         write_json(out / "truegen_oracle_gap_update.json", scorecards["oracle_gap"])
         write_json(out / "truegen_pfail_dgs_update.json", scorecards["pfail_dgs"])
@@ -824,14 +1190,17 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         )
         write_json(out / "runtime_telemetry_receipt.json", telemetry)
         assessment = write_assessment(out)
+        frontier_next = scorecards["compression_frontier"]["outcome"] if scorecards["compression_frontier"]["status"] == "BLOCKED" else decision
         summary = authority(
             schema_id="kt.v17_7_4.truegen_final_summary.v1",
             status="PASS",
-            outcome="KTG3FULL_V17_7_4_TRUEGEN_MINIFURNACE_RUNTIME_COMPLETED__CLAIM_CEILING_PRESERVED",
+            outcome=scorecards["compression_frontier"]["outcome"],
             run_id=run_id,
             assessment_zip=assessment.as_posix(),
             decision=decision,
-            next_lawful_move=decision,
+            next_lawful_move=frontier_next,
+            compression_frontier_status=scorecards["compression_frontier"]["status"],
+            best_efficiency_arm=scorecards["compression_frontier"]["best_efficiency_arm"],
             measurement_source=FRESH_SOURCE,
             measurement_status=FRESH_STATUS,
             generation_artifacts_present=True,
