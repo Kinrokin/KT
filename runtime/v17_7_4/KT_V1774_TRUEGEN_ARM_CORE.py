@@ -405,8 +405,14 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
 
 
 def expand_runtime_path(value: str, config: dict[str, Any]) -> str:
-    adapter_root = os.environ.get(config.get("adapter_root_env", "KT_TRUEGEN_ADAPTER_ROOT"), config.get("adapter_root_default", ""))
-    expanded = value.replace("${KT_TRUEGEN_ADAPTER_ROOT}", adapter_root).replace("$KT_TRUEGEN_ADAPTER_ROOT", adapter_root)
+    adapter_root_env = config.get("adapter_root_env", "KT_TRUEGEN_ADAPTER_ROOT")
+    adapter_root = os.environ.get(adapter_root_env, config.get("adapter_root_default", ""))
+    expanded = (
+        value.replace("${KT_TRUEGEN_ADAPTER_ROOT}", adapter_root)
+        .replace("$KT_TRUEGEN_ADAPTER_ROOT", adapter_root)
+        .replace(f"${{{adapter_root_env}}}", adapter_root)
+        .replace(f"${adapter_root_env}", adapter_root)
+    )
     return os.path.normpath(os.path.expandvars(expanded))
 
 
@@ -419,10 +425,20 @@ def adapter_source_preference(config: dict[str, Any]) -> str:
     return str(config.get("adapter_source_preference") or "LOCAL_PATH_FIRST").strip().upper()
 
 
+def adapter_local_root_is_set(config: dict[str, Any]) -> bool:
+    adapter_root_env = str(config.get("adapter_root_env", "KT_TRUEGEN_ADAPTER_ROOT"))
+    return bool(os.environ.get(adapter_root_env, "").strip())
+
+
 def adapter_source_kind_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> str:
     hf_repo = str(arm.get("adapter_hf_repo") or "").strip()
     raw_path = str(arm.get("adapter_path") or "").strip()
     preference = adapter_source_preference(config)
+    # The Kaggle wrapper normalizes the HF adapter vault into a local adapter root.
+    # When that root is present, it is the safest source: PEFT sees an adapter
+    # directory with adapter_config.json instead of a dataset repo root.
+    if arm.get("arm_id") in ADAPTER_ARM_IDS and raw_path and adapter_local_root_is_set(config):
+        return ADAPTER_SOURCE_LOCAL_PATH
     if preference == "HF_VAULT_FIRST" and hf_repo:
         return ADAPTER_SOURCE_HF_VAULT
     if raw_path:
@@ -447,8 +463,9 @@ def adapter_load_kwargs_for_arm(arm: dict[str, Any], config: dict[str, Any]) -> 
         return {}
     kwargs: dict[str, Any] = {}
     subfolder = str(arm.get("adapter_hf_subfolder") or "").strip()
-    if subfolder:
-        kwargs["subfolder"] = subfolder
+    if not subfolder:
+        raise RuntimeError(f"adapter_load_contract_failed: HF adapter subfolder missing for {arm.get('arm_id')}")
+    kwargs["subfolder"] = subfolder
     revision = str(arm.get("adapter_hf_revision") or config.get("adapter_hf_revision") or "").strip()
     if revision:
         kwargs["revision"] = revision
@@ -529,6 +546,8 @@ def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict
     if not adapter_ref:
         raise RuntimeError(f"adapter_load_contract_failed: real adapter arm {arm_id} has no adapter source")
     if adapter_source_kind == ADAPTER_SOURCE_HF_VAULT:
+        if not adapter_hf_subfolder:
+            raise RuntimeError(f"adapter_load_contract_failed: HF adapter subfolder missing for {arm_id}")
         return authority(
             schema_id="kt.v17_7_4.adapter_load_contract_row.v1",
             arm_id=arm_id,
@@ -544,6 +563,7 @@ def validate_adapter_source(arm: dict[str, Any], config: dict[str, Any]) -> dict
             hf_vault_source_of_truth=True,
             adapter_sha256_expected=arm.get("adapter_sha256_optional") or "",
             adapter_sha256_verification_scope="HF_MANIFEST_OR_RUNTIME_DOWNLOAD_RECEIPT_REQUIRED",
+            peft_root_only_load_forbidden=True,
         )
     adapter_path = Path(adapter_ref)
     if not adapter_path.exists():
@@ -649,6 +669,8 @@ class GenerationBackend:
                 try:
                     from peft import PeftModel
 
+                    if adapter_source_kind_for_arm(arm, config) == ADAPTER_SOURCE_HF_VAULT and not adapter_kwargs.get("subfolder"):
+                        raise RuntimeError(f"root-only HF PEFT adapter load forbidden for {arm['arm_id']}")
                     model = PeftModel.from_pretrained(model, adapter_ref, **adapter_kwargs)
                     adapter_status = "ADAPTER_LOADED"
                     adapter_loader_mode = ADAPTER_LOADER_PEFT

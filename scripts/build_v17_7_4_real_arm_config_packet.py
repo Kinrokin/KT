@@ -85,7 +85,8 @@ def write_packet(repo: Path) -> tuple[Path, str]:
             "# KTV1774 HF-Vault Memory-Safe Compression Frontier True-Generation Mini-Furnace V1\n\n"
             "This packet preserves the V17.7.4 real-arm model-load repair and re-inherits the proven KT13 HF-vault "
             "and assessment-only execution pattern. It binds the truegen runner to the intended Qwen 7B substrate, "
-            "prefers the HF final-only adapter vault, keeps local adapter paths as fallback only, and runs arms one at a time. "
+            "uses the HF final-only adapter vault, prefers the wrapper-normalized local adapter root when present, "
+            "falls back to HF adapter subfolders when needed, and runs arms one at a time. "
             "The model loader uses `AutoModelForCausalLM.from_pretrained` and places 4-bit loading inside "
             "`BitsAndBytesConfig(..., load_in_4bit=True)` via `quantization_config`. It never forwards "
             "`load_in_4bit` as a raw Qwen constructor/from_pretrained kwarg. It performs fresh generation or fails closed. "
@@ -93,7 +94,8 @@ def write_packet(repo: Path) -> tuple[Path, str]:
             "It streams rows to disk, writes a GPU memory ledger, rescues partial rows on blockers, and returns only an assessment ZIP. "
             "It does not train, promote, authorize V18, or claim learned-router superiority.\n\n"
             "Default row ladder stage is 3 rows. Set `KT_TRUEGEN_LADDER_STAGE=10`, `25`, `50`, or `100` only after memory telemetry passes. "
-            "Set `KT_TRUEGEN_ADAPTER_SOURCE=local` and `KT_TRUEGEN_ADAPTER_ROOT` only if HF vault access is unavailable.\n"
+            "When `KT_TRUEGEN_ADAPTER_ROOT` is set by the Kaggle wrapper, adapter arms load from "
+            "`${KT_TRUEGEN_ADAPTER_ROOT}/adapters/<expected_adapter_id>` and never from the HF dataset root alone.\n"
         ).encode("utf-8"),
         "KTV1774_TRUEGEN_MINIFURNACE_MASTER_RUNNER.py": (repo / "runtime" / "v17_7_4" / "KTV1774_TRUEGEN_MINIFURNACE_MASTER_RUNNER.py").read_bytes(),
         "KT_V1774_TRUEGEN_ARM_CORE.py": (repo / "runtime" / "v17_7_4" / "KT_V1774_TRUEGEN_ARM_CORE.py").read_bytes(),
@@ -110,7 +112,7 @@ def write_packet(repo: Path) -> tuple[Path, str]:
                 bad_load_in_4bit_kwarg_forwarded=False,
                 compression_frontier_gate_required=True,
                 hf_vault_source_of_truth=True,
-                adapter_source_preference="HF_VAULT_FIRST",
+                adapter_source_preference="LOCAL_NORMALIZED_ROOT_WHEN_PRESENT_ELSE_HF_VAULT_SUBFOLDER",
                 arm_isolation_mode="ARM_MAJOR_UNLOAD_AFTER_EACH_ARM",
                 stream_rows_to_disk=True,
                 row_ladder=[3, 10, 25, 50, 100],
@@ -151,7 +153,7 @@ Kaggle dataset name: `{KAGGLE_DATASET_NAME}`
 
 SHA256: `{packet_sha}`
 
-This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It prefers the HF final-only adapter vault, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
+This packet is not the smoke packet. It requires the real-arm config and fails closed if adapter-source bindings are missing. It uses the HF final-only adapter vault, prefers a wrapper-normalized local adapter root when present, otherwise loads HF adapter subfolders, runs one arm at a time, streams rows to disk, emits GPU memory telemetry, and returns only an assessment ZIP. It also emits token-economics, bloat-attribution, ablation-ladder, router-admission, and compression-frontier receipts.
 
 ```python
 from pathlib import Path
@@ -170,9 +172,9 @@ os.environ["KT_FORBID_BASE_FALLBACK_AS_ADAPTER"] = "1"
 os.environ.setdefault("KT_TRUEGEN_ADAPTER_SOURCE", "hf")
 os.environ.setdefault("KT_TRUEGEN_LADDER_STAGE", "3")
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True,max_split_size_mb:64")
-# Use local only if HF is unavailable and a Kaggle adapter dataset is attached.
-# os.environ["KT_TRUEGEN_ADAPTER_SOURCE"] = "local"
-# os.environ.setdefault("KT_TRUEGEN_ADAPTER_ROOT", "/kaggle/input/datasets/robertking1995/adapterssafetensors")
+# If the wrapper sets KT_TRUEGEN_ADAPTER_ROOT after normalizing the HF vault,
+# the runtime automatically prefers that local adapter root over HF direct load.
+# Direct HF fallback still requires adapter_hf_subfolder and never loads the repo root alone.
 
 candidates = [
     Path("/kaggle/input/{KAGGLE_DATASET_NAME}/{PACKET_NAME}"),

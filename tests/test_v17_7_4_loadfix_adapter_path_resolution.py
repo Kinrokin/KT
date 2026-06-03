@@ -53,3 +53,31 @@ def test_missing_adapter_path_fails_closed(tmp_path, monkeypatch) -> None:
         assert "adapter path missing" in str(exc)
     else:
         raise AssertionError("missing real adapter path must fail closed")
+
+
+def test_hf_adapter_load_uses_subfolder_when_local_root_absent(monkeypatch) -> None:
+    core = _core()
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_ROOT", raising=False)
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_SOURCE", raising=False)
+    config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
+    arm = next(arm for arm in config["arms"] if arm["arm_id"] == "route_regret_policy_adapter_global")
+
+    assert core.adapter_source_kind_for_arm(arm, config) == core.ADAPTER_SOURCE_HF_VAULT
+    assert core.adapter_ref_for_arm(arm, config) == arm["adapter_hf_repo"]
+    assert core.adapter_load_kwargs_for_arm(arm, config) == {"subfolder": "adapters/learning_delta_lobe"}
+
+
+def test_hf_adapter_root_only_load_is_forbidden(monkeypatch) -> None:
+    core = _core()
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_ROOT", raising=False)
+    monkeypatch.delenv("KT_TRUEGEN_ADAPTER_SOURCE", raising=False)
+    config = json.loads((ROOT / "configs" / "v17_7_4" / "arm_model_config.json").read_text(encoding="utf-8"))
+    arm = next(arm for arm in config["arms"] if arm["arm_id"] == "formal_math_repair_adapter_global")
+    arm.pop("adapter_hf_subfolder", None)
+
+    try:
+        core.adapter_load_kwargs_for_arm(arm, config)
+    except RuntimeError as exc:
+        assert "HF adapter subfolder missing" in str(exc)
+    else:
+        raise AssertionError("HF adapter root-only load must fail before PEFT")
