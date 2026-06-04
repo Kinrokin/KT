@@ -1,0 +1,24 @@
+{
+  "$id": "kt.v17_7_4.final_answer_contract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "compact_answer_contract": {
+      "const": true
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.compact_answer_contract.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "compact_answer_contract",
+    "scorer_only_expected_answer",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
