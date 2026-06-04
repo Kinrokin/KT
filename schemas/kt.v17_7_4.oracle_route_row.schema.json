@@ -1,0 +1,39 @@
+{
+  "$id": "kt.v17_7_4.oracle_route_row.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "oracle_correctness_used_as_runtime_feature": {
+      "const": false
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.oracle_route_row.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "dataset",
+    "task_family",
+    "chosen_arm",
+    "best_arm",
+    "oracle_arm",
+    "route_regret",
+    "token_regret",
+    "claim_ceiling_preserved",
+    "oracle_correctness_used_as_runtime_feature"
+  ],
+  "type": "object"
+}

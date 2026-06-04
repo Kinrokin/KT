@@ -1,0 +1,33 @@
+{
+  "answer_modes": {
+    "multiple_choice_letter": {
+      "max_visible_answer_tokens": 1,
+      "rule": "emit only option letter"
+    },
+    "numeric_final_answer": {
+      "max_visible_answer_tokens": 16,
+      "rule": "emit only final normalized number"
+    },
+    "short_answer": {
+      "max_visible_answer_tokens": 12,
+      "rule": "emit one canonical phrase"
+    }
+  },
+  "claim_ceiling_preserved": true,
+  "compact_answer_contract": true,
+  "forbidden_visible_answer_markers": [
+    "route",
+    "court",
+    "tribunal",
+    "governance",
+    "kt-hat",
+    "claim ceiling",
+    "adapter",
+    "sample_id"
+  ],
+  "no_governance_explanation_in_benchmark_output": true,
+  "no_rationale_unless_operator_mode": true,
+  "schema_id": "kt.v17_7_4.compact_answer_contract.v1",
+  "scorer_only_expected_answer": true,
+  "status": "ACTIVE_FOR_COMPACT_REALBENCH_PACKET"
+}

@@ -1,0 +1,27 @@
+{
+  "best_current_candidate_arm": "math_act_adapter_global",
+  "claim_ceiling_preserved": true,
+  "default_rule": {
+    "candidate_default_arm": "math_act_adapter_global",
+    "claim_ceiling_preserved": true,
+    "promotion_authority": false,
+    "required_validation": [
+      "row_level_oracle_route_table",
+      "held_out_realbench_replay",
+      "OOD_slice_replay",
+      "token_accounting_reconciliation"
+    ],
+    "rule_authority": "CANDIDATE_ONLY",
+    "rule_id": "math_act_default_candidate_after_realbench_50",
+    "schema_id": "kt.v17_7_4.specialist_admission_rule.v1"
+  },
+  "guardrails": {
+    "dataset_label_alone_structure_bound_claim_allowed": false,
+    "math_act_adapter_promoted": false,
+    "oracle_correctness_used_as_runtime_feature": false
+  },
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "schema_id": "kt.v17_7_4.specialist_admission_atlas.v1",
+  "status": "PASS_CANDIDATE_ONLY"
+}
