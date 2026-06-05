@@ -1,0 +1,119 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "compact_finalizer_and_reasoning_preserving_layers_separated": true,
+  "comparisons": [
+    {
+      "arm_id": "A_known_good_math_act_reproduction",
+      "equivalent_to_known_good": true,
+      "field_differences": {},
+      "known_good_source_arm": "A_known_good_math_act_reproduction"
+    },
+    {
+      "arm_id": "A3_prior_math_act_plus_finalizer_only",
+      "equivalent_to_known_good": false,
+      "field_differences": {
+        "compact_mode": {
+          "candidate": "POST_FINALIZER_ONLY",
+          "known_good": "RAW_KNOWN_GOOD_REPRODUCTION"
+        },
+        "compact_scoring_disabled": {
+          "candidate": false,
+          "known_good": true
+        },
+        "score_from_visible_answer": {
+          "candidate": true,
+          "known_good": false
+        },
+        "scoring_surface": {
+          "candidate": "FINAL_VISIBLE_ANSWER",
+          "known_good": "RAW_OUTPUT"
+        }
+      },
+      "known_good_source_arm": "A_known_good_math_act_reproduction"
+    },
+    {
+      "arm_id": "A4_math_act_reasoning_preserving_compact_v2",
+      "equivalent_to_known_good": false,
+      "field_differences": {
+        "compact_mode": {
+          "candidate": "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL",
+          "known_good": "RAW_KNOWN_GOOD_REPRODUCTION"
+        },
+        "compact_scoring_disabled": {
+          "candidate": false,
+          "known_good": true
+        },
+        "prompt_template_id": {
+          "candidate": "math_act_reasoning_preserving_compact",
+          "known_good": "math_act"
+        },
+        "score_from_visible_answer": {
+          "candidate": true,
+          "known_good": false
+        },
+        "scoring_surface": {
+          "candidate": "FINAL_VISIBLE_ANSWER",
+          "known_good": "RAW_OUTPUT"
+        }
+      },
+      "known_good_source_arm": "A_known_good_math_act_reproduction"
+    },
+    {
+      "arm_id": "A6_specialist_admission_candidate_v2",
+      "equivalent_to_known_good": false,
+      "field_differences": {
+        "adapter_hf_subfolder": {
+          "candidate": "adapters/learning_delta_lobe",
+          "known_good": "adapters/cohort_pass2_delta_scar"
+        },
+        "adapter_path": {
+          "candidate": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/learning_delta_lobe",
+          "known_good": "${KT_TRUEGEN_ADAPTER_ROOT}/adapters/cohort_pass2_delta_scar"
+        },
+        "adapter_sha256_optional": {
+          "candidate": "826bb70f6fe5a862e99f14f6fc6b2fbecd02f840dd11df9d3ef9e2dc42f412e3",
+          "known_good": "6fde587c24a20f059e49bafbcc4ad031796e6f40b07d63704edf79ed8b90cc4a"
+        },
+        "compact_mode": {
+          "candidate": "EVIDENCE_GROUNDED_BRIEF_THEN_FINAL",
+          "known_good": "RAW_KNOWN_GOOD_REPRODUCTION"
+        },
+        "compact_scoring_disabled": {
+          "candidate": false,
+          "known_good": true
+        },
+        "prompt_template_id": {
+          "candidate": "specialist_admission_controller",
+          "known_good": "math_act"
+        },
+        "score_from_visible_answer": {
+          "candidate": true,
+          "known_good": false
+        },
+        "scoring_surface": {
+          "candidate": "FINAL_VISIBLE_ANSWER",
+          "known_good": "RAW_OUTPUT"
+        }
+      },
+      "known_good_source_arm": "A_known_good_math_act_reproduction"
+    }
+  ],
+  "known_good_source_arm": "A_known_good_math_act_reproduction",
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "reproduction_arm": "A_known_good_math_act_reproduction",
+  "required_clean": {
+    "raw_scoring_surface": true,
+    "same_adapter_hash": true,
+    "same_adapter_ref": true,
+    "same_max_new_tokens": true,
+    "same_prompt_template": true
+  },
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.realbench_vs_dualfront_arm_diff_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
