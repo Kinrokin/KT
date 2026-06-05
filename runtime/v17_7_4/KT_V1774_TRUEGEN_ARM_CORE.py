@@ -47,6 +47,17 @@ DUALFRONT_ARM_IDS = [
     "A7_oracle_shadow_not_runtime",
 ]
 
+ORACLE_ACADEMY_ARM_IDS = [
+    "A0_base_raw",
+    "A1_prior_realbench_base_raw_reproduction",
+    "A_known_good_math_act_reproduction",
+    "A3_prior_math_act_plus_finalizer_only",
+    "A4_math_act_reasoning_preserving_compact_v2",
+    "A5_kt_hat_risk_gated_v2",
+    "A6_specialist_admission_candidate_v2",
+    "A7_oracle_shadow",
+]
+
 ADAPTER_ARM_IDS = {
     "route_regret_policy_adapter_global",
     "formal_math_repair_adapter_global",
@@ -55,6 +66,10 @@ ADAPTER_ARM_IDS = {
     "A3_math_act_reasoning_preserving_compact",
     "A4_formal_math_reasoning_preserving_compact",
     "A5_specialist_admission_controller_v1",
+    "A_known_good_math_act_reproduction",
+    "A3_prior_math_act_plus_finalizer_only",
+    "A4_math_act_reasoning_preserving_compact_v2",
+    "A6_specialist_admission_candidate_v2",
 }
 
 SMOKE_BASE_MODELS = {
@@ -100,6 +115,18 @@ ASSESSMENT_FILES = [
     "visible_answer_scoring_receipt.json",
     "compact_accuracy_regression_gate.json",
     "route_margin_scorecard.json",
+    "known_good_lobe_reproduction_receipt.json",
+    "realbench_vs_dualfront_arm_diff_receipt.json",
+    "gsm8k_regression_autopsy.json",
+    "parser_failure_repair_plan.json",
+    "oracle_autopsy_table.jsonl",
+    "scar_delta_registry.json",
+    "recursive_learning_delta_manifest.json",
+    "academy_repair_plan.json",
+    "lobe_tournament_reentry_plan.json",
+    "tie_merge_child_lobe_plan.json",
+    "kt_hat_mount_comparison_plan.json",
+    "claim_ceiling_receipt.json",
     "truegen_ablation_ladder_scorecard.json",
     "truegen_adapter_quarantine_recommendation.json",
     "truegen_compression_frontier_gate.json",
@@ -157,6 +184,7 @@ REAL_BENCHMARK_MODE = "REAL_BENCHMARK_GAUGE"
 G2_SENTINEL_MODE = "G2_COMPRESSION_SENTINEL"
 DIAGNOSTIC_MODE = "DIAGNOSTIC_BOUNDARY_MINIFURNACE"
 DUALFRONT_MODE = "DUALFRONT_REASONING_PRESERVING_ADMISSION_BENCH"
+ORACLE_ACADEMY_MODE = "ORACLE_AUTOPSY_ACADEMY_REENTRY"
 COMPACT_ANSWER_ENV = "KT_COMPACT_ANSWER_CONTRACT"
 REASONING_PRESERVING_ENV = "KT_REASONING_PRESERVING_COMPACT"
 ROW_REQUEST_ENVS = [
@@ -186,6 +214,14 @@ G2_COMPRESSION_ANCHOR = {
     },
 }
 
+REALBENCH_KNOWN_GOOD_ANCHOR = {
+    "base_raw": {"correct": 30, "total": 50, "accuracy": 0.60},
+    "math_act_adapter_global": {"correct": 41, "total": 50, "accuracy": 0.82},
+    "math_act_gsm8k": {"correct": 11, "total": 20, "accuracy": 0.55},
+    "oracle": {"correct": 42, "total": 50, "accuracy": 0.84},
+    "minimum_reproduction_correct": 39,
+}
+
 ABLATION_LADDER = {
     "base_raw": "A0_base_raw",
     "base_kt_hat_compact": "A1_base_kt_hat_compact",
@@ -203,6 +239,13 @@ ABLATION_LADDER = {
     "A5_specialist_admission_controller_v1": "A5_specialist_admission_controller_v1",
     "A6_kt_hat_compact_risk_gated": "A6_kt_hat_compact_risk_gated",
     "A7_oracle_shadow_not_runtime": "A7_oracle_shadow_not_runtime",
+    "A1_prior_realbench_base_raw_reproduction": "A1_prior_realbench_base_raw_reproduction",
+    "A_known_good_math_act_reproduction": "A_known_good_math_act_reproduction",
+    "A3_prior_math_act_plus_finalizer_only": "A3_prior_math_act_plus_finalizer_only",
+    "A4_math_act_reasoning_preserving_compact_v2": "A4_math_act_reasoning_preserving_compact_v2",
+    "A5_kt_hat_risk_gated_v2": "A5_kt_hat_risk_gated_v2",
+    "A6_specialist_admission_candidate_v2": "A6_specialist_admission_candidate_v2",
+    "A7_oracle_shadow": "A7_oracle_shadow",
 }
 
 BLOAT_CLASSES = {
@@ -292,6 +335,16 @@ def reasoning_preserving_compact_enabled(config: dict[str, Any]) -> bool:
     if env_value in {"0", "false", "no", "off"}:
         return False
     return bool(config.get("reasoning_preserving_compact") is True)
+
+
+def compact_scoring_enabled(config: dict[str, Any], arm: dict[str, Any]) -> bool:
+    if arm.get("score_from_visible_answer") is False:
+        return False
+    if arm.get("compact_scoring_disabled") is True:
+        return False
+    if str(arm.get("scoring_surface", "")).upper() == "RAW_OUTPUT":
+        return False
+    return compact_answer_enabled(config)
 
 
 def compact_mode_for_row(row: dict[str, Any], arm: dict[str, Any], config: dict[str, Any] | None = None) -> str:
@@ -1169,7 +1222,8 @@ def build_arm_result_row(
     prompt = materialize_prompt(row, arm)
     parsed = parse_answer(output_text)
     visible_answer = final_visible_answer(output_text, parsed, row)
-    compact_enabled = compact_answer_enabled(config)
+    compact_enabled = compact_scoring_enabled(config, arm)
+    compact_contract_enabled = compact_answer_enabled(config)
     reasoning_preserving_enabled = reasoning_preserving_compact_enabled(config)
     compact_mode = compact_mode_for_row(row, arm, config)
     scoring_text = visible_answer if compact_enabled else output_text
@@ -1248,7 +1302,8 @@ def build_arm_result_row(
         route_overhead_tokens=route_overhead_tokens,
         hat_overhead_ratio=row_metrics["hat_overhead_ratio"],
         parser_format_failure=parser_format_failure,
-        compact_answer_contract_enabled=compact_enabled,
+        compact_answer_contract_enabled=compact_contract_enabled,
+        compact_scoring_enabled=compact_enabled,
         reasoning_preserving_compact_enabled=reasoning_preserving_enabled,
         compact_mode=compact_mode,
         final_visible_answer_used_for_scoring=compact_enabled,
@@ -1532,6 +1587,439 @@ def compact_accuracy_regression_gate(scorecards: dict[str, Any]) -> dict[str, An
         correct_counts=correct_counts,
         visible_compression_alone_sufficient=False,
         gsm8k_guardrail=gsm8k_guardrail,
+        claim_ceiling_preserved=True,
+    )
+
+
+def arm_by_id_from_config(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {str(arm.get("arm_id")): arm for arm in config.get("arms", [])}
+
+
+def first_present_arm(sample_rows: list[dict[str, Any]], candidates: list[str]) -> dict[str, Any] | None:
+    by_arm = {row["arm_id"]: row for row in sample_rows}
+    for candidate in candidates:
+        if candidate in by_arm:
+            return by_arm[candidate]
+    return None
+
+
+def best_row(sample_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    return sorted(sample_rows, key=lambda row: (-float(row.get("score", 0.0)), int(row.get("total_tokens", 10**9)), row["arm_id"]))[0]
+
+
+def realbench_vs_dualfront_arm_diff_receipt(config: dict[str, Any]) -> dict[str, Any]:
+    arms = arm_by_id_from_config(config)
+    source = arms.get("math_act_adapter_global") or arms.get("A_known_good_math_act_reproduction") or {}
+    comparison_ids = [
+        "A_known_good_math_act_reproduction",
+        "A3_prior_math_act_plus_finalizer_only",
+        "A4_math_act_reasoning_preserving_compact_v2",
+        "A6_specialist_admission_candidate_v2",
+        "A2_math_act_full_reasoning",
+        "A3_math_act_reasoning_preserving_compact",
+    ]
+    fields = [
+        "adapter_hf_repo",
+        "adapter_hf_subfolder",
+        "adapter_path",
+        "adapter_sha256_optional",
+        "prompt_template_id",
+        "max_new_tokens",
+        "compact_mode",
+        "score_from_visible_answer",
+        "compact_scoring_disabled",
+        "scoring_surface",
+        "scoring_method",
+        "model_repo_or_base",
+    ]
+    rows = []
+    for arm_id in comparison_ids:
+        target = arms.get(arm_id)
+        if not target:
+            continue
+        diffs = {
+            field: {"known_good": source.get(field, ""), "candidate": target.get(field, "")}
+            for field in fields
+            if source.get(field, "") != target.get(field, "")
+        }
+        rows.append(
+            {
+                "arm_id": arm_id,
+                "known_good_source_arm": source.get("arm_id", "math_act_adapter_global"),
+                "field_differences": diffs,
+                "equivalent_to_known_good": not bool(diffs),
+            }
+        )
+    known_good = arms.get("A_known_good_math_act_reproduction", {})
+    required_clean = {
+        "same_adapter_ref": known_good.get("adapter_hf_repo") == source.get("adapter_hf_repo")
+        and known_good.get("adapter_hf_subfolder") == source.get("adapter_hf_subfolder"),
+        "same_adapter_hash": known_good.get("adapter_sha256_optional") == source.get("adapter_sha256_optional"),
+        "same_prompt_template": known_good.get("prompt_template_id") == source.get("prompt_template_id"),
+        "same_max_new_tokens": known_good.get("max_new_tokens") == source.get("max_new_tokens"),
+        "raw_scoring_surface": known_good.get("score_from_visible_answer") is False
+        or str(known_good.get("scoring_surface", "")).upper() == "RAW_OUTPUT",
+    }
+    return authority(
+        schema_id="kt.v17_7_4.realbench_vs_dualfront_arm_diff_receipt.v1",
+        status="PASS" if all(required_clean.values()) else "BLOCKED",
+        known_good_source_arm=source.get("arm_id", "math_act_adapter_global"),
+        reproduction_arm="A_known_good_math_act_reproduction",
+        required_clean=required_clean,
+        comparisons=rows,
+        compact_finalizer_and_reasoning_preserving_layers_separated=True,
+        claim_ceiling_preserved=True,
+    )
+
+
+def known_good_lobe_reproduction_receipt(arm_rows: list[dict[str, Any]], scorecards: dict[str, Any]) -> dict[str, Any]:
+    correct_counts = scorecards["benchmark"].get("correct_counts", {})
+    arm_id = "A_known_good_math_act_reproduction"
+    correct = int(correct_counts.get(arm_id, 0))
+    total = len([row for row in arm_rows if row.get("arm_id") == arm_id])
+    gsm8k_rows = [row for row in arm_rows if row.get("arm_id") == arm_id and "gsm8k" in str(row.get("dataset", "")).lower()]
+    gsm8k_correct = sum(1 for row in gsm8k_rows if row.get("correct") is True)
+    minimum = int(REALBENCH_KNOWN_GOOD_ANCHOR["minimum_reproduction_correct"])
+    status = "PASS" if correct >= minimum else "BLOCKED"
+    return authority(
+        schema_id="kt.v17_7_4.known_good_lobe_reproduction_receipt.v1",
+        status=status,
+        outcome="KNOWN_GOOD_INTELLIGENCE_PATH_REPRODUCED" if status == "PASS" else "KT_BLOCKED__KNOWN_GOOD_INTELLIGENCE_PATH_NOT_REPRODUCED",
+        reproduction_arm_id=arm_id,
+        prior_realbench_anchor=REALBENCH_KNOWN_GOOD_ANCHOR,
+        observed_correct=correct,
+        observed_total=total,
+        minimum_reproduction_correct=minimum,
+        observed_gsm8k_correct=gsm8k_correct,
+        observed_gsm8k_total=len(gsm8k_rows),
+        compact_scoring_disabled_for_reproduction=True,
+        finalizer_audit_only=True,
+        current_runtime_claim_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def infer_failure_owner(chosen: dict[str, Any], best: dict[str, Any], known_good: dict[str, Any] | None) -> str:
+    if best.get("correct") is True and chosen.get("correct") is not True:
+        return "ROUTE_OWNED"
+    if known_good and known_good.get("parser_format_failure") is True:
+        return "SCORER_OWNED"
+    if known_good and known_good.get("correct") is not True:
+        return "LOBE_OWNED"
+    if chosen.get("parser_format_failure") is True:
+        return "FINALIZER_OWNED"
+    if best.get("correct") is not True:
+        return "IRREDUCIBLE"
+    return "UNKNOWN_BLOCKED"
+
+
+def intervention_for_owner(owner: str) -> str:
+    return {
+        "ROUTE_OWNED": "repair specialist admission rule from pre-generation features",
+        "LOBE_OWNED": "queue lobe/adaptor scar for Academy repair only after minimum viable signal",
+        "ADAPTER_OWNED": "queue adapter scar for Academy repair only after no-regression plan",
+        "PROMPT_CONTRACT_OWNED": "patch prompt contract before training",
+        "SCORER_OWNED": "patch parser/scorer before training",
+        "FINALIZER_OWNED": "patch finalizer/extraction before training",
+        "GATE_OWNED": "patch code-owned gate receipt",
+        "HAT_OWNED": "calibrate KT-hat overhead/risk trigger",
+        "BENCHMARK_OWNED": "quarantine or repair benchmark row",
+        "ARCHIVE_SOURCE_OWNED": "bind missing historical source before claiming reproduction",
+        "IRREDUCIBLE": "quarantine as irreducible or ambiguous until external evidence changes",
+        "UNKNOWN_BLOCKED": "collect more evidence before intervention",
+    }.get(owner, "collect more evidence before intervention")
+
+
+def build_oracle_autopsy_rows(arm_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_sample: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in arm_rows:
+        by_sample[row["sample_id"]].append(row)
+    rows = []
+    for sample_id, sample_rows in sorted(by_sample.items()):
+        best = best_row(sample_rows)
+        base = first_present_arm(sample_rows, ["base_raw", "A0_base_raw", "A1_prior_realbench_base_raw_reproduction"]) or sample_rows[0]
+        known_good = first_present_arm(sample_rows, ["A_known_good_math_act_reproduction", "math_act_adapter_global", "A2_math_act_full_reasoning"])
+        router_choice = first_present_arm(sample_rows, ["A6_specialist_admission_candidate_v2", "A5_specialist_admission_controller_v1", "route_regret_policy_adapter_global"]) or best
+        kt_hat_choice = first_present_arm(sample_rows, ["A5_kt_hat_risk_gated_v2", "A6_kt_hat_compact_risk_gated", "base_kt_hat_compact"]) or router_choice
+        owner = infer_failure_owner(router_choice, best, known_good)
+        repair_bid = {
+            "owner": owner,
+            "recommended_intervention": intervention_for_owner(owner),
+            "trainable_now": owner in {"LOBE_OWNED", "ADAPTER_OWNED"} and known_good is not None,
+            "training_authorized": False,
+            "claim_ceiling_preserved": True,
+        }
+        rows.append(
+            authority(
+                schema_id="kt.v17_7_4.oracle_autopsy_row.v1",
+                sample_id=sample_id,
+                dataset=best.get("dataset"),
+                task_family=best.get("task_family"),
+                base_correct=bool(base.get("correct")),
+                lobe_results={
+                    row["arm_id"]: {
+                        "correct": bool(row.get("correct")),
+                        "score": row.get("score", 0.0),
+                        "tokens": row.get("total_tokens", 0),
+                        "parser_format_failure": bool(row.get("parser_format_failure")),
+                    }
+                    for row in sample_rows
+                },
+                router_choice=router_choice.get("arm_id"),
+                router_correct=bool(router_choice.get("correct")),
+                kt_hat_choice=kt_hat_choice.get("arm_id"),
+                kt_hat_correct=bool(kt_hat_choice.get("correct")),
+                oracle_choice=best.get("arm_id"),
+                oracle_correct=bool(best.get("correct")),
+                best_lobe=best.get("arm_id"),
+                route_regret=max(float(best.get("score", 0.0)) - float(router_choice.get("score", 0.0)), 0.0),
+                token_regret=max(int(router_choice.get("total_tokens", 0)) - int(best.get("total_tokens", 0)), 0),
+                latency_regret=max(int(router_choice.get("latency_ms", 0)) - int(best.get("latency_ms", 0)), 0),
+                failure_owner=owner,
+                repair_bid=repair_bid,
+                scar_candidate=owner not in {"IRREDUCIBLE"} and bool(best.get("correct") is True or router_choice.get("correct") is not True),
+                delta_candidate=owner in {"ROUTE_OWNED", "LOBE_OWNED", "ADAPTER_OWNED", "PROMPT_CONTRACT_OWNED", "SCORER_OWNED", "FINALIZER_OWNED"},
+                recommended_intervention=repair_bid["recommended_intervention"],
+                oracle_correctness_used_as_runtime_feature=False,
+            )
+        )
+    return rows
+
+
+def build_scar_delta_registry(autopsy_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    scars = []
+    owner_counts = Counter(row["failure_owner"] for row in autopsy_rows)
+    for row in autopsy_rows:
+        if not row.get("scar_candidate"):
+            continue
+        scars.append(
+            {
+                "schema_id": "kt.v17_7_4.scar_delta_registry_row.v1",
+                "scar_id": sha256_text(f"{row['sample_id']}::{row['failure_owner']}")[:16],
+                "sample_id": row["sample_id"],
+                "dataset": row.get("dataset"),
+                "task_family": row.get("task_family"),
+                "failure_owner": row["failure_owner"],
+                "what_failed": f"{row['router_choice']} did not match oracle/best outcome when repair signal existed",
+                "where_it_failed": row.get("task_family"),
+                "why_oracle_differed": f"oracle_choice={row['oracle_choice']}; route_regret={row['route_regret']}; token_regret={row['token_regret']}",
+                "trainable": row["failure_owner"] in {"LOBE_OWNED", "ADAPTER_OWNED"},
+                "repair_owner": row["failure_owner"],
+                "future_eval_row_id": row["sample_id"],
+                "training_authorized": False,
+            }
+        )
+    return authority(
+        schema_id="kt.v17_7_4.scar_delta_registry.v1",
+        status="PASS",
+        scar_count=len(scars),
+        owner_counts=dict(owner_counts),
+        scars=scars,
+        training_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def recursive_learning_delta_manifest(scar_registry: dict[str, Any]) -> dict[str, Any]:
+    scars = scar_registry.get("scars", [])
+    return authority(
+        schema_id="kt.v17_7_4.recursive_learning_delta_manifest.v1",
+        status="PASS",
+        delta_rows=[
+            {
+                "delta_id": sha256_text(f"delta::{scar['scar_id']}")[:16],
+                "scar_id": scar["scar_id"],
+                "repair_owner": scar["repair_owner"],
+                "future_eval_row_id": scar["future_eval_row_id"],
+                "academy_eligible": scar["trainable"],
+                "training_authorized": False,
+            }
+            for scar in scars
+        ],
+        no_training_in_this_lane=True,
+        claim_ceiling_preserved=True,
+    )
+
+
+def academy_repair_plan(scar_registry: dict[str, Any], known_good_receipt: dict[str, Any]) -> dict[str, Any]:
+    owner_counts = scar_registry.get("owner_counts", {})
+    blocked_reasons = []
+    if known_good_receipt.get("status") != "PASS":
+        blocked_reasons.append("known_good_intelligence_path_not_reproduced")
+    trainable_count = sum(1 for scar in scar_registry.get("scars", []) if scar.get("trainable") is True)
+    return authority(
+        schema_id="kt.v17_7_4.academy_repair_plan.v1",
+        status="PASS" if not blocked_reasons else "BLOCKED",
+        blocked_reasons=blocked_reasons,
+        owner_counts=owner_counts,
+        trainable_scar_count=trainable_count,
+        rules=[
+            "Do not train if failure is scorer/finalizer/prompt-owned.",
+            "Do not train if G2 source is missing.",
+            "Do not train if benchmark row is defective.",
+            "Train only if lobe/adaptor-owned and repair_bid passes future minimum viable signal.",
+            "Router repair only if route-owned and pre-generation features exist.",
+            "Gate/court repair only if hard code rule is defective.",
+        ],
+        next_repair_surfaces=[
+            surface
+            for surface in ["SCORER_OWNED", "FINALIZER_OWNED", "PROMPT_CONTRACT_OWNED", "ROUTE_OWNED", "LOBE_OWNED", "ADAPTER_OWNED"]
+            if owner_counts.get(surface, 0)
+        ],
+        training_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def lobe_tournament_reentry_plan(config: dict[str, Any], scar_registry: dict[str, Any]) -> dict[str, Any]:
+    arms = [arm.get("arm_id") for arm in config.get("arms", []) if arm.get("enabled", True)]
+    return authority(
+        schema_id="kt.v17_7_4.lobe_tournament_reentry_plan.v1",
+        status="PASS",
+        tournament_candidates=arms,
+        required_comparisons=[
+            "parent_lobe_vs_repaired_lobe",
+            "repaired_lobe_vs_child_merged_lobe",
+            "best_static_specialist_vs_router_selected_specialist",
+            "router_selected_specialist_vs_oracle_shadow",
+        ],
+        tie_breakers=[
+            "correctness",
+            "full_tokens_per_correct",
+            "visible_answer_tokens_per_correct",
+            "negative_transfer",
+            "parser_failure",
+            "claim_risk",
+            "replay_stability",
+            "no_regression",
+        ],
+        scar_count=scar_registry.get("scar_count", 0),
+        promotion_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def tie_merge_child_lobe_plan(tournament_plan: dict[str, Any]) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.tie_merge_child_lobe_plan.v1",
+        status="PASS",
+        child_lobe_replacement_requirements=[
+            "distinct_hash",
+            "lineage_receipt",
+            "no_regression_pass",
+            "tournament_receipt",
+            "rollback_path",
+        ],
+        tournament_candidates=tournament_plan.get("tournament_candidates", []),
+        child_lobe_replacement_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def kt_hat_mount_comparison_plan(config: dict[str, Any]) -> dict[str, Any]:
+    arms = arm_by_id_from_config(config)
+    return authority(
+        schema_id="kt.v17_7_4.kt_hat_mount_comparison_plan.v1",
+        status="PASS",
+        comparisons={
+            "base_model_alone": any(arm in arms for arm in ["base_raw", "A0_base_raw"]),
+            "base_plus_trained_lobe_safetensors": any(arm.get("arm_kind") == "adapter" for arm in arms.values()),
+            "base_plus_router_selected_safetensors": any(arm in arms for arm in ["route_regret_policy_adapter_global", "A6_specialist_admission_candidate_v2"]),
+            "base_plus_kt_hat_runtime": any(arm in arms for arm in ["base_kt_hat_compact", "A5_kt_hat_risk_gated_v2", "A6_kt_hat_compact_risk_gated"]),
+            "oracle_shadow": any(arm in arms for arm in ["A7_oracle_shadow", "A7_oracle_shadow_not_runtime"]),
+        },
+        must_distinguish=[
+            "base_model_intelligence",
+            "trained_substrate_intelligence",
+            "router_selection_gain",
+            "kt_hat_governance_cost",
+            "oracle_gap",
+            "compression_cost",
+        ],
+        runtime_authority=False,
+        promotion_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def gsm8k_regression_autopsy(arm_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    gsm_rows = [row for row in arm_rows if "gsm8k" in str(row.get("dataset", "")).lower()]
+    by_arm: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in gsm_rows:
+        by_arm[row["arm_id"]].append(row)
+    matrix = {}
+    owner_votes = Counter()
+    for arm, rows in sorted(by_arm.items()):
+        correct = sum(1 for row in rows if row.get("correct") is True)
+        parser_fail = sum(1 for row in rows if row.get("parser_format_failure") is True)
+        if parser_fail / max(len(rows), 1) > 0.20:
+            owner = "SCORER_OWNED"
+        elif correct < REALBENCH_KNOWN_GOOD_ANCHOR["math_act_gsm8k"]["correct"] and "math" in arm:
+            owner = "PROMPT_CONTRACT_OWNED"
+        else:
+            owner = "UNKNOWN_BLOCKED"
+        owner_votes[owner] += 1
+        matrix[arm] = {
+            "correct": correct,
+            "total": len(rows),
+            "parser_failure_count": parser_fail,
+            "parser_failure_rate": safe_ratio(parser_fail, len(rows)),
+            "owner_vote": owner,
+        }
+    status = "PASS" if matrix else "BLOCKED"
+    return authority(
+        schema_id="kt.v17_7_4.gsm8k_regression_autopsy.v1",
+        status=status,
+        prior_math_act_gsm8k_anchor=REALBENCH_KNOWN_GOOD_ANCHOR["math_act_gsm8k"],
+        observed_matrix=matrix,
+        owner_votes=dict(owner_votes),
+        allowed_owners=[
+            "PROMPT_CONTRACT_OWNED",
+            "FINALIZER_OWNED",
+            "SCORER_OWNED",
+            "ADAPTER_MOUNT_OWNED",
+            "GENERATION_CONFIG_OWNED",
+            "BENCHMARK_ROW_OWNED",
+        ],
+        training_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def parser_failure_repair_plan(scorecards: dict[str, Any]) -> dict[str, Any]:
+    matrix = scorecards.get("parser_error", {}).get("matrix", {})
+    defects = [
+        {"arm_id": arm, "parser_failure_rate": payload.get("parser_format_failure_rate", 0.0)}
+        for arm, payload in sorted(matrix.items())
+        if float(payload.get("parser_format_failure_rate", 0.0)) > 0.20
+    ]
+    return authority(
+        schema_id="kt.v17_7_4.parser_failure_repair_plan.v1",
+        status="PASS" if not defects else "BLOCKED",
+        outcome="PARSER_FAILURE_WITHIN_THRESHOLD" if not defects else "KT_BLOCKED__PARSER_FAILURE_RATE_TOO_HIGH",
+        threshold=0.20,
+        defects=defects,
+        repair_rules=[
+            "Fail closed if parser failure rate exceeds 0.20 on compact/finalized arms.",
+            "Final visible answer must be scored when compact scoring is enabled.",
+            "Parser must not extract an early scratch number when a final marker exists.",
+        ],
+        training_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def claim_ceiling_receipt() -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.oracle_academy_claim_ceiling_receipt.v1",
+        status="PASS",
+        no_training_authorized=True,
+        no_promotion_authorized=True,
+        no_v18_authority=True,
+        no_router_superiority_claim=True,
+        no_commercial_claim=True,
+        no_external_validation_claim=True,
+        no_g2_recovered_claim=True,
         claim_ceiling_preserved=True,
     )
 
@@ -2269,6 +2757,30 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         write_json(out / "truegen_router_admission_receipt.json", router_admission_receipt(scorecards))
         write_json(out / "specialist_admission_atlas.json", specialist_admission_atlas(oracle_rows, scorecards))
         write_json(out / "route_margin_scorecard.json", route_margin_scorecard(oracle_rows))
+        known_good_receipt = known_good_lobe_reproduction_receipt(arm_rows, scorecards)
+        arm_diff_receipt = realbench_vs_dualfront_arm_diff_receipt(config)
+        gsm8k_autopsy = gsm8k_regression_autopsy(arm_rows)
+        parser_plan = parser_failure_repair_plan(scorecards)
+        autopsy_rows = build_oracle_autopsy_rows(arm_rows)
+        scar_registry = build_scar_delta_registry(autopsy_rows)
+        delta_manifest = recursive_learning_delta_manifest(scar_registry)
+        academy_plan = academy_repair_plan(scar_registry, known_good_receipt)
+        tournament_plan = lobe_tournament_reentry_plan(config, scar_registry)
+        tie_merge_plan = tie_merge_child_lobe_plan(tournament_plan)
+        mount_plan = kt_hat_mount_comparison_plan(config)
+        claim_receipt = claim_ceiling_receipt()
+        write_json(out / "known_good_lobe_reproduction_receipt.json", known_good_receipt)
+        write_json(out / "realbench_vs_dualfront_arm_diff_receipt.json", arm_diff_receipt)
+        write_json(out / "gsm8k_regression_autopsy.json", gsm8k_autopsy)
+        write_json(out / "parser_failure_repair_plan.json", parser_plan)
+        write_jsonl(out / "oracle_autopsy_table.jsonl", autopsy_rows)
+        write_json(out / "scar_delta_registry.json", scar_registry)
+        write_json(out / "recursive_learning_delta_manifest.json", delta_manifest)
+        write_json(out / "academy_repair_plan.json", academy_plan)
+        write_json(out / "lobe_tournament_reentry_plan.json", tournament_plan)
+        write_json(out / "tie_merge_child_lobe_plan.json", tie_merge_plan)
+        write_json(out / "kt_hat_mount_comparison_plan.json", mount_plan)
+        write_json(out / "claim_ceiling_receipt.json", claim_receipt)
         write_json(out / "truegen_route_regret_token_cost_matrix.json", scorecards["route_regret_token_cost"])
         write_json(out / "truegen_ablation_ladder_scorecard.json", scorecards["ablation_ladder"])
         write_json(out / "truegen_adapter_quarantine_recommendation.json", scorecards["adapter_quarantine"])
@@ -2320,17 +2832,30 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         assessment = write_assessment(out)
         write_json(out / "assessment_only_packaging_receipt.json", assessment_only_packaging_receipt(out, assessment))
         write_assessment(out)
-        frontier_next = scorecards["compression_frontier"]["outcome"] if scorecards["compression_frontier"]["status"] == "BLOCKED" else decision
+        if row_measurement_mode(config) == ORACLE_ACADEMY_MODE:
+            if known_good_receipt["status"] != "PASS":
+                frontier_next = known_good_receipt["outcome"]
+            elif parser_plan["status"] != "PASS":
+                frontier_next = parser_plan["outcome"]
+            elif academy_plan["status"] != "PASS":
+                frontier_next = "KT_BLOCKED__ACADEMY_REPAIR_PLAN_DEFECT"
+            else:
+                frontier_next = "KT_ORACLE_AUTOPSY_ACADEMY_REENTRY_READY__RUN_KNOWN_GOOD_REPRO_AND_SCAR_REPAIR_NEXT__CLAIM_CEILING_PRESERVED"
+        else:
+            frontier_next = scorecards["compression_frontier"]["outcome"] if scorecards["compression_frontier"]["status"] == "BLOCKED" else decision
         summary = authority(
             schema_id="kt.v17_7_4.truegen_final_summary.v1",
             status="PASS",
-            outcome=scorecards["compression_frontier"]["outcome"],
+            outcome=frontier_next,
             run_id=run_id,
             assessment_zip=assessment.as_posix(),
             decision=decision,
             next_lawful_move=frontier_next,
             compression_frontier_status=scorecards["compression_frontier"]["status"],
             best_efficiency_arm=scorecards["compression_frontier"]["best_efficiency_arm"],
+            known_good_reproduction_status=known_good_receipt["status"],
+            parser_failure_repair_status=parser_plan["status"],
+            academy_repair_plan_status=academy_plan["status"],
             measurement_source=FRESH_SOURCE,
             measurement_status=FRESH_STATUS,
             generation_artifacts_present=True,
