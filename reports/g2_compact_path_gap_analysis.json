@@ -1,0 +1,34 @@
+{
+  "claim_ceiling_preserved": true,
+  "conclusion": "G2 compression is not recovered. Exact G2 sentinel prompts and accounting method are required before apples-to-apples compression adjudication.",
+  "current_realbench_anchor": {
+    "base_raw_correct": 30,
+    "base_raw_tokens_per_correct": 175.233333,
+    "base_raw_total": 50,
+    "best_current_arm": "math_act_adapter_global",
+    "best_current_correct": 41,
+    "best_current_tokens_per_correct": 145.121951,
+    "best_current_total": 50,
+    "compression_gain_over_current_base": 0.171836
+  },
+  "g2_anchor": {
+    "base_raw_correct": 119,
+    "base_raw_tokens_per_correct": 42.857143,
+    "base_raw_total": 200,
+    "compact_path": "routed_13_lobe_kt_hat_compact",
+    "compact_path_correct": 126,
+    "compact_path_tokens_per_correct": 3.738095,
+    "compact_path_total": 200,
+    "compression_gain": 0.912778
+  },
+  "outcome": "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+  "required_missing": [
+    "exact G2 sample IDs",
+    "exact G2 prompt texts",
+    "exact G2 expected answers",
+    "exact G2 scoring parser",
+    "exact G2 token accounting method"
+  ],
+  "schema_id": "kt.v17_7_4.g2_compact_path_gap_analysis.v1",
+  "status": "BLOCKED"
+}

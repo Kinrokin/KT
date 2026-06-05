@@ -1,0 +1,31 @@
+{
+  "accuracy_preservation_gate": {
+    "best_full_generation_anchor_correct": 41,
+    "minimum_allowed_correct": 39,
+    "visible_compression_without_accuracy_is_pass": false
+  },
+  "claim_ceiling_preserved": true,
+  "compact_answer_required": true,
+  "forbidden_visible_answer_markers": [
+    "route",
+    "court",
+    "tribunal",
+    "governance",
+    "kt-hat",
+    "claim ceiling",
+    "adapter",
+    "sample_id"
+  ],
+  "modes": [
+    "MCQ_ANSWER_ONLY",
+    "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL",
+    "SHORT_ANSWER_FINAL_ONLY",
+    "EVIDENCE_GROUNDED_BRIEF_THEN_FINAL",
+    "HIGH_RISK_OPERATOR_TRACE_OUTSIDE_BENCH"
+  ],
+  "raw_output_audit_only": true,
+  "reasoning_preserving_compact": true,
+  "schema_id": "kt.v17_7_4.reasoning_preserving_compact_contract.v1",
+  "scoring_surface": "final_visible_answer",
+  "status": "ACTIVE_FOR_DUALFRONT_PACKET"
+}

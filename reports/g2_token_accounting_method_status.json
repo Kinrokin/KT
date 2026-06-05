@@ -1,0 +1,24 @@
+{
+  "claim_ceiling_preserved": true,
+  "exact_token_accounting_method_recovered": false,
+  "known_anchor": {
+    "base_raw_correct": 119,
+    "base_raw_tokens_per_correct": 42.857143,
+    "base_raw_total": 200,
+    "compact_path": "routed_13_lobe_kt_hat_compact",
+    "compact_path_correct": 126,
+    "compact_path_tokens_per_correct": 3.738095,
+    "compact_path_total": 200,
+    "compression_gain": 0.912778
+  },
+  "outcome": "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+  "required_missing": [
+    "whether G2 counted visible output only",
+    "whether prompt tokens were excluded",
+    "whether route/hat overhead was excluded",
+    "exact tokenizer/accounting implementation",
+    "exact scorer/parser"
+  ],
+  "schema_id": "kt.g2_token_accounting_method_status.v1",
+  "status": "BLOCKED"
+}

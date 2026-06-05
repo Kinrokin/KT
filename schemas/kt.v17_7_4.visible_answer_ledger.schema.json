@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "matrix": { "type": "object" },
+    "schema_id": { "const": "kt.v17_7_4.visible_answer_ledger.v1" },
+    "status": { "enum": ["PASS", "BLOCKED"] }
+  },
+  "required": ["schema_id", "status", "matrix", "claim_ceiling_preserved"],
+  "type": "object"
+}

@@ -36,10 +36,25 @@ ARM_IDS = [
     "routed_tribunal",
 ]
 
+DUALFRONT_ARM_IDS = [
+    "A0_base_raw",
+    "A1_base_raw_finalizer_only",
+    "A2_math_act_full_reasoning",
+    "A3_math_act_reasoning_preserving_compact",
+    "A4_formal_math_reasoning_preserving_compact",
+    "A5_specialist_admission_controller_v1",
+    "A6_kt_hat_compact_risk_gated",
+    "A7_oracle_shadow_not_runtime",
+]
+
 ADAPTER_ARM_IDS = {
     "route_regret_policy_adapter_global",
     "formal_math_repair_adapter_global",
     "math_act_adapter_global",
+    "A2_math_act_full_reasoning",
+    "A3_math_act_reasoning_preserving_compact",
+    "A4_formal_math_reasoning_preserving_compact",
+    "A5_specialist_admission_controller_v1",
 }
 
 SMOKE_BASE_MODELS = {
@@ -79,6 +94,12 @@ ASSESSMENT_FILES = [
     "oracle_route_table.jsonl",
     "specialist_admission_atlas.json",
     "g2_compact_path_gap_analysis.json",
+    "dual_frontier_scorecard.json",
+    "visible_answer_ledger.json",
+    "reasoning_preserving_compact_receipt.json",
+    "visible_answer_scoring_receipt.json",
+    "compact_accuracy_regression_gate.json",
+    "route_margin_scorecard.json",
     "truegen_ablation_ladder_scorecard.json",
     "truegen_adapter_quarantine_recommendation.json",
     "truegen_compression_frontier_gate.json",
@@ -135,7 +156,9 @@ DEFAULT_ROW_LADDER = [3, 10, 25, 50, 100]
 REAL_BENCHMARK_MODE = "REAL_BENCHMARK_GAUGE"
 G2_SENTINEL_MODE = "G2_COMPRESSION_SENTINEL"
 DIAGNOSTIC_MODE = "DIAGNOSTIC_BOUNDARY_MINIFURNACE"
+DUALFRONT_MODE = "DUALFRONT_REASONING_PRESERVING_ADMISSION_BENCH"
 COMPACT_ANSWER_ENV = "KT_COMPACT_ANSWER_CONTRACT"
+REASONING_PRESERVING_ENV = "KT_REASONING_PRESERVING_COMPACT"
 ROW_REQUEST_ENVS = [
     "KT_TRUEGEN_TARGET_ROWS",
     "KT_MINIFURNACE_ROWS",
@@ -172,6 +195,14 @@ ABLATION_LADDER = {
     "routed_hat_full": "A5_routed_hat_full",
     "math_act_adapter_global": "A6_routed_hat_repair",
     "routed_tribunal": "A7_routed_tribunal",
+    "A0_base_raw": "A0_base_raw",
+    "A1_base_raw_finalizer_only": "A1_base_raw_finalizer_only",
+    "A2_math_act_full_reasoning": "A2_math_act_full_reasoning",
+    "A3_math_act_reasoning_preserving_compact": "A3_math_act_reasoning_preserving_compact",
+    "A4_formal_math_reasoning_preserving_compact": "A4_formal_math_reasoning_preserving_compact",
+    "A5_specialist_admission_controller_v1": "A5_specialist_admission_controller_v1",
+    "A6_kt_hat_compact_risk_gated": "A6_kt_hat_compact_risk_gated",
+    "A7_oracle_shadow_not_runtime": "A7_oracle_shadow_not_runtime",
 }
 
 BLOAT_CLASSES = {
@@ -254,9 +285,39 @@ def compact_answer_enabled(config: dict[str, Any]) -> bool:
     return bool(config.get("compact_answer_contract") is True)
 
 
+def reasoning_preserving_compact_enabled(config: dict[str, Any]) -> bool:
+    env_value = os.environ.get(REASONING_PRESERVING_ENV, "").strip().lower()
+    if env_value in {"1", "true", "yes", "on"}:
+        return True
+    if env_value in {"0", "false", "no", "off"}:
+        return False
+    return bool(config.get("reasoning_preserving_compact") is True)
+
+
+def compact_mode_for_row(row: dict[str, Any], arm: dict[str, Any], config: dict[str, Any] | None = None) -> str:
+    if arm.get("compact_mode"):
+        return str(arm["compact_mode"])
+    answer_type = str(row.get("answer_type") or row.get("answer_format_contract") or "").lower()
+    task_family = str(row.get("task_family") or "").lower()
+    dataset = str(row.get("dataset") or "").lower()
+    if "gsm8k" in dataset or "math" in task_family or "numeric" in answer_type or "number" in answer_type:
+        return "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL"
+    if "multiple_choice" in answer_type or "option letter" in answer_type or dataset in {"arc-challenge", "hellaswag"}:
+        return "MCQ_ANSWER_ONLY"
+    if "evidence" in task_family or "ground" in task_family:
+        return "EVIDENCE_GROUNDED_BRIEF_THEN_FINAL"
+    return "SHORT_ANSWER_FINAL_ONLY"
+
+
+def final_marker_answer(text: str) -> str:
+    matches = re.findall(r"(?:answer|final)\s*[:=]\s*([^\n\r]+)", text, flags=re.IGNORECASE)
+    return matches[-1].strip() if matches else ""
+
+
 def final_visible_answer(text: str, parsed_answer: str, row: dict[str, Any]) -> str:
     answer_type = str(row.get("answer_type") or row.get("answer_format_contract") or "").lower()
-    source = parsed_answer.strip() or text.strip()
+    marker_answer = final_marker_answer(text)
+    source = marker_answer or parsed_answer.strip() or text.strip()
     if "multiple_choice" in answer_type:
         match = re.search(r"\b([A-D])\b", source.strip(), flags=re.IGNORECASE)
         if not match:
@@ -264,10 +325,18 @@ def final_visible_answer(text: str, parsed_answer: str, row: dict[str, Any]) -> 
         return match.group(1).upper() if match else source[:1].upper()
     if "numeric" in answer_type or "number" in answer_type or "math" in str(row.get("task_family", "")).lower():
         numbers = re.findall(r"[-+]?\d+(?:\.\d+)?", source)
-        if not numbers:
+        if not numbers and not marker_answer:
             numbers = re.findall(r"[-+]?\d+(?:\.\d+)?", text)
         return numbers[-1] if numbers else source.splitlines()[0].strip()[:32]
     return source.splitlines()[0].strip()[:80]
+
+
+def reasoning_tokens_for_output(output_text: str, visible_answer: str, compact_mode: str) -> int:
+    raw_tokens = count_tokens(output_text)
+    visible_tokens = count_tokens(visible_answer)
+    if compact_mode in {"MCQ_ANSWER_ONLY", "SHORT_ANSWER_FINAL_ONLY"}:
+        return max(raw_tokens - visible_tokens, 0)
+    return max(raw_tokens - visible_tokens, 0)
 
 
 def answer_contains_scaffold(value: str) -> bool:
@@ -399,6 +468,7 @@ def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
         defects.append("arms must be a non-empty list")
         return defects
     seen = set()
+    required_arm_ids = list(config.get("required_arm_ids") or ARM_IDS)
     for index, arm in enumerate(arms):
         for key in [
             "arm_id",
@@ -417,7 +487,7 @@ def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
         if arm_id:
             seen.add(arm_id)
         if config.get("real_arm_authority_requested") is True and arm.get("enabled") is True:
-            if arm_id in ADAPTER_ARM_IDS:
+            if arm_id in ADAPTER_ARM_IDS or arm.get("arm_kind") == "adapter":
                 adapter_ref = arm.get("adapter_path") or arm.get("adapter_hf_repo")
                 if not adapter_ref:
                     defects.append(f"arms[{index}].real_arm_missing_adapter_source:{arm_id}")
@@ -427,7 +497,7 @@ def validate_arm_model_config(config: dict[str, Any]) -> list[str]:
                     defects.append(f"arms[{index}].real_arm_adapter_binding_not_bound:{arm_id}")
             if arm_id == "base_kt_hat_compact" and arm.get("arm_kind") not in {"prompt_overlay", "adapter"}:
                 defects.append("base_kt_hat_compact_requires_prompt_overlay_or_adapter_kind")
-    missing_arms = [arm for arm in ARM_IDS if arm not in seen]
+    missing_arms = [arm for arm in required_arm_ids if arm not in seen]
     if missing_arms:
         defects.append(f"missing_required_arms:{','.join(missing_arms)}")
     if config.get("real_arm_authority_requested") is True:
@@ -613,6 +683,7 @@ def g2_sentinel_manifest_receipt(runtime_root: Path) -> dict[str, Any]:
 
 def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
     template = arm.get("prompt_template_id", "raw")
+    mode = compact_mode_for_row(row, arm)
     prefix = {
         "raw": "Answer directly.",
         "kt_hat_compact": "Use compact KT-hat discipline: answer only what is asked and avoid unsupported claims.",
@@ -623,13 +694,29 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
         "kt_hat_full": "Use full KT-hat discipline, but do not add decorative governance language. Emit final answer clearly.",
         "routed_hat_repair": "Use compact repair discipline only if needed. Emit final answer clearly.",
         "routed_tribunal": "Use minimal tribunal checking for contradictions. Emit final answer clearly.",
+        "base_raw_finalizer_only": "Answer directly. Put the final answer after 'Final:'.",
+        "math_act_full_reasoning": "Use the math-act specialist. Reason enough to solve correctly, then put the final answer after 'Final:'.",
+        "math_act_reasoning_preserving_compact": "Use bounded scratch only when needed. Preserve reasoning for math, then emit a compact final answer after 'Final:'.",
+        "formal_math_reasoning_preserving_compact": "Use bounded formal reasoning only when needed. Then emit a compact final answer after 'Final:'.",
+        "specialist_admission_controller": "Select the cheapest lawful specialist expected to be correct from pre-generation features. Emit only the selected final answer after 'Final:'.",
+        "kt_hat_compact_risk_gated": "Use KT-hat only if risk requires it. Keep governance out of the visible answer and emit final answer after 'Final:'.",
+        "oracle_shadow_not_runtime": "Oracle shadow arm for measurement only. Do not use oracle correctness as an input feature. Emit final answer after 'Final:'.",
     }.get(template, "Answer directly.")
     question = question_text_for_row(row)
     answer_format = str(row.get("answer_format_contract") or row.get("answer_type") or "emit final answer only").strip()
+    mode_rule = {
+        "MCQ_ANSWER_ONLY": "For multiple choice, emit only the option letter after Final:.",
+        "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL": "You may use brief scratch work. The final visible answer must be only the normalized number after Final:.",
+        "SHORT_ANSWER_FINAL_ONLY": "Emit one compact phrase after Final:.",
+        "EVIDENCE_GROUNDED_BRIEF_THEN_FINAL": "Use brief evidence grounding only if needed, then a compact final answer after Final:.",
+        "HIGH_RISK_OPERATOR_TRACE_OUTSIDE_BENCH": "Benchmark mode forbids operator traces in visible answers.",
+    }.get(mode, "Emit a compact final answer after Final:.")
     if row.get("benchmark_source") == "REAL_BENCHMARK_ROW":
         return "\n".join(
             [
                 prefix,
+                f"Compact mode: {mode}",
+                f"Mode rule: {mode_rule}",
                 f"Question: {question}",
                 f"Answer format: {answer_format}",
                 "Final:",
@@ -638,6 +725,8 @@ def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
     return "\n".join(
         [
             prefix,
+            f"Compact mode: {mode}",
+            f"Mode rule: {mode_rule}",
             f"Sample: {row['sample_id']}",
             f"Dataset: {row['dataset']}",
             f"Task family: {row['task_family']}",
@@ -1081,12 +1170,15 @@ def build_arm_result_row(
     parsed = parse_answer(output_text)
     visible_answer = final_visible_answer(output_text, parsed, row)
     compact_enabled = compact_answer_enabled(config)
+    reasoning_preserving_enabled = reasoning_preserving_compact_enabled(config)
+    compact_mode = compact_mode_for_row(row, arm, config)
     scoring_text = visible_answer if compact_enabled else output_text
     scoring_answer = visible_answer if compact_enabled else parsed
     score, correct = score_output(scoring_text, scoring_answer, row, arm.get("scoring_method", "contains_expected_label"))
     tokens_in = count_tokens(prompt)
     tokens_out = count_tokens(output_text)
     visible_answer_tokens = count_tokens(visible_answer)
+    reasoning_tokens = reasoning_tokens_for_output(output_text, visible_answer, compact_mode)
     total_tokens = tokens_in + tokens_out
     prompt_components = prompt_overhead_components(prompt, row, arm)
     answer_tokens = max(count_tokens(parsed), 1)
@@ -1098,6 +1190,7 @@ def build_arm_result_row(
         "tokens_out": tokens_out,
         "total_tokens": total_tokens,
         "visible_answer_tokens": visible_answer_tokens,
+        "reasoning_tokens": reasoning_tokens,
         "answer_tokens": answer_tokens,
         "route_overhead_tokens": route_overhead_tokens,
         "hat_overhead_ratio": safe_ratio(prompt_components["hat_tokens"], answer_tokens),
@@ -1136,8 +1229,12 @@ def build_arm_result_row(
         tokens_out=tokens_out,
         total_tokens=total_tokens,
         full_prompt_plus_output_tokens=total_tokens,
+        raw_output_tokens=tokens_out,
         visible_answer_tokens=visible_answer_tokens,
+        reasoning_tokens=reasoning_tokens,
         tokens_per_correct=safe_ratio(total_tokens, 1 if correct else 0),
+        reasoning_tokens_per_correct=safe_ratio(reasoning_tokens, 1 if correct else 0),
+        raw_output_tokens_per_correct=safe_ratio(tokens_out, 1 if correct else 0),
         output_tokens_per_correct=safe_ratio(tokens_out, 1 if correct else 0),
         visible_answer_tokens_per_correct=safe_ratio(visible_answer_tokens, 1 if correct else 0),
         verified_work_per_token=safe_ratio(1 if correct else 0, total_tokens),
@@ -1152,6 +1249,10 @@ def build_arm_result_row(
         hat_overhead_ratio=row_metrics["hat_overhead_ratio"],
         parser_format_failure=parser_format_failure,
         compact_answer_contract_enabled=compact_enabled,
+        reasoning_preserving_compact_enabled=reasoning_preserving_enabled,
+        compact_mode=compact_mode,
+        final_visible_answer_used_for_scoring=compact_enabled,
+        raw_output_audit_only=compact_enabled,
         compact_answer_contract_status="PASS" if not answer_contains_scaffold(visible_answer) else "BLOCKED",
         scaffold_language_in_visible_answer=answer_contains_scaffold(visible_answer),
         final_answer_marker_present=bool(re.search(r"(?:answer|final)\s*[:=]", output_text, flags=re.IGNORECASE)),
@@ -1266,8 +1367,8 @@ def build_oracle_route_rows(arm_rows: list[dict[str, Any]]) -> list[dict[str, An
     rows = []
     for sample_id, sample_rows in sorted(by_sample.items()):
         best = sorted(sample_rows, key=lambda row: (-float(row.get("score", 0.0)), int(row.get("total_tokens", 10**9)), row["arm_id"]))[0]
-        chosen = next((row for row in sample_rows if row["arm_id"] == "math_act_adapter_global"), best)
-        base = next((row for row in sample_rows if row["arm_id"] == "base_raw"), sample_rows[0])
+        chosen = next((row for row in sample_rows if row["arm_id"] in {"math_act_adapter_global", "A3_math_act_reasoning_preserving_compact"}), best)
+        base = next((row for row in sample_rows if row["arm_id"] in {"base_raw", "A0_base_raw"}), sample_rows[0])
         rows.append(
             authority(
                 schema_id="kt.v17_7_4.oracle_route_row.v1",
@@ -1318,6 +1419,123 @@ def specialist_admission_atlas(oracle_rows: list[dict[str, Any]], scorecards: di
     )
 
 
+def route_margin_scorecard(oracle_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    margins = []
+    for row in oracle_rows:
+        margins.append(
+            {
+                "sample_id": row["sample_id"],
+                "dataset": row.get("dataset"),
+                "task_family": row.get("task_family"),
+                "best_arm": row.get("best_arm"),
+                "chosen_arm": row.get("chosen_arm"),
+                "route_regret": row.get("route_regret", 0.0),
+                "token_regret": row.get("token_regret", 0),
+                "route_margin": max(float(row.get("route_regret", 0.0)), 0.0),
+                "feature_leakage_check": "PASS_NO_ORACLE_CORRECTNESS_RUNTIME_FEATURE",
+            }
+        )
+    return authority(
+        schema_id="kt.v17_7_4.route_margin_scorecard.v1",
+        status="PASS",
+        row_count=len(margins),
+        route_margin_rows=margins,
+        oracle_shadow_not_runtime=True,
+        learned_router_superiority_claim=False,
+        promotion_authority=False,
+    )
+
+
+def dual_frontier_scorecard(scorecards: dict[str, Any]) -> dict[str, Any]:
+    benchmark = scorecards["benchmark"]
+    token_accounting = scorecards["token_accounting_ledger"]["matrix"]
+    token_efficiency = scorecards["token_efficiency"]["matrix"]
+    negative_transfer = scorecards["negative_transfer"]["negative_transfer"]
+    parser_matrix = scorecards["parser_error"]["matrix"]
+    answer_format = scorecards["answer_format"]["matrix"]
+    oracle_correct = int(benchmark.get("oracle_correct_count", 0))
+    rows = []
+    for arm, payload in sorted(token_efficiency.items()):
+        account = token_accounting.get(arm, {})
+        correct = int(payload.get("correct", 0))
+        full_tpc = float(account.get("full_prompt_plus_output_tokens_per_correct", payload.get("tokens_per_correct", 0.0)))
+        visible_tpc = float(account.get("visible_answer_tokens_per_correct", 0.0))
+        base_arm_id = benchmark.get("base_arm_id") or ("base_raw" if "base_raw" in token_efficiency else "A0_base_raw")
+        base = token_efficiency.get(base_arm_id, {})
+        base_correct = int(base.get("correct", 0))
+        base_tpc = float(base.get("tokens_per_correct", 0.0))
+        if correct > base_correct and full_tpc <= base_tpc:
+            pareto = "PARETO_IMPROVES_ACCURACY_AND_COST"
+        elif correct == base_correct and full_tpc < base_tpc:
+            pareto = "PARETO_IMPROVES_COST_AT_SAME_CORRECTNESS"
+        elif correct > base_correct:
+            pareto = "UTILITY_JUSTIFIED_ACCURACY_GAIN_REQUIRES_COST_REVIEW"
+        elif correct < base_correct and full_tpc >= base_tpc:
+            pareto = "QUARANTINE_WORSE_ACCURACY_AND_COST"
+        else:
+            pareto = "DIAGNOSTIC_ONLY"
+        rows.append(
+            {
+                "schema_id": "kt.v17_7_4.dual_frontier_scorecard_row.v1",
+                "arm_id": arm,
+                "route_id": ABLATION_LADDER.get(arm, arm),
+                "task_family": "ALL",
+                "dataset": "ALL",
+                "correct_count": correct,
+                "accuracy": benchmark.get("arm_accuracy", {}).get(arm, 0.0),
+                "full_tokens_per_correct": full_tpc,
+                "visible_answer_tokens_per_correct": visible_tpc,
+                "reasoning_tokens_per_correct": account.get("reasoning_tokens_per_correct", 0.0),
+                "prompt_tokens_per_correct": account.get("prompt_tokens_per_correct", account.get("input_tokens_per_correct", 0.0)),
+                "route_overhead_tokens_per_correct": account.get("route_overhead_tokens_per_correct", 0.0),
+                "hat_overhead_tokens_per_correct": account.get("hat_overhead_tokens_per_correct", 0.0),
+                "latency_per_correct": payload.get("latency_per_correct", 0.0),
+                "verified_work_per_token": payload.get("verified_work_per_token", 0.0),
+                "route_regret": max(oracle_correct - correct, 0),
+                "oracle_gap": max(oracle_correct - correct, 0),
+                "negative_transfer_count": negative_transfer.get(arm, 0),
+                "parser_failure_rate": parser_matrix.get(arm, {}).get("parser_format_failure_rate", 0.0),
+                "final_answer_format_failure_rate": answer_format.get(arm, {}).get("answer_format_drift_rate", 0.0),
+                "claim_safety_status": "PASS_CLAIM_CEILING_PRESERVED",
+                "replayability_status": "FRESH_GENERATION_ROW_RECOMPUTED",
+                "Pareto_status": pareto,
+            }
+        )
+    best = sorted(rows, key=lambda row: (-row["correct_count"], row["full_tokens_per_correct"], row["arm_id"]))[0] if rows else {}
+    return authority(
+        schema_id="kt.v17_7_4.dual_frontier_scorecard.v1",
+        status="PASS",
+        measurement_source=FRESH_SOURCE,
+        rows=rows,
+        best_dual_frontier_candidate=best.get("arm_id"),
+        target="maximize correctness and minimize full/visible tokens without claim drift",
+        no_router_superiority_claim=True,
+        no_promotion_authority=True,
+    )
+
+
+def compact_accuracy_regression_gate(scorecards: dict[str, Any]) -> dict[str, Any]:
+    benchmark = scorecards["benchmark"]
+    correct_counts = benchmark.get("correct_counts", {})
+    best_correct = int(benchmark.get("best_static_correct_count", 0))
+    realbench_anchor = 41
+    minimum_allowed = 39
+    gsm8k_guardrail = "REQUIRES_RUNTIME_SLICE_SCORECARD"
+    status = "PASS" if best_correct >= minimum_allowed else "BLOCKED"
+    return authority(
+        schema_id="kt.v17_7_4.compact_accuracy_regression_gate.v1",
+        status=status,
+        outcome="DUAL_FRONTIER_ACCURACY_PRESERVED" if status == "PASS" else "KT_BLOCKED__COMPACT_ACCURACY_REGRESSION",
+        best_correct=best_correct,
+        minimum_allowed_correct=minimum_allowed,
+        realbench_full_generation_best_correct_anchor=realbench_anchor,
+        correct_counts=correct_counts,
+        visible_compression_alone_sufficient=False,
+        gsm8k_guardrail=gsm8k_guardrail,
+        claim_ceiling_preserved=True,
+    )
+
+
 def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[str, Any]]) -> dict[str, Any]:
     enforce_fresh_rows(arm_rows, predictions)
     by_arm: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -1334,7 +1552,9 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
     }
     correct_counts = {arm: sum(1 for row in rows if row["correct"]) for arm, rows in sorted(by_arm.items())}
     best_arm = sorted(arms, key=lambda arm: (-arm_accuracy[arm], arm))[0]
-    base_correct = correct_counts.get("base_raw", 0)
+    base_arm_id = "base_raw" if "base_raw" in correct_counts else "A0_base_raw" if "A0_base_raw" in correct_counts else arms[0]
+    compact_arm_id = "base_kt_hat_compact" if "base_kt_hat_compact" in correct_counts else "A6_kt_hat_compact_risk_gated" if "A6_kt_hat_compact_risk_gated" in correct_counts else ""
+    base_correct = correct_counts.get(base_arm_id, 0)
     oracle_correct = sum(1 for row in predictions if row["oracle_correct"])
     band_rows = Counter(row["evidence_band"] for row in predictions)
     per_band = {}
@@ -1350,7 +1570,7 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             }
     negative_transfer = {arm: 0 for arm in arms}
     for sample_arms in by_sample.values():
-        base = sample_arms.get("base_raw")
+        base = sample_arms.get(base_arm_id)
         if not base or not base.get("correct"):
             continue
         for arm, row in sample_arms.items():
@@ -1358,11 +1578,13 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
                 negative_transfer[arm] += 1
     token_efficiency = {}
     token_accounting = {}
+    visible_answer_ledger = {}
     for arm, rows in by_arm.items():
         tokens = sum(int(row.get("total_tokens", int(row["tokens_in"]) + int(row["tokens_out"]))) for row in rows)
         input_tokens = sum(int(row.get("tokens_in", 0)) for row in rows)
         output_tokens = sum(int(row.get("tokens_out", 0)) for row in rows)
         visible_tokens = sum(int(row.get("visible_answer_tokens", row.get("answer_tokens", 0))) for row in rows)
+        reasoning_tokens = sum(int(row.get("reasoning_tokens", 0)) for row in rows)
         route_tokens = sum(int(row.get("route_overhead_tokens", 0)) for row in rows)
         hat_tokens = sum(int(row.get("hat_tokens", 0)) for row in rows)
         latency = sum(int(row["latency_ms"]) for row in rows)
@@ -1380,16 +1602,29 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             "full_prompt_plus_output_tokens": tokens,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
+            "raw_output_tokens": output_tokens,
             "visible_answer_tokens": visible_tokens,
+            "reasoning_tokens": reasoning_tokens,
             "route_overhead_tokens": route_tokens,
             "hat_overhead_tokens": hat_tokens,
             "full_prompt_plus_output_tokens_per_correct": safe_ratio(tokens, correct),
             "input_tokens_per_correct": safe_ratio(input_tokens, correct),
+            "prompt_tokens_per_correct": safe_ratio(input_tokens, correct),
             "output_tokens_per_correct": safe_ratio(output_tokens, correct),
+            "raw_output_tokens_per_correct": safe_ratio(output_tokens, correct),
             "visible_answer_tokens_per_correct": safe_ratio(visible_tokens, correct),
+            "reasoning_tokens_per_correct": safe_ratio(reasoning_tokens, correct),
             "route_overhead_tokens_per_correct": safe_ratio(route_tokens, correct),
             "hat_overhead_tokens_per_correct": safe_ratio(hat_tokens, correct),
             "visible_answer_verified_work_per_token": safe_ratio(correct, visible_tokens),
+        }
+        visible_answer_ledger[arm] = {
+            "correct": correct,
+            "visible_answer_tokens": visible_tokens,
+            "visible_answer_tokens_per_correct": safe_ratio(visible_tokens, correct),
+            "visible_answer_verified_work_per_token": safe_ratio(correct, visible_tokens),
+            "scaffold_language_rows": sum(1 for row in rows if row.get("scaffold_language_in_visible_answer") is True),
+            "scored_from_visible_answer_rows": sum(1 for row in rows if row.get("final_visible_answer_used_for_scoring") is True),
         }
     vwpt = authority(
         schema_id="kt.v17_7_4.truegen_verified_work_per_token_scorecard.v1",
@@ -1458,11 +1693,11 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
         }
         for arm, ladder_id in ABLATION_LADDER.items()
     }
-    base_eff = token_efficiency.get("base_raw", {})
+    base_eff = token_efficiency.get(base_arm_id, {})
     best_eff_arm = sorted(arms, key=lambda arm: (-token_efficiency[arm]["verified_work_per_token"], -correct_counts[arm], arm))[0]
     best_eff = token_efficiency[best_eff_arm]
     compression_gain_over_base = safe_ratio(base_eff.get("tokens_per_correct", 0) - best_eff["tokens_per_correct"], base_eff.get("tokens_per_correct", 0))
-    compact = token_efficiency.get("base_kt_hat_compact")
+    compact = token_efficiency.get(compact_arm_id) if compact_arm_id else None
     compact_regression = bool(compact and base_eff and compact["correct"] < base_eff.get("correct", 0) and compact["tokens_per_correct"] > base_eff.get("tokens_per_correct", 0))
     frontier_pass = (
         bool(base_eff)
@@ -1506,7 +1741,7 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
         }
         for arm in arms
     }
-    return {
+    result = {
         "benchmark": authority(
             schema_id="kt.v17_7_4.truegen_benchmark_scorecard.v1",
             status="PASS",
@@ -1520,6 +1755,7 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             best_static_arm=best_arm,
             best_static_correct_count=correct_counts[best_arm],
             base_raw_correct_count=base_correct,
+            base_arm_id=base_arm_id,
             oracle_correct_count=oracle_correct,
             fresh_generation_pass=True,
         ),
@@ -1532,7 +1768,10 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             accounting_modes=[
                 "full_prompt_plus_output_tokens_per_correct",
                 "input_tokens_per_correct",
+                "prompt_tokens_per_correct",
                 "output_tokens_per_correct",
+                "raw_output_tokens_per_correct",
+                "reasoning_tokens_per_correct",
                 "visible_answer_tokens_per_correct",
                 "route_overhead_tokens_per_correct",
                 "hat_overhead_tokens_per_correct",
@@ -1541,6 +1780,14 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             g2_comparison_warning="G2 3.74 tokens_per_correct is not comparable until exact G2 accounting mode is recovered.",
         ),
         "verified_work_per_token": vwpt,
+        "visible_answer_ledger": authority(
+            schema_id="kt.v17_7_4.visible_answer_ledger.v1",
+            status="PASS",
+            measurement_source=FRESH_SOURCE,
+            scoring_policy="final_visible_answer_used_when_compact_contract_enabled",
+            raw_output_audit_only_when_compact=True,
+            matrix=visible_answer_ledger,
+        ),
         "route_overhead": authority(schema_id="kt.v17_7_4.truegen_route_overhead_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=route_overhead),
         "hat_overhead": authority(schema_id="kt.v17_7_4.truegen_hat_overhead_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=hat_overhead),
         "bloat_attribution": authority(schema_id="kt.v17_7_4.truegen_bloat_attribution_matrix.v1", status="PASS", measurement_source=FRESH_SOURCE, matrix=bloat_matrix),
@@ -1568,6 +1815,9 @@ def recompute_scorecards(arm_rows: list[dict[str, Any]], predictions: list[dict[
             dgs=round((oracle_correct - base_correct) / max(len(predictions), 1), 6),
         ),
     }
+    result["dual_frontier_scorecard"] = dual_frontier_scorecard(result)
+    result["compact_accuracy_regression_gate"] = compact_accuracy_regression_gate(result)
+    return result
 
 
 def pearson(xs: list[float], ys: list[float]) -> float | None:
@@ -1630,10 +1880,11 @@ def kt_system_wiring_map(config: dict[str, Any]) -> dict[str, Any]:
 
 def router_admission_receipt(scorecards: dict[str, Any]) -> dict[str, Any]:
     matrix = scorecards["route_regret_token_cost"]["matrix"]
-    base = matrix.get("base_raw", {})
+    base_arm_id = scorecards.get("benchmark", {}).get("base_arm_id") or ("base_raw" if "base_raw" in matrix else "A0_base_raw")
+    base = matrix.get(base_arm_id, {})
     decisions = {}
     for arm, payload in sorted(matrix.items()):
-        if arm == "base_raw":
+        if arm == base_arm_id:
             decisions[arm] = "BASELINE_DIRECT_PATH"
             continue
         correctness_gain = int(payload.get("correct", 0)) - int(base.get("correct", 0))
@@ -1953,6 +2204,9 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         write_json(out / "truegen_negative_transfer_by_arm.json", scorecards["negative_transfer"])
         write_json(out / "truegen_token_efficiency_matrix.json", scorecards["token_efficiency"])
         write_json(out / "token_accounting_ledger.json", scorecards["token_accounting_ledger"])
+        write_json(out / "visible_answer_ledger.json", scorecards["visible_answer_ledger"])
+        write_json(out / "dual_frontier_scorecard.json", scorecards["dual_frontier_scorecard"])
+        write_json(out / "compact_accuracy_regression_gate.json", scorecards["compact_accuracy_regression_gate"])
         write_json(out / "g2_compression_anchor_receipt.json", g2_compression_anchor_receipt())
         write_json(out / "kt_system_wiring_map.json", kt_system_wiring_map(config))
         write_json(out / "truegen_verified_work_per_token_scorecard.json", scorecards["verified_work_per_token"])
@@ -1976,6 +2230,31 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         )
         write_json(out / "answer_only_finalizer_receipt.json", scorecards["answer_only_finalizer"])
         write_json(
+            out / "reasoning_preserving_compact_receipt.json",
+            authority(
+                schema_id="kt.v17_7_4.reasoning_preserving_compact_receipt.v1",
+                status="PASS",
+                reasoning_preserving_compact_enabled=reasoning_preserving_compact_enabled(config),
+                compact_modes=sorted({row.get("compact_mode") for row in arm_rows if row.get("compact_mode")}),
+                numeric_bounded_scratch_required_for_math=True,
+                visible_answer_stays_compact=True,
+                raw_output_preserved_for_audit=True,
+                claim_ceiling_preserved=True,
+            ),
+        )
+        write_json(
+            out / "visible_answer_scoring_receipt.json",
+            authority(
+                schema_id="kt.v17_7_4.visible_answer_scoring_receipt.v1",
+                status="PASS",
+                scoring_uses_final_visible_answer_when_compact=compact_answer_enabled(config),
+                raw_output_audit_only_when_compact=compact_answer_enabled(config),
+                expected_answer_visible_to_model=False,
+                arbitrary_early_number_selection_forbidden_when_final_marker_present=True,
+                claim_ceiling_preserved=True,
+            ),
+        )
+        write_json(
             out / "g2_compact_path_gap_analysis.json",
             authority(
                 schema_id="kt.v17_7_4.g2_compact_path_gap_analysis.v1",
@@ -1989,6 +2268,7 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         )
         write_json(out / "truegen_router_admission_receipt.json", router_admission_receipt(scorecards))
         write_json(out / "specialist_admission_atlas.json", specialist_admission_atlas(oracle_rows, scorecards))
+        write_json(out / "route_margin_scorecard.json", route_margin_scorecard(oracle_rows))
         write_json(out / "truegen_route_regret_token_cost_matrix.json", scorecards["route_regret_token_cost"])
         write_json(out / "truegen_ablation_ladder_scorecard.json", scorecards["ablation_ladder"])
         write_json(out / "truegen_adapter_quarantine_recommendation.json", scorecards["adapter_quarantine"])

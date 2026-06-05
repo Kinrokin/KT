@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "feature_leakage_check": { "const": "PASS_NO_ORACLE_CORRECTNESS_RUNTIME_FEATURE" },
+    "route_margin": { "type": "number" },
+    "sample_id": { "type": "string" }
+  },
+  "required": ["sample_id", "route_margin", "feature_leakage_check"],
+  "type": "object"
+}

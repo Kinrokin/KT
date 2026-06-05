@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "rows": {
+      "items": {
+        "required": [
+          "arm_id",
+          "correct_count",
+          "accuracy",
+          "full_tokens_per_correct",
+          "visible_answer_tokens_per_correct",
+          "verified_work_per_token",
+          "oracle_gap",
+          "Pareto_status"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_id": { "const": "kt.v17_7_4.dual_frontier_scorecard.v1" },
+    "status": { "enum": ["PASS", "BLOCKED"] }
+  },
+  "required": ["schema_id", "status", "rows", "claim_ceiling_preserved"],
+  "type": "object"
+}
