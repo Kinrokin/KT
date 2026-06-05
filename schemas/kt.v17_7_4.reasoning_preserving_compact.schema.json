@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": { "const": true },
+    "modes": {
+      "items": {
+        "enum": [
+          "MCQ_ANSWER_ONLY",
+          "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL",
+          "SHORT_ANSWER_FINAL_ONLY",
+          "EVIDENCE_GROUNDED_BRIEF_THEN_FINAL",
+          "HIGH_RISK_OPERATOR_TRACE_OUTSIDE_BENCH"
+        ]
+      },
+      "type": "array"
+    },
+    "schema_id": { "const": "kt.v17_7_4.reasoning_preserving_compact_contract.v1" },
+    "status": { "type": "string" }
+  },
+  "required": ["schema_id", "status", "modes", "claim_ceiling_preserved"],
+  "type": "object"
+}

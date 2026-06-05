@@ -1,0 +1,41 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "pareto_rows": [
+    {
+      "Pareto_status": "DIAGNOSTIC_ONLY",
+      "arm_id": "base_raw",
+      "source_run": "REALBENCH_FULL_GENERATION"
+    },
+    {
+      "Pareto_status": "PARETO_IMPROVES_ACCURACY_AND_COST",
+      "arm_id": "math_act_adapter_global",
+      "source_run": "REALBENCH_FULL_GENERATION"
+    },
+    {
+      "Pareto_status": "QUARANTINE_WORSE_ACCURACY_AND_COST",
+      "arm_id": "base_raw",
+      "source_run": "COMPACT_ANSWER_ONLY"
+    },
+    {
+      "Pareto_status": "DIAGNOSTIC_ONLY",
+      "arm_id": "formal_math_repair_adapter_global",
+      "source_run": "COMPACT_ANSWER_ONLY"
+    },
+    {
+      "Pareto_status": "DIAGNOSTIC_ONLY",
+      "arm_id": "math_act_adapter_global",
+      "source_run": "COMPACT_ANSWER_ONLY"
+    }
+  ],
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "rule": "Advance only if accuracy and cost jointly improve or utility justifies cost.",
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.dual_frontier_pareto_receipt.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

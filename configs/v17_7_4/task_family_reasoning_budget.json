@@ -1,0 +1,30 @@
+{
+  "claim_ceiling_preserved": true,
+  "default_mode": "SHORT_ANSWER_FINAL_ONLY",
+  "modes": {
+    "arc_challenge": {
+      "max_new_tokens": 16,
+      "mode": "MCQ_ANSWER_ONLY"
+    },
+    "formal_math": {
+      "max_new_tokens": 64,
+      "mode": "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL",
+      "visible_answer_budget": 16
+    },
+    "gsm8k": {
+      "max_new_tokens": 64,
+      "mode": "NUMERIC_BOUNDED_SCRATCH_THEN_FINAL",
+      "visible_answer_budget": 16
+    },
+    "hellaswag": {
+      "max_new_tokens": 16,
+      "mode": "MCQ_ANSWER_ONLY"
+    },
+    "science_reasoning": {
+      "max_new_tokens": 16,
+      "mode": "MCQ_ANSWER_ONLY"
+    }
+  },
+  "schema_id": "kt.v17_7_4.task_family_reasoning_budget.v1",
+  "status": "ACTIVE_FOR_DUALFRONT_PACKET"
+}

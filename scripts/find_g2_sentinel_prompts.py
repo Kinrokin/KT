@@ -68,9 +68,27 @@ def main() -> int:
         "conclusion": "G2 compression is not recovered. Exact G2 sentinel prompts and accounting method are required before apples-to-apples compression adjudication.",
         "required_missing": payload["required_missing"],
     }
-    path = ROOT / "reports" / "v17_7_4_g2_compact_path_gap_analysis.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(gap_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    for name in ["v17_7_4_g2_compact_path_gap_analysis.json", "g2_compact_path_gap_analysis.json"]:
+        path = ROOT / "reports" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(gap_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    token_status = {
+        "schema_id": "kt.g2_token_accounting_method_status.v1",
+        "status": "BLOCKED",
+        "outcome": "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
+        "claim_ceiling_preserved": True,
+        "exact_token_accounting_method_recovered": False,
+        "known_anchor": gap_payload["g2_anchor"],
+        "required_missing": [
+            "whether G2 counted visible output only",
+            "whether prompt tokens were excluded",
+            "whether route/hat overhead was excluded",
+            "exact tokenizer/accounting implementation",
+            "exact scorer/parser"
+        ],
+    }
+    path = ROOT / "reports" / "g2_token_accounting_method_status.json"
+    path.write_text(json.dumps(token_status, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
 

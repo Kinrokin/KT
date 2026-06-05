@@ -1,0 +1,27 @@
+{
+  "allowed_runtime_features": [
+    "answer_type",
+    "task_family",
+    "question_structure",
+    "risk_band",
+    "required_reasoning_budget"
+  ],
+  "claim_ceiling_preserved": true,
+  "compact_realbench_50_oracle_gap": 7,
+  "feature_leakage_check": "PASS_NO_ORACLE_CORRECTNESS_RUNTIME_FEATURE",
+  "forbidden_runtime_features": [
+    "oracle_correct",
+    "gold_answer",
+    "posthoc_best_arm",
+    "dataset_label_alone_as_structure_bound_claim"
+  ],
+  "learned_router_superiority_claim": false,
+  "next_validation": "RUN_KTV1774_DUALFRONT_50",
+  "promotion_authority": false,
+  "realbench_50_oracle_gap": 1,
+  "route_margin_interpretation": "Full RealBench has little oracle gap on the 50-row slice; compact run exposes reasoning-starvation and admission risk.",
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.route_margin_scorecard.v1",
+  "status": "PASS_CANDIDATE_ONLY",
+  "v18_runtime_authority": false
+}
