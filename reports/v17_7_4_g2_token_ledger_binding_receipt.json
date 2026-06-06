@@ -1,0 +1,54 @@
+{
+  "accounting_mode": "output_new_tokens_per_correct",
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "full_prompt_plus_output_tokens_per_correct_bound": false,
+  "g2_recovered_claim": false,
+  "historical_aggregate_reproduced": true,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "routed_13_lobe_kt_hat_compact_new_tokens_per_correct": 3.738095,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.g2_token_ledger_binding_receipt.v1",
+  "seven_b_claim": false,
+  "status": "BOUND_OUTPUT_NEW_TOKEN_LEDGER",
+  "subject_metrics": {
+    "base_kt_hat_compact": {
+      "correct": 124,
+      "new_tokens": 470,
+      "new_tokens_per_correct": 3.790323,
+      "rows": 200
+    },
+    "base_raw": {
+      "correct": 119,
+      "new_tokens": 5100,
+      "new_tokens_per_correct": 42.857143,
+      "rows": 200
+    },
+    "routed_13_lobe_kt_hat_compact": {
+      "correct": 126,
+      "new_tokens": 471,
+      "new_tokens_per_correct": 3.738095,
+      "rows": 200
+    },
+    "routed_13_lobe_raw": {
+      "correct": 117,
+      "new_tokens": 5100,
+      "new_tokens_per_correct": 43.589744,
+      "rows": 200
+    }
+  },
+  "token_denominator": "correct row count for subject",
+  "token_numerator": "sum(new_tokens across all rows for subject)",
+  "v18_runtime_authority": false,
+  "visible_answer_tokens_per_correct_bound": false
+}
