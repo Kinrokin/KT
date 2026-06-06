@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.4 Shadow Control Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "status",
+    "runtime_authority",
+    "promotion_authority",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": { "type": "string" },
+    "status": {
+      "enum": [
+        "SHADOW_ONLY",
+        "CONTRACT_BOUND_SHADOW_ONLY",
+        "PASS",
+        "PASS_CANDIDATE_ONLY",
+        "BLOCKED"
+      ]
+    },
+    "runtime_authority": { "const": false },
+    "promotion_authority": { "const": false },
+    "claim_ceiling_preserved": { "const": true }
+  },
+  "additionalProperties": true
+}

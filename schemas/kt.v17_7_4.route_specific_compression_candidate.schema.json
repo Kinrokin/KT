@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.4 Route Specific Compression Candidate",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "status",
+    "stable_control_arm",
+    "runtime_authority",
+    "promotion_authority",
+    "oracle_correctness_used_as_runtime_feature",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.v17_7_4.route_specific_compression_candidate.v1" },
+    "status": { "enum": ["PASS_CANDIDATE_ONLY", "BLOCKED"] },
+    "stable_control_arm": { "const": "A_true_known_good_math_act_byte_repro" },
+    "runtime_authority": { "const": false },
+    "promotion_authority": { "const": false },
+    "oracle_correctness_used_as_runtime_feature": { "const": false },
+    "claim_ceiling_preserved": { "const": true }
+  },
+  "additionalProperties": true
+}

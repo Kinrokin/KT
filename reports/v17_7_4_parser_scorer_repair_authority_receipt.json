@@ -1,0 +1,47 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "early_scratch_number_selection_forbidden": true,
+  "expected_answer_visible_to_model": false,
+  "learned_router_superiority_claim": false,
+  "owner_classification": "SCORER_OWNED",
+  "parser_defects": [
+    {
+      "arm_id": "A0_base_raw",
+      "parser_format_failure_rate": 0.56
+    },
+    {
+      "arm_id": "A2_true_known_good_math_act_finalizer_only",
+      "parser_format_failure_rate": 0.54
+    },
+    {
+      "arm_id": "A3_true_known_good_math_act_reasoning_preserving_compact",
+      "parser_format_failure_rate": 0.72
+    },
+    {
+      "arm_id": "A4_kt_hat_risk_gated_after_reprolock",
+      "parser_format_failure_rate": 0.64
+    },
+    {
+      "arm_id": "A5_specialist_admission_after_reprolock",
+      "parser_format_failure_rate": 0.54
+    },
+    {
+      "arm_id": "A7_oracle_shadow",
+      "parser_format_failure_rate": 0.72
+    },
+    {
+      "arm_id": "A_true_known_good_math_act_byte_repro",
+      "parser_format_failure_rate": 0.54
+    }
+  ],
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "repair_authority": "PATCH_SCORER_AND_PARSER_CONTRACT_ONLY",
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.parser_scorer_repair_authority_receipt.v1",
+  "scorer_must_use_final_visible_answer": true,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

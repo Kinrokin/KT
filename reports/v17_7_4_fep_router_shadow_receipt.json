@@ -1,0 +1,22 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "model": "leaky_integrate_and_fire_memory_plus_precision_weighted_gating",
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "required_evidence_before_runtime": [
+    "pre_generation_feature_policy",
+    "heldout_route_regret_closure",
+    "no_base_damage"
+  ],
+  "route_specific_candidate_improves_full_tokens": true,
+  "route_utility_formula": "expected_correctness - token_cost - latency_cost - governance_risk",
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.fep_router_shadow_receipt.v1",
+  "stable_control_preserved": true,
+  "status": "SHADOW_ONLY",
+  "training_authorized": false,
+  "v18_runtime_authority": false
+}
