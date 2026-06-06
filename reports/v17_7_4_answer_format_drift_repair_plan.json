@@ -1,0 +1,24 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "defects": [
+    {
+      "answer_format_drift_rate": 0.66,
+      "arm_id": "A_true_known_good_math_act_byte_repro"
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "repair_rules": [
+    "Classify answer-format drift as parser/finalizer-owned unless row-level autopsy proves lobe corruption.",
+    "Do not train adapters to fix output extraction or final marker discipline.",
+    "Patch finalizer/scorer contract, then replay the same stable known-good control."
+  ],
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.answer_format_drift_repair_plan.v1",
+  "status": "PASS",
+  "training_authorized": false,
+  "v18_runtime_authority": false
+}
