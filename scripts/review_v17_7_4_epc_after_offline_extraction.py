@@ -126,7 +126,7 @@ def unexpected_worktree_entries() -> list[str]:
     )
     entries = []
     for line in git(["status", "--short"]).splitlines():
-        path = line[3:].replace("\\", "/")
+        path = line[2:].strip().replace("\\", "/")
         if not path.startswith(allowed_prefixes):
             entries.append(line)
     return entries
