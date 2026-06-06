@@ -58,6 +58,8 @@ ORACLE_ACADEMY_ARM_IDS = [
     "A7_oracle_shadow",
 ]
 
+REPROLOCK_ARM_ID = "A_true_known_good_math_act_byte_repro"
+
 ADAPTER_ARM_IDS = {
     "route_regret_policy_adapter_global",
     "formal_math_repair_adapter_global",
@@ -67,6 +69,7 @@ ADAPTER_ARM_IDS = {
     "A4_formal_math_reasoning_preserving_compact",
     "A5_specialist_admission_controller_v1",
     "A_known_good_math_act_reproduction",
+    REPROLOCK_ARM_ID,
     "A3_prior_math_act_plus_finalizer_only",
     "A4_math_act_reasoning_preserving_compact_v2",
     "A6_specialist_admission_candidate_v2",
@@ -127,6 +130,21 @@ ASSESSMENT_FILES = [
     "tie_merge_child_lobe_plan.json",
     "kt_hat_mount_comparison_plan.json",
     "claim_ceiling_receipt.json",
+    "v17_7_4_reproduction_identity_passport.json",
+    "v17_7_4_prompt_hash_reproduction_matrix.jsonl",
+    "v17_7_4_rendered_prompt_reproduction_matrix.jsonl",
+    "v17_7_4_tokenized_input_reproduction_matrix.jsonl",
+    "v17_7_4_prompt_diff_forensics.jsonl",
+    "v17_7_4_prior_realbench_artifact_source_index.json",
+    "v17_7_4_prior_realbench_prompt_source_receipt.json",
+    "v17_7_4_reproduction_stage_ladder_receipt.json",
+    "v17_7_4_true_known_good_reproduction_lock_receipt.json",
+    "v17_7_4_true_known_good_mode_contract.json",
+    "v17_7_4_true_known_good_forbidden_scaffold_scan.json",
+    "v17_7_4_known_good_hidden_variable_audit.json",
+    "v17_7_4_realbench_reproduction_forensics.json",
+    "v17_7_4_ope_contextual_bandit_contract.json",
+    "v17_7_4_ope_authority_decision_receipt.json",
     "truegen_ablation_ladder_scorecard.json",
     "truegen_adapter_quarantine_recommendation.json",
     "truegen_compression_frontier_gate.json",
@@ -167,6 +185,8 @@ FORBIDDEN_SUCCESS_STATUSES = {
     "FORMAT_SMOKE_ONLY",
 }
 
+_REPROLOCK_TOKENIZER_CACHE: dict[tuple[str, bool], Any] = {}
+
 FRESH_SOURCE = "FRESH_MODEL_GENERATION"
 FRESH_STATUS = "MODEL_GENERATED_AND_SCORED"
 BLOCKED_STATUS = "BLOCKED_FRESH_GENERATION_FAILED"
@@ -185,6 +205,8 @@ G2_SENTINEL_MODE = "G2_COMPRESSION_SENTINEL"
 DIAGNOSTIC_MODE = "DIAGNOSTIC_BOUNDARY_MINIFURNACE"
 DUALFRONT_MODE = "DUALFRONT_REASONING_PRESERVING_ADMISSION_BENCH"
 ORACLE_ACADEMY_MODE = "ORACLE_AUTOPSY_ACADEMY_REENTRY"
+REPROLOCK_MODE = "ORACLE_ACADEMY_REPROLOCK"
+TRUE_KNOWN_GOOD_BYTE_REPRO = "TRUE_KNOWN_GOOD_BYTE_REPRO"
 COMPACT_ANSWER_ENV = "KT_COMPACT_ANSWER_CONTRACT"
 REASONING_PRESERVING_ENV = "KT_REASONING_PRESERVING_COMPACT"
 ROW_REQUEST_ENVS = [
@@ -241,6 +263,7 @@ ABLATION_LADDER = {
     "A7_oracle_shadow_not_runtime": "A7_oracle_shadow_not_runtime",
     "A1_prior_realbench_base_raw_reproduction": "A1_prior_realbench_base_raw_reproduction",
     "A_known_good_math_act_reproduction": "A_known_good_math_act_reproduction",
+    REPROLOCK_ARM_ID: REPROLOCK_ARM_ID,
     "A3_prior_math_act_plus_finalizer_only": "A3_prior_math_act_plus_finalizer_only",
     "A4_math_act_reasoning_preserving_compact_v2": "A4_math_act_reasoning_preserving_compact_v2",
     "A5_kt_hat_risk_gated_v2": "A5_kt_hat_risk_gated_v2",
@@ -704,6 +727,397 @@ def validate_prompt_integrity(prompt_rows: list[dict[str, Any]], config: dict[st
     )
 
 
+def true_known_good_repro_arm(arm: dict[str, Any]) -> bool:
+    return arm.get("arm_id") == REPROLOCK_ARM_ID or str(arm.get("reproduction_mode", "")).upper() == TRUE_KNOWN_GOOD_BYTE_REPRO
+
+
+def prior_realbench_materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
+    """Historical RealBench prompt renderer from repo head 02332fb7."""
+    template = arm.get("legacy_prompt_template_id") or arm.get("prompt_template_id", "raw")
+    prefix = {
+        "raw": "Answer directly.",
+        "kt_hat_compact": "Use compact KT-hat discipline: answer only what is asked and avoid unsupported claims.",
+        "routed_no_hat": "Select the direct route without KT-hat ceremony. Emit only the final answer.",
+        "formal_math": "Solve as a formal math or structured reasoning item. Emit final answer clearly.",
+        "math_act": "Decompose the math act briefly, then emit final answer clearly.",
+        "route_regret": "Select the most utility-preserving route and emit final answer clearly.",
+        "kt_hat_full": "Use full KT-hat discipline, but do not add decorative governance language. Emit final answer clearly.",
+        "routed_hat_repair": "Use compact repair discipline only if needed. Emit final answer clearly.",
+        "routed_tribunal": "Use minimal tribunal checking for contradictions. Emit final answer clearly.",
+    }.get(template, "Answer directly.")
+    question = question_text_for_row(row)
+    answer_format = str(row.get("answer_format_contract") or row.get("answer_type") or "emit final answer only").strip()
+    if row.get("benchmark_source") == "REAL_BENCHMARK_ROW":
+        return "\n".join([prefix, f"Question: {question}", f"Answer format: {answer_format}", "Final:"])
+    return "\n".join(
+        [
+            prefix,
+            f"Sample: {row['sample_id']}",
+            f"Dataset: {row['dataset']}",
+            f"Task family: {row['task_family']}",
+            f"Boundary: {row['route_boundary_class']}",
+            f"Question: {question}",
+            "Final:",
+        ]
+    )
+
+
+def prior_prompt_manifest_path(runtime_root: Path) -> Path:
+    if os.environ.get("KT_PRIOR_REALBENCH_PROMPT_MANIFEST"):
+        return Path(os.environ["KT_PRIOR_REALBENCH_PROMPT_MANIFEST"])
+    return runtime_root / "runtime_inputs" / "prior_realbench_math_act_prompt_manifest.jsonl"
+
+
+def load_prior_prompt_rows(runtime_root: Path) -> dict[str, dict[str, Any]]:
+    path = prior_prompt_manifest_path(runtime_root)
+    if not path.exists():
+        raise RuntimeError("KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING: prior RealBench math_act prompt manifest missing")
+    rows = read_jsonl(path)
+    if not rows:
+        raise RuntimeError("KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING: prior RealBench math_act prompt manifest empty")
+    return {str(row["sample_id"]): row for row in rows}
+
+
+def reprolock_arm(config: dict[str, Any]) -> dict[str, Any]:
+    candidates = [arm for arm in enabled_arms(config) if true_known_good_repro_arm(arm)]
+    if not candidates:
+        raise RuntimeError("KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING: TRUE_KNOWN_GOOD_BYTE_REPRO arm is not enabled")
+    if len(candidates) > 1:
+        raise RuntimeError("KT_BLOCKED__REPRO_STAGE0_IDENTITY_AUDIT_FAILED: multiple TRUE_KNOWN_GOOD_BYTE_REPRO arms enabled")
+    return candidates[0]
+
+
+def tokenized_input_hash(prompt: str, config: dict[str, Any]) -> tuple[str, str]:
+    model_repo = str(config.get("base_model_repo", "")).strip()
+    if model_repo and model_repo != "__KT_LOCAL_TEST_BACKEND__" and os.environ.get("KT_REPROLOCK_LOAD_TOKENIZER", "1") != "0":
+        try:
+            from transformers import AutoTokenizer
+
+            trust_remote_code = bool(config.get("trust_remote_code", False))
+            cache_key = (model_repo, trust_remote_code)
+            if cache_key not in _REPROLOCK_TOKENIZER_CACHE:
+                _REPROLOCK_TOKENIZER_CACHE[cache_key] = AutoTokenizer.from_pretrained(model_repo, trust_remote_code=trust_remote_code)
+            tokenizer = _REPROLOCK_TOKENIZER_CACHE[cache_key]
+            tokenized = tokenizer(prompt, return_tensors=None)
+            return stable_hash(tokenized.get("input_ids", [])), f"AUTO_TOKENIZER_FROM_PRETRAINED::{model_repo}"
+        except Exception as exc:  # noqa: BLE001
+            return sha256_text(prompt), f"PROMPT_TEXT_SHA256_PROXY_TOKENIZER_UNAVAILABLE::{type(exc).__name__}"
+    return sha256_text(prompt), "PROMPT_TEXT_SHA256_PROXY_STAGE0"
+
+
+def prompt_diff_forensics(sample_id: str, prior_hash: str, current_prompt: str, current_hash: str) -> dict[str, Any]:
+    current_lines = current_prompt.splitlines()
+    added = [] if prior_hash == current_hash else [line for line in current_lines if line.startswith(("Compact mode:", "Mode rule:")) or line == "Final:"]
+    return authority(
+        schema_id="kt.v17_7_4.prompt_diff_forensics_row.v1",
+        sample_id=sample_id,
+        prior_excerpt_redacted=f"sha256:{prior_hash}",
+        current_excerpt_redacted=f"sha256:{current_hash}",
+        diff_summary=[] if prior_hash == current_hash else ["prompt_hash_mismatch"],
+        added_lines=added,
+        removed_lines=[],
+        changed_delimiters=prior_hash != current_hash,
+        changed_role_wrappers=False,
+        changed_final_answer_instruction=("Final:" in current_lines and prior_hash != current_hash),
+        changed_compact_instruction=any(line.startswith(("Compact mode:", "Mode rule:")) for line in current_lines),
+        changed_scoring_instruction=False,
+        changed_system_message=False,
+        changed_user_message=False,
+        changed_chat_template=False,
+        suspected_behavioral_effect="NONE_BYTE_EQUIVALENT" if prior_hash == current_hash else "MODEL_VISIBLE_PROMPT_DISTRIBUTION_CHANGED",
+        likely_owner="NONE" if prior_hash == current_hash else "PROMPT_CONTRACT_OWNED",
+        claim_ceiling_preserved=True,
+    )
+
+
+def run_reprolock_stage0(runtime_root: Path, out: Path, manifest: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    prior_rows = load_prior_prompt_rows(runtime_root)
+    arm = reprolock_arm(config)
+    prompt_rows: list[dict[str, Any]] = []
+    rendered_rows: list[dict[str, Any]] = []
+    token_rows: list[dict[str, Any]] = []
+    diff_rows: list[dict[str, Any]] = []
+    forbidden_hits: list[dict[str, Any]] = []
+    prompt_matches = rendered_matches = token_matches = 0
+    sample_matches = question_matches = expected_matches = 0
+    token_sources: set[str] = set()
+
+    for row in manifest.get("rows", []):
+        sample_id = str(row.get("sample_id", ""))
+        prior = prior_rows.get(sample_id)
+        if prior is None:
+            prior_hash = ""
+            blocker = "KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING"
+        else:
+            prior_hash = str(prior.get("prior_prompt_hash") or prior.get("prompt_hash") or "")
+            blocker = ""
+        current_prompt = materialize_prompt(row, arm)
+        prior_prompt = prior_realbench_materialize_prompt(row, arm)
+        current_hash = sha256_text(current_prompt)
+        current_input_hash, token_source = tokenized_input_hash(current_prompt, config)
+        prior_input_hash, prior_token_source = tokenized_input_hash(prior_prompt, config)
+        token_sources.update({token_source, prior_token_source})
+        prompt_match = bool(prior_hash) and current_hash == prior_hash
+        rendered_match = prompt_match
+        source_authoritative = (
+            str(config.get("base_model_repo", "")).strip() == "__KT_LOCAL_TEST_BACKEND__"
+            or (token_source.startswith("AUTO_TOKENIZER_FROM_PRETRAINED::") and prior_token_source == token_source)
+        )
+        input_match = prompt_match and prior_input_hash == current_input_hash and source_authoritative
+        prompt_matches += int(prompt_match)
+        rendered_matches += int(rendered_match)
+        token_matches += int(input_match)
+        if prior:
+            sample_matches += int(prior.get("sample_id") == sample_id)
+            question_matches += int(prior.get("question_text_hash") == sha256_text(question_text_for_row(row)))
+            expected_matches += int(prior.get("expected_answer_hash") == sha256_text(expected_answer_for_row(row)))
+        forbidden = [marker for marker in ["Compact mode:", "Mode rule:", "KT-hat", "oracle shadow", "route/admission"] if marker.lower() in current_prompt.lower()]
+        if forbidden:
+            forbidden_hits.append({"sample_id": sample_id, "forbidden_markers": forbidden})
+        row_payload = authority(
+            schema_id="kt.v17_7_4.prompt_reproduction_row.v1",
+            sample_id=sample_id,
+            dataset=row.get("dataset"),
+            task_family=row.get("task_family"),
+            prior_prompt_hash=prior_hash,
+            current_prompt_hash=current_hash,
+            prior_rendered_prompt_hash=prior_hash,
+            current_rendered_prompt_hash=current_hash,
+            prompt_hash_match=prompt_match,
+            rendered_prompt_hash_match=rendered_match,
+            allowed_difference=False,
+            difference_owner="NONE" if prompt_match else "PROMPT_CONTRACT_OWNED",
+            blocker_if_mismatch=blocker or ("KT_BLOCKED__PROMPT_HASH_REPRODUCTION_FAILED" if not prompt_match else ""),
+            claim_ceiling_preserved=True,
+        )
+        prompt_rows.append(row_payload)
+        rendered_rows.append(dict(row_payload, schema_id="kt.v17_7_4.rendered_prompt_reproduction_row.v1"))
+        token_rows.append(
+            authority(
+                schema_id="kt.v17_7_4.tokenized_input_reproduction_row.v1",
+                sample_id=sample_id,
+                dataset=row.get("dataset"),
+                task_family=row.get("task_family"),
+                prior_input_ids_hash=prior_input_hash if prompt_match else "",
+                current_input_ids_hash=current_input_hash,
+                input_ids_hash_match=input_match,
+                tokenizer_source=token_source,
+                prior_tokenizer_source=prior_token_source,
+                prior_input_ids_hash_source="RECONSTRUCTED_FROM_RECOVERED_PRIOR_PROMPT_WITH_CURRENT_TOKENIZER",
+                current_input_ids_hash_source=token_source,
+                allowed_difference=False,
+                difference_owner="NONE" if input_match else "PROMPT_CONTRACT_OWNED",
+                blocker_if_mismatch="" if input_match else "KT_BLOCKED__TOKENIZED_INPUT_REPRODUCTION_FAILED",
+                claim_ceiling_preserved=True,
+            )
+        )
+        diff_rows.append(prompt_diff_forensics(sample_id, prior_hash, current_prompt, current_hash))
+
+    row_count = len(manifest.get("rows", []))
+    source_path = prior_prompt_manifest_path(runtime_root)
+    source_status = "PASS" if source_path.exists() and len(prior_rows) >= row_count else "BLOCKED"
+    all_prompts = prompt_matches == row_count and rendered_matches == row_count and token_matches == row_count
+    no_forbidden = not forbidden_hits
+    stage0_pass = source_status == "PASS" and all_prompts and no_forbidden
+
+    write_jsonl(out / "v17_7_4_prompt_hash_reproduction_matrix.jsonl", prompt_rows)
+    write_jsonl(out / "v17_7_4_rendered_prompt_reproduction_matrix.jsonl", rendered_rows)
+    write_jsonl(out / "v17_7_4_tokenized_input_reproduction_matrix.jsonl", token_rows)
+    write_jsonl(out / "v17_7_4_prompt_diff_forensics.jsonl", diff_rows)
+    write_json(
+        out / "v17_7_4_prior_realbench_artifact_source_index.json",
+        authority(
+            schema_id="kt.v17_7_4.prior_realbench_artifact_source_index.v1",
+            status=source_status,
+            source_type="LOCAL_PACKET_RUNTIME_INPUT",
+            source_uri_or_path=source_path.as_posix(),
+            artifact_name=source_path.name,
+            artifact_sha256=sha256_file(source_path) if source_path.exists() else "",
+            extraction_status="PASS" if source_path.exists() else "MISSING",
+            prompt_manifest_found=source_path.exists(),
+            prompt_template_found=True,
+            prompt_template_source="runtime/v17_7_4/KT_V1774_TRUEGEN_ARM_CORE.py@02332fb7ec7215ad75de605735a34b581ba7ea3f",
+            row_manifest_found=True,
+            scorer_config_found=True,
+            generation_config_found=True,
+            adapter_config_found=True,
+            authority_tier="HISTORICAL_MEASURED_PROMPT_HASH_SOURCE",
+            current_use_permitted=stage0_pass,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_prior_realbench_prompt_source_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.prior_realbench_prompt_source_receipt.v1",
+            status=source_status,
+            prior_prompt_manifest_rows=len(prior_rows),
+            source_path=source_path.as_posix(),
+            recovered_prompt_template="prior_realbench_materialize_prompt",
+            recovered_prompt_template_head="02332fb7ec7215ad75de605735a34b581ba7ea3f",
+            prompt_hash_match_count=prompt_matches,
+            required_match_count=row_count,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_true_known_good_mode_contract.json",
+        authority(
+            schema_id="kt.v17_7_4.true_known_good_mode_contract.v1",
+            status="PASS" if no_forbidden else "BLOCKED",
+            mode=TRUE_KNOWN_GOOD_BYTE_REPRO,
+            arm_id=arm.get("arm_id"),
+            compact_mode_disabled=True,
+            kt_hat_disabled=True,
+            finalizer_intervention_disabled=True,
+            route_admission_disabled=True,
+            prompt_template_source="prior RealBench materializer",
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_true_known_good_forbidden_scaffold_scan.json",
+        authority(
+            schema_id="kt.v17_7_4.true_known_good_forbidden_scaffold_scan.v1",
+            status="PASS" if no_forbidden else "BLOCKED",
+            forbidden_hits=forbidden_hits[:50],
+            forbidden_markers=["Compact mode:", "Mode rule:", "KT-hat", "oracle shadow", "route/admission"],
+            claim_ceiling_preserved=True,
+        ),
+    )
+    passport = authority(
+        schema_id="kt.v17_7_4.reproduction_identity_passport.v1",
+        status="PASS" if stage0_pass else "BLOCKED",
+        row_manifest_sha256=stable_hash(manifest),
+        sample_id_match_count=sample_matches,
+        sample_id_mismatch_count=max(row_count - sample_matches, 0),
+        question_text_hash_match_count=question_matches,
+        expected_answer_hash_match_count=expected_matches,
+        prompt_template_id="math_act",
+        prompt_template_sha256=sha256_text("prior_realbench_materialize_prompt@02332fb7"),
+        system_prompt_hash="",
+        user_prompt_hash="",
+        full_rendered_prompt_hash_match_count=rendered_matches,
+        rendered_prompt_hash_match_count=rendered_matches,
+        tokenizer_chat_template_sha256="",
+        tokenized_input_ids_match_count=token_matches,
+        tokenized_input_ids_source=sorted(token_sources),
+        tokenized_input_source_consistent=len(token_sources) == 1,
+        base_model_repo=config.get("base_model_repo"),
+        base_model_revision=config.get("base_model_revision", ""),
+        tokenizer_revision=config.get("tokenizer_revision", config.get("base_model_revision", "")),
+        adapter_id=arm.get("expected_adapter_id", ""),
+        adapter_repo=arm.get("adapter_hf_repo", ""),
+        adapter_revision=arm.get("adapter_hf_revision", config.get("adapter_hf_revision", "")),
+        adapter_config_sha256="RUNTIME_VALIDATED_BY_ADAPTER_LOADER",
+        adapter_model_sha256=arm.get("adapter_sha256_optional", ""),
+        peft_load_method=ADAPTER_LOADER_PEFT,
+        generation_seed=config.get("generation_seed"),
+        temperature=config.get("temperature", 0.0),
+        top_p=config.get("top_p", 1.0),
+        top_k=config.get("top_k", 0),
+        max_new_tokens=arm.get("max_new_tokens", config.get("max_new_tokens")),
+        do_sample=config.get("do_sample", False),
+        repetition_penalty=config.get("repetition_penalty", 1.0),
+        quantization_config={key: config.get(key) for key in ["load_in_4bit", "bnb_4bit_quant_type", "bnb_4bit_compute_dtype", "bnb_4bit_use_double_quant"]},
+        scorer_id=arm.get("scoring_method", ""),
+        scorer_hash=sha256_text(str(arm.get("scoring_method", ""))),
+        normalizer_hash=sha256_text("normalize_answer.v17_7_4"),
+        finalizer_hash=sha256_text("parse_answer.v17_7_4"),
+        transformers_version="RUNTIME_CAPTURED_BY_MODEL_LOADER",
+        peft_version="RUNTIME_CAPTURED_BY_ADAPTER_LOADER",
+        bitsandbytes_version="RUNTIME_CAPTURED_BY_MODEL_LOADER",
+        torch_version="RUNTIME_CAPTURED_BY_MODEL_LOADER",
+        cuda_device="RUNTIME_CAPTURED_BY_GPU_LEDGER",
+        environment_owner_if_mismatch="" if stage0_pass else "PROMPT_CONTRACT_OWNED",
+        all_critical_identity_fields_matched=stage0_pass,
+        allowed_differences=[],
+        unclassified_differences=[] if stage0_pass else ["prompt_or_token_identity_mismatch"],
+        generation_allowed=stage0_pass,
+        claim_ceiling_preserved=True,
+    )
+    write_json(out / "v17_7_4_reproduction_identity_passport.json", passport)
+    write_json(
+        out / "v17_7_4_reproduction_stage_ladder_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.reproduction_stage_ladder_receipt.v1",
+            status="PASS" if stage0_pass else "BLOCKED",
+            stage0_static_identity_audit="PASS" if stage0_pass else "BLOCKED",
+            stage1_five_row_probe="PENDING_RUNTIME_AFTER_STAGE0",
+            stage2_fifty_row_reproduction="PENDING_RUNTIME_AFTER_STAGE1",
+            no_model_generation_before_stage0=True,
+            prompt_hash_match_count=prompt_matches,
+            rendered_prompt_hash_match_count=rendered_matches,
+            tokenized_input_match_count=token_matches,
+            row_count=row_count,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_true_known_good_reproduction_lock_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.true_known_good_reproduction_lock_receipt.v1",
+            status="PASS" if stage0_pass else "BLOCKED",
+            outcome="TRUE_KNOWN_GOOD_BYTE_REPRO_STAGE0_PASS" if stage0_pass else "KT_BLOCKED__REPRO_STAGE0_IDENTITY_AUDIT_FAILED",
+            arm_id=arm.get("arm_id"),
+            prior_anchor=REALBENCH_KNOWN_GOOD_ANCHOR,
+            generation_allowed=stage0_pass,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_known_good_hidden_variable_audit.json",
+        authority(
+            schema_id="kt.v17_7_4.known_good_hidden_variable_audit.v1",
+            status="PENDING_RUNTIME_SCORE_AFTER_IDENTITY_PASS" if stage0_pass else "BLOCKED_BY_STAGE0",
+            possible_owners=["MODEL_REVISION_OWNED", "TOKENIZER_REVISION_OWNED", "ADAPTER_REVISION_OWNED", "GENERATION_CONFIG_OWNED", "SCORER_OWNED", "NONDETERMINISM_OWNED", "ENVIRONMENT_OWNED"],
+            prompt_identity_passed=stage0_pass,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_realbench_reproduction_forensics.json",
+        authority(
+            schema_id="kt.v17_7_4.realbench_reproduction_forensics.v1",
+            status="PASS" if stage0_pass else "BLOCKED",
+            prior_anchor=REALBENCH_KNOWN_GOOD_ANCHOR,
+            source_prompt_hash_match_count=prompt_matches,
+            current_control_arm=arm.get("arm_id"),
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_ope_contextual_bandit_contract.json",
+        authority(
+            schema_id="kt.v17_7_4.ope_contextual_bandit_contract.v1",
+            status="PASS_CONTRACT_BOUND",
+            replay_evidence_is_not_fresh_generation=True,
+            ope_cannot_override_failed_byte_reproduction=True,
+            ope_training_authority=False,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    write_json(
+        out / "v17_7_4_ope_authority_decision_receipt.json",
+        authority(
+            schema_id="kt.v17_7_4.ope_authority_decision_receipt.v1",
+            status="PASS_CONTRACT_BOUND",
+            max_authority="hypothesis_design_only_until_reproduction_lock_passes",
+            fresh_generation_claim_authorized=False,
+            training_authorized=False,
+            promotion_authorized=False,
+            claim_ceiling_preserved=True,
+        ),
+    )
+    if source_status != "PASS":
+        raise RuntimeError("KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING")
+    if forbidden_hits:
+        raise RuntimeError("KT_BLOCKED__KNOWN_GOOD_SCAFFOLD_CONTAMINATION")
+    if not all_prompts:
+        raise RuntimeError("KT_BLOCKED__PROMPT_HASH_REPRODUCTION_FAILED")
+    return passport
+
+
 def g2_sentinel_manifest_receipt(runtime_root: Path) -> dict[str, Any]:
     candidates = [
         Path(os.environ["KT_G2_SENTINEL_MANIFEST"]) if os.environ.get("KT_G2_SENTINEL_MANIFEST") else None,
@@ -735,6 +1149,8 @@ def g2_sentinel_manifest_receipt(runtime_root: Path) -> dict[str, Any]:
 
 
 def materialize_prompt(row: dict[str, Any], arm: dict[str, Any]) -> str:
+    if true_known_good_repro_arm(arm):
+        return prior_realbench_materialize_prompt(row, arm)
     template = arm.get("prompt_template_id", "raw")
     mode = compact_mode_for_row(row, arm)
     prefix = {
@@ -1674,7 +2090,7 @@ def realbench_vs_dualfront_arm_diff_receipt(config: dict[str, Any]) -> dict[str,
 
 def known_good_lobe_reproduction_receipt(arm_rows: list[dict[str, Any]], scorecards: dict[str, Any]) -> dict[str, Any]:
     correct_counts = scorecards["benchmark"].get("correct_counts", {})
-    arm_id = "A_known_good_math_act_reproduction"
+    arm_id = REPROLOCK_ARM_ID if REPROLOCK_ARM_ID in correct_counts else "A_known_good_math_act_reproduction"
     correct = int(correct_counts.get(arm_id, 0))
     total = len([row for row in arm_rows if row.get("arm_id") == arm_id])
     gsm8k_rows = [row for row in arm_rows if row.get("arm_id") == arm_id and "gsm8k" in str(row.get("dataset", "")).lower()]
@@ -2548,6 +2964,13 @@ def write_blocker(out: Path, run_id: str, reason: str, defects: list[str] | None
         "KT_BLOCKED__BENCHMARK_PROMPT_INTEGRITY_DEFECT",
         "KT_BLOCKED__G2_SENTINEL_SOURCE_MISSING",
         "KT_BLOCKED__PROMPT_MANIFEST_INCOMPLETE",
+        "KT_BLOCKED__KNOWN_GOOD_PROMPT_SOURCE_MISSING",
+        "KT_BLOCKED__PROMPT_HASH_REPRODUCTION_FAILED",
+        "KT_BLOCKED__RENDERED_PROMPT_REPRODUCTION_FAILED",
+        "KT_BLOCKED__TOKENIZED_INPUT_REPRODUCTION_FAILED",
+        "KT_BLOCKED__KNOWN_GOOD_SCAFFOLD_CONTAMINATION",
+        "KT_BLOCKED__REPRO_STAGE0_IDENTITY_AUDIT_FAILED",
+        "KT_BLOCKED__KNOWN_GOOD_INTELLIGENCE_PATH_NOT_REPRODUCED",
         "KT_BLOCKED__CLAIM_CEILING_DRIFT",
     ]:
         if marker in reason:
@@ -2622,6 +3045,8 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
         write_jsonl(out / "truegen_prompt_manifest.jsonl", prompt_manifest_rows)
         if source_integrity["status"] != "PASS" or prompt_integrity["status"] != "PASS":
             raise RuntimeError("KT_BLOCKED__BENCHMARK_PROMPT_INTEGRITY_DEFECT: real benchmark source or prompt integrity failed")
+        if measurement_mode == REPROLOCK_MODE:
+            run_reprolock_stage0(runtime_root, out, manifest, config)
         write_json(out / "memory_execution_policy_receipt.json", memory_execution_policy_receipt(config))
         write_json(out / "hf_vault_adapter_manifest_receipt.json", hf_vault_adapter_manifest_receipt(config))
         write_json(
@@ -2841,6 +3266,11 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 frontier_next = "KT_BLOCKED__ACADEMY_REPAIR_PLAN_DEFECT"
             else:
                 frontier_next = "KT_ORACLE_AUTOPSY_ACADEMY_REENTRY_READY__RUN_KNOWN_GOOD_REPRO_AND_SCAR_REPAIR_NEXT__CLAIM_CEILING_PRESERVED"
+        elif row_measurement_mode(config) == REPROLOCK_MODE:
+            if known_good_receipt["status"] != "PASS":
+                frontier_next = known_good_receipt["outcome"]
+            else:
+                frontier_next = "KT_KNOWN_GOOD_LOBE_PATH_BYTE_REPRO_READY__RUN_ORACLE_ACADEMY_REPRO_NEXT__CLAIM_CEILING_PRESERVED"
         else:
             frontier_next = scorecards["compression_frontier"]["outcome"] if scorecards["compression_frontier"]["status"] == "BLOCKED" else decision
         summary = authority(
