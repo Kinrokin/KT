@@ -1,0 +1,91 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_raw_output_member_name": "outputs/reports/benchmark_predictions.jsonl",
+  "g2_raw_output_member_sha256": "71b09c191934a85338f54f277b7ded0a31520502e82a598a4efc661a4c2d2ba0",
+  "g2_raw_output_source_path_or_uri": "D:\\user\\rober\\Downloads\\ktg2_v2_20260525_041618_ASSESSMENT_ONLY.zip",
+  "g2_raw_output_source_sha256": "b31cc3de418b8d115619ad088a159dcdf3a331cca7b5a0e7b34d8d756806a828",
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.g2_offline_replay_source_index.v1",
+  "seven_b_claim": false,
+  "sources": [
+    {
+      "evidence_type": "PRIOR_BINDING",
+      "path": "reports/v17_7_4_g2_state_vector_bind_builder_summary.json",
+      "role": "state_vector_bind_summary",
+      "sha256": "f5680107d831e39411012feed0dfb8805cfea7a2700132f161334666bd3d4e6c",
+      "size_bytes": 1805
+    },
+    {
+      "evidence_type": "PRIOR_BINDING",
+      "path": "reports/v17_7_4_g2_raw_output_binding_receipt.json",
+      "role": "raw_output_binding",
+      "sha256": "975713344768f98f77129768826884a3f10c7ee9f5aa43896f27fb37d2bb554b",
+      "size_bytes": 1225
+    },
+    {
+      "evidence_type": "PRIOR_BINDING",
+      "path": "reports/v17_7_4_g2_token_ledger_binding_receipt.json",
+      "role": "token_ledger_binding",
+      "sha256": "ff7bcc768fe00e6b74804204ece4b926c149b6154dbe52bbe22d96bb19a86720",
+      "size_bytes": 1706
+    },
+    {
+      "evidence_type": "PRIOR_BINDING",
+      "path": "reports/v17_7_4_g2_accounting_classification.json",
+      "role": "accounting_classification",
+      "sha256": "e534f3c1343b42c7f5db27dfb9d6dfc38f2eb7bd89d06f770835bc3e5c9334d4",
+      "size_bytes": 1102
+    },
+    {
+      "evidence_type": "PRIOR_BINDING",
+      "path": "reports/v17_7_4_g2_vs_reprolock_comparability_court.json",
+      "role": "comparability_court",
+      "sha256": "2ceee87d2856cf646a9cada012d802f366b17f88e6904d806999adaa7ce1f9b4",
+      "size_bytes": 1211
+    },
+    {
+      "evidence_type": "CURRENT_BASELINE",
+      "path": "reports/v17_7_4_dual_frontier_repair_scorecard.json",
+      "role": "dual_frontier_repair_baseline",
+      "sha256": "941c384ef712fe6034a26a93eddaec2238b17d98b7e2691a612868e3010e3805",
+      "size_bytes": 5964
+    },
+    {
+      "evidence_type": "CURRENT_BASELINE",
+      "path": "reports/v17_7_4_oracle_relocked_success_binding_receipt.json",
+      "role": "oracle_relocked_baseline",
+      "sha256": "db174de3d23d154efb277428c08461c9664d3dd7464a1e71cfa28f9f2e36ef3d",
+      "size_bytes": 1299
+    },
+    {
+      "evidence_type": "TEACHER_TABLE",
+      "path": "reports/v17_7_4_route_cost_decision_table.jsonl",
+      "role": "current_route_cost_table",
+      "sha256": "5ca768ea5909c3ece528795f730fa45c285f14957f7b4ea5fed5a7e7ee3ddc7c",
+      "size_bytes": 55368
+    },
+    {
+      "evidence_type": "REGISTRY",
+      "path": "registry/artifact_authority_registry.json",
+      "role": "artifact_authority_registry",
+      "sha256": "bcb2bf4520f9c97c63fc7a1a3d0c9219cc7f89152099f845b0cb135f8fc39ffb",
+      "size_bytes": 310293
+    }
+  ],
+  "stale_or_superseded_artifacts_excluded_from_authority": true,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,60 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "interventions": [
+    {
+      "authority_risk": "LOW",
+      "compute_cost": "LOW",
+      "expected_information_gain": 0.9,
+      "lane": "OFFLINE_EXTRACTION_REPLAY_ON_REPROLOCK_ORACLE_RAW_OUTPUTS",
+      "reason": "Keeps work offline while testing whether parser/finalizer deltas transfer to current known-good outputs."
+    },
+    {
+      "authority_risk": "MEDIUM",
+      "compute_cost": "LOW",
+      "expected_information_gain": 0.82,
+      "lane": "PRE_GENERATION_ROUTE_FEATURE_COLLECTION",
+      "reason": "Cheapest-correct v2 is teacher-only; transfer requires non-oracle features."
+    },
+    {
+      "authority_risk": "MEDIUM",
+      "compute_cost": "MEDIUM",
+      "expected_information_gain": 0.76,
+      "lane": "HELD_OUT_50_ROW_REPROLOCK_GENERALIZATION_TEST",
+      "reason": "Tests whether 41/50 stable control generalizes before another compression furnace."
+    },
+    {
+      "allowed": false,
+      "authority_risk": "MEDIUM",
+      "compute_cost": "MEDIUM",
+      "expected_information_gain": 0.35,
+      "lane": "MICRO_FURNACE_25",
+      "reason": "Held until offline replay or feature collection proves transferable signal."
+    },
+    {
+      "allowed": false,
+      "authority_risk": "HIGH",
+      "compute_cost": "HIGH",
+      "expected_information_gain": 0.1,
+      "lane": "TRAIN_ADAPTER_OR_ROUTER",
+      "reason": "No training authority in this lane."
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.epc_intervention_priority_queue_v3.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
