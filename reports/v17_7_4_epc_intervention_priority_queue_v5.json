@@ -1,0 +1,44 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "interventions": [
+    {
+      "authority": "INTERNAL_EVIDENCE_ONLY",
+      "lane": "BIND_HELDOUT_REPROLOCK_ROW_SOURCE",
+      "rank": 1,
+      "reason": "final-answer extraction is harmful and no new bound held-out row source exists",
+      "runtime_packet_warranted": false
+    },
+    {
+      "authority": "NEXT_REPO_PACKET_CANDIDATE_ONLY",
+      "lane": "ROW_ORDER_SHUFFLE_AND_LEAKAGE_NEGATIVE_CONTROL_ON_EXISTING_50",
+      "rank": 2,
+      "reason": "control-integrity test remains useful if new held-out source cannot be bound quickly",
+      "runtime_packet_warranted": false
+    },
+    {
+      "authority": "QUARANTINE",
+      "lane": "ABANDON_GLOBAL_FINALIZER_EXTRACTION_FOR_THIS_GENERATION_PATH",
+      "rank": 3,
+      "reason": "current v2 extraction reduced correctness and has no harm-free safe subset",
+      "runtime_packet_warranted": false
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.epc_intervention_priority_queue_v5.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

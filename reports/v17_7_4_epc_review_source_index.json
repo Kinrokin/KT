@@ -1,0 +1,102 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_raw_output_text_committed": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.epc_review_source_index.v1",
+  "seven_b_claim": false,
+  "source_evidence_index": "reports/v17_7_4_reprolock_oracle_raw_output_source_index.json",
+  "sources": [
+    {
+      "evidence_type": "offline evidence packet",
+      "path": "packets/ktv1774_reprolock_oracle_offline_extraction_v1.zip",
+      "role": "prior offline extraction packet",
+      "sha256": "e40464d8752ae612e76e79fff7ef7f45418bfa0fa13f71a1de15f76859953d75",
+      "size_bytes": 151447
+    },
+    {
+      "evidence_type": "scorecard",
+      "path": "reports/v17_7_4_reprolock_oracle_offline_extraction_scorecard.json",
+      "role": "offline extraction replay source",
+      "sha256": "c0c9644fd84aa96c6dedb300ed7d3b546059322d4a56d30508596bc62a5b24a2",
+      "size_bytes": 11098
+    },
+    {
+      "evidence_type": "receipt",
+      "path": "reports/v17_7_4_final_answer_extraction_contract_v2_receipt.json",
+      "role": "final answer contract v2 source",
+      "sha256": "6ea562c1b416dd80cae9ddb62c02e20eb586edbd87d841f9e7d0b40f87a32aee",
+      "size_bytes": 888
+    },
+    {
+      "evidence_type": "teacher-only replay",
+      "path": "reports/v17_7_4_extraction_aware_cheapest_correct_route_simulation_v3.json",
+      "role": "extraction-aware route simulation v3 source",
+      "sha256": "0c3890fdc47ab84c88c430110c02287c909dbcf80a1e1d7efafe963427d1b46b",
+      "size_bytes": 1105
+    },
+    {
+      "evidence_type": "decision receipt",
+      "path": "reports/v17_7_4_epc_decision_after_reprolock_oracle_offline_extraction.json",
+      "role": "EPC decision source",
+      "sha256": "880b2ff645456e6dc80737172fc2ccd2522dff3621d6ed4ff3af7053bafb0959",
+      "size_bytes": 1262
+    },
+    {
+      "evidence_type": "row-level replay table",
+      "path": "reports/v17_7_4_reprolock_oracle_offline_extraction_row_table.jsonl",
+      "role": "offline extraction row table",
+      "sha256": "5b53d159a24285385f579f3ee2cb6a511a0830a0124f16f28e63d497974acbbc",
+      "size_bytes": 1496132
+    },
+    {
+      "evidence_type": "row manifest",
+      "path": "admission/v17_7_4_realbench_row_manifest.json",
+      "role": "known-good control source",
+      "sha256": "c4472eadea9ce39572b3ab13b60da931800837b03a52ddc75514c7bc9904f289",
+      "size_bytes": 110999
+    },
+    {
+      "evidence_type": "not held-out authority",
+      "path": "admission/v17_7_4_truegen_row_manifest.json",
+      "role": "diagnostic row source",
+      "sha256": "21fc6fa1c2ed14da122c0bd1df60964c30754a9281533bb53987b65a433a2aef",
+      "size_bytes": 192996
+    },
+    {
+      "evidence_type": "rule",
+      "path": "rules/CLAIM_CEILING.md",
+      "role": "claim ceiling file",
+      "sha256": "4b488747a5e36e48a47dc45c49b53540d25eb931a6f48be4de63f53bee619425",
+      "size_bytes": 1137
+    },
+    {
+      "evidence_type": "governance",
+      "path": "governance/current_claim_ceiling.json",
+      "role": "claim ceiling state",
+      "sha256": "899f82b8fd363fe9001e9be2e4f5b43e4f54d03fc5f4d284d00258609a6d1846",
+      "size_bytes": 1171
+    },
+    {
+      "evidence_type": "registry",
+      "path": "registry/artifact_authority_registry.json",
+      "role": "artifact authority registry",
+      "sha256": "bcb2bf4520f9c97c63fc7a1a3d0c9219cc7f89152099f845b0cb135f8fc39ffb",
+      "size_bytes": 310293
+    }
+  ],
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

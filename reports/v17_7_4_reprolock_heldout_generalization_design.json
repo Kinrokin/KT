@@ -1,0 +1,97 @@
+{
+  "adapter_training_authorized": false,
+  "answer_leakage_scan_required": true,
+  "arm": "A_true_known_good_math_act_byte_repro",
+  "blocked_reason": "no bound new held-out ground-truth row manifest found",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "current_sources": {
+    "bound_new_heldout": {
+      "exists": false,
+      "path": "admission/v17_7_4_reprolock_heldout_row_manifest.json",
+      "role": "candidate new held-out ReproLock row source"
+    },
+    "diagnostic_rows": {
+      "datasets": [
+        "arc_challenge",
+        "claim_boundary_slice",
+        "evidence_grounding_slice",
+        "gsm8k",
+        "hellaswag",
+        "logic_quantitative_slice",
+        "math_wording_variation_slice",
+        "non_gsm8k_math_slice",
+        "numeric_reasoning_slice"
+      ],
+      "exists": true,
+      "holdout_statuses": [
+        "TRAINING_SEARCH_DIAGNOSTIC"
+      ],
+      "label_sources": [
+        "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL"
+      ],
+      "path": "admission/v17_7_4_truegen_row_manifest.json",
+      "role": "diagnostic acquisition rows; not valid held-out generalization authority",
+      "row_count": 100,
+      "scoring_rules": [
+        "contains_expected_label"
+      ],
+      "sha256": "21fc6fa1c2ed14da122c0bd1df60964c30754a9281533bb53987b65a433a2aef"
+    },
+    "existing_control": {
+      "datasets": [
+        "arc_challenge",
+        "gsm8k",
+        "hellaswag"
+      ],
+      "exists": true,
+      "holdout_statuses": [
+        "HELDOUT_NOT_FOR_PROMOTION"
+      ],
+      "label_sources": [
+        "PUBLIC_BENCHMARK_GROUND_TRUTH"
+      ],
+      "path": "admission/v17_7_4_realbench_row_manifest.json",
+      "role": "existing 50-row ReproLock/RealBench control source",
+      "row_count": 50,
+      "scoring_rules": [
+        "exact_normalized",
+        "multiple_choice_letter"
+      ],
+      "sha256": "c4472eadea9ce39572b3ab13b60da931800837b03a52ddc75514c7bc9904f289"
+    }
+  },
+  "expected_answer_leakage_allowed": false,
+  "external_validation_claim": false,
+  "finalizer_intervention": false,
+  "frontier_claim": false,
+  "full_token_ledger_required": true,
+  "g2_recovered_claim": false,
+  "gsm8k_tracked_separately": true,
+  "known_good_prompt_unchanged": true,
+  "kt_hat_contamination": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "negative_control_required": true,
+  "parser_scorer_artifact_required": true,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "raw_outputs_saved_for_later_offline_replay": true,
+  "route_admission_changes": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "row_count": 50,
+  "row_order_shuffle_required": true,
+  "runtime_authority": false,
+  "runtime_packet_authorizable": false,
+  "s_tier_claim": false,
+  "same_known_good_math_act_prompt_template": true,
+  "schema_id": "kt.v17_7_4.heldout_generalization_design.v1",
+  "seven_b_claim": false,
+  "status": "PASS_DESIGN_ONLY__HELDOUT_ROW_SOURCE_NOT_BOUND",
+  "target_if_heldout_50": ">=39/50 acceptable; >=41/50 strong",
+  "test_type": "generalization/control-integrity test, not compression test",
+  "v18_runtime_authority": false,
+  "visible_token_ledger_required": true
+}

@@ -1,0 +1,362 @@
+{
+  "adapter_training_authorized": false,
+  "blocked_reason": "no runtime-available bucket reached non-regressive harm-free threshold",
+  "bucket_minimum_rows": 10,
+  "candidate_only": true,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "evaluated_bucket_count": 48,
+  "evaluated_buckets_sample": [
+    {
+      "ambiguous": 42,
+      "bucket": {
+        "dataset": "arc_challenge"
+      },
+      "correct_to_incorrect": 97,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "dataset"
+      ],
+      "original_correct": 213,
+      "replay_correct": 116,
+      "row_count": 240,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 47,
+      "bucket": {
+        "dataset": "hellaswag"
+      },
+      "correct_to_incorrect": 96,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 3,
+      "keys": [
+        "dataset"
+      ],
+      "original_correct": 192,
+      "replay_correct": 99,
+      "row_count": 240,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 177,
+      "bucket": {
+        "dataset": "gsm8k"
+      },
+      "correct_to_incorrect": 34,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 4,
+      "keys": [
+        "dataset"
+      ],
+      "original_correct": 59,
+      "replay_correct": 29,
+      "row_count": 320,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 42,
+      "bucket": {
+        "task_family": "science_reasoning"
+      },
+      "correct_to_incorrect": 97,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "task_family"
+      ],
+      "original_correct": 213,
+      "replay_correct": 116,
+      "row_count": 240,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 47,
+      "bucket": {
+        "task_family": "commonsense_completion"
+      },
+      "correct_to_incorrect": 96,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 3,
+      "keys": [
+        "task_family"
+      ],
+      "original_correct": 192,
+      "replay_correct": 99,
+      "row_count": 240,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 177,
+      "bucket": {
+        "task_family": "formal_math"
+      },
+      "correct_to_incorrect": 34,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 4,
+      "keys": [
+        "task_family"
+      ],
+      "original_correct": 59,
+      "replay_correct": 29,
+      "row_count": 320,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 38,
+      "bucket": {
+        "extraction_surface": "explicit_final_marker"
+      },
+      "correct_to_incorrect": 139,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 3,
+      "keys": [
+        "extraction_surface"
+      ],
+      "original_correct": 317,
+      "replay_correct": 181,
+      "row_count": 471,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 71,
+      "bucket": {
+        "extraction_surface": "last_mcq_letter"
+      },
+      "correct_to_incorrect": 64,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "extraction_surface"
+      ],
+      "original_correct": 115,
+      "replay_correct": 51,
+      "row_count": 145,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 157,
+      "bucket": {
+        "extraction_surface": "last_numeric_surface"
+      },
+      "correct_to_incorrect": 24,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 4,
+      "keys": [
+        "extraction_surface"
+      ],
+      "original_correct": 32,
+      "replay_correct": 12,
+      "row_count": 182,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 0,
+      "bucket": {
+        "extraction_surface": "numeric_absent"
+      },
+      "correct_to_incorrect": 0,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "extraction_surface"
+      ],
+      "original_correct": 0,
+      "replay_correct": 0,
+      "row_count": 2,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 38,
+      "bucket": {
+        "extraction_state": "EXTRACTED_EXPLICIT_FINAL"
+      },
+      "correct_to_incorrect": 139,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 3,
+      "keys": [
+        "extraction_state"
+      ],
+      "original_correct": 317,
+      "replay_correct": 181,
+      "row_count": 471,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 71,
+      "bucket": {
+        "extraction_state": "EXTRACTED_MCQ"
+      },
+      "correct_to_incorrect": 64,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "extraction_state"
+      ],
+      "original_correct": 115,
+      "replay_correct": 51,
+      "row_count": 145,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 157,
+      "bucket": {
+        "extraction_state": "EXTRACTED_NUMERIC"
+      },
+      "correct_to_incorrect": 24,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 4,
+      "keys": [
+        "extraction_state"
+      ],
+      "original_correct": 32,
+      "replay_correct": 12,
+      "row_count": 182,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 0,
+      "bucket": {
+        "extraction_state": "NO_FINAL_ANSWER"
+      },
+      "correct_to_incorrect": 0,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "extraction_state"
+      ],
+      "original_correct": 0,
+      "replay_correct": 0,
+      "row_count": 2,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 12,
+      "bucket": {
+        "dataset": "hellaswag",
+        "extraction_surface": "explicit_final_marker"
+      },
+      "correct_to_incorrect": 68,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 3,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 145,
+      "replay_correct": 80,
+      "row_count": 173,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 6,
+      "bucket": {
+        "dataset": "arc_challenge",
+        "extraction_surface": "explicit_final_marker"
+      },
+      "correct_to_incorrect": 61,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 145,
+      "replay_correct": 84,
+      "row_count": 162,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 36,
+      "bucket": {
+        "dataset": "arc_challenge",
+        "extraction_surface": "last_mcq_letter"
+      },
+      "correct_to_incorrect": 36,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 68,
+      "replay_correct": 32,
+      "row_count": 78,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 35,
+      "bucket": {
+        "dataset": "hellaswag",
+        "extraction_surface": "last_mcq_letter"
+      },
+      "correct_to_incorrect": 28,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 47,
+      "replay_correct": 19,
+      "row_count": 67,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 157,
+      "bucket": {
+        "dataset": "gsm8k",
+        "extraction_surface": "last_numeric_surface"
+      },
+      "correct_to_incorrect": 24,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 4,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 32,
+      "replay_correct": 12,
+      "row_count": 182,
+      "runtime_features_only": true
+    },
+    {
+      "ambiguous": 20,
+      "bucket": {
+        "dataset": "gsm8k",
+        "extraction_surface": "explicit_final_marker"
+      },
+      "correct_to_incorrect": 10,
+      "expected_answer_used_for_policy": false,
+      "incorrect_to_correct": 0,
+      "keys": [
+        "dataset",
+        "extraction_surface"
+      ],
+      "original_correct": 27,
+      "replay_correct": 17,
+      "row_count": 136,
+      "runtime_features_only": true
+    }
+  ],
+  "expected_answer_used_for_policy": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "global_policy_allowed": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "safe_buckets": [],
+  "schema_id": "kt.v17_7_4.extraction_safe_subset_candidate.v1",
+  "seven_b_claim": false,
+  "status": "NO_SAFE_SUBSET_FOUND",
+  "v18_runtime_authority": false
+}
