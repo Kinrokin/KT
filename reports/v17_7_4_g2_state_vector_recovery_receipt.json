@@ -1,0 +1,100 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "conclusion": "G2 compression remains a hypothesis anchor until exact prompt, row, raw-output, route, scorer, and token-ledger surfaces are bound.",
+  "exact_state_vector_recovered": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_anchor": {
+    "base_raw": {
+      "accuracy": 0.595,
+      "correct": 119,
+      "tokens": 5100,
+      "tokens_per_correct": 42.857143,
+      "total": 200,
+      "verified_work_per_token": 0.023333333
+    },
+    "routed_13_lobe_kt_hat_compact": {
+      "accuracy": 0.63,
+      "correct": 126,
+      "tokens": 471,
+      "tokens_per_correct": 3.738095,
+      "total": 200,
+      "verified_work_per_token": 0.267515924
+    }
+  },
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "missing_components": [
+    "prompt_contract",
+    "router_policy",
+    "kt_hat_behavior",
+    "scorer_parser",
+    "row_ids",
+    "raw_outputs"
+  ],
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "recovered_components": [
+    {
+      "component": "headline_anchor",
+      "evidence": {
+        "base_raw": {
+          "accuracy": 0.595,
+          "correct": 119,
+          "tokens": 5100,
+          "tokens_per_correct": 42.857143,
+          "total": 200,
+          "verified_work_per_token": 0.023333333
+        },
+        "routed_13_lobe_kt_hat_compact": {
+          "accuracy": 0.63,
+          "correct": 126,
+          "tokens": 471,
+          "tokens_per_correct": 3.738095,
+          "total": 200,
+          "verified_work_per_token": 0.267515924
+        }
+      },
+      "status": "RECOVERED"
+    },
+    {
+      "component": "prompt_contract",
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component": "token_accounting_mode",
+      "status": "PARTIAL_HINT_ONLY"
+    },
+    {
+      "component": "router_policy",
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component": "kt_hat_behavior",
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component": "scorer_parser",
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component": "row_ids",
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component": "raw_outputs",
+      "status": "MISSING_EXACT_SOURCE"
+    }
+  ],
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.g2_state_vector_recovery_receipt.v1",
+  "source_index_status": "PARTIAL_ANCHOR_ONLY",
+  "status": "PARTIAL_BLOCKED",
+  "v18_runtime_authority": false
+}

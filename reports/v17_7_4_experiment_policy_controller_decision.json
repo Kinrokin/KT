@@ -1,0 +1,69 @@
+{
+  "adapter_training_authorized": false,
+  "cheapest_correct_route_simulation_status": "PASS_TEACHER_ONLY_NOT_RUNTIME",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "decision": "FORENSICS_AND_OFFLINE_REPLAY_BEFORE_RUNTIME_GENERATION",
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "full_system_compression_recovered": false,
+  "g2_recovered_claim": false,
+  "interventions": [
+    {
+      "allowed": true,
+      "compute_cost": "LOW",
+      "expected_information_gain": 0.95,
+      "intervention_id": "BIND_EXACT_G2_STATE_VECTOR",
+      "reason": "Missing G2 prompt, row, route, scorer, and token-ledger surfaces dominate uncertainty.",
+      "risk": "LOW"
+    },
+    {
+      "allowed": true,
+      "compute_cost": "LOW",
+      "expected_information_gain": 0.9,
+      "intervention_id": "BIND_RAW_OUTPUTS_FOR_OFFLINE_EXTRACTION_REPLAY",
+      "reason": "Offline extraction can test parser/finalizer hypotheses without generation.",
+      "risk": "LOW"
+    },
+    {
+      "allowed": true,
+      "compute_cost": "LOW",
+      "expected_information_gain": 0.72,
+      "intervention_id": "DERIVE_PRE_GENERATION_ROUTE_FEATURES_FROM_TEACHER_TABLE",
+      "reason": "Cheapest-correct simulation shows small cost opportunity but no runtime authority.",
+      "risk": "MEDIUM"
+    },
+    {
+      "allowed": false,
+      "compute_cost": "MEDIUM",
+      "expected_information_gain": 0.35,
+      "intervention_id": "RUN_NEW_MICRO_FURNACE",
+      "reason": "Blocked until G2 state vector and raw-output offline replay are bound.",
+      "risk": "MEDIUM"
+    },
+    {
+      "allowed": false,
+      "compute_cost": "HIGH",
+      "expected_information_gain": 0.1,
+      "intervention_id": "TRAIN_ADAPTER_OR_ROUTER",
+      "reason": "No lobe/adapter-owned scar with minimum viable signal; training forbidden in this lane.",
+      "risk": "HIGH"
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "next_intervention": "BIND_EXACT_G2_STATE_VECTOR",
+  "no_runtime_generation_until_forensics": true,
+  "offline_extraction_replay_status": "BLOCKED_RAW_OUTPUTS_NOT_BOUND",
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.experiment_policy_controller_decision.v1",
+  "state_vector_status": "PARTIAL_BLOCKED",
+  "status": "PASS",
+  "training_authorized": false,
+  "v18_runtime_authority": false
+}
