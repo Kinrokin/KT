@@ -1,0 +1,93 @@
+{
+  "adapter_training_authorized": false,
+  "bound_external_archive_member_only": true,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "component_bindings": [
+    {
+      "component_id": "g2_assessment_archive",
+      "hard_required": true,
+      "status": "BOUND_EXTERNAL_ARCHIVE_SHA_CONFIRMED"
+    },
+    {
+      "component_id": "g2_row_ids",
+      "hard_required": true,
+      "row_count": 800,
+      "status": "BOUND_FROM_PREDICTION_ROWS"
+    },
+    {
+      "component_id": "g2_raw_outputs",
+      "hard_required": true,
+      "status": "BOUND_EXTERNAL_ASSESSMENT_MEMBER_SHA_CONFIRMED"
+    },
+    {
+      "component_id": "g2_visible_outputs",
+      "hard_required": true,
+      "status": "BOUND_FROM_NORMALIZED_PREDICTION_ROWS"
+    },
+    {
+      "component_id": "g2_token_ledger",
+      "hard_required": true,
+      "status": "BOUND_OUTPUT_NEW_TOKEN_LEDGER"
+    },
+    {
+      "component_id": "g2_tokens_per_correct_definition",
+      "hard_required": true,
+      "status": "BOUND_AS_SUM_NEW_TOKENS_DIVIDED_BY_CORRECT"
+    },
+    {
+      "component_id": "g2_rendered_prompts",
+      "hard_required": true,
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component_id": "g2_prompt_template",
+      "hard_required": true,
+      "status": "MISSING_EXACT_SOURCE"
+    },
+    {
+      "component_id": "g2_runtime_router_policy",
+      "hard_required": true,
+      "status": "PARTIAL_ROUTE_LABELS_ONLY"
+    },
+    {
+      "component_id": "g2_kt_hat_mode_contract",
+      "hard_required": true,
+      "status": "PARTIAL_SUBJECT_LABEL_ONLY"
+    },
+    {
+      "component_id": "g2_scorer_parser_code",
+      "hard_required": true,
+      "status": "PARTIAL_NORMALIZED_OUTPUTS_ONLY"
+    }
+  ],
+  "conclusion": "G2 raw outputs and output-token ledger are externally bound by assessment ZIP member hash, but exact rendered prompts, prompt template, router policy, KT-hat contract, and scorer/parser code are not fully bound in public repo evidence.",
+  "exact_g2_state_vector_bound": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "irrecoverable_components": [
+    "g2_rendered_prompts",
+    "g2_prompt_template",
+    "g2_runtime_router_policy",
+    "g2_kt_hat_mode_contract",
+    "g2_scorer_parser_code"
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "no_g2_recovered_claim": true,
+  "no_generation": true,
+  "no_promotion": true,
+  "no_training": true,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.g2_state_vector_binding_receipt.v1",
+  "seven_b_claim": false,
+  "status": "IRRECOVERABLE_WITH_SEARCH_RECEIPT",
+  "v18_runtime_authority": false
+}
