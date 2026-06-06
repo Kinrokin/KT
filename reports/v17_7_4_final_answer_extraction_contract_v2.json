@@ -1,0 +1,44 @@
+{
+  "adapter_training_authorized": false,
+  "ambiguity_states": [
+    "NO_FINAL_ANSWER",
+    "AMBIGUOUS_FINAL_SURFACE"
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "contract_name": "FINAL_ANSWER_EXTRACTION_CONTRACT_V2",
+  "expected_answer_used_as_hint": false,
+  "external_validation_claim": false,
+  "extraction_order": [
+    "explicit_final_marker",
+    "therefore_or_equals_marker",
+    "last_numeric_surface_for_numeric_tasks",
+    "last_mcq_letter_for_choice_tasks",
+    "last_nonempty_line_for_short_answer"
+  ],
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "mutates_generation": false,
+  "mutates_prompt": false,
+  "policy_optimization_authorized": false,
+  "post_generation_only": true,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "raw_output_preserved_for_audit": true,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.final_answer_extraction_contract_v2.v1",
+  "scoring_rule": "never score early scratch if a later final answer surface exists",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "supports": [
+    "numeric",
+    "multiple_choice",
+    "short_answer"
+  ],
+  "v18_runtime_authority": false
+}
