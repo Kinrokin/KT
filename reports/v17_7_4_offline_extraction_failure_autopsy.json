@@ -1,0 +1,300 @@
+{
+  "adapter_training_authorized": false,
+  "ambiguity_rows": 266,
+  "arm_sensitivity": [
+    {
+      "ambiguous": 63,
+      "bucket": {
+        "arm_id": "A_true_known_good_math_act_byte_repro"
+      },
+      "correct_to_incorrect": 60,
+      "incorrect_to_correct": 0,
+      "original_correct": 123,
+      "replay_correct": 63,
+      "row_count": 150
+    },
+    {
+      "ambiguous": 22,
+      "bucket": {
+        "arm_id": "A0_base_raw"
+      },
+      "correct_to_incorrect": 30,
+      "incorrect_to_correct": 0,
+      "original_correct": 68,
+      "replay_correct": 38,
+      "row_count": 100
+    },
+    {
+      "ambiguous": 35,
+      "bucket": {
+        "arm_id": "A3_true_known_good_math_act_reasoning_preserving_compact"
+      },
+      "correct_to_incorrect": 19,
+      "incorrect_to_correct": 2,
+      "original_correct": 24,
+      "replay_correct": 7,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 13,
+      "bucket": {
+        "arm_id": "A7_oracle_shadow"
+      },
+      "correct_to_incorrect": 18,
+      "incorrect_to_correct": 0,
+      "original_correct": 23,
+      "replay_correct": 5,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 13,
+      "bucket": {
+        "arm_id": "A7_oracle_shadow_not_runtime"
+      },
+      "correct_to_incorrect": 18,
+      "incorrect_to_correct": 0,
+      "original_correct": 23,
+      "replay_correct": 5,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 2,
+      "bucket": {
+        "arm_id": "A4_oracle_derived_route_specific_compression_candidate"
+      },
+      "correct_to_incorrect": 17,
+      "incorrect_to_correct": 0,
+      "original_correct": 23,
+      "replay_correct": 6,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 2,
+      "bucket": {
+        "arm_id": "A5_specialist_admission_after_reprolock"
+      },
+      "correct_to_incorrect": 17,
+      "incorrect_to_correct": 0,
+      "original_correct": 23,
+      "replay_correct": 6,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 15,
+      "bucket": {
+        "arm_id": "A4_kt_hat_risk_gated_after_reprolock"
+      },
+      "correct_to_incorrect": 9,
+      "incorrect_to_correct": 1,
+      "original_correct": 26,
+      "replay_correct": 18,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 15,
+      "bucket": {
+        "arm_id": "A6_kt_hat_risk_gated_cost_justified"
+      },
+      "correct_to_incorrect": 9,
+      "incorrect_to_correct": 1,
+      "original_correct": 26,
+      "replay_correct": 18,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 21,
+      "bucket": {
+        "arm_id": "A2_known_good_parser_scorer_repair"
+      },
+      "correct_to_incorrect": 8,
+      "incorrect_to_correct": 1,
+      "original_correct": 28,
+      "replay_correct": 21,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 21,
+      "bucket": {
+        "arm_id": "A2_true_known_good_math_act_finalizer_only"
+      },
+      "correct_to_incorrect": 8,
+      "incorrect_to_correct": 1,
+      "original_correct": 28,
+      "replay_correct": 21,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 21,
+      "bucket": {
+        "arm_id": "A3_known_good_finalizer_extraction_repair"
+      },
+      "correct_to_incorrect": 8,
+      "incorrect_to_correct": 1,
+      "original_correct": 28,
+      "replay_correct": 21,
+      "row_count": 50
+    },
+    {
+      "ambiguous": 23,
+      "bucket": {
+        "arm_id": "A5_active_inference_admission_candidate_shadow"
+      },
+      "correct_to_incorrect": 6,
+      "incorrect_to_correct": 0,
+      "original_correct": 21,
+      "replay_correct": 15,
+      "row_count": 50
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "correct_to_incorrect_rows": 227,
+  "correctness_original": 0.58,
+  "correctness_replay": 0.305,
+  "dataset_sensitivity": [
+    {
+      "ambiguous": 42,
+      "bucket": {
+        "dataset": "arc_challenge"
+      },
+      "correct_to_incorrect": 97,
+      "incorrect_to_correct": 0,
+      "original_correct": 213,
+      "replay_correct": 116,
+      "row_count": 240
+    },
+    {
+      "ambiguous": 47,
+      "bucket": {
+        "dataset": "hellaswag"
+      },
+      "correct_to_incorrect": 96,
+      "incorrect_to_correct": 3,
+      "original_correct": 192,
+      "replay_correct": 99,
+      "row_count": 240
+    },
+    {
+      "ambiguous": 177,
+      "bucket": {
+        "dataset": "gsm8k"
+      },
+      "correct_to_incorrect": 34,
+      "incorrect_to_correct": 4,
+      "original_correct": 59,
+      "replay_correct": 29,
+      "row_count": 320
+    }
+  ],
+  "external_validation_claim": false,
+  "extraction_surface_sensitivity": [
+    {
+      "ambiguous": 38,
+      "bucket": {
+        "extraction_surface": "explicit_final_marker"
+      },
+      "correct_to_incorrect": 139,
+      "incorrect_to_correct": 3,
+      "original_correct": 317,
+      "replay_correct": 181,
+      "row_count": 471
+    },
+    {
+      "ambiguous": 71,
+      "bucket": {
+        "extraction_surface": "last_mcq_letter"
+      },
+      "correct_to_incorrect": 64,
+      "incorrect_to_correct": 0,
+      "original_correct": 115,
+      "replay_correct": 51,
+      "row_count": 145
+    },
+    {
+      "ambiguous": 157,
+      "bucket": {
+        "extraction_surface": "last_numeric_surface"
+      },
+      "correct_to_incorrect": 24,
+      "incorrect_to_correct": 4,
+      "original_correct": 32,
+      "replay_correct": 12,
+      "row_count": 182
+    },
+    {
+      "ambiguous": 0,
+      "bucket": {
+        "extraction_surface": "numeric_absent"
+      },
+      "correct_to_incorrect": 0,
+      "incorrect_to_correct": 0,
+      "original_correct": 0,
+      "replay_correct": 0,
+      "row_count": 2
+    }
+  ],
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "gsm8k_pressure_point": {
+    "correct_to_incorrect": 34,
+    "incorrect_to_correct": 4,
+    "rows": 320
+  },
+  "incorrect_to_correct_rows": 7,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "offline_extraction_reduced_correctness": true,
+  "original_correct": 464,
+  "original_parser_correct_and_extraction_harmful_rows": 12,
+  "over_normalized_rows": 51,
+  "policy_optimization_authorized": false,
+  "preserved_correctness_rows": 566,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "replay_correct": 244,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "row_count": 800,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.extraction_failure_autopsy.v1",
+  "selected_early_scratch_or_wrong_surface_rows": 109,
+  "seven_b_claim": false,
+  "status": "PASS",
+  "task_family_sensitivity": [
+    {
+      "ambiguous": 42,
+      "bucket": {
+        "task_family": "science_reasoning"
+      },
+      "correct_to_incorrect": 97,
+      "incorrect_to_correct": 0,
+      "original_correct": 213,
+      "replay_correct": 116,
+      "row_count": 240
+    },
+    {
+      "ambiguous": 47,
+      "bucket": {
+        "task_family": "commonsense_completion"
+      },
+      "correct_to_incorrect": 96,
+      "incorrect_to_correct": 3,
+      "original_correct": 192,
+      "replay_correct": 99,
+      "row_count": 240
+    },
+    {
+      "ambiguous": 177,
+      "bucket": {
+        "task_family": "formal_math"
+      },
+      "correct_to_incorrect": 34,
+      "incorrect_to_correct": 4,
+      "original_correct": 59,
+      "replay_correct": 29,
+      "row_count": 320
+    }
+  ],
+  "v18_runtime_authority": false
+}

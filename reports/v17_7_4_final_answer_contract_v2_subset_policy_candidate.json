@@ -1,0 +1,40 @@
+{
+  "adapter_training_authorized": false,
+  "allowed_features": [
+    "dataset",
+    "task_family",
+    "extraction_surface",
+    "extraction_state",
+    "output_surface_features_without_oracle_labels"
+  ],
+  "candidate_only": true,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "forbidden_features": [
+    "expected_answer",
+    "expected_answer_hash",
+    "posthoc_correctness",
+    "oracle_route",
+    "gold_label"
+  ],
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "global_runtime_authority": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "note": "No safe subset is proposed unless evidence shows zero harm at bucket level.",
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "safe_buckets": [],
+  "schema_id": "kt.v17_7_4.final_answer_contract_v2_subset_policy_candidate.v1",
+  "seven_b_claim": false,
+  "status": "NO_SAFE_SUBSET_FOUND",
+  "subset_policy_available": false,
+  "v18_runtime_authority": false
+}
