@@ -1,0 +1,82 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "exact_g2_state_sources_bound": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "missing_exact_g2_sources": [
+    "exact_g2_prompt_manifest",
+    "exact_g2_row_ids",
+    "exact_g2_raw_outputs",
+    "exact_g2_token_ledger",
+    "exact_g2_router_policy",
+    "exact_g2_hat_mode",
+    "exact_g2_scorer_parser"
+  ],
+  "multi_lobe_superiority_claim": false,
+  "no_fabricated_g2_source": true,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.g2_artifact_source_index.v1",
+  "source_count": 7,
+  "sources": [
+    {
+      "evidence_type": "ANCHOR_CODE",
+      "path": "runtime/v17_7_4/KT_V1774_TRUEGEN_ARM_CORE.py",
+      "role": "g2_anchor_constant_and_runtime_accounting",
+      "sha256": "60ac31e38d828dd5769e479e3d41b2fc6cef51865c1b76008d02ff4d063df9f1",
+      "size_bytes": 188647
+    },
+    {
+      "evidence_type": "CURRENT_GAP_RECEIPT",
+      "path": "reports/v17_7_4_post_reprolock_compression_gap_receipt.json",
+      "role": "current_vs_g2_gap_receipt",
+      "sha256": "eba505874e9a8521edb1eb817ed79d29ea5cc8d60e6f2609668caf92477d6a57",
+      "size_bytes": 1038
+    },
+    {
+      "evidence_type": "CURRENT_MEASURED_SUMMARY",
+      "path": "reports/v17_7_4_dual_frontier_repair_scorecard.json",
+      "role": "current_dual_frontier_scorecard",
+      "sha256": "20580f101eafe7ad48864ea8a3d2b6fa45146e67782031146abd6ef200359b2e",
+      "size_bytes": 6131
+    },
+    {
+      "evidence_type": "CURRENT_TEACHER_SIMULATION",
+      "path": "reports/v17_7_4_route_specific_compression_candidate.json",
+      "role": "cheapest_correct_teacher_policy",
+      "sha256": "ec08571e7627d8313d49851cb6ec67e638de27e743bfab19e2b439a3f177d2bb",
+      "size_bytes": 2995
+    },
+    {
+      "evidence_type": "CURRENT_ROW_TABLE",
+      "path": "reports/v17_7_4_route_cost_decision_table.jsonl",
+      "role": "row_level_route_cost_decisions",
+      "sha256": "9319308dbb9dcc701fb565b55c229675cc41af3d536aa03b58d46a6faddd17ad",
+      "size_bytes": 55418
+    },
+    {
+      "evidence_type": "TOKEN_ACCOUNTING_HINT",
+      "path": "reports/v17_7_4_token_accounting_reconciliation.json",
+      "role": "prior_token_accounting_reconciliation",
+      "sha256": "7a4cb7281327d06a4411f646a8a7c5b878439a375d53b6f0c50428e834d240a4",
+      "size_bytes": 701
+    },
+    {
+      "evidence_type": "MISSING_SOURCE_RECEIPT",
+      "path": "reports/v17_7_4_realbench_builder_summary.json",
+      "role": "g2_sentinel_missing_receipt",
+      "sha256": "575ee52b3a5f362d4173c5e15b0381027f1ea70ba85d87c11fc48b206723b7ce",
+      "size_bytes": 2466
+    }
+  ],
+  "status": "PARTIAL_ANCHOR_ONLY",
+  "v18_runtime_authority": false
+}

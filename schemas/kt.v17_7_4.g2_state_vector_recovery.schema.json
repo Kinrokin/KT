@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KT V17.7.4 G2 State Vector Recovery Receipt",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "status",
+    "exact_state_vector_recovered",
+    "g2_recovered_claim",
+    "claim_ceiling_preserved"
+  ],
+  "properties": {
+    "schema_id": { "const": "kt.v17_7_4.g2_state_vector_recovery_receipt.v1" },
+    "status": { "enum": ["RECOVERED", "PARTIAL_BLOCKED", "BLOCKED"] },
+    "exact_state_vector_recovered": { "type": "boolean" },
+    "g2_recovered_claim": { "const": false },
+    "claim_ceiling_preserved": { "const": true }
+  },
+  "additionalProperties": true
+}
