@@ -1,0 +1,84 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "frontiers": {
+    "full_system_compression_frontier": {
+      "baseline": {
+        "base_full_TPC": 178.06,
+        "current_full_TPC": 145.12
+      },
+      "stages": [
+        "F0: current known-good beats base full_TPC",
+        "F1: full_TPC < 145.12 at >=39/50",
+        "F2: full_TPC <= 100 at >=39/50",
+        "F3: full_TPC <= 50 at >=39/50",
+        "F4: full_TPC <= 10 at >=39/50",
+        "F5: full_TPC near 3.74 only if accounting comparable or newly proven"
+      ]
+    },
+    "governance_frontier": {
+      "stages": [
+        "G0: claim ceiling preserved",
+        "G1: governance overhead measured",
+        "G2: risk-adjusted governance overhead justified by safety/admissibility",
+        "G3: adversarial fail-closed test",
+        "G4: external replay"
+      ]
+    },
+    "output_compression_frontier": {
+      "baseline": {
+        "current_visible_TPC": 1.22,
+        "g2_output_new_token_TPC": 3.74
+      },
+      "stages": [
+        "O0: output/visible token accounting separated from full accounting",
+        "O1: visible TPC <= 3.74 with correctness preserved",
+        "O2: output-new-token TPC <= 3.74 with correctness preserved",
+        "O3: output compression reproduces on held-out slice"
+      ]
+    },
+    "routing_admission_frontier": {
+      "stages": [
+        "R0: teacher-only cheapest-correct simulation",
+        "R1: pre-generation admissible feature policy beats base",
+        "R2: pre-generation policy beats best static after cost",
+        "R3: router reduces route regret without negative transfer",
+        "R4: router superiority claim candidate, still court-bound"
+      ]
+    },
+    "verified_intelligence_frontier": {
+      "baseline": {
+        "correct": 41,
+        "full_TPC": 145.12,
+        "gsm8k_correct": 11,
+        "gsm8k_total": 20,
+        "total": 50
+      },
+      "stages": [
+        "I0: 41/50 preserved on fixed 50-row slice",
+        "I1: 41/50 preserved on row-order shuffle",
+        "I2: >=39/50 on held-out 50-row slice",
+        "I3: >= best_static on 200-row extension",
+        "I4: external replay / detached verifier"
+      ]
+    }
+  },
+  "g2_recovered_claim": false,
+  "hard_rule": "Never collapse these frontiers into one metric.",
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.new_staged_frontier_definition.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
