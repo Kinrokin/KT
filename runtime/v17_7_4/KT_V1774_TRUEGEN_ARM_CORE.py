@@ -185,6 +185,8 @@ FORBIDDEN_SUCCESS_STATUSES = {
     "FORMAT_SMOKE_ONLY",
 }
 
+_REPROLOCK_TOKENIZER_CACHE: dict[tuple[str, bool], Any] = {}
+
 FRESH_SOURCE = "FRESH_MODEL_GENERATION"
 FRESH_STATUS = "MODEL_GENERATED_AND_SCORED"
 BLOCKED_STATUS = "BLOCKED_FRESH_GENERATION_FAILED"
@@ -791,7 +793,11 @@ def tokenized_input_hash(prompt: str, config: dict[str, Any]) -> tuple[str, str]
         try:
             from transformers import AutoTokenizer
 
-            tokenizer = AutoTokenizer.from_pretrained(model_repo, trust_remote_code=bool(config.get("trust_remote_code", False)))
+            trust_remote_code = bool(config.get("trust_remote_code", False))
+            cache_key = (model_repo, trust_remote_code)
+            if cache_key not in _REPROLOCK_TOKENIZER_CACHE:
+                _REPROLOCK_TOKENIZER_CACHE[cache_key] = AutoTokenizer.from_pretrained(model_repo, trust_remote_code=trust_remote_code)
+            tokenizer = _REPROLOCK_TOKENIZER_CACHE[cache_key]
             tokenized = tokenizer(prompt, return_tensors=None)
             return stable_hash(tokenized.get("input_ids", [])), f"AUTO_TOKENIZER_FROM_PRETRAINED::{model_repo}"
         except Exception as exc:  # noqa: BLE001
@@ -801,7 +807,7 @@ def tokenized_input_hash(prompt: str, config: dict[str, Any]) -> tuple[str, str]
 
 def prompt_diff_forensics(sample_id: str, prior_hash: str, current_prompt: str, current_hash: str) -> dict[str, Any]:
     current_lines = current_prompt.splitlines()
-    added = [line for line in current_lines if line.startswith(("Compact mode:", "Mode rule:")) or line == "Final:"]
+    added = [] if prior_hash == current_hash else [line for line in current_lines if line.startswith(("Compact mode:", "Mode rule:")) or line == "Final:"]
     return authority(
         schema_id="kt.v17_7_4.prompt_diff_forensics_row.v1",
         sample_id=sample_id,
@@ -834,7 +840,7 @@ def run_reprolock_stage0(runtime_root: Path, out: Path, manifest: dict[str, Any]
     forbidden_hits: list[dict[str, Any]] = []
     prompt_matches = rendered_matches = token_matches = 0
     sample_matches = question_matches = expected_matches = 0
-    token_source = ""
+    token_sources: set[str] = set()
 
     for row in manifest.get("rows", []):
         sample_id = str(row.get("sample_id", ""))
@@ -846,11 +852,18 @@ def run_reprolock_stage0(runtime_root: Path, out: Path, manifest: dict[str, Any]
             prior_hash = str(prior.get("prior_prompt_hash") or prior.get("prompt_hash") or "")
             blocker = ""
         current_prompt = materialize_prompt(row, arm)
+        prior_prompt = prior_realbench_materialize_prompt(row, arm)
         current_hash = sha256_text(current_prompt)
         current_input_hash, token_source = tokenized_input_hash(current_prompt, config)
+        prior_input_hash, prior_token_source = tokenized_input_hash(prior_prompt, config)
+        token_sources.update({token_source, prior_token_source})
         prompt_match = bool(prior_hash) and current_hash == prior_hash
         rendered_match = prompt_match
-        input_match = prompt_match
+        source_authoritative = (
+            str(config.get("base_model_repo", "")).strip() == "__KT_LOCAL_TEST_BACKEND__"
+            or (token_source.startswith("AUTO_TOKENIZER_FROM_PRETRAINED::") and prior_token_source == token_source)
+        )
+        input_match = prompt_match and prior_input_hash == current_input_hash and source_authoritative
         prompt_matches += int(prompt_match)
         rendered_matches += int(rendered_match)
         token_matches += int(input_match)
@@ -885,11 +898,12 @@ def run_reprolock_stage0(runtime_root: Path, out: Path, manifest: dict[str, Any]
                 sample_id=sample_id,
                 dataset=row.get("dataset"),
                 task_family=row.get("task_family"),
-                prior_input_ids_hash=current_input_hash if prompt_match else "",
+                prior_input_ids_hash=prior_input_hash if prompt_match else "",
                 current_input_ids_hash=current_input_hash,
                 input_ids_hash_match=input_match,
                 tokenizer_source=token_source,
-                prior_input_ids_hash_source="RECONSTRUCTED_FROM_RECOVERED_PRIOR_PROMPT_WITH_CURRENT_TOKENIZER_OR_PROXY",
+                prior_tokenizer_source=prior_token_source,
+                prior_input_ids_hash_source="RECONSTRUCTED_FROM_RECOVERED_PRIOR_PROMPT_WITH_CURRENT_TOKENIZER",
                 current_input_ids_hash_source=token_source,
                 allowed_difference=False,
                 difference_owner="NONE" if input_match else "PROMPT_CONTRACT_OWNED",
@@ -987,7 +1001,8 @@ def run_reprolock_stage0(runtime_root: Path, out: Path, manifest: dict[str, Any]
         rendered_prompt_hash_match_count=rendered_matches,
         tokenizer_chat_template_sha256="",
         tokenized_input_ids_match_count=token_matches,
-        tokenized_input_ids_source=token_source,
+        tokenized_input_ids_source=sorted(token_sources),
+        tokenized_input_source_consistent=len(token_sources) == 1,
         base_model_repo=config.get("base_model_repo"),
         base_model_revision=config.get("base_model_revision", ""),
         tokenizer_revision=config.get("tokenizer_revision", config.get("base_model_revision", "")),
