@@ -1,0 +1,60 @@
+{
+  "adapter_pruning_authorized": false,
+  "adapter_training_authorized": false,
+  "candidates": [
+    {
+      "arm_id": "A0_base_raw",
+      "correct": 34,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 178.058824
+    },
+    {
+      "arm_id": "A2_true_known_good_math_act_finalizer_only",
+      "correct": 28,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 212.5
+    },
+    {
+      "arm_id": "A3_true_known_good_math_act_reasoning_preserving_compact",
+      "correct": 24,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 323.375
+    },
+    {
+      "arm_id": "A4_kt_hat_risk_gated_after_reprolock",
+      "correct": 26,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 232.961538
+    },
+    {
+      "arm_id": "A5_specialist_admission_after_reprolock",
+      "correct": 23,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 326.652174
+    },
+    {
+      "arm_id": "A7_oracle_shadow",
+      "correct": 23,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 325.913043
+    },
+    {
+      "arm_id": "A_true_known_good_math_act_byte_repro",
+      "correct": 41,
+      "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+      "tokens_per_correct": 145.121951
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "learned_router_superiority_claim": false,
+  "method": "marginal_contribution_harsanyi_dividend_surrogate",
+  "model_mutation_authorized": false,
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "route_pruning_authorized": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.gt_fep_pruning_shadow_receipt.v1",
+  "status": "SHADOW_ONLY",
+  "v18_runtime_authority": false
+}

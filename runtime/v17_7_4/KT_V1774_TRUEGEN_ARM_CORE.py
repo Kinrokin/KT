@@ -73,6 +73,10 @@ ADAPTER_ARM_IDS = {
     "A3_prior_math_act_plus_finalizer_only",
     "A4_math_act_reasoning_preserving_compact_v2",
     "A6_specialist_admission_candidate_v2",
+    "A2_known_good_parser_scorer_repair",
+    "A3_known_good_finalizer_extraction_repair",
+    "A4_oracle_derived_route_specific_compression_candidate",
+    "A5_active_inference_admission_candidate_shadow",
 }
 
 SMOKE_BASE_MODELS = {
@@ -154,6 +158,16 @@ ASSESSMENT_FILES = [
     "v17_7_4_parser_finalizer_repair_authority_receipt.json",
     "v17_7_4_answer_format_drift_repair_plan.json",
     "v17_7_4_post_reprolock_compression_gap_receipt.json",
+    "v17_7_4_dual_frontier_repair_scorecard.json",
+    "v17_7_4_route_specific_compression_candidate.json",
+    "v17_7_4_route_cost_decision_table.jsonl",
+    "v17_7_4_route_regret_cost_matrix.jsonl",
+    "v17_7_4_parser_scorer_repair_authority_receipt.json",
+    "v17_7_4_finalizer_extraction_repair_plan.json",
+    "v17_7_4_fep_router_shadow_receipt.json",
+    "v17_7_4_memory_authority_decay_receipt.json",
+    "v17_7_4_gt_fep_pruning_shadow_receipt.json",
+    "v17_7_4_agent_diff_contract_receipt.json",
     "truegen_ablation_ladder_scorecard.json",
     "truegen_adapter_quarantine_recommendation.json",
     "truegen_compression_frontier_gate.json",
@@ -216,6 +230,7 @@ DUALFRONT_MODE = "DUALFRONT_REASONING_PRESERVING_ADMISSION_BENCH"
 ORACLE_ACADEMY_MODE = "ORACLE_AUTOPSY_ACADEMY_REENTRY"
 ORACLE_ACADEMY_RELOCKED_MODE = "ORACLE_ACADEMY_RELOCKED_AFTER_REPROLOCK"
 REPROLOCK_MODE = "ORACLE_ACADEMY_REPROLOCK"
+DUAL_FRONTIER_REPAIR_MODE = "DUAL_FRONTIER_REPAIR_AFTER_RELOCKED_CONTROL"
 TRUE_KNOWN_GOOD_BYTE_REPRO = "TRUE_KNOWN_GOOD_BYTE_REPRO"
 COMPACT_ANSWER_ENV = "KT_COMPACT_ANSWER_CONTRACT"
 REASONING_PRESERVING_ENV = "KT_REASONING_PRESERVING_COMPACT"
@@ -2590,6 +2605,253 @@ def post_reprolock_compression_gap_receipt(scorecards: dict[str, Any]) -> dict[s
     )
 
 
+def parser_scorer_repair_authority_receipt(scorecards: dict[str, Any]) -> dict[str, Any]:
+    parser = parser_finalizer_repair_authority_receipt(scorecards)
+    defects = parser.get("parser_defects", [])
+    return authority(
+        schema_id="kt.v17_7_4.parser_scorer_repair_authority_receipt.v1",
+        status="PASS",
+        owner_classification="SCORER_OWNED",
+        parser_defects=defects,
+        repair_authority="PATCH_SCORER_AND_PARSER_CONTRACT_ONLY",
+        scorer_must_use_final_visible_answer=True,
+        early_scratch_number_selection_forbidden=True,
+        expected_answer_visible_to_model=False,
+        adapter_training_authorized=False,
+        router_training_authorized=False,
+        promotion_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def finalizer_extraction_repair_plan(scorecards: dict[str, Any]) -> dict[str, Any]:
+    answer = answer_format_drift_repair_plan(scorecards)
+    return authority(
+        schema_id="kt.v17_7_4.finalizer_extraction_repair_plan.v1",
+        status="PASS",
+        owner_classification="FINALIZER_OWNED",
+        answer_format_defects=answer.get("defects", []),
+        finalizer_rules=[
+            "Use the last explicit Final:/Answer: surface when present.",
+            "For numeric tasks, normalize only the final visible answer, not early scratch numbers.",
+            "For multiple choice, extract the last standalone option letter from the final surface.",
+            "Do not use expected answer text as a generation or extraction input.",
+        ],
+        compact_visible_answer_allowed=True,
+        raw_output_retained_for_audit=True,
+        adapter_training_authorized=False,
+        router_training_authorized=False,
+        promotion_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def route_specific_compression_policy(
+    arm_rows: list[dict[str, Any]],
+    scorecards: dict[str, Any],
+) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
+    by_sample: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in arm_rows:
+        by_sample[row["sample_id"]].append(row)
+    table: list[dict[str, Any]] = []
+    regret_rows: list[dict[str, Any]] = []
+    chosen_tokens = 0
+    chosen_correct = 0
+    stable_tokens = 0
+    stable_correct = 0
+    base_tokens = 0
+    base_correct = 0
+    for sample_id, rows in sorted(by_sample.items()):
+        base = next((row for row in rows if row["arm_id"] == "A0_base_raw"), rows[0])
+        stable = next((row for row in rows if row["arm_id"] == REPROLOCK_ARM_ID), None)
+        if stable is None:
+            stable = next((row for row in rows if true_known_good_repro_arm({"arm_id": row["arm_id"]})), rows[0])
+        correct_rows = [row for row in rows if row.get("correct") is True]
+        oracle = sorted(correct_rows or rows, key=lambda row: (-int(bool(row.get("correct"))), int(row.get("total_tokens", 10**9)), row["arm_id"]))[0]
+        chosen = oracle if oracle.get("correct") is True else stable
+        chosen_tokens += int(chosen.get("total_tokens", 0))
+        chosen_correct += int(bool(chosen.get("correct")))
+        stable_tokens += int(stable.get("total_tokens", 0))
+        stable_correct += int(bool(stable.get("correct")))
+        base_tokens += int(base.get("total_tokens", 0))
+        base_correct += int(bool(base.get("correct")))
+        token_delta_vs_stable = int(chosen.get("total_tokens", 0)) - int(stable.get("total_tokens", 0))
+        correctness_delta_vs_stable = int(bool(chosen.get("correct"))) - int(bool(stable.get("correct")))
+        table_row = authority(
+            schema_id="kt.v17_7_4.route_cost_decision_row.v1",
+            sample_id=sample_id,
+            dataset=chosen.get("dataset"),
+            task_family=chosen.get("task_family"),
+            stable_control_arm=stable.get("arm_id"),
+            stable_control_correct=bool(stable.get("correct")),
+            stable_control_tokens=int(stable.get("total_tokens", 0)),
+            base_arm=base.get("arm_id"),
+            base_correct=bool(base.get("correct")),
+            base_tokens=int(base.get("total_tokens", 0)),
+            cheapest_correct_oracle_arm=oracle.get("arm_id"),
+            cheapest_correct_oracle_tokens=int(oracle.get("total_tokens", 0)),
+            route_specific_candidate_arm=chosen.get("arm_id"),
+            route_specific_candidate_correct=bool(chosen.get("correct")),
+            route_specific_candidate_tokens=int(chosen.get("total_tokens", 0)),
+            correctness_delta_vs_stable=correctness_delta_vs_stable,
+            token_delta_vs_stable=token_delta_vs_stable,
+            oracle_correctness_used_as_runtime_feature=False,
+            runtime_admissible=False,
+            authority_scope="TEACHER_TABLE_FOR_FUTURE_PRE_GENERATION_FEATURE_POLICY_ONLY",
+        )
+        table.append(table_row)
+        regret_rows.append(
+            authority(
+                schema_id="kt.v17_7_4.route_regret_cost_row.v1",
+                sample_id=sample_id,
+                dataset=chosen.get("dataset"),
+                task_family=chosen.get("task_family"),
+                stable_control_arm=stable.get("arm_id"),
+                oracle_arm=oracle.get("arm_id"),
+                route_regret=max(float(oracle.get("score", 0.0)) - float(stable.get("score", 0.0)), 0.0),
+                token_regret=max(int(stable.get("total_tokens", 0)) - int(oracle.get("total_tokens", 0)), 0),
+                cost_recovery_available=bool(correct_rows) and int(oracle.get("total_tokens", 0)) < int(stable.get("total_tokens", 0)),
+                oracle_correctness_used_as_runtime_feature=False,
+                promotion_authority=False,
+            )
+        )
+    token_matrix = scorecards.get("token_efficiency", {}).get("matrix", {})
+    stable_tpc = safe_ratio(stable_tokens, stable_correct)
+    candidate_tpc = safe_ratio(chosen_tokens, chosen_correct)
+    base_tpc = safe_ratio(base_tokens, base_correct)
+    return (
+        authority(
+            schema_id="kt.v17_7_4.route_specific_compression_candidate.v1",
+            status="PASS_CANDIDATE_ONLY",
+            row_count=len(table),
+            stable_control_arm=REPROLOCK_ARM_ID,
+            stable_control_correct=stable_correct,
+            stable_control_tokens_per_correct=stable_tpc,
+            base_correct=base_correct,
+            base_tokens_per_correct=base_tpc,
+            oracle_choice_mix_correct=chosen_correct,
+            oracle_choice_mix_tokens_per_correct=candidate_tpc,
+            token_delta_vs_stable=round(candidate_tpc - stable_tpc, 6) if stable_tpc and candidate_tpc else None,
+            accuracy_preserved_vs_stable=chosen_correct >= stable_correct,
+            candidate_improves_full_tokens=bool(candidate_tpc and stable_tpc and candidate_tpc < stable_tpc),
+            visible_compression_not_enough=True,
+            existing_token_efficiency_matrix=token_matrix,
+            runtime_authority=False,
+            promotion_authority=False,
+            oracle_correctness_used_as_runtime_feature=False,
+            required_next_step="derive pre-generation route features that approximate the teacher table without oracle correctness",
+            claim_ceiling_preserved=True,
+        ),
+        table,
+        regret_rows,
+    )
+
+
+def dual_frontier_repair_scorecard(
+    scorecards: dict[str, Any],
+    known_good_receipt: dict[str, Any],
+    route_policy: dict[str, Any],
+) -> dict[str, Any]:
+    token_accounting = scorecards.get("token_accounting_ledger", {}).get("matrix", {})
+    token_efficiency = scorecards.get("token_efficiency", {}).get("matrix", {})
+    stable = token_accounting.get(REPROLOCK_ARM_ID, {})
+    base = token_accounting.get("A0_base_raw", {})
+    return authority(
+        schema_id="kt.v17_7_4.dual_frontier_repair_scorecard.v1",
+        status="PASS",
+        stable_control_arm=REPROLOCK_ARM_ID,
+        known_good_reproduction_status=known_good_receipt.get("status"),
+        known_good_correct=known_good_receipt.get("observed_correct"),
+        known_good_total=known_good_receipt.get("observed_total"),
+        known_good_gsm8k_correct=known_good_receipt.get("observed_gsm8k_correct"),
+        known_good_gsm8k_total=known_good_receipt.get("observed_gsm8k_total"),
+        stable_control_full_tokens_per_correct=stable.get("full_prompt_plus_output_tokens_per_correct"),
+        stable_control_visible_tokens_per_correct=stable.get("visible_answer_tokens_per_correct"),
+        base_full_tokens_per_correct=base.get("full_prompt_plus_output_tokens_per_correct"),
+        route_specific_candidate=route_policy,
+        correctness_frontier="PRESERVE_41_OF_50_CONTROL_FIRST",
+        compression_frontier="FULL_SYSTEM_TOKENS_PER_CORRECT_REMAINS_BLOCKED_UNTIL_ROUTE_SPECIFIC_POLICY_BEATS_STABLE_CONTROL",
+        g2_recovered_claim=False,
+        training_authorized=False,
+        promotion_authority=False,
+        learned_router_superiority_claim=False,
+        token_efficiency_matrix=token_efficiency,
+        claim_ceiling_preserved=True,
+    )
+
+
+def fep_router_shadow_receipt(scorecards: dict[str, Any], route_policy: dict[str, Any]) -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.fep_router_shadow_receipt.v1",
+        status="SHADOW_ONLY",
+        model="leaky_integrate_and_fire_memory_plus_precision_weighted_gating",
+        route_utility_formula="expected_correctness - token_cost - latency_cost - governance_risk",
+        stable_control_preserved=True,
+        route_specific_candidate_improves_full_tokens=route_policy.get("candidate_improves_full_tokens"),
+        runtime_authority=False,
+        promotion_authority=False,
+        learned_router_superiority_claim=False,
+        training_authorized=False,
+        required_evidence_before_runtime=["pre_generation_feature_policy", "heldout_route_regret_closure", "no_base_damage"],
+        claim_ceiling_preserved=True,
+    )
+
+
+def memory_authority_decay_receipt() -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.memory_authority_decay_receipt.v1",
+        status="SHADOW_ONLY",
+        decay_law="retention(t)=exp(-lambda*t) for advisory memory only",
+        memory_classes={
+            "live_repo_truth": "NEVER_DECAYS_WITHOUT_NEW_COMMIT_RECEIPT",
+            "measured_runtime_evidence": "DECAYS_ONLY_IN_CLAIM_WEIGHT_NOT_HASH_TRUTH",
+            "hypothesis_or_shadow_policy": "DECAYS_WITH_REPLAY_AGE_AND_NON_SELECTION",
+        },
+        prevents_archive_noise_laundering=True,
+        runtime_authority=False,
+        claim_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def gt_fep_pruning_shadow_receipt(scorecards: dict[str, Any]) -> dict[str, Any]:
+    matrix = scorecards.get("token_efficiency", {}).get("matrix", {})
+    candidates = []
+    for arm, payload in sorted(matrix.items()):
+        candidates.append(
+            {
+                "arm_id": arm,
+                "correct": payload.get("correct"),
+                "tokens_per_correct": payload.get("tokens_per_correct"),
+                "shadow_pruning_action": "NO_RUNTIME_PRUNE__MEASURE_MARGINAL_CONTRIBUTION_ONLY",
+            }
+        )
+    return authority(
+        schema_id="kt.v17_7_4.gt_fep_pruning_shadow_receipt.v1",
+        status="SHADOW_ONLY",
+        method="marginal_contribution_harsanyi_dividend_surrogate",
+        candidates=candidates,
+        model_mutation_authorized=False,
+        adapter_pruning_authorized=False,
+        route_pruning_authorized=False,
+        claim_ceiling_preserved=True,
+    )
+
+
+def agent_diff_contract_receipt() -> dict[str, Any]:
+    return authority(
+        schema_id="kt.v17_7_4.agent_diff_contract_receipt.v1",
+        status="CONTRACT_BOUND_SHADOW_ONLY",
+        state_contract="T_before/T_after deterministic state diff",
+        identical_initial_state_required=True,
+        semantic_trace_is_not_success=True,
+        hard_zero_on_state_mismatch=True,
+        sandbox_runtime_authority=False,
+        production_authority=False,
+        claim_ceiling_preserved=True,
+    )
+
+
 def claim_ceiling_receipt() -> dict[str, Any]:
     return authority(
         schema_id="kt.v17_7_4.oracle_academy_claim_ceiling_receipt.v1",
@@ -3404,6 +3666,38 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
             write_json(out / "v17_7_4_parser_finalizer_repair_authority_receipt.json", parser_finalizer_repair_authority_receipt(scorecards))
             write_json(out / "v17_7_4_answer_format_drift_repair_plan.json", answer_format_drift_repair_plan(scorecards))
             write_json(out / "v17_7_4_post_reprolock_compression_gap_receipt.json", post_reprolock_compression_gap_receipt(scorecards))
+        if mode == DUAL_FRONTIER_REPAIR_MODE:
+            route_policy, route_decision_rows, route_regret_rows = route_specific_compression_policy(arm_rows, scorecards)
+            repair_scorecard = dual_frontier_repair_scorecard(scorecards, known_good_receipt, route_policy)
+            write_json(
+                out / "v17_7_4_oracle_relocked_success_binding_receipt.json",
+                authority(
+                    schema_id="kt.v17_7_4.oracle_relocked_success_binding_receipt.v1",
+                    status="PASS" if known_good_receipt.get("status") == "PASS" else "BLOCKED",
+                    stable_control_arm=known_good_receipt.get("reproduction_arm_id"),
+                    observed_correct=known_good_receipt.get("observed_correct"),
+                    observed_total=known_good_receipt.get("observed_total"),
+                    observed_gsm8k_correct=known_good_receipt.get("observed_gsm8k_correct"),
+                    observed_gsm8k_total=known_good_receipt.get("observed_gsm8k_total"),
+                    measurement_mode=mode,
+                    no_training=True,
+                    no_promotion=True,
+                    no_v18=True,
+                    claim_ceiling_preserved=True,
+                ),
+            )
+            write_json(out / "v17_7_4_dual_frontier_repair_scorecard.json", repair_scorecard)
+            write_json(out / "v17_7_4_route_specific_compression_candidate.json", route_policy)
+            write_jsonl(out / "v17_7_4_route_cost_decision_table.jsonl", route_decision_rows)
+            write_jsonl(out / "v17_7_4_route_regret_cost_matrix.jsonl", route_regret_rows)
+            write_json(out / "v17_7_4_parser_scorer_repair_authority_receipt.json", parser_scorer_repair_authority_receipt(scorecards))
+            write_json(out / "v17_7_4_finalizer_extraction_repair_plan.json", finalizer_extraction_repair_plan(scorecards))
+            write_json(out / "v17_7_4_answer_format_drift_repair_plan.json", answer_format_drift_repair_plan(scorecards))
+            write_json(out / "v17_7_4_post_reprolock_compression_gap_receipt.json", post_reprolock_compression_gap_receipt(scorecards))
+            write_json(out / "v17_7_4_fep_router_shadow_receipt.json", fep_router_shadow_receipt(scorecards, route_policy))
+            write_json(out / "v17_7_4_memory_authority_decay_receipt.json", memory_authority_decay_receipt())
+            write_json(out / "v17_7_4_gt_fep_pruning_shadow_receipt.json", gt_fep_pruning_shadow_receipt(scorecards))
+            write_json(out / "v17_7_4_agent_diff_contract_receipt.json", agent_diff_contract_receipt())
         write_json(out / "truegen_route_regret_token_cost_matrix.json", scorecards["route_regret_token_cost"])
         write_json(out / "truegen_ablation_ladder_scorecard.json", scorecards["ablation_ladder"])
         write_json(out / "truegen_adapter_quarantine_recommendation.json", scorecards["adapter_quarantine"])
@@ -3471,6 +3765,11 @@ def run_truegen_runtime(runtime_root: Path, out: Path | None = None) -> dict[str
                 frontier_next = "KT_BLOCKED__SCAR_DELTA_RELOCK_DEFECT"
             else:
                 frontier_next = "KT_KNOWN_GOOD_REPRODUCED__ORACLE_ACADEMY_RELOCK_READY__SCAR_DELTA_REPAIR_AUTHORITY_NEXT__CLAIM_CEILING_PRESERVED"
+        elif mode == DUAL_FRONTIER_REPAIR_MODE:
+            if known_good_receipt["status"] != "PASS":
+                frontier_next = known_good_receipt["outcome"]
+            else:
+                frontier_next = "KT_KNOWN_GOOD_REPRODUCED__DUAL_FRONTIER_REPAIR_READY__CLAIM_CEILING_PRESERVED"
         elif mode == REPROLOCK_MODE:
             if known_good_receipt["status"] != "PASS":
                 frontier_next = known_good_receipt["outcome"]

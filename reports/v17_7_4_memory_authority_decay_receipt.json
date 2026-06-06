@@ -1,0 +1,20 @@
+{
+  "adapter_training_authorized": false,
+  "claim_authority": false,
+  "claim_ceiling_preserved": true,
+  "decay_law": "retention(t)=exp(-lambda*t) for advisory memory only",
+  "learned_router_superiority_claim": false,
+  "memory_classes": {
+    "hypothesis_or_shadow_policy": "DECAYS_WITH_REPLAY_AGE_AND_NON_SELECTION",
+    "live_repo_truth": "NEVER_DECAYS_WITHOUT_NEW_COMMIT_RECEIPT",
+    "measured_runtime_evidence": "DECAYS_ONLY_IN_CLAIM_WEIGHT_NOT_HASH_TRUTH"
+  },
+  "policy_optimization_authorized": false,
+  "prevents_archive_noise_laundering": true,
+  "promotion_authority": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.memory_authority_decay_receipt.v1",
+  "status": "SHADOW_ONLY",
+  "v18_runtime_authority": false
+}

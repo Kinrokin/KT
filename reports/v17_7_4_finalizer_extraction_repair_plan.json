@@ -1,0 +1,39 @@
+{
+  "adapter_training_authorized": false,
+  "answer_format_defects": [
+    {
+      "answer_format_drift_rate": 0.34,
+      "arm_id": "A0_base_raw"
+    },
+    {
+      "answer_format_drift_rate": 0.66,
+      "arm_id": "A2_true_known_good_math_act_finalizer_only"
+    },
+    {
+      "answer_format_drift_rate": 0.3,
+      "arm_id": "A7_oracle_shadow"
+    },
+    {
+      "answer_format_drift_rate": 0.66,
+      "arm_id": "A_true_known_good_math_act_byte_repro"
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "compact_visible_answer_allowed": true,
+  "finalizer_rules": [
+    "Use the last explicit Final:/Answer: surface when present.",
+    "For numeric tasks, normalize only the final visible answer, not early scratch numbers.",
+    "For multiple choice, extract the last standalone option letter from the final surface.",
+    "Do not use expected answer text as a generation or extraction input."
+  ],
+  "learned_router_superiority_claim": false,
+  "owner_classification": "FINALIZER_OWNED",
+  "policy_optimization_authorized": false,
+  "promotion_authority": false,
+  "raw_output_retained_for_audit": true,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "schema_id": "kt.v17_7_4.finalizer_extraction_repair_plan.v1",
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
