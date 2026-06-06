@@ -1,0 +1,179 @@
+{
+  "adapter_training_authorized": false,
+  "allowed_use": "offline_replay_only",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_assessment_sources": [
+    {
+      "allowed_use": "offline_replay_only",
+      "answer_format_status": "PASS",
+      "archive_member_name": "truegen_arm_result_matrix.jsonl",
+      "archive_member_sha256": "b17ebdf6f9dd729fb3a521e09d9842f03132033b989ab54aac24415ff4fbd7f8",
+      "arm_ids": [
+        "A_true_known_good_math_act_byte_repro"
+      ],
+      "collection_path": "D:\\user\\rober\\Downloads\\KTV1774_ORACLE_REPROLOCK_OPERATOR_COLLECTION.zip",
+      "collection_sha256": "96d3039916a01fc449361229a882ed0fe1ecd5202452129b8ee66fa8427b171e",
+      "dataset_mix": {
+        "arc_challenge": 15,
+        "gsm8k": 20,
+        "hellaswag": 15
+      },
+      "final_summary_outcome": "KT_KNOWN_GOOD_LOBE_PATH_BYTE_REPRO_READY__RUN_ORACLE_ACADEMY_REPRO_NEXT__CLAIM_CEILING_PRESERVED",
+      "forbidden_use": "runtime_authority_or_training",
+      "measurement_source": "FRESH_MODEL_GENERATION",
+      "measurement_status": "MODEL_GENERATED_AND_SCORED",
+      "missing_required_arms": [],
+      "parser_matrix_status": "PASS",
+      "prediction_member_sha256": "220ccb5edd8e1a07bdb72676c00bdebcca3b378a6e4165f3201a510c56eddb22",
+      "role": "ReproLock raw outputs",
+      "row_count": 50,
+      "run_id": "ktv1774_truegen_1780719823",
+      "source_id": "reprolock_known_good",
+      "source_path": "D:\\user\\rober\\Downloads\\KTV1774_TRUEGEN_MINIFURNACE_ASSESSMENT_ONLY (11).zip",
+      "source_sha256": "85568a2cde76071724b5ba732aaec8d6ea0e105076fb22e4575887f0e55eab28",
+      "source_size_bytes": 88466,
+      "status": "PASS",
+      "token_ledger_member_sha256": "d2306b10dd1d5796f8ef8d3161e26d81d988804ca05afc160dc4ba047bb2f47d"
+    },
+    {
+      "allowed_use": "offline_replay_only",
+      "answer_format_status": "PASS",
+      "archive_member_name": "truegen_arm_result_matrix.jsonl",
+      "archive_member_sha256": "6bdd82627777564b5d802d27df30384b3106547ea2a329b98ea628dd0b5e850d",
+      "arm_ids": [
+        "A0_base_raw",
+        "A2_true_known_good_math_act_finalizer_only",
+        "A3_true_known_good_math_act_reasoning_preserving_compact",
+        "A4_kt_hat_risk_gated_after_reprolock",
+        "A5_specialist_admission_after_reprolock",
+        "A7_oracle_shadow",
+        "A_true_known_good_math_act_byte_repro"
+      ],
+      "collection_path": "D:\\user\\rober\\Downloads\\KTV1774_ORACLE_RELOCKED_OPERATOR_COLLECTION.zip",
+      "collection_sha256": "d23d0366361a35c455721fd1d7c49f7cf242f0314f5d3e990fb2807c3f38b08c",
+      "dataset_mix": {
+        "arc_challenge": 105,
+        "gsm8k": 140,
+        "hellaswag": 105
+      },
+      "final_summary_outcome": "KT_KNOWN_GOOD_REPRODUCED__ORACLE_ACADEMY_RELOCK_READY__SCAR_DELTA_REPAIR_AUTHORITY_NEXT__CLAIM_CEILING_PRESERVED",
+      "forbidden_use": "runtime_authority_or_training",
+      "measurement_source": "FRESH_MODEL_GENERATION",
+      "measurement_status": "MODEL_GENERATED_AND_SCORED",
+      "missing_required_arms": [],
+      "parser_matrix_status": "PASS",
+      "prediction_member_sha256": "24c92f024ad852cfa96f887d610d6c73407e49e2662e85696af7b86a1169c74d",
+      "role": "Oracle Relocked raw outputs",
+      "row_count": 350,
+      "run_id": "ktv1774_truegen_1780763502",
+      "source_id": "oracle_relocked",
+      "source_path": "D:\\user\\rober\\Downloads\\KTV1774_TRUEGEN_MINIFURNACE_ASSESSMENT_ONLY (12).zip",
+      "source_sha256": "756674643fe5300ce0a7c5d52b9b7c3c44ac862818ae736e19359c0b50e49484",
+      "source_size_bytes": 189742,
+      "status": "PASS",
+      "token_ledger_member_sha256": "31a8a7dac5030bf1c8d1e36f365a9ee2a3c02b3f5bbc61dae1034aaffb12f83b"
+    },
+    {
+      "allowed_use": "offline_replay_only",
+      "answer_format_status": "PASS",
+      "archive_member_name": "truegen_arm_result_matrix.jsonl",
+      "archive_member_sha256": "8fd952fba45ec1cfe78878dcd535b6a4f61fb4e11055bbc78d1f4e1c43341fd0",
+      "arm_ids": [
+        "A0_base_raw",
+        "A2_known_good_parser_scorer_repair",
+        "A3_known_good_finalizer_extraction_repair",
+        "A4_oracle_derived_route_specific_compression_candidate",
+        "A5_active_inference_admission_candidate_shadow",
+        "A6_kt_hat_risk_gated_cost_justified",
+        "A7_oracle_shadow_not_runtime",
+        "A_true_known_good_math_act_byte_repro"
+      ],
+      "collection_path": "D:\\user\\rober\\Downloads\\KTV1774_DUAL_FRONTIER_REPAIR_OPERATOR_COLLECTION.zip",
+      "collection_sha256": "b4bf3440c60c070acf4424e81cf04bb4d70a2cd29710fb865de70d8825f11410",
+      "dataset_mix": {
+        "arc_challenge": 120,
+        "gsm8k": 160,
+        "hellaswag": 120
+      },
+      "final_summary_outcome": "KT_BLOCKED__COMPRESSION_FRONTIER_REGRESSION",
+      "forbidden_use": "runtime_authority_or_training",
+      "measurement_source": "FRESH_MODEL_GENERATION",
+      "measurement_status": "MODEL_GENERATED_AND_SCORED",
+      "missing_required_arms": [],
+      "parser_matrix_status": "PASS",
+      "prediction_member_sha256": "3577918295d9b509bf33d63a04fae7cc55376bda5054e77c870bd809b67db7dc",
+      "role": "Dual Frontier Repair raw outputs",
+      "row_count": 400,
+      "run_id": "ktv1774_truegen_1780771732",
+      "source_id": "dual_frontier_repair",
+      "source_path": "D:\\user\\rober\\Downloads\\KTV1774_TRUEGEN_MINIFURNACE_ASSESSMENT_ONLY (13).zip",
+      "source_sha256": "c3cdb8504b5e04e505318ee128b9315d623126d8bea445a907256961fb7249c2",
+      "source_size_bytes": 199763,
+      "status": "PASS",
+      "token_ledger_member_sha256": "913de7eccd9eab5c234e8aa38e31ed59a6bf2eb06e9e188a42d19ed2ef0e3a86"
+    }
+  ],
+  "external_validation_claim": false,
+  "forbidden_use": "runtime_authority_or_training",
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "raw_output_text_committed": false,
+  "repo_sources": [
+    {
+      "evidence_type": "PRIOR_EPC",
+      "path": "reports/v17_7_4_g2_offline_replay_frontier_builder_summary.json",
+      "role": "g2_offline_frontier_summary",
+      "sha256": "9692eff5697191eae3d2c8161bed4cfe5c9ba66af50ef2c50658059113b66c19",
+      "size_bytes": 1594
+    },
+    {
+      "evidence_type": "PRIOR_EPC",
+      "path": "reports/v17_7_4_epc_next_evidence_lane.json",
+      "role": "epc_selected_lane",
+      "sha256": "d6de9a36dd404915de6237928882065aba5f34b9662ead589a3fddda122b9bde",
+      "size_bytes": 860
+    },
+    {
+      "evidence_type": "CURRENT_BASELINE",
+      "path": "reports/v17_7_4_oracle_relocked_success_binding_receipt.json",
+      "role": "oracle_relocked_binding",
+      "sha256": "db174de3d23d154efb277428c08461c9664d3dd7464a1e71cfa28f9f2e36ef3d",
+      "size_bytes": 1299
+    },
+    {
+      "evidence_type": "CURRENT_BASELINE",
+      "path": "reports/v17_7_4_dual_frontier_repair_scorecard.json",
+      "role": "dual_frontier_repair_scorecard",
+      "sha256": "941c384ef712fe6034a26a93eddaec2238b17d98b7e2691a612868e3010e3805",
+      "size_bytes": 5964
+    },
+    {
+      "evidence_type": "TEACHER_ONLY",
+      "path": "reports/v17_7_4_route_cost_decision_table.jsonl",
+      "role": "route_cost_decision_table",
+      "sha256": "5ca768ea5909c3ece528795f730fa45c285f14957f7b4ea5fed5a7e7ee3ddc7c",
+      "size_bytes": 55368
+    },
+    {
+      "evidence_type": "REGISTRY",
+      "path": "registry/artifact_authority_registry.json",
+      "role": "artifact_authority_registry",
+      "sha256": "bcb2bf4520f9c97c63fc7a1a3d0c9219cc7f89152099f845b0cb135f8fc39ffb",
+      "size_bytes": 310293
+    }
+  ],
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.reprolock_oracle_raw_output_source_index.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

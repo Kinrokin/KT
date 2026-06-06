@@ -1,0 +1,47 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "rows": [
+    {
+      "accounting_mode": "POST_GENERATION_VISIBLE_FINAL_ANSWER_ONLY",
+      "full_system_comparable": false,
+      "surface": "current_visible_answer_TPC",
+      "value": 2.380952
+    },
+    {
+      "accounting_mode": "RAW_OUTPUT_TOKENS_PER_CORRECT",
+      "full_system_comparable": false,
+      "surface": "current_raw_output_TPC",
+      "value": 86.285714
+    },
+    {
+      "accounting_mode": "FULL_PROMPT_PLUS_OUTPUT_TOKENS_PER_CORRECT",
+      "full_system_comparable": true,
+      "surface": "current_full_TPC",
+      "value": 145.121951
+    },
+    {
+      "accounting_mode": "OUTPUT_NEW_TOKENS_PER_CORRECT",
+      "full_system_comparable": false,
+      "surface": "g2_output_new_token_TPC",
+      "value": 3.738095
+    }
+  ],
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.current_output_vs_full_tpc_table.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,54 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "interventions": [
+    {
+      "allowed": true,
+      "lane": "NO_GENERATION_FINAL_ANSWER_CONTRACT_V2_INTEGRATION_TEST",
+      "rank": 1
+    },
+    {
+      "allowed": false,
+      "lane": "MICRO_FURNACE_25_WITH_FINAL_ANSWER_EXTRACTION_V2_ONLY",
+      "rank": 2
+    },
+    {
+      "allowed": false,
+      "lane": "PRE_GENERATION_ROUTE_FEATURE_COLLECTION_MICROFURNACE",
+      "rank": 3
+    },
+    {
+      "allowed": false,
+      "lane": "HELD_OUT_50_ROW_REPROLOCK_GENERALIZATION_TEST",
+      "rank": 4
+    },
+    {
+      "allowed": true,
+      "lane": "PARSER_SCORER_V2_OFFLINE_ONLY_REFINEMENT",
+      "rank": 5
+    },
+    {
+      "allowed": true,
+      "lane": "ABANDON_G2_EXACT_TARGET_AND_USE_STAGED_FRONTIER",
+      "rank": 6
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "route_summary_status": "PASS_TEACHER_ONLY_NOT_RUNTIME",
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.epc_intervention_priority_queue_v4.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
