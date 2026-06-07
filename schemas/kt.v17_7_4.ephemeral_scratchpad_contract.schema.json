@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "audit_visible": {
+      "const": true
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.ephemeral_scratchpad_contract.v1"
+    },
+    "scope": {
+      "const": "GSM8K_MATH_ONLY"
+    },
+    "scratchpad_tokens_count_in_full_tpc": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema_id",
+    "scope",
+    "scratchpad_tokens_count_in_full_tpc",
+    "audit_visible",
+    "runtime_authority"
+  ],
+  "title": "KT V17.7.4 Ephemeral Scratchpad Contract",
+  "type": "object"
+}
