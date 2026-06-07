@@ -1,0 +1,33 @@
+{
+  "$id": "kt.v17_7_4.math_rescue_v3_honest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "expected_answer_used": {
+      "const": false
+    },
+    "first_pass_mutated": {
+      "const": false
+    },
+    "model_generation_invoked": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.math_rescue_v3_honest_result.v1"
+    },
+    "status": {
+      "enum": [
+        "ABSTAIN_KEEP_ORIGINAL",
+        "RESCUE_APPLIED",
+        "RESCUE_UNSUPPORTED"
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "rescue_attempted",
+    "expected_answer_used"
+  ],
+  "type": "object"
+}
