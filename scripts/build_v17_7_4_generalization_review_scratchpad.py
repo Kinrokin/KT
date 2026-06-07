@@ -380,6 +380,9 @@ EXTRA_ASSESSMENT_FILES = [
     "v17_7_4_math_scratchpad_runtime_receipt.json",
     "v17_7_4_math_scratchpad_token_ledger_receipt.json",
     "v17_7_4_math_scratchpad_evaluation_gate.json",
+    "mathscratchpadtelemetry.json",
+    "microfurnacescorecard.json",
+    "opesupport_update.json",
 ]
 
 
@@ -426,6 +429,7 @@ def write_scratchpad_receipts(runtime_root: Path, out: Path) -> None:
     config = read_json(runtime_root / "runtime_inputs" / "arm_model_config.json")
     manifest = read_json(runtime_root / "runtime_inputs" / "truegen_row_manifest.json")
     scratchpad_arms = [arm["arm_id"] for arm in config.get("arms", []) if int(arm.get("scratchpad_budget_tokens") or 0) > 0]
+    scratchpad_budgets = {arm["arm_id"]: int(arm.get("scratchpad_budget_tokens") or 0) for arm in config.get("arms", [])}
     control_rows = [row for row in matrix if row.get("arm_id") == REPROLOCK_ARM_ID]
     scratchpad_rows = [row for row in matrix if row.get("arm_id") in scratchpad_arms]
     non_math_rows = [row for row in matrix if row.get("dataset") != "gsm8k"]
@@ -467,12 +471,22 @@ def write_scratchpad_receipts(runtime_root: Path, out: Path) -> None:
     arm_counts = {}
     for arm_id in [REPROLOCK_ARM_ID, *scratchpad_arms]:
         rows = [row for row in matrix if row.get("arm_id") == arm_id]
+        correct = sum(1 for row in rows if row.get("correct") is True)
+        full_tokens = sum(int(row.get("full_prompt_plus_output_tokens") or 0) for row in rows)
+        visible_tokens = sum(int(row.get("visible_answer_tokens") or 0) for row in rows)
+        reasoning_tokens = sum(int(row.get("reasoning_tokens") or 0) for row in rows)
         arm_counts[arm_id] = {
-            "correct": sum(1 for row in rows if row.get("correct") is True),
+            "correct": correct,
             "total": len(rows),
-            "full_tokens": sum(int(row.get("full_prompt_plus_output_tokens") or 0) for row in rows),
-            "reasoning_tokens": sum(int(row.get("reasoning_tokens") or 0) for row in rows),
+            "accuracy": round(correct / max(len(rows), 1), 6),
+            "full_tokens": full_tokens,
+            "visible_tokens": visible_tokens,
+            "reasoning_tokens": reasoning_tokens,
+            "scratchpad_budget_tokens": scratchpad_budgets.get(arm_id, 0),
+            "full_tokens_per_correct": round(full_tokens / correct, 6) if correct else None,
+            "visible_tokens_per_correct": round(visible_tokens / correct, 6) if correct else None,
         }
+    control = arm_counts.get(REPROLOCK_ARM_ID, {})
     write_json(
         out / "v17_7_4_math_scratchpad_evaluation_gate.json",
         authority(
@@ -483,6 +497,53 @@ def write_scratchpad_receipts(runtime_root: Path, out: Path) -> None:
             control_arm=REPROLOCK_ARM_ID,
             arm_counts=arm_counts,
             success_interpretation="evidence only; scratchpad survives only if GSM8K improves without hidden token cost",
+        ),
+    )
+    write_json(
+        out / "mathscratchpadtelemetry.json",
+        authority(
+            schema_id="kt.v17_7_4.mathscratchpadtelemetry.v1",
+            status="PASS" if not non_math_rows and not token_defects else "BLOCKED_RUNTIME_TELEMETRY_DEFECT",
+            row_count=manifest.get("row_count"),
+            dataset_mix=manifest.get("dataset_mix"),
+            control_arm=REPROLOCK_ARM_ID,
+            scratchpad_arms=scratchpad_arms,
+            scratchpad_budgets=scratchpad_budgets,
+            scratchpad_tokens_count_in_full_tpc=True,
+            scratchpad_audit_visible=True,
+            non_math_row_count=len(non_math_rows),
+            token_defects=token_defects,
+            arm_counts=arm_counts,
+        ),
+    )
+    write_json(
+        out / "microfurnacescorecard.json",
+        authority(
+            schema_id="kt.v17_7_4.microfurnacescorecard.v1",
+            status="PASS",
+            row_count=manifest.get("row_count"),
+            control_arm=REPROLOCK_ARM_ID,
+            control_correct=control.get("correct"),
+            control_total=control.get("total"),
+            control_accuracy=control.get("accuracy"),
+            arm_counts=arm_counts,
+            promotion_eligible=False,
+            global_runtime_authority=False,
+            success_interpretation="evidence only; compare GSM8K correctness and full-token cost against the no-scratchpad control",
+        ),
+    )
+    write_json(
+        out / "opesupport_update.json",
+        authority(
+            schema_id="kt.v17_7_4.opesupport_update.v1",
+            status="SUPPORT_RECORDED_NOT_OPE_AUTHORITY",
+            support_row_count=len(matrix),
+            microfurnace_row_count=manifest.get("row_count"),
+            ope_ess_available=False,
+            ope_promotion_gate_pass=False,
+            reason="25-row true-generation microfurnace records support for later OPE, but does not grant OPE/COPP authority",
+            promotion_eligible=False,
+            runtime_authority=False,
         ),
     )
     append_assessment(out)
