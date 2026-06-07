@@ -744,7 +744,7 @@ def main() -> int:
         schema_id="kt.v17_7_4.reprolock_generalization_not_hardcoded_evidence_receipt.v1",
         status="PASS",
         bound_non_overlapping_source=True,
-        heldout_manifest=HELDOUT_MANIFEST.as_posix(),
+        heldout_manifest=rel(HELDOUT_MANIFEST),
         heldout_manifest_sha256=sha256_file(HELDOUT_MANIFEST),
         prompt_identity_status=evidence["prompt_identity"].get("status"),
         answer_leakage_status=evidence["answer_leakage"].get("status"),
