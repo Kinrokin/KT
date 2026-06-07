@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_reprolock_generalization_probe_v1.zip`
 
 Kaggle dataset name: `ktv1774-reprolock-generalization-probe-v1`
 
-SHA256: `e610ba80620d181eee35253199a2abc3553ab6bd61c833983d5609e9f941999c`
+SHA256: `3d5fd9985373bfff0394a38c83869c0d767700e1d4de3a5b4b2421179201952e`
 
 This is a 50-row held-out/generalization probe over a non-overlapping public benchmark slice. It preserves the byte-locked ReproLock control path and does not train, promote, authorize V18, mutate routes/finalizers/KT-hat, or expand claim authority.
 
