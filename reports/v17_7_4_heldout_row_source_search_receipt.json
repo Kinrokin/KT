@@ -1,0 +1,389 @@
+{
+  "adapter_training_authorized": false,
+  "candidate_count": 6,
+  "candidates": [
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [],
+      "exists": false,
+      "expected_answer_hash_bound": true,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [],
+      "label_sources": [],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 0,
+      "overlap_sample_ids": [],
+      "path": "admission/v17_7_4_reprolock_heldout_row_manifest.json",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "row_count_below_50",
+        "public_ground_truth_label_source_not_bound",
+        "heldout_status_not_declared"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 0,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [],
+      "seven_b_claim": false,
+      "source_sha256": null,
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [
+        "arc_challenge",
+        "claim_boundary_slice",
+        "evidence_grounding_slice",
+        "gsm8k",
+        "hellaswag",
+        "logic_quantitative_slice",
+        "math_wording_variation_slice",
+        "non_gsm8k_math_slice",
+        "numeric_reasoning_slice"
+      ],
+      "exists": true,
+      "expected_answer_hash_bound": true,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [
+        "TRAINING_SEARCH_DIAGNOSTIC"
+      ],
+      "label_sources": [
+        "SOURCE_SEED_SAMPLE_ID_DIAGNOSTIC_LABEL"
+      ],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 0,
+      "overlap_sample_ids": [],
+      "path": "admission/v17_7_4_truegen_row_manifest.json",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "public_ground_truth_label_source_not_bound",
+        "heldout_status_not_declared",
+        "not_the_bound_reprolock_heldout_manifest_path"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 100,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [
+        "contains_expected_label"
+      ],
+      "seven_b_claim": false,
+      "source_sha256": "21fc6fa1c2ed14da122c0bd1df60964c30754a9281533bb53987b65a433a2aef",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [
+        "arc_challenge",
+        "gsm8k",
+        "hellaswag"
+      ],
+      "exists": true,
+      "expected_answer_hash_bound": true,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [
+        "HELDOUT_NOT_FOR_PROMOTION"
+      ],
+      "label_sources": [
+        "PUBLIC_BENCHMARK_GROUND_TRUTH"
+      ],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 50,
+      "overlap_sample_ids": [
+        "arc_challenge:test:0",
+        "arc_challenge:test:1",
+        "arc_challenge:test:10",
+        "arc_challenge:test:11",
+        "arc_challenge:test:12",
+        "arc_challenge:test:13",
+        "arc_challenge:test:14",
+        "arc_challenge:test:2",
+        "arc_challenge:test:3",
+        "arc_challenge:test:4",
+        "arc_challenge:test:5",
+        "arc_challenge:test:6",
+        "arc_challenge:test:7",
+        "arc_challenge:test:8",
+        "arc_challenge:test:9",
+        "gsm8k:test:0",
+        "gsm8k:test:1",
+        "gsm8k:test:10",
+        "gsm8k:test:11",
+        "gsm8k:test:12"
+      ],
+      "path": "admission/v17_7_4_realbench_row_manifest.json",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "sample_id_overlap_with_known_good_control",
+        "question_text_hash_overlap_with_known_good_control",
+        "not_the_bound_reprolock_heldout_manifest_path"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 50,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [
+        "exact_normalized",
+        "multiple_choice_letter"
+      ],
+      "seven_b_claim": false,
+      "source_sha256": "c4472eadea9ce39572b3ab13b60da931800837b03a52ddc75514c7bc9904f289",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [
+        ""
+      ],
+      "exists": true,
+      "expected_answer_hash_bound": false,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [
+        ""
+      ],
+      "label_sources": [
+        ""
+      ],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 0,
+      "overlap_sample_ids": [],
+      "path": "admission/v17_7_3_targeted_boundary_row_manifest.json",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "expected_answer_hash_not_fully_bound",
+        "public_ground_truth_label_source_not_bound",
+        "heldout_status_not_declared",
+        "not_the_bound_reprolock_heldout_manifest_path"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 400,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [
+        ""
+      ],
+      "seven_b_claim": false,
+      "source_sha256": "ee68ce1cca4f6f5364615214161453bb7ce650a0ba50c3643c40042dd90b2801",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [
+        "arc_challenge",
+        "gsm8k",
+        "hellaswag"
+      ],
+      "exists": true,
+      "expected_answer_hash_bound": true,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [
+        "HELDOUT_NOT_FOR_PROMOTION"
+      ],
+      "label_sources": [
+        "PUBLIC_BENCHMARK_GROUND_TRUTH"
+      ],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 50,
+      "overlap_sample_ids": [
+        "arc_challenge:test:0",
+        "arc_challenge:test:1",
+        "arc_challenge:test:10",
+        "arc_challenge:test:11",
+        "arc_challenge:test:12",
+        "arc_challenge:test:13",
+        "arc_challenge:test:14",
+        "arc_challenge:test:2",
+        "arc_challenge:test:3",
+        "arc_challenge:test:4",
+        "arc_challenge:test:5",
+        "arc_challenge:test:6",
+        "arc_challenge:test:7",
+        "arc_challenge:test:8",
+        "arc_challenge:test:9",
+        "gsm8k:test:0",
+        "gsm8k:test:1",
+        "gsm8k:test:10",
+        "gsm8k:test:11",
+        "gsm8k:test:12"
+      ],
+      "path": "admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "sample_id_overlap_with_known_good_control",
+        "question_text_hash_overlap_with_known_good_control",
+        "not_the_bound_reprolock_heldout_manifest_path"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 50,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [
+        "exact_normalized",
+        "multiple_choice_letter"
+      ],
+      "seven_b_claim": false,
+      "source_sha256": "eb54d4d20d72a0e016817eccf1b7e622a4e57a00d9bcc5d64e02d85634c6e5d0",
+      "v18_runtime_authority": false
+    },
+    {
+      "adapter_training_authorized": false,
+      "bindable": false,
+      "claim_ceiling_preserved": true,
+      "commercial_claim": false,
+      "datasets": [
+        "arc_challenge",
+        "gsm8k",
+        "hellaswag"
+      ],
+      "exists": true,
+      "expected_answer_hash_bound": true,
+      "external_validation_claim": false,
+      "frontier_claim": false,
+      "g2_recovered_claim": false,
+      "holdout_statuses": [
+        ""
+      ],
+      "label_sources": [
+        ""
+      ],
+      "learned_router_superiority_claim": false,
+      "multi_lobe_superiority_claim": false,
+      "overlap_question_hash_count": 50,
+      "overlap_sample_ids": [
+        "arc_challenge:test:0",
+        "arc_challenge:test:1",
+        "arc_challenge:test:10",
+        "arc_challenge:test:11",
+        "arc_challenge:test:12",
+        "arc_challenge:test:13",
+        "arc_challenge:test:14",
+        "arc_challenge:test:2",
+        "arc_challenge:test:3",
+        "arc_challenge:test:4",
+        "arc_challenge:test:5",
+        "arc_challenge:test:6",
+        "arc_challenge:test:7",
+        "arc_challenge:test:8",
+        "arc_challenge:test:9",
+        "gsm8k:test:0",
+        "gsm8k:test:1",
+        "gsm8k:test:10",
+        "gsm8k:test:11",
+        "gsm8k:test:12"
+      ],
+      "path": "admission/v17_7_4_prior_realbench_math_act_prompt_manifest.jsonl",
+      "policy_optimization_authorized": false,
+      "production_readiness_claim": false,
+      "promotion_authority": false,
+      "prompt_rendering_compatible_with_reprolock": true,
+      "rejection_reasons": [
+        "sample_id_overlap_with_known_good_control",
+        "question_text_hash_overlap_with_known_good_control",
+        "public_ground_truth_label_source_not_bound",
+        "heldout_status_not_declared",
+        "not_the_bound_reprolock_heldout_manifest_path"
+      ],
+      "router_superiority_claim": false,
+      "router_training_authorized": false,
+      "row_authority_tier": "NOT_BOUND_OR_NOT_HELDOUT",
+      "row_count": 50,
+      "runtime_authority": false,
+      "s_tier_claim": false,
+      "schema_id": "kt.v17_7_4.heldout_row_source_candidate.v1",
+      "scoring_rules": [
+        ""
+      ],
+      "seven_b_claim": false,
+      "source_sha256": "dcafe70f43cc29ecdd60ab487302148a5b5be551d416dbcb0869114df20c27ad",
+      "v18_runtime_authority": false
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "fabrication_allowed": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.heldout_row_source_search_receipt.v1",
+  "searched_locations": [
+    "admission/v17_7_4_reprolock_heldout_row_manifest.json",
+    "admission/v17_7_4_truegen_row_manifest.json",
+    "admission/v17_7_4_realbench_row_manifest.json",
+    "admission/v17_7_3_targeted_boundary_row_manifest.json",
+    "admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
+    "admission/v17_7_4_prior_realbench_math_act_prompt_manifest.jsonl"
+  ],
+  "seven_b_claim": false,
+  "status": "NOT_BOUND_WITH_SEARCH_RECEIPT",
+  "v18_runtime_authority": false
+}

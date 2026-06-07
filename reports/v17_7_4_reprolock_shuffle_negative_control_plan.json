@@ -1,0 +1,54 @@
+{
+  "adapter_training_authorized": false,
+  "any_negative_control_scored_as_success_blocks": true,
+  "blocker_if_false_pass": "KT_BLOCKED__NEGATIVE_CONTROL_FALSE_PASS",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "negative_control_required": true,
+  "negative_control_types": [
+    "label_swap_canary",
+    "expected_answer_leakage_canary",
+    "contradictory_premise_canary",
+    "malformed_row_canary",
+    "shuffled_answer_canary"
+  ],
+  "negative_controls": [
+    {
+      "control_id": "label_swap_canary",
+      "expected_outcome": "FAIL_CLOSED"
+    },
+    {
+      "control_id": "expected_answer_leakage_canary",
+      "expected_outcome": "FAIL_CLOSED"
+    },
+    {
+      "control_id": "contradictory_premise_canary",
+      "expected_outcome": "FAIL_CLOSED"
+    },
+    {
+      "control_id": "malformed_row_canary",
+      "expected_outcome": "FAIL_CLOSED"
+    },
+    {
+      "control_id": "shuffled_answer_canary",
+      "expected_outcome": "FAIL_CLOSED"
+    }
+  ],
+  "negative_controls_non_scoring": true,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.reprolock_shuffle_negative_control_plan.v1",
+  "seven_b_claim": false,
+  "status": "PASS_PLAN_RUNTIME_REQUIRED",
+  "v18_runtime_authority": false
+}
