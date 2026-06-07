@@ -1,0 +1,111 @@
+{
+  "adapter_training_authorized": false,
+  "best_arm": "A_true_known_good_math_act_byte_repro",
+  "candidates": {
+    "A2_math_act_full_reasoning": {
+      "accuracy": 0.12,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 3,
+      "full_tokens": 3402,
+      "full_tokens_per_correct": 1134.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 725,
+      "reasoning_tokens_per_correct": 241.666667,
+      "total": 25,
+      "verified_work_per_full_token": 0.000881834,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 8.333333
+    },
+    "A3_math_act_reasoning_preserving_compact": {
+      "accuracy": 0.08,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 2,
+      "full_tokens": 4326,
+      "full_tokens_per_correct": 2163.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 1599,
+      "reasoning_tokens_per_correct": 799.5,
+      "total": 25,
+      "verified_work_per_full_token": 0.000462321,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 12.5
+    },
+    "A4_formal_math_reasoning_preserving_compact": {
+      "accuracy": 0.2,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 5,
+      "full_tokens": 4790,
+      "full_tokens_per_correct": 958.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 2138,
+      "reasoning_tokens_per_correct": 427.6,
+      "total": 25,
+      "verified_work_per_full_token": 0.001043841,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 5.0
+    }
+  },
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "control": {
+    "accuracy": 0.52,
+    "adapter_statuses": [
+      "ADAPTER_LOADED"
+    ],
+    "correct": 13,
+    "full_tokens": 2807,
+    "full_tokens_per_correct": 215.923077,
+    "measurement_statuses": [
+      "MODEL_GENERATED_AND_SCORED"
+    ],
+    "model_repos": [
+      "Qwen/Qwen2.5-7B-Instruct"
+    ],
+    "reasoning_tokens": 855,
+    "reasoning_tokens_per_correct": 65.769231,
+    "total": 25,
+    "verified_work_per_full_token": 0.004631279,
+    "visible_tokens": 25,
+    "visible_tokens_per_correct": 1.923077
+  },
+  "external_validation_claim": false,
+  "final_summary_conflict": "TRUEGEN_INSUFFICIENT__LARGER_MINIFURNACE_NEXT",
+  "final_summary_conflict_resolution": "DO_NOT_RERUN_UNCHANGED",
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.math_scratchpad_failure_summary.v1",
+  "seven_b_claim": false,
+  "status": "NEGATIVE_RESULT_CONFIRMED",
+  "summary": "Scratchpad arms were operationally measured but scientifically negative on this GSM8K slice.",
+  "v18_runtime_authority": false
+}

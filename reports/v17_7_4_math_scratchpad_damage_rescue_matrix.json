@@ -1,0 +1,152 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "control_arm": "A_true_known_good_math_act_byte_repro",
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "matrix": {
+    "A2_math_act_full_reasoning": {
+      "both_correct_rows": 2,
+      "candidate_rescued_rows": 1,
+      "control_damaged_rows": 11,
+      "neither_correct_rows": 11,
+      "net_correct_delta_vs_control": -10,
+      "sample_ids": {
+        "both_correct": [
+          "gsm8k:test:117",
+          "gsm8k:test:118"
+        ],
+        "damage": [
+          "fixed_control::gsm8k:test:0",
+          "fixed_control::gsm8k:test:1",
+          "fixed_control::gsm8k:test:3",
+          "fixed_control::gsm8k:test:4",
+          "gsm8k:test:104",
+          "gsm8k:test:105",
+          "gsm8k:test:107",
+          "gsm8k:test:109",
+          "gsm8k:test:111",
+          "gsm8k:test:113",
+          "gsm8k:test:114"
+        ],
+        "neither_correct": [
+          "fixed_control::gsm8k:test:2",
+          "gsm8k:test:100",
+          "gsm8k:test:102",
+          "gsm8k:test:103",
+          "gsm8k:test:106",
+          "gsm8k:test:108",
+          "gsm8k:test:110",
+          "gsm8k:test:112",
+          "gsm8k:test:115",
+          "gsm8k:test:116",
+          "gsm8k:test:119"
+        ],
+        "rescue": [
+          "gsm8k:test:101"
+        ]
+      },
+      "status": "NEGATIVE_TRANSFER_QUARANTINE"
+    },
+    "A3_math_act_reasoning_preserving_compact": {
+      "both_correct_rows": 2,
+      "candidate_rescued_rows": 0,
+      "control_damaged_rows": 11,
+      "neither_correct_rows": 12,
+      "net_correct_delta_vs_control": -11,
+      "sample_ids": {
+        "both_correct": [
+          "fixed_control::gsm8k:test:1",
+          "gsm8k:test:105"
+        ],
+        "damage": [
+          "fixed_control::gsm8k:test:0",
+          "fixed_control::gsm8k:test:3",
+          "fixed_control::gsm8k:test:4",
+          "gsm8k:test:104",
+          "gsm8k:test:107",
+          "gsm8k:test:109",
+          "gsm8k:test:111",
+          "gsm8k:test:113",
+          "gsm8k:test:114",
+          "gsm8k:test:117",
+          "gsm8k:test:118"
+        ],
+        "neither_correct": [
+          "fixed_control::gsm8k:test:2",
+          "gsm8k:test:100",
+          "gsm8k:test:101",
+          "gsm8k:test:102",
+          "gsm8k:test:103",
+          "gsm8k:test:106",
+          "gsm8k:test:108",
+          "gsm8k:test:110",
+          "gsm8k:test:112",
+          "gsm8k:test:115",
+          "gsm8k:test:116",
+          "gsm8k:test:119"
+        ],
+        "rescue": []
+      },
+      "status": "NEGATIVE_TRANSFER_QUARANTINE"
+    },
+    "A4_formal_math_reasoning_preserving_compact": {
+      "both_correct_rows": 4,
+      "candidate_rescued_rows": 1,
+      "control_damaged_rows": 9,
+      "neither_correct_rows": 11,
+      "net_correct_delta_vs_control": -8,
+      "sample_ids": {
+        "both_correct": [
+          "fixed_control::gsm8k:test:3",
+          "gsm8k:test:104",
+          "gsm8k:test:105",
+          "gsm8k:test:113"
+        ],
+        "damage": [
+          "fixed_control::gsm8k:test:0",
+          "fixed_control::gsm8k:test:1",
+          "fixed_control::gsm8k:test:4",
+          "gsm8k:test:107",
+          "gsm8k:test:109",
+          "gsm8k:test:111",
+          "gsm8k:test:114",
+          "gsm8k:test:117",
+          "gsm8k:test:118"
+        ],
+        "neither_correct": [
+          "fixed_control::gsm8k:test:2",
+          "gsm8k:test:100",
+          "gsm8k:test:101",
+          "gsm8k:test:102",
+          "gsm8k:test:103",
+          "gsm8k:test:106",
+          "gsm8k:test:108",
+          "gsm8k:test:110",
+          "gsm8k:test:112",
+          "gsm8k:test:115",
+          "gsm8k:test:119"
+        ],
+        "rescue": [
+          "gsm8k:test:116"
+        ]
+      },
+      "status": "NEGATIVE_TRANSFER_QUARANTINE"
+    }
+  },
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.math_scratchpad_damage_rescue_matrix.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}
