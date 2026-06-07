@@ -64,8 +64,12 @@ def test_diagnostic_sources_do_not_bind_as_generalization_sources():
     binding = sources["v17_7_4_generalization_row_source_binding_receipt.json"]
     search = sources["v17_7_4_generalization_row_source_search_receipt.json"]
 
-    assert binding["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
-    assert binding["row_count"] == 0
+    if binding["status"] == "BOUND":
+        assert binding["row_count"] == 50
+        assert binding["bound_source"] == "admission/v17_7_4_reprolock_heldout_row_manifest.json"
+    else:
+        assert binding["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
+        assert binding["row_count"] == 0
     candidates = {candidate["path"]: candidate for candidate in search["candidates"]}
     truegen = candidates["admission/v17_7_4_truegen_row_manifest.json"]
     boundary = candidates["admission/v17_7_3_targeted_boundary_row_manifest.json"]
@@ -80,8 +84,12 @@ def test_builder_emits_no_packet_without_lawful_source():
     summary = json.loads((builder.ROOT / "reports" / "v17_7_4_shuffle_control_review_generalization_builder_summary.json").read_text())
 
     assert summary["status"] == "PASS"
-    assert summary["generalization_row_source_binding_status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
-    assert summary["selected_next_lane"] == "ACQUIRE_HELDOUT_ROW_SOURCE"
-    assert summary["packet_path_if_any"] is None
-    assert summary["next_lawful_move"] == "ACQUIRE_OR_AUTHOR_HELDOUT_ROW_SOURCE"
+    if summary["generalization_row_source_binding_status"] == "BOUND":
+        assert summary["selected_next_lane"] == "RUN_REPROLOCK_GENERALIZATION_PROBE_50"
+        assert summary["next_lawful_move"] == "RUN_REPROLOCK_GENERALIZATION_PROBE_50"
+    else:
+        assert summary["generalization_row_source_binding_status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
+        assert summary["selected_next_lane"] == "ACQUIRE_HELDOUT_ROW_SOURCE"
+        assert summary["packet_path_if_any"] is None
+        assert summary["next_lawful_move"] == "ACQUIRE_OR_AUTHOR_HELDOUT_ROW_SOURCE"
     assert summary["claim_ceiling_status"] == "PRESERVED"

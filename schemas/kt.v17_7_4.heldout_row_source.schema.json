@@ -1,0 +1,47 @@
+{
+  "$id": "https://kt.local/schemas/kt.v17_7_4.heldout_row_source.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "dataset": {
+      "type": "string"
+    },
+    "expected_answer_hash": {
+      "type": "string"
+    },
+    "expected_answer_visible_to_model": {
+      "const": false
+    },
+    "holdout_status": {
+      "const": "HELDOUT_NOT_FOR_PROMOTION"
+    },
+    "label_source": {
+      "const": "PUBLIC_BENCHMARK_GROUND_TRUTH"
+    },
+    "question_text_hash": {
+      "type": "string"
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.heldout_row_source_row.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "dataset",
+    "question_text_hash",
+    "expected_answer_hash",
+    "label_source",
+    "holdout_status",
+    "expected_answer_visible_to_model",
+    "claim_ceiling_preserved"
+  ],
+  "title": "KT V17.7.4 Heldout Row Source",
+  "type": "object"
+}

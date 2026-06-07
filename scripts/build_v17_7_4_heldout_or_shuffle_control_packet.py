@@ -996,7 +996,9 @@ def main() -> int:
     heldout_bound = search["status"] == "BOUND"
     selected_branch = branch["selected_branch"]
     if selected_branch != "SHUFFLE_CONTROL_PACKET":
-        raise RuntimeError("KT_BLOCKED__HELDOUT_PACKET_GENERATION_DEFECT: held-out packet branch not implemented without bound source review")
+        from scripts import build_v17_7_4_heldout_row_source_acquisition as acquisition
+
+        return acquisition.main()
     row_manifest, order_manifest = build_shuffle_row_manifest()
     leakage_plan = answer_leakage_scan_plan("shuffle")
     negative_plan = negative_control_plan("shuffle")
