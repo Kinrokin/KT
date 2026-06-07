@@ -1,0 +1,33 @@
+{
+  "adapter_training_authorized": false,
+  "authority_risk": "LOW_IF_NO_PACKET_GENERATED_WITHOUT_SOURCE",
+  "blockers": [
+    "GENERALIZATION_ROW_SOURCE_NOT_BOUND"
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "compute_cost": "ZERO_UNTIL_SOURCE_BOUND",
+  "dataset_name": null,
+  "expected_information_gain": "HIGH_IF_SOURCE_ACQUIRED",
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "packet_path": null,
+  "packet_sha256": null,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "reason": "Shuffle stability is bound; lawful generalization row source is not bound.",
+  "recommended_next_lane": "ACQUIRE_HELDOUT_ROW_SOURCE",
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.epc_decision_after_shuffle_control.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "stop_condition": "Do not run Kaggle until source is bound.",
+  "v18_runtime_authority": false
+}
