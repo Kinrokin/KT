@@ -1,0 +1,59 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "heldout_generalization_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.heldout_row_source_search_plan.v1",
+  "search_scope": [
+    "existing repo benchmark row pools",
+    "RealBench source manifests",
+    "MiniFurnace row manifests",
+    "TrueGen row manifests",
+    "unused rows in prior packets",
+    "HF public benchmark rows via already-used Dataset Viewer mechanism",
+    "assessment bundle row manifests",
+    "artifact registry"
+  ],
+  "seven_b_claim": false,
+  "source_selection_plan": [
+    {
+      "config": "main",
+      "dataset": "openai/gsm8k",
+      "kt_dataset": "gsm8k",
+      "length": 20,
+      "offset": 100,
+      "split": "test"
+    },
+    {
+      "config": "ARC-Challenge",
+      "dataset": "allenai/ai2_arc",
+      "kt_dataset": "arc_challenge",
+      "length": 15,
+      "offset": 100,
+      "split": "test"
+    },
+    {
+      "config": "default",
+      "dataset": "Rowan/hellaswag",
+      "kt_dataset": "hellaswag",
+      "length": 15,
+      "offset": 100,
+      "split": "validation"
+    }
+  ],
+  "status": "PASS",
+  "target_row_count": 50,
+  "v18_runtime_authority": false
+}

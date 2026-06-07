@@ -1,5 +1,4 @@
 {
-  "action": "NO_AUTHORING_NEEDED_SOURCE_BOUND",
   "adapter_training_authorized": false,
   "claim_ceiling_preserved": true,
   "commercial_claim": false,
@@ -8,7 +7,18 @@
   "g2_recovered_claim": false,
   "heldout_generalization_claim": false,
   "learned_router_superiority_claim": false,
-  "missing_if_not_bound": [],
+  "misses": [
+    {
+      "reason": "No repo-local benchmark cache with additional row text/answer authority was found beyond manifests.",
+      "source_id": "local_cached_benchmark_datasets",
+      "status": "SEARCHED_NOT_FOUND_AS_DIRECTORY_SOURCE"
+    },
+    {
+      "reason": "Assessment bundles contain measured rows or shuffled control evidence, not new held-out answer-key authority.",
+      "source_id": "assessment_bundle_row_manifests",
+      "status": "PRESENT_BUT_NOT_SOURCE_AUTHORITY"
+    }
+  ],
   "multi_lobe_superiority_claim": false,
   "policy_optimization_authorized": false,
   "production_readiness_claim": false,
@@ -17,8 +27,8 @@
   "router_training_authorized": false,
   "runtime_authority": false,
   "s_tier_claim": false,
-  "schema_id": "kt.v17_7_4.heldout_row_source_missing_fields.v1",
+  "schema_id": "kt.v17_7_4.heldout_row_source_search_misses.v1",
   "seven_b_claim": false,
-  "status": "PASS_NO_MISSING_FIELDS_SOURCE_BOUND",
+  "status": "PASS",
   "v18_runtime_authority": false
 }

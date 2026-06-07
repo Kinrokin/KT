@@ -8,13 +8,20 @@ def test_unbound_heldout_source_selects_shuffle_control_not_generalization():
     search, binding, candidate, missing = builder.search_heldout_sources()
     decision = builder.branch_decision(search)
 
-    assert search["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
-    assert binding["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
-    assert candidate["heldout_generalization_claim"] is False
-    assert missing["action"] == "GENERATE_SHUFFLE_CONTROL_INSTEAD"
-    assert decision["selected_branch"] == "SHUFFLE_CONTROL_PACKET"
-    assert decision["heldout_packet_authorized"] is False
-    assert decision["shuffle_control_packet_authorized"] is True
+    if builder.BOUND_HELDOUT_MANIFEST.exists():
+        assert search["status"] == "BOUND"
+        assert binding["status"] == "BOUND"
+        assert decision["selected_branch"] == "HELDOUT_GENERALIZATION_PACKET"
+        assert decision["heldout_packet_authorized"] is True
+        assert decision["shuffle_control_packet_authorized"] is False
+    else:
+        assert search["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
+        assert binding["status"] == "NOT_BOUND_WITH_SEARCH_RECEIPT"
+        assert candidate["heldout_generalization_claim"] is False
+        assert missing["action"] == "GENERATE_SHUFFLE_CONTROL_INSTEAD"
+        assert decision["selected_branch"] == "SHUFFLE_CONTROL_PACKET"
+        assert decision["heldout_packet_authorized"] is False
+        assert decision["shuffle_control_packet_authorized"] is True
 
 
 def test_shuffle_manifest_preserves_rows_but_changes_order_and_blocks_heldout_claim():
@@ -61,6 +68,15 @@ def test_leakage_and_negative_control_plans_are_fail_closed():
 def test_builder_creates_shuffle_packet_with_runtime_contract(tmp_path, monkeypatch):
     monkeypatch.chdir(builder.ROOT)
     assert builder.main() == 0
+
+    if builder.BOUND_HELDOUT_MANIFEST.exists():
+        from scripts import build_v17_7_4_heldout_row_source_acquisition as acquisition
+
+        assert acquisition.PACKET_PATH.exists()
+        summary = acquisition.read_json(acquisition.ROOT / "reports" / "v17_7_4_heldout_row_source_acquisition_builder_summary.json")
+        assert summary["generalization_packet_status"] == "PASS"
+        assert summary["next_lawful_move"] == "RUN_KTV1774_REPROLOCK_GENERALIZATION_PROBE_PACKET"
+        return
 
     assert builder.SHUFFLE_PACKET_PATH.exists()
     with zipfile.ZipFile(builder.SHUFFLE_PACKET_PATH) as archive:
