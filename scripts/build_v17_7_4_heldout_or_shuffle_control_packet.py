@@ -66,10 +66,12 @@ def worktree_status_entries() -> list[str]:
 
 
 def expected_lane_worktree_entry(entry: str) -> bool:
-    path = entry[3:] if len(entry) > 3 else entry
+    parts = entry.split(maxsplit=1)
+    path = parts[1] if len(parts) == 2 else entry
     prefixes = (
         "admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
         "docs/HELDOUT_OR_SHUFFLE_CONTROL_DECISION.md",
+        "docs/V17_7_4_REPROLOCK_HELDOUT_ONE_CELL.md",
         "docs/V17_7_4_REPROLOCK_SHUFFLE_CONTROL_ONE_CELL.md",
         "packets/ktv1774_reprolock_shuffle_control_v1.zip",
         "registry/artifact_authority_registry_v17_7_4_heldout_or_shuffle_delta_receipt.json",
