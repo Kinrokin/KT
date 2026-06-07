@@ -1,0 +1,26 @@
+{
+  "$id": "kt.v17_7_4.first_pass_invariance.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "first_pass_arm": {
+      "const": "A_true_known_good_math_act_byte_repro"
+    },
+    "prompt_mutation_allowed": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.first_pass_invariance_contract.v1"
+    },
+    "verifier_model_visible": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "first_pass_arm",
+    "prompt_mutation_allowed",
+    "verifier_model_visible"
+  ],
+  "type": "object"
+}
