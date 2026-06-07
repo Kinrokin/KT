@@ -4,15 +4,12 @@
   "candidates": [
     {
       "adapter_training_authorized": false,
-      "bindable": false,
+      "bindable": true,
       "claim_ceiling_preserved": true,
       "commercial_claim": false,
-      "defects": [
-        "missing_candidate",
-        "no_rows"
-      ],
-      "exists": false,
-      "expected_answer_hash_count": 0,
+      "defects": [],
+      "exists": true,
+      "expected_answer_hash_count": 50,
       "external_validation_claim": false,
       "frontier_claim": false,
       "g2_recovered_claim": false,
@@ -22,18 +19,18 @@
       "policy_optimization_authorized": false,
       "production_readiness_claim": false,
       "promotion_authority": false,
-      "question_hash_count": 0,
+      "question_hash_count": 50,
       "question_hash_overlap_count": 0,
-      "question_text_count": 0,
+      "question_text_count": 50,
       "router_superiority_claim": false,
       "router_training_authorized": false,
-      "row_count": 0,
+      "row_count": 50,
       "row_id_overlap_count": 0,
       "runtime_authority": false,
       "s_tier_claim": false,
       "schema_id": "kt.v17_7_4.generalization_row_source_candidate.v1",
       "seven_b_claim": false,
-      "source_tier": "NOT_BOUND",
+      "source_tier": "TRUE_HELDOUT_50",
       "v18_runtime_authority": false
     },
     {
@@ -194,6 +191,6 @@
   "s_tier_claim": false,
   "schema_id": "kt.v17_7_4.generalization_row_source_search_receipt.v1",
   "seven_b_claim": false,
-  "status": "NOT_BOUND_WITH_SEARCH_RECEIPT",
+  "status": "BOUND",
   "v18_runtime_authority": false
 }

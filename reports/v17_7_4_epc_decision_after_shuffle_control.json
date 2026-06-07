@@ -1,9 +1,7 @@
 {
   "adapter_training_authorized": false,
   "authority_risk": "LOW_IF_NO_PACKET_GENERATED_WITHOUT_SOURCE",
-  "blockers": [
-    "GENERALIZATION_ROW_SOURCE_NOT_BOUND"
-  ],
+  "blockers": [],
   "claim_ceiling_preserved": true,
   "commercial_claim": false,
   "compute_cost": "ZERO_UNTIL_SOURCE_BOUND",
@@ -19,8 +17,8 @@
   "policy_optimization_authorized": false,
   "production_readiness_claim": false,
   "promotion_authority": false,
-  "reason": "Shuffle stability is bound; lawful generalization row source is not bound.",
-  "recommended_next_lane": "ACQUIRE_HELDOUT_ROW_SOURCE",
+  "reason": "Generalization source bound.",
+  "recommended_next_lane": "RUN_REPROLOCK_GENERALIZATION_PROBE_50",
   "router_superiority_claim": false,
   "router_training_authorized": false,
   "runtime_authority": false,
