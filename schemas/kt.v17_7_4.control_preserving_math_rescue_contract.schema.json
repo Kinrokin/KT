@@ -1,0 +1,35 @@
+{
+  "$id": "kt.v17_7_4.control_preserving_math_rescue_contract.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "expected_answer_visible_to_runtime": {
+      "const": false
+    },
+    "first_pass_arm": {
+      "const": "A_true_known_good_math_act_byte_repro"
+    },
+    "first_pass_mutation_allowed": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.control_preserving_math_rescue_contract.v1"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "first_pass_arm",
+    "first_pass_mutation_allowed",
+    "expected_answer_visible_to_runtime",
+    "rescue_policy",
+    "runtime_authority"
+  ],
+  "type": "object"
+}

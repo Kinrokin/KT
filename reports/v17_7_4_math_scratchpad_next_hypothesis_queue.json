@@ -1,0 +1,38 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "queue": [
+    {
+      "lane": "CONTROL_PRESERVING_MATH_VERIFIER_RESCUE",
+      "rank": 1,
+      "why": "Adds a verifier/rescue sidecar after the known-good answer instead of replacing the known-good route."
+    },
+    {
+      "lane": "ROW_LEVEL_CONTROL_WRONG_AUTOPSY",
+      "rank": 2,
+      "why": "Autopsy the 12 control misses without touching control-correct rows."
+    },
+    {
+      "lane": "SCORER_DISAGREEMENT_AUDIT",
+      "rank": 3,
+      "why": "Separate parser/scorer blindness from true generation failure."
+    }
+  ],
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.math_scratchpad_next_hypothesis_queue.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

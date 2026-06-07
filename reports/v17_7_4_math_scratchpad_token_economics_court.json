@@ -1,0 +1,113 @@
+{
+  "adapter_training_authorized": false,
+  "by_arm": {
+    "A2_math_act_full_reasoning": {
+      "accuracy": 0.12,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 3,
+      "full_tokens": 3402,
+      "full_tokens_per_correct": 1134.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 725,
+      "reasoning_tokens_per_correct": 241.666667,
+      "total": 25,
+      "verified_work_per_full_token": 0.000881834,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 8.333333
+    },
+    "A3_math_act_reasoning_preserving_compact": {
+      "accuracy": 0.08,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 2,
+      "full_tokens": 4326,
+      "full_tokens_per_correct": 2163.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 1599,
+      "reasoning_tokens_per_correct": 799.5,
+      "total": 25,
+      "verified_work_per_full_token": 0.000462321,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 12.5
+    },
+    "A4_formal_math_reasoning_preserving_compact": {
+      "accuracy": 0.2,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 5,
+      "full_tokens": 4790,
+      "full_tokens_per_correct": 958.0,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 2138,
+      "reasoning_tokens_per_correct": 427.6,
+      "total": 25,
+      "verified_work_per_full_token": 0.001043841,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 5.0
+    },
+    "A_true_known_good_math_act_byte_repro": {
+      "accuracy": 0.52,
+      "adapter_statuses": [
+        "ADAPTER_LOADED"
+      ],
+      "correct": 13,
+      "full_tokens": 2807,
+      "full_tokens_per_correct": 215.923077,
+      "measurement_statuses": [
+        "MODEL_GENERATED_AND_SCORED"
+      ],
+      "model_repos": [
+        "Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "reasoning_tokens": 855,
+      "reasoning_tokens_per_correct": 65.769231,
+      "total": 25,
+      "verified_work_per_full_token": 0.004631279,
+      "visible_tokens": 25,
+      "visible_tokens_per_correct": 1.923077
+    }
+  },
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "full_tpc_regression_vs_control": {
+    "A2_math_act_full_reasoning": 918.076923,
+    "A3_math_act_reasoning_preserving_compact": 1947.076923,
+    "A4_formal_math_reasoning_preserving_compact": 742.076923
+  },
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.math_scratchpad_token_economics_court.v1",
+  "scratchpad_tokens_count_in_full_tpc": true,
+  "seven_b_claim": false,
+  "status": "PASS_NEGATIVE_TOKEN_ECONOMICS",
+  "v18_runtime_authority": false
+}

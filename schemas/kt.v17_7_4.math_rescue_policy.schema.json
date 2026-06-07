@@ -1,0 +1,28 @@
+{
+  "$id": "kt.v17_7_4.math_rescue_policy.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "first_pass_preserved": {
+      "const": true
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.math_rescue_policy.v1"
+    },
+    "training_authorized": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "policy_name",
+    "first_pass_preserved",
+    "rescue_allowed_only_after_abstain_or_fail",
+    "training_authorized",
+    "promotion_authority"
+  ],
+  "type": "object"
+}
