@@ -1,0 +1,55 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "heldout_search_status": "NOT_BOUND_WITH_SEARCH_RECEIPT",
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.heldout_or_shuffle_source_index.v1",
+  "selected_branch": "SHUFFLE_CONTROL_PACKET",
+  "seven_b_claim": false,
+  "sources": [
+    {
+      "path": "reports/v17_7_4_epc_review_after_offline_extraction_builder_summary.json",
+      "role": "EPC review source",
+      "sha256": "f03573ea25bcbd38b0e585ff927289e0acaf8e1336e188f768a762c44d68fdf9",
+      "size_bytes": 2373
+    },
+    {
+      "path": "reports/v17_7_4_final_answer_contract_v2_quarantine_receipt.json",
+      "role": "extraction quarantine source",
+      "sha256": "83cc4fd6c78c93f8c46c7fee37260dc67578088bed2d4046e6393ad61cac0b31",
+      "size_bytes": 1014
+    },
+    {
+      "path": "admission/v17_7_4_realbench_row_manifest.json",
+      "role": "existing 50-row control source",
+      "sha256": "c4472eadea9ce39572b3ab13b60da931800837b03a52ddc75514c7bc9904f289",
+      "size_bytes": 110999
+    },
+    {
+      "path": "admission/v17_7_4_prior_realbench_math_act_prompt_manifest.jsonl",
+      "role": "prior prompt hash manifest",
+      "sha256": "dcafe70f43cc29ecdd60ab487302148a5b5be551d416dbcb0869114df20c27ad",
+      "size_bytes": 45075
+    },
+    {
+      "path": "configs/v17_7_4/arm_model_config.json",
+      "role": "real arm config source",
+      "sha256": "665834a38e6023d76624e4fac268887df60b1d5e8aa5c2b9af8350ee6360d7c9",
+      "size_bytes": 6548
+    }
+  ],
+  "status": "PASS",
+  "v18_runtime_authority": false
+}

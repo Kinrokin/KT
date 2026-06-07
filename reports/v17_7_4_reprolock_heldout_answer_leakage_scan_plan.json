@@ -1,0 +1,39 @@
+{
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "expected_answer_hash_bound": true,
+  "expected_answer_model_visible": false,
+  "external_validation_claim": false,
+  "fail_closed_if_forbidden_field_rendered": true,
+  "forbidden_model_visible_fields": [
+    "expected_answer",
+    "expected_answer_hash",
+    "gold_answer",
+    "gold_label",
+    "oracle_answer"
+  ],
+  "forbidden_prompt_fields": [
+    "expected_answer",
+    "expected_answer_hash",
+    "gold_label",
+    "oracle_answer"
+  ],
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "model_input_excludes_expected_answer": true,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "scan_required_at_runtime": true,
+  "schema_id": "kt.v17_7_4.reprolock_heldout_answer_leakage_scan_plan.v1",
+  "seven_b_claim": false,
+  "status": "PASS_PLAN_RUNTIME_REQUIRED",
+  "v18_runtime_authority": false
+}

@@ -1,0 +1,42 @@
+{
+  "adapter_training_authorized": false,
+  "claim_boundary": "No shuffle-control result may be described as held-out generalization.",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "conclusion": "HELDOUT_GENERALIZATION_NOT_PROVEN",
+  "evidence_against_spurious_correlation": [],
+  "evidence_for_spurious_correlation": [],
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "risks_checked": [
+    "dataset-order/shuffle-position artifacts",
+    "prompt-identity drift",
+    "answer leakage",
+    "negative-control false pass",
+    "tokenized input identity drift"
+  ],
+  "route_superiority_claim": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.spurious_structural_correlation_receipt.v1",
+  "seven_b_claim": false,
+  "status": "PASS_PLAN_RUNTIME_REQUIRED",
+  "tested_factors": [
+    "row_order",
+    "prompt_identity",
+    "answer_leakage",
+    "negative_controls",
+    "label_swap",
+    "tokenized_input_identity",
+    "output_stability"
+  ],
+  "v18_runtime_authority": false
+}

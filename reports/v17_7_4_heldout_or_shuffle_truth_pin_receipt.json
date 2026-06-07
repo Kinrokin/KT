@@ -1,0 +1,66 @@
+{
+  "adapter_training_authorized": false,
+  "artifact_authority_registry": "registry/artifact_authority_registry.json",
+  "branch": "codex/kt-heldout-or-shuffle-control",
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "current_claim_ceiling_files": [
+    "rules/CLAIM_CEILING.md",
+    "governance/current_claim_ceiling.json"
+  ],
+  "current_head": "b140c9b3864fdb20fbbd923cfb01c6a76c451383",
+  "epc_review_source": "reports/v17_7_4_epc_review_after_offline_extraction_builder_summary.json",
+  "existing_50_row_control_source": "admission/v17_7_4_realbench_row_manifest.json",
+  "external_validation_claim": false,
+  "extraction_quarantine_source": "reports/v17_7_4_final_answer_contract_v2_quarantine_receipt.json",
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "heldout_row_source_candidates": [
+    "admission/v17_7_4_reprolock_heldout_row_manifest.json",
+    "admission/v17_7_4_truegen_row_manifest.json",
+    "admission/v17_7_4_realbench_row_manifest.json",
+    "admission/v17_7_3_targeted_boundary_row_manifest.json",
+    "admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
+    "admission/v17_7_4_prior_realbench_math_act_prompt_manifest.jsonl"
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "next_lawful_move_before_patch": "BIND_HELDOUT_REPROLOCK_ROW_SOURCE_OR_AUTHOR_ROW_ORDER_SHUFFLE_CONTROL_PACKET",
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.heldout_or_shuffle_truth_pin_receipt.v1",
+  "seven_b_claim": false,
+  "stable_reprolock_control_source": "admission/v17_7_4_realbench_row_manifest.json",
+  "stale_superseded_artifacts_excluded": [
+    "final-answer extraction v2 global runtime",
+    "shuffle-control as held-out generalization"
+  ],
+  "status": "PASS",
+  "unexpected_worktree_entries": [
+    "?? docs/V17_7_4_REPROLOCK_HELDOUT_ONE_CELL.md"
+  ],
+  "v18_runtime_authority": false,
+  "worktree_clean": false,
+  "worktree_contains_expected_lane_files_only": false,
+  "worktree_status_entries": [
+    "?? admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
+    "?? docs/HELDOUT_OR_SHUFFLE_CONTROL_DECISION.md",
+    "?? docs/V17_7_4_REPROLOCK_HELDOUT_ONE_CELL.md",
+    "?? docs/V17_7_4_REPROLOCK_SHUFFLE_CONTROL_ONE_CELL.md",
+    "?? packets/ktv1774_reprolock_shuffle_control_v1.zip",
+    "?? registry/artifact_authority_registry_v17_7_4_heldout_or_shuffle_delta_receipt.json",
+    "?? rules/SHUFFLE_CONTROL_IS_NOT_HELDOUT_GENERALIZATION.md",
+    "?? schemas/kt.v17_7_4.heldout_or_shuffle_branch_decision.schema.json",
+    "?? schemas/kt.v17_7_4.heldout_row_source_binding.schema.json",
+    "?? schemas/kt.v17_7_4.reprolock_adversarial_telemetry.schema.json",
+    "?? schemas/kt.v17_7_4.reprolock_shuffle_control_packet.schema.json",
+    "?? scripts/build_v17_7_4_heldout_or_shuffle_control_packet.py",
+    "?? tests/test_v17_7_4_heldout_or_shuffle_control.py",
+    "?? tests/test_v17_7_4_shuffle_adversarial_telemetry.py"
+  ]
+}
