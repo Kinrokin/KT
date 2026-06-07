@@ -109,8 +109,15 @@ def test_microfurnace_packet_is_gsm8k_only_and_contains_required_runtime_contrac
         assert "KT_V1774_TRUEGEN_ARM_CORE.py" in names
         assert "runtime_inputs/truegen_row_manifest.json" in names
         assert "runtime_inputs/arm_model_config.json" in names
+        runner_source = archive.read("KTV1774_MATH_SCRATCHPAD_MICROFURNACE_RUNNER.py").decode("utf-8")
         config = json.loads(archive.read("runtime_inputs/arm_model_config.json"))
         packet_manifest = json.loads(archive.read("runtime_inputs/truegen_row_manifest.json"))
+    for expected_alias in [
+        "mathscratchpadtelemetry.json",
+        "microfurnacescorecard.json",
+        "opesupport_update.json",
+    ]:
+        assert expected_alias in runner_source
     assert config["compact_answer_contract"] is True
     assert config["reasoning_preserving_compact"] is True
     assert config["kt_hat_contamination_allowed"] is False
@@ -120,4 +127,3 @@ def test_microfurnace_packet_is_gsm8k_only_and_contains_required_runtime_contrac
     assert config["no_v18"] is True
     assert [arm["scratchpad_budget_tokens"] for arm in config["arms"]] == [0, 64, 96, 128]
     assert packet_manifest["dataset_mix"] == {"gsm8k": 25}
-

@@ -4,7 +4,7 @@ Packet: `packets/ktv1774_math_scratchpad_microfurnace_v1.zip`
 
 Kaggle dataset name: `ktv1774-math-scratchpad-microfurnace-v1`
 
-SHA256: `4bdf764b1a479b41d92de85edef8eb884e4e82713b0fed513315fcd818e130c0`
+SHA256: `b12315d98149ac456a33b67ebe1be2578761a10420d82329a9808a4424cfbb7d`
 
 This is a 25-row GSM8K-only scratchpad evidence run. It preserves claim ceiling and does not train, promote, authorize V18, change routes, add KT-hat, or claim router/G2/commercial authority.
 
