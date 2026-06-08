@@ -1,0 +1,36 @@
+{
+  "$id": "kt.v17_7_4.math_pretraining_hypothesis_court.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "adapter_mutation_authority": {
+      "const": false
+    },
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "promotion_authority": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "training_authority",
+    "runtime_authority",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

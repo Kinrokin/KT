@@ -1,0 +1,74 @@
+{
+  "academy_repair_success_claim": false,
+  "academy_run_authorized": false,
+  "adapter_mutation_authority": false,
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "corpus_repair_success_claim": false,
+  "dataset_packet_generated": false,
+  "external_validation_claim": false,
+  "formal_math_superiority_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "gsm8k_recovery_claim": false,
+  "hf_upload_authorized": false,
+  "hypotheses": [
+    {
+      "id": "H0_OFFICIAL_BASELINE",
+      "official_correct": 28,
+      "official_score": "28/100",
+      "official_total": 100,
+      "score_revision_authorized": false,
+      "scorer_replay": "PASS_REPRODUCED",
+      "status": "BOUND"
+    },
+    {
+      "id": "H1_PROMPT_FORMAT_SUPPRESSION",
+      "next": "design prompt-format probe only",
+      "rationale": "KT math prompt/output contract may suppress base capability.",
+      "status": "UNTESTED_OR_PARTIAL"
+    },
+    {
+      "id": "H2_PARSER_SCORING_RECOVERABILITY",
+      "next": "bind subtype/recovery ceiling; block parser +22 unless score replay proves it",
+      "rationale": "Parser-format rows are already official-correct and official score remains 28/100.",
+      "status": "MOSTLY_BOUND_NOT_BOTTLENECK"
+    },
+    {
+      "id": "H3_CORPUS_TRAINING_DATA_QUALITY",
+      "next": "AUTHOR_MATH_CORPUS_SOURCE_BINDING_V1",
+      "rationale": "Training quality, coverage, leakage, deduplication, and difficulty may own the capability gap.",
+      "status": "UNTESTED"
+    },
+    {
+      "id": "H4_TRAINING_REQUIRED",
+      "rationale": "Cheap lanes failed, but H1/H2/H3 must be adjudicated first.",
+      "status": "PLAUSIBLE_DOWNSTREAM",
+      "training_authority": false
+    }
+  ],
+  "kaggle_packet_generated": false,
+  "launch_readiness_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "ninety_one_percent_full_system_recovery_claim": false,
+  "olympiad_capability_claim": false,
+  "parser_repair_success_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "prompt_fix_success_claim": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "runtime_packet_generated": false,
+  "s_tier_claim": false,
+  "safetensors_generated": false,
+  "schema_id": "kt.v17_7_4.math_pretraining_hypothesis_ledger.v1",
+  "seven_b_claim": false,
+  "status": "PASS",
+  "training_authority": false,
+  "training_packet_generated": false,
+  "v18_runtime_authority": false
+}
