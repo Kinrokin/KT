@@ -1,0 +1,1028 @@
+{
+  "academy_repair_success_claim": false,
+  "academy_run_authorized": false,
+  "adapter_mutation_authority": false,
+  "adapter_training_authorized": false,
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "corpus_quality_claim": false,
+  "dataset_packet_generated": false,
+  "dataset_readiness_claim": false,
+  "expected_answer_candidate_count": 164,
+  "expected_answer_values_model_visible_allowed": false,
+  "external_validation_claim": false,
+  "formal_math_superiority_claim": false,
+  "frontier_claim": false,
+  "future_overlap_hash_check_required": true,
+  "g2_recovered_claim": false,
+  "gsm8k_recovery_claim": false,
+  "hf_upload_authorized": false,
+  "kaggle_packet_generated": false,
+  "launch_readiness_claim": false,
+  "leakage_risk_candidates": [
+    {
+      "candidate_id": "math_source::4175",
+      "likely_train_or_eval": "EVAL",
+      "path": "KT_PROD_CLEANROOM/tools/operator/g31_causal_repair_superlane_v1.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4176",
+      "likely_train_or_eval": "EVAL",
+      "path": "KT_PROD_CLEANROOM/tools/operator/g3_academy_pressure_repair_v1.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4384",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/math_act_feature_router_policy.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4395",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "admission/route_value_feature_registry.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4396",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/route_value_feature_registry_v2.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4398",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/sddr_policy_config.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4400",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "admission/shadow_route_policy_spec.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4408",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v16_route_value_feature_provenance.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4409",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v16_shadow_route_policy.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4422",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_5_multirescuer_canary_policy_config.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4427",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_6_oracle_autopsy_patched_policy.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4429",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_6_runtime_feature_registry.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4438",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_3_targeted_boundary_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4439",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_control_only_gsm8k_extension_math_act_prompt_manifest.jsonl",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4440",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_control_only_gsm8k_extension_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4441",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_math_scratchpad_microfurnace_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4442",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_prior_realbench_math_act_prompt_manifest.jsonl",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4443",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_realbench_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4444",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_reprolock_heldout_math_act_prompt_manifest.jsonl",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4445",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_reprolock_heldout_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4446",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_reprolock_shuffle_control_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4447",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_4_truegen_row_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4448",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_7_best_oats_sddr_policy.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4452",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_route_value_feature_contract.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4453",
+      "likely_train_or_eval": "EVAL",
+      "path": "admission/v17_runtime_feature_contract.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4460",
+      "likely_train_or_eval": "EVAL",
+      "path": "configs/v17_7_4/compact_answer_contract.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4463",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "data/g31_hat_calibration_corpus.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4464",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "data/g31_math_repair_corpus.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4500",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "packets/ktg31_v1/KTG31_V1_CAUSAL_REPAIR_RUNNER.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4505",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "packets/ktg31_v1/g31_hat_calibration_corpus.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4509",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "packets/ktg31_v1/g31_math_repair_corpus.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4511",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "packets/ktg31_v1/g31_per_sample_causal_trace.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4523",
+      "likely_train_or_eval": "EVAL",
+      "path": "packets/ktg3_run_v1/HUMAN_ANCHOR_MANIFEST.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4566",
+      "likely_train_or_eval": "EVAL",
+      "path": "registry/artifact_authority_registry_v17_7_4_answer_surface_failure_review_delta_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4576",
+      "likely_train_or_eval": "EVAL",
+      "path": "registry/artifact_authority_registry_v17_7_4_gsm8k_deterministic_rescue_v4_delta_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4579",
+      "likely_train_or_eval": "EVAL",
+      "path": "registry/artifact_authority_registry_v17_7_4_heldout_row_source_acquisition_delta_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4623",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/g31_per_sample_causal_trace.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4649",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/human_anchor_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4680",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/sddr_policy_compilation_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4703",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v14_dataset_label_blind_routing_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4704",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v14_math_act_feature_router_spec.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4741",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_6_no_oracle_leakage_policy_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4793",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/v17_7_3_perturbation_suite_manifest.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4805",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_alternative_surface_replay_matrix.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4810",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_answer_surface_audit_builder_summary.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4813",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_answer_surface_audit_damage_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4814",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_answer_surface_audit_failure_review_builder_summary.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4819",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_answer_surface_provenance_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4821",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/v17_7_4_authored_row_answer_key_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4835",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_control_math_rescue_offline_simulation.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4838",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_control_math_rescue_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4850",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_control_math_rescue_v3_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4857",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_control_only_gsm8k_extension_row_source_binding.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4858",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_control_only_gsm8k_extension_row_source_search.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4870",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_control_only_gsm8k_row_level_autopsy.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4878",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_control_preserving_math_rescue_contract.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4930",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_extraction_harm_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4932",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_extraction_safe_subset_candidate.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4934",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_final_answer_contract_v2_quarantine_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4935",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_final_answer_contract_v2_runtime_eligibility_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4936",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_final_answer_contract_v2_subset_policy_candidate.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4937",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_final_answer_extraction_contract_v2.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4941",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_first_pass_invariance_contract.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4952",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_g2_offline_extraction_replay_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4954",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/v17_7_4_g2_offline_extraction_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4959",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_g2_offline_replay_input_manifest.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4986",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_generalization_row_source_search_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4988",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_generalization_wrong_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::4990",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_academy_repairability_plan_no_training.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5005",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_correct_row_autopsy.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5008",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_gsm8k_deterministic_rescue_builder_summary.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5009",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_deterministic_rescue_candidate_rows.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5022",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_deterministic_rescue_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5024",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_deterministic_rescue_rule_admission_court.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5054",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_rescue_candidate_source_freeze.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5055",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_rescue_expected_answer_isolation_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5057",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_row_difficulty_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5064",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_wrong_row_autopsy.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5065",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_gsm8k_wrong_row_failure_topology.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5073",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_row_answer_key_authority_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5077",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_row_binding_court.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5084",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_row_source_binding_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5085",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_row_source_candidate_index.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5089",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_row_source_search_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5092",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_heldout_source_acquisition_truth_pin_receipt.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5101",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_math_corpus_quality_audit_schema.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5114",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_math_prompt_format_probe_design_only.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5121",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_math_rescue_v3_honest_design.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5142",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_math_scratchpad_row_level_autopsy.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5153",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_math_verifier_sidecar_design.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5155",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_math_verifier_v3_honest_design.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5165",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_official_scorer_replay_matrix.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5168",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_offline_final_answer_extraction_replay.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5178",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_audit_expected_answer_hash_only_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5179",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_audit_expected_answer_leakage_review.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5184",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_parser_canonicalizer_design.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5187",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_canonicalizer_negative_controls.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5189",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_canonicalizer_noop_baseline_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5191",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_canonicalizer_row_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5193",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_canonicalizer_rule_quarantine_manifest.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5196",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_expected_answer_leakage_diff.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5201",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_failure_subtype_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5205",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_scorer_repair_authority_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5206",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_parser_subtype_reconciliation_matrix.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5230",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_answer_leakage_negative_control_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5233",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_control_integrity_decision.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5235",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_generalization_answer_leakage_scan_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5238",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_generalization_negative_control_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5240",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_generalization_probe_packet_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5242",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_heldout_answer_leakage_scan_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5243",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_reprolock_heldout_generalization_design.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5245",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_heldout_negative_control_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5251",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_oracle_offline_extraction_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5256",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_reprolock_oracle_raw_output_manifest.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5261",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_shuffle_answer_leakage_scan_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5262",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_shuffle_control_packet_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5263",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reprolock_shuffle_negative_control_plan.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5270",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_reviewer_blindness_guard_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5272",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/v17_7_4_route_margin_scorecard.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5279",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scorer_disagreement_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5280",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_authority_audit.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5281",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_authority_matrix.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5283",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_contradiction_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5284",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_extraction_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5286",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_reconciliation_contradiction_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5291",
+      "likely_train_or_eval": "EVAL",
+      "path": "reports/v17_7_4_scoring_surface_reconciliation_truth_pin.json",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5292",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "reports/v17_7_4_scoring_surface_replay_table.jsonl",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5323",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "reports/v17_7_4_visible_answer_scoring_receipt.json",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5356",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_math_act_feature_router_spec.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5376",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v16_oracle_leakage_adversarial.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5388",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_3_arm_matrix_completeness.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5389",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_3_authority_split.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5390",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_3_eig_manifest.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5392",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_3_lean_packaging_measured_only.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5395",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_3_predictions_recomputed_from_measured_arms.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5398",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_answer_surface_audit_failure_review.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5399",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_answer_surface_audit_gate.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5400",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_compact_path_restoration.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5402",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "tests/test_v17_7_4_control_math_rescue.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5404",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_dual_frontier_repair.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5405",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_dualfront_router_substrate.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5406",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "tests/test_v17_7_4_epc_review_heldout.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5408",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_final_answer_extraction_contract_v2.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5409",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_final_answer_surface.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5411",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "tests/test_v17_7_4_g2_offline_replay_frontier.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5414",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "tests/test_v17_7_4_gsm8k_capability_gap_autopsy.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5415",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_gsm8k_deterministic_rescue_v4.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5417",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_heldout_or_shuffle_control.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5418",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_heldout_row_source_acquisition.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5420",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_lean_packaging.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5426",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_parser_canonicalizer_noop_preserves_control.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5428",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_parser_expected_answer_not_runtime_visible.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5430",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_realbench_row_authority_and_prompt_integrity.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5431",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_replay_correlation.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5432",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_reprolock.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5433",
+      "likely_train_or_eval": "BOTH_UNSAFE",
+      "path": "tests/test_v17_7_4_reprolock_oracle_offline_extraction.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5435",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_scorecards_from_truegen_rows.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5436",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_scoring_surface_authority_consistency.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5437",
+      "likely_train_or_eval": "UNKNOWN",
+      "path": "tests/test_v17_7_4_scoring_surface_reconciliation_replay.py",
+      "use_authority": "AUDIT_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5438",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_shuffle_control_review_generalization.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5440",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_truegen_row_manifest.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5442",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_v3_offline_simulation_and_claims.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5443",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_v3_rescue_fullmatch_only.py",
+      "use_authority": "EVAL_ONLY"
+    },
+    {
+      "candidate_id": "math_source::5444",
+      "likely_train_or_eval": "EVAL",
+      "path": "tests/test_v17_7_4_v3_sidecar_no_upstream_imports.py",
+      "use_authority": "EVAL_ONLY"
+    }
+  ],
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "ninety_one_percent_full_system_recovery_claim": false,
+  "olympiad_capability_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "runtime_packet_generated": false,
+  "s_tier_claim": false,
+  "safetensors_generated": false,
+  "schema_id": "kt.v17_7_4.math_corpus_leakage_precheck.v1",
+  "seven_b_claim": false,
+  "status": "PASS_PRECHECK_ONLY",
+  "training_authority": false,
+  "training_packet_generated": false,
+  "training_readiness_claim": false,
+  "v18_runtime_authority": false
+}

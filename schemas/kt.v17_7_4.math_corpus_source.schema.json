@@ -1,0 +1,37 @@
+{
+  "$id": "kt.v17_7_4.math_corpus_source.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "binding_status": {
+      "type": "string"
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "math_relevance": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string"
+    },
+    "source_role": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "candidate_id",
+    "path",
+    "sha256",
+    "source_role",
+    "math_relevance",
+    "binding_status"
+  ],
+  "type": "object"
+}
