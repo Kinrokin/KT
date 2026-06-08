@@ -249,12 +249,12 @@ def source_action_for(rows: list[dict[str, Any]], license_row: dict[str, Any], c
     row_count = len(rows)
     contaminated_ratio = ratio(contaminated, row_count)
     license_status = license_row.get("license_status", "UNKNOWN_LICENSE")
-    if contaminated_ratio >= 0.5:
+    if row_count == 0:
+        action = "EXCLUDE_NO_BOUND_ROWS"
+    elif contaminated_ratio >= 0.5:
         action = "QUARANTINE_AS_DOCTRINE_OR_GOVERNANCE_SOURCE"
     elif license_status == "UNKNOWN_LICENSE":
         action = "REQUIRE_LICENSE_AND_SOURCE_REPAIR_BEFORE_ANY_DATASET_USE"
-    elif row_count == 0:
-        action = "EXCLUDE_NO_BOUND_ROWS"
     else:
         action = "REVIEW_ONLY_UNTIL_CLEAN_BLUEPRINT_EXISTS"
     return authority(
@@ -440,15 +440,16 @@ def build() -> dict[str, Any]:
             )
         )
 
+    all_source_ids = sorted(set(source_rows) | set(license_by_source))
     source_actions = [
-        source_action_for(rows, license_by_source.get(source_id, {}), source_contamination[source_id])
-        for source_id, rows in sorted(source_rows.items())
+        source_action_for(source_rows.get(source_id, []), license_by_source.get(source_id, {}), source_contamination[source_id])
+        for source_id in all_source_ids
     ]
     whitelist = sorted(source_id for source_id, count in source_quality_counts.items() if count >= 5)
     blacklist = sorted(
         source_id
         for source_id, rows in source_rows.items()
-        if source_contamination[source_id] >= max(1, len(rows) // 2)
+        if rows and source_contamination[source_id] * 2 >= len(rows)
     )
 
     high_leakage_count = int(leakage.get("high_leakage_record_count", 0))
@@ -501,13 +502,15 @@ def build() -> dict[str, Any]:
         "tests/test_v17_7_4_reverse_heal_math_sanitization_v2.py",
     ]
 
+    predecessor_artifact_head = quality_summary.get("current_head") or PREDECESSOR_HEAD
     common_context = {
         "active_tranche": TRANCHE,
         "outcome": OUTCOME,
         "current_head": current_head,
         "current_branch": current_branch,
         "predecessor_tranche": PREDECESSOR_TRANCHE,
-        "predecessor_quality_audit_head": PREDECESSOR_HEAD,
+        "predecessor_quality_audit_head": predecessor_artifact_head,
+        "predecessor_quality_audit_merged_main_head": PREDECESSOR_HEAD,
         "superseded_lane": SUPERSEDED_LANE,
         "selected_next_lane": selected_decision,
         "claim_ceiling_status": "PRESERVED",
@@ -719,7 +722,9 @@ def build() -> dict[str, Any]:
         "reports/v17_7_4_math_corpus_source_disposition_matrix.json": authority(
             schema_id="kt.v17_7_4.math_corpus_source_disposition_matrix.v2",
             status="PASS",
-            source_count=len(source_rows),
+            source_count=len(source_actions),
+            parsed_source_with_rows_count=len(source_rows),
+            zero_row_source_count=sum(1 for action in source_actions if action["row_count"] == 0),
             whitelist_candidate_count=len(whitelist),
             blacklist_count=len(blacklist),
             action_counts=dict(Counter(row["action"] for row in source_actions)),

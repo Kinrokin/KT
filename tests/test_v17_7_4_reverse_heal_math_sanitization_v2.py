@@ -197,6 +197,8 @@ def test_contamination_density_source_and_license_surfaces_are_measured() -> Non
     assert density_rows
     assert all("capability_density_score" in row for row in density_rows[:100])
     assert source_matrix["source_count"] == len(source_actions)
+    assert source_matrix["zero_row_source_count"] > 0
+    assert any(row["action"] == "EXCLUDE_NO_BOUND_ROWS" for row in source_actions)
     assert source_matrix["blacklist_count"] > 0
     assert license_plan["unknown_license_source_count"] > 0
     assert license_plan["historical_corpus_not_used_until_license_resolved"] is True
