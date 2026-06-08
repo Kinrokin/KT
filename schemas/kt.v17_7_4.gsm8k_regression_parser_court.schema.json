@@ -1,0 +1,22 @@
+{
+  "$id": "https://kt.local/schemas/kt.v17_7_4.gsm8k_regression_parser_court.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {
+      "const": true
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "claim_ceiling_preserved"
+  ],
+  "title": "kt.v17_7_4.gsm8k_regression_parser_court",
+  "type": "object"
+}
