@@ -1,0 +1,42 @@
+{
+  "$id": "kt.v17_7_4.math_corpus_quality_record.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "format_alignment": {
+      "type": "string"
+    },
+    "leakage_risk": {
+      "type": "string"
+    },
+    "math_lane": {
+      "type": "string"
+    },
+    "record_id_hash": {
+      "type": "string"
+    },
+    "record_role": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.math_corpus_quality_record.v1"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "source_id",
+    "record_id_hash",
+    "record_role",
+    "math_lane",
+    "leakage_risk",
+    "format_alignment",
+    "training_authority"
+  ],
+  "type": "object"
+}
