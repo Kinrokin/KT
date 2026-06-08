@@ -1,0 +1,42 @@
+{
+  "adapter_training_authorized": false,
+  "allowed_candidate_sources": [
+    "MODEL_OUTPUT_EXPLICIT_ARITHMETIC_LINE",
+    "MODEL_OUTPUT_EXPLICIT_FINAL_ASSIGNMENT_AUDIT_ONLY",
+    "PROBLEM_TEXT_FULLMATCH_TRIVIAL_ARITHMETIC",
+    "MODEL_OUTPUT_EQUATION_CONSISTENCY_CHECK_EXPLICIT_EQUATION_ONLY"
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "deterministic_rescue_runtime_success_claim": false,
+  "external_validation_claim": false,
+  "forbidden_candidate_sources": [
+    "natural_language_word_problem_parsing",
+    "entity_extraction",
+    "coreference_resolution",
+    "sympy_parse_expr_over_problem_text",
+    "llm_verification",
+    "scratchpad_rescue",
+    "oracle_candidate_selection",
+    "arbitrary_set_of_numbers_arithmetic_search"
+  ],
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "gsm8k_recovery_claim": false,
+  "learned_router_superiority_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "parser_repair_success_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.gsm8k_rescue_rule_freeze_receipt.v1",
+  "scratchpad_authority": false,
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false,
+  "v3_rescue_authority": false
+}
