@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "max_new_tokens_config": {
+      "type": "integer"
+    },
+    "official_correct": {
+      "type": "boolean"
+    },
+    "raw_output_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_output_text_committed": {
+      "const": false
+    },
+    "runtime_authority": {
+      "const": false
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.gsm8k_maxtoken_output_length_row.v1"
+    },
+    "suspected_truncation_proxy": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "official_correct",
+    "raw_output_hash",
+    "raw_output_text_committed",
+    "max_new_tokens_config",
+    "suspected_truncation_proxy",
+    "runtime_authority"
+  ],
+  "type": "object"
+}

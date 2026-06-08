@@ -1,0 +1,144 @@
+{
+  "adapter_training_authorized": false,
+  "answer_format_drift": {
+    "False": {
+      "correct_count": 6,
+      "row_count": 8,
+      "wrong_count": 2,
+      "wrong_rate": 0.25
+    },
+    "True": {
+      "correct_count": 22,
+      "row_count": 92,
+      "wrong_count": 70,
+      "wrong_rate": 0.76087
+    }
+  },
+  "by_generation_budget_bucket": {
+    "000_050": {
+      "correct_count": 3,
+      "row_count": 14,
+      "wrong_count": 11,
+      "wrong_rate": 0.785714
+    },
+    "051_080": {
+      "correct_count": 22,
+      "row_count": 69,
+      "wrong_count": 47,
+      "wrong_rate": 0.681159
+    },
+    "081_099": {
+      "correct_count": 3,
+      "row_count": 16,
+      "wrong_count": 13,
+      "wrong_rate": 0.8125
+    },
+    "100_plus": {
+      "correct_count": 0,
+      "row_count": 1,
+      "wrong_count": 1,
+      "wrong_rate": 1.0
+    }
+  },
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "final_marker_present": {
+    "False": {
+      "correct_count": 22,
+      "row_count": 92,
+      "wrong_count": 70,
+      "wrong_rate": 0.76087
+    },
+    "True": {
+      "correct_count": 6,
+      "row_count": 8,
+      "wrong_count": 2,
+      "wrong_rate": 0.25
+    }
+  },
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "gsm8k_recovery_claim": false,
+  "learned_router_superiority_claim": false,
+  "max_token_fix_success_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "multiple_numeric_candidates": {
+    "False": {
+      "correct_count": 1,
+      "row_count": 1,
+      "wrong_count": 0,
+      "wrong_rate": 0.0
+    },
+    "True": {
+      "correct_count": 27,
+      "row_count": 99,
+      "wrong_count": 72,
+      "wrong_rate": 0.727273
+    }
+  },
+  "output_ends_with_digit": {
+    "False": {
+      "correct_count": 17,
+      "row_count": 65,
+      "wrong_count": 48,
+      "wrong_rate": 0.738462
+    },
+    "True": {
+      "correct_count": 11,
+      "row_count": 35,
+      "wrong_count": 24,
+      "wrong_rate": 0.685714
+    }
+  },
+  "output_starts_with_numeric_surface": {
+    "False": {
+      "correct_count": 2,
+      "row_count": 3,
+      "wrong_count": 1,
+      "wrong_rate": 0.333333
+    },
+    "True": {
+      "correct_count": 26,
+      "row_count": 97,
+      "wrong_count": 71,
+      "wrong_rate": 0.731959
+    }
+  },
+  "parser_format_failure": {
+    "False": {
+      "correct_count": 6,
+      "row_count": 78,
+      "wrong_count": 72,
+      "wrong_rate": 0.923077
+    },
+    "True": {
+      "correct_count": 22,
+      "row_count": 22,
+      "wrong_count": 0,
+      "wrong_rate": 0.0
+    }
+  },
+  "parser_repair_success_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "raw_regex_surface_present": {
+    "True": {
+      "correct_count": 28,
+      "row_count": 100,
+      "wrong_count": 72,
+      "wrong_rate": 0.72
+    }
+  },
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.gsm8k_correctness_by_budget_bucket.v1",
+  "scratchpad_authority": false,
+  "seven_b_claim": false,
+  "status": "PASS",
+  "v18_runtime_authority": false,
+  "v3_rescue_authority": false
+}

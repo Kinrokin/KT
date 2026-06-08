@@ -1,0 +1,56 @@
+{
+  "adapter_training_authorized": false,
+  "all_extra_generation_tokens_count_in_full_tpc": true,
+  "baseline_max_new_tokens": 50,
+  "candidate_budgets": [
+    {
+      "budget_id": "A0_current_control",
+      "max_new_tokens": 50,
+      "runtime_authorized": false
+    },
+    {
+      "budget_id": "A1_current_plus_32",
+      "max_new_tokens": 82,
+      "runtime_authorized": false
+    },
+    {
+      "budget_id": "A2_current_plus_64",
+      "max_new_tokens": 114,
+      "runtime_authorized": false
+    },
+    {
+      "budget_id": "A3_current_plus_128",
+      "max_new_tokens": 178,
+      "runtime_authorized": false
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "commercial_claim": false,
+  "external_validation_claim": false,
+  "frontier_claim": false,
+  "g2_recovered_claim": false,
+  "gsm8k_recovery_claim": false,
+  "learned_router_superiority_claim": false,
+  "max_token_fix_success_claim": false,
+  "multi_lobe_superiority_claim": false,
+  "no_kt_hat": true,
+  "no_route_or_admission_change": true,
+  "no_scratchpad": true,
+  "no_training_or_promotion": true,
+  "no_v3_rescue": true,
+  "parser_repair_success_claim": false,
+  "policy_optimization_authorized": false,
+  "production_readiness_claim": false,
+  "promotion_authority": false,
+  "prompt_adapter_model_tokenizer_scorer_parser_unchanged": true,
+  "router_superiority_claim": false,
+  "router_training_authorized": false,
+  "runtime_authority": false,
+  "s_tier_claim": false,
+  "schema_id": "kt.v17_7_4.gsm8k_maxtoken_sensitivity_ladder.v1",
+  "scratchpad_authority": false,
+  "seven_b_claim": false,
+  "status": "DESIGN_ONLY",
+  "v18_runtime_authority": false,
+  "v3_rescue_authority": false
+}
