@@ -125,6 +125,7 @@ REPORTS: list[str] = [
     "reports/v17_7_4_reverse_heal_sanitization_next_lane.json",
     "reports/v17_7_4_reverse_heal_intervention_queue.json",
 ]
+CLEANROOM_CI_RECEIPT = "KT_PROD_CLEANROOM/reports/v17_7_4_reverse_heal_math_sanitization_v2_ci_trigger_receipt.json"
 
 
 def authority(**extra: Any) -> dict[str, Any]:
@@ -494,6 +495,7 @@ def build() -> dict[str, Any]:
         "schemas/kt.v17_7_4.math_row_trust_tier.schema.json",
         "schemas/kt.v17_7_4.math_corpus_row_sanitization_action.schema.json",
         *REPORTS,
+        CLEANROOM_CI_RECEIPT,
         "reports/v17_7_4_reverse_heal_math_sanitization_v2_builder_summary.json",
         "registry/artifact_authority_registry_v17_7_4_reverse_heal_math_sanitization_v2_delta_receipt.json",
         "tests/test_v17_7_4_reverse_heal_math_sanitization_v2.py",
@@ -884,6 +886,15 @@ def build() -> dict[str, Any]:
                 {"rank": 1, "lane": selected_decision, "runtime": False, "dataset_generation": False, "training": False},
                 {"rank": 2, "lane": "AUTHOR_BASE_MODEL_STANDARD_MATH_PROMPT_PROBE_DESIGN_V1", "runtime": False, "dataset_generation": False, "training": False},
             ],
+            **common_context,
+        ),
+        CLEANROOM_CI_RECEIPT: authority(
+            schema_id="kt.v17_7_4.reverse_heal_math_sanitization_v2_ci_trigger_receipt.v1",
+            status="PASS",
+            purpose="Mirror receipt under KT_PROD_CLEANROOM so required P0 ruleset contexts are emitted for this PR.",
+            no_runtime_authority=True,
+            no_dataset_generation_authority=True,
+            no_training_authority=True,
             **common_context,
         ),
     }

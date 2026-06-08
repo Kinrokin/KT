@@ -65,6 +65,7 @@ REQUIRED_REPORTS = [
     "reports/v17_7_4_epc_decision_after_reverse_heal_sanitization_v2.json",
     "reports/v17_7_4_reverse_heal_sanitization_next_lane.json",
     "reports/v17_7_4_reverse_heal_intervention_queue.json",
+    "KT_PROD_CLEANROOM/reports/v17_7_4_reverse_heal_math_sanitization_v2_ci_trigger_receipt.json",
 ]
 
 
