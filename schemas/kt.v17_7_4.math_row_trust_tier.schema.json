@@ -1,0 +1,44 @@
+{
+  "$id": "kt.v17_7_4.math_row_trust_tier.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "action": {
+      "type": "string"
+    },
+    "expected_answer_model_visible": {
+      "const": false
+    },
+    "record_id_hash": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.math_row_trust_tier.v1"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    },
+    "trust_tier": {
+      "enum": [
+        "T0_REJECT",
+        "T1_FORMAT_ONLY",
+        "T2_VERIFIED_NUMERIC",
+        "T3_STEP_VERIFIED",
+        "T4_HUMAN_VERIFIED_TRANSFER_READY"
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "source_id",
+    "record_id_hash",
+    "trust_tier",
+    "training_authority",
+    "expected_answer_model_visible",
+    "action"
+  ],
+  "type": "object"
+}
