@@ -1,0 +1,34 @@
+{
+  "$id": "kt.v17_7_4.math_corpus_row_sanitization_action.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "expected_answer_model_visible": {
+      "const": false
+    },
+    "record_id_hash": {
+      "type": "string"
+    },
+    "sanitization_action": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.math_corpus_row_sanitization_action.v1"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "source_id",
+    "record_id_hash",
+    "sanitization_action",
+    "training_authority",
+    "expected_answer_model_visible"
+  ],
+  "type": "object"
+}
