@@ -1,0 +1,31 @@
+{
+  "$id": "kt.v17_7_4.clean_slate_math_dataset_contract.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset_generation_authority": {
+      "const": false
+    },
+    "historical_corpus_training_use": {
+      "const": "ABANDONED"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.clean_slate_math_dataset_contract.v1"
+    },
+    "status": {
+      "type": "string"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "dataset_generation_authority",
+    "training_authority",
+    "historical_corpus_training_use",
+    "next_lawful_move"
+  ],
+  "type": "object"
+}

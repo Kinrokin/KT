@@ -1,0 +1,25 @@
+{
+  "$id": "kt.v17_7_4.clean_slate_dry_run_manifest.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset_generation_authority": {
+      "const": false
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.clean_slate_dry_run_manifest.v1"
+    },
+    "training_authority": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "row_count",
+    "pass",
+    "dataset_generation_authority",
+    "training_authority"
+  ],
+  "type": "object"
+}
