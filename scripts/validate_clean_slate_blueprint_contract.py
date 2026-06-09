@@ -49,6 +49,13 @@ BANNED_TERMS = [
     "oracle label",
     "safetensors",
 ]
+REQUIRED_NEGATIVE_CONTROLS = {
+    "t0_reject",
+    "doctrine_contamination",
+    "unknown_license",
+    "answer_leakage",
+    "split_collision",
+}
 
 
 def load_rows(path: Path) -> list[dict[str, Any]]:
@@ -77,6 +84,8 @@ def row_errors(row: dict[str, Any], split_hashes: dict[str, set[str]]) -> list[s
         errors.append("verification_class_not_training_candidate")
     if row.get("license") not in ALLOWED_LICENSES:
         errors.append("license_not_allowed")
+    if not row.get("source_origin") and not row.get("source_url"):
+        errors.append("source_origin_or_url_missing")
     if row.get("answer_visibility") != "LABEL_ONLY":
         errors.append("answer_not_label_only")
     if row.get("expected_answer_model_visible") is not False:
@@ -85,7 +94,8 @@ def row_errors(row: dict[str, Any], split_hashes: dict[str, set[str]]) -> list[s
         errors.append("doctrine_scan_failed")
     if row.get("train_eval_firewall_pass") is not True:
         errors.append("train_eval_firewall_failed")
-    if not isinstance(row.get("curriculum_stage"), int) or not 0 <= row.get("curriculum_stage", -1) <= 9:
+    curriculum_stage = row.get("curriculum_stage")
+    if isinstance(curriculum_stage, bool) or not isinstance(curriculum_stage, int) or not 0 <= curriculum_stage <= 9:
         errors.append("curriculum_stage_out_of_range")
     text = "\n".join(str(row.get(field, "")) for field in ("problem", "solution", "source_id", "source_origin"))
     lowered = text.lower()
@@ -101,6 +111,21 @@ def row_errors(row: dict[str, Any], split_hashes: dict[str, set[str]]) -> list[s
     if row.get("trust_tier") in {"T3_STEP_VERIFIED", "T4_HUMAN_REVIEWED"} and len(str(row.get("solution") or "").split()) < 6:
         errors.append("verified_step_row_has_sparse_solution")
     return errors
+
+
+def negative_control_categories(row: dict[str, Any], errors: list[str]) -> set[str]:
+    categories: set[str] = set()
+    if row.get("trust_tier") == "T0_REJECT" or "trust_tier_not_training_candidate" in errors:
+        categories.add("t0_reject")
+    if "license_not_allowed" in errors:
+        categories.add("unknown_license")
+    if "answer_not_label_only" in errors or "expected_answer_model_visible" in errors:
+        categories.add("answer_leakage")
+    if "doctrine_scan_failed" in errors or any(error.startswith("doctrine_term:") for error in errors):
+        categories.add("doctrine_contamination")
+    if any(error.startswith("problem_hash_cross_split_collision") for error in errors):
+        categories.add("split_collision")
+    return categories
 
 
 def density(tier_counts: Counter[str], valid_count: int) -> float:
@@ -124,9 +149,11 @@ def validate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     split_collision_count = 0
     tier_counts: Counter[str] = Counter()
     verification_counts: Counter[str] = Counter()
+    negative_controls_seen: set[str] = set()
 
     for row in rows:
         errors = row_errors(row, split_hashes)
+        negative_controls_seen.update(negative_control_categories(row, errors))
         observed_valid = not errors
         expected_valid = bool(row.get("synthetic_expected_valid", observed_valid))
         if expected_valid:
@@ -151,6 +178,7 @@ def validate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     false_positive_rate = round(false_positives / expected_invalid_total, 6) if expected_invalid_total else 0.0
     false_negative_rate = round(false_negatives / expected_valid_total, 6) if expected_valid_total else 0.0
     capability_density = density(tier_counts, len(valid_rows))
+    missing_negative_controls = sorted(REQUIRED_NEGATIVE_CONTROLS.difference(negative_controls_seen))
     passed = (
         len(rows) >= 100
         and t0_escape == 0
@@ -158,6 +186,7 @@ def validate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         and false_negative_rate < 0.01
         and capability_density >= 0.30
         and split_collision_count > 0
+        and not missing_negative_controls
     )
     return {
         "schema_id": "kt.v17_7_4.clean_slate_dry_run_manifest.v1",
@@ -174,6 +203,9 @@ def validate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "false_negative_rate": false_negative_rate,
         "t0_escape_count": t0_escape,
         "split_hash_collision_count": split_collision_count,
+        "required_negative_controls": sorted(REQUIRED_NEGATIVE_CONTROLS),
+        "negative_controls_seen": sorted(negative_controls_seen),
+        "missing_negative_controls": missing_negative_controls,
         "tier_counts": dict(sorted(tier_counts.items())),
         "verification_class_counts": dict(sorted(verification_counts.items())),
         "capability_density": capability_density,

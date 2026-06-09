@@ -145,9 +145,77 @@ def test_dry_run_generator_and_validator_enforce_negative_controls(tmp_path: Pat
     assert report["false_positive_rate"] == 0
     assert report["false_negative_rate"] == 0
     assert report["split_hash_collision_count"] >= 1
+    assert report["missing_negative_controls"] == []
+    assert set(report["negative_controls_seen"]) == {
+        "answer_leakage",
+        "doctrine_contamination",
+        "split_collision",
+        "t0_reject",
+        "unknown_license",
+    }
     assert report["capability_density"] >= 0.30
     assert report["dataset_generation_authority"] is False
     assert report["training_authority"] is False
+
+
+def test_validator_requires_all_negative_controls_and_source_provenance(tmp_path: Path) -> None:
+    ensure_built()
+    rows_path = tmp_path / "rows.jsonl"
+    subprocess.run(
+        [sys.executable, "scripts/generate_clean_slate_dry_run_rows.py", "--output", str(rows_path)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    rows = [json.loads(line) for line in rows_path.read_text(encoding="utf-8").splitlines()]
+    # Keep the split-collision negative control but remove all other bad rows.
+    reduced = [row for row in rows if row["synthetic_expected_valid"] or row["row_id"] in {"dryrun_099", "dryrun_100"}]
+    reduced_path = tmp_path / "missing_controls.jsonl"
+    reduced_path.write_text("".join(json.dumps(row, sort_keys=True) + "\n" for row in reduced), encoding="utf-8")
+    failed = subprocess.run(
+        [sys.executable, "scripts/validate_clean_slate_blueprint_contract.py", "--rows", str(reduced_path)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert failed.returncode == 2
+    failed_report = json.loads(failed.stdout)
+    assert failed_report["pass"] is False
+    assert set(failed_report["missing_negative_controls"]) == {
+        "answer_leakage",
+        "doctrine_contamination",
+        "t0_reject",
+        "unknown_license",
+    }
+
+    no_provenance = dict(rows[0])
+    no_provenance.pop("source_origin", None)
+    no_provenance.pop("source_url", None)
+    no_provenance_path = tmp_path / "no_provenance.jsonl"
+    no_provenance_path.write_text(json.dumps(no_provenance) + "\n", encoding="utf-8")
+    provenance_failed = subprocess.run(
+        [sys.executable, "scripts/validate_clean_slate_blueprint_contract.py", "--rows", str(no_provenance_path)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert "source_origin_or_url_missing" in provenance_failed.stdout
+
+    bool_stage = dict(rows[0])
+    bool_stage["curriculum_stage"] = True
+    bool_stage_path = tmp_path / "bool_stage.jsonl"
+    bool_stage_path.write_text(json.dumps(bool_stage) + "\n", encoding="utf-8")
+    stage_failed = subprocess.run(
+        [sys.executable, "scripts/validate_clean_slate_blueprint_contract.py", "--rows", str(bool_stage_path)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert "curriculum_stage_out_of_range" in stage_failed.stdout
 
 
 def test_policy_surfaces_block_doctrine_license_answer_and_split_laundering() -> None:

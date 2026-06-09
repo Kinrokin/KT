@@ -162,7 +162,6 @@ def schema_payloads() -> dict[str, dict[str, Any]]:
         "expected_answer_model_visible",
         "doctrine_contamination_scan_pass",
         "train_eval_firewall_pass",
-        "synthetic_expected_valid",
     ]
     return {
         SCHEMAS[0]: {
@@ -180,6 +179,7 @@ def schema_payloads() -> dict[str, dict[str, Any]]:
                 "answer_visibility": {"enum": ["LABEL_ONLY", "MODEL_VISIBLE_BLOCKED"]},
                 "expected_answer_model_visible": {"const": False},
             },
+            "anyOf": [{"required": ["source_origin"]}, {"required": ["source_url"]}],
         },
         SCHEMAS[1]: {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
