@@ -1,0 +1,76 @@
+{
+  "$id": "kt.v17_7_4.clean_slate_math_dataset_row.schema.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "anyOf": [
+    {
+      "required": [
+        "source_origin"
+      ]
+    },
+    {
+      "required": [
+        "source_url"
+      ]
+    }
+  ],
+  "properties": {
+    "answer_visibility": {
+      "enum": [
+        "LABEL_ONLY",
+        "MODEL_VISIBLE_BLOCKED"
+      ]
+    },
+    "curriculum_stage": {
+      "maximum": 9,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "expected_answer_model_visible": {
+      "const": false
+    },
+    "row_id": {
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "kt.v17_7_4.clean_slate_math_dataset_row.v1"
+    },
+    "trust_tier": {
+      "enum": [
+        "T0_REJECT",
+        "T1_FORMAT_ONLY",
+        "T2_NUMERIC_VERIFIED",
+        "T3_STEP_VERIFIED",
+        "T4_HUMAN_REVIEWED"
+      ]
+    },
+    "verification_class": {
+      "enum": [
+        "V0_UNVERIFIED",
+        "V1_NUMERIC",
+        "V2_STEP_CHECKED",
+        "V3_CODE_OR_HUMAN_VERIFIED"
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "source_id",
+    "problem",
+    "solution",
+    "answer",
+    "answer_visibility",
+    "trust_tier",
+    "verification_class",
+    "curriculum_stage",
+    "license",
+    "split",
+    "problem_hash",
+    "answer_hash",
+    "expected_answer_model_visible",
+    "doctrine_contamination_scan_pass",
+    "train_eval_firewall_pass"
+  ],
+  "type": "object"
+}
