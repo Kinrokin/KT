@@ -58,6 +58,8 @@ OUTPUT_PATHS = [
     "reports/duplicate_artifact_resolution_plan_v1.json",
     "reports/stale_packet_quarantine_plan_v1.json",
     "reports/generated_artifact_quarantine_plan_v1.json",
+    "reports/external_archive_move_plan_v1.json",
+    "reports/ktclean_untracked_triage_v1.json",
     "governance/repo_layout_contract.json",
     "rules/NO_BLOAT_EXECUTION_RULES.md",
     "rules/GENERATED_ARTIFACT_POLICY.md",
@@ -451,7 +453,7 @@ def controlling_artifact_index(files: list[str]) -> dict[str, Any]:
     }
 
 
-def supersession_and_plans(files: list[str]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+def supersession_and_plans(files: list[str]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
     packet_rows = []
     generated_rows = []
     for path in files:
@@ -499,7 +501,29 @@ def supersession_and_plans(files: list[str]) -> tuple[dict[str, Any], dict[str, 
         "generated_or_archive_count": len(generated_rows),
         "rows": generated_rows[:1000],
     }
-    return supersession, duplicate_plan, stale_packet_plan, generated_plan
+    external_archive_plan = {
+        "schema_id": "kt.external_archive_move_plan.v1",
+        "status": "PLAN_ONLY_NO_MOVES_NO_DELETES",
+        "candidate_count": len(packet_rows) + len(generated_rows),
+        "rows": [
+            {
+                "path": row["path"],
+                "recommended_action": "PLAN_ONLY_EXTERNAL_ARCHIVE_REVIEW_NO_MOVE",
+                "source_plan": "stale_packet_quarantine_plan_v1",
+            }
+            for row in packet_rows[:500]
+        ]
+        + [
+            {
+                "path": row["path"],
+                "primary_class": row["primary_class"],
+                "recommended_action": "PLAN_ONLY_EXTERNAL_ARCHIVE_REVIEW_NO_MOVE",
+                "source_plan": "generated_artifact_quarantine_plan_v1",
+            }
+            for row in generated_rows[:500]
+        ],
+    }
+    return supersession, duplicate_plan, stale_packet_plan, generated_plan, external_archive_plan
 
 
 def duplicate_current_authority_status(registry: dict[str, Any]) -> dict[str, Any]:
@@ -775,7 +799,7 @@ def main(argv: list[str] | None = None) -> int:
     unregistered = controlling_artifact_index(files)
     registry = build_registry(files, head, generated_utc)
     duplicate_current = duplicate_current_authority_status(registry)
-    supersession, duplicate_plan, stale_packet_plan, generated_plan = supersession_and_plans(files)
+    supersession, duplicate_plan, stale_packet_plan, generated_plan, external_archive_plan = supersession_and_plans(files)
 
     class_counts = Counter(classify(path) for path in files)
     extension_counts = Counter(Path(path).suffix.lower() or "<none>" for path in files)
@@ -844,6 +868,25 @@ def main(argv: list[str] | None = None) -> int:
     write_json(REPORTS / "duplicate_artifact_resolution_plan_v1.json", duplicate_plan)
     write_json(REPORTS / "stale_packet_quarantine_plan_v1.json", stale_packet_plan)
     write_json(REPORTS / "generated_artifact_quarantine_plan_v1.json", generated_plan)
+    write_json(REPORTS / "external_archive_move_plan_v1.json", external_archive_plan)
+    write_json(
+        REPORTS / "ktclean_untracked_triage_v1.json",
+        {
+            "schema_id": "kt.ktclean_untracked_triage.v1",
+            "status": "PASS_EMPTY" if not census["untracked_files"] else "REVIEW_REQUIRED",
+            "total_untracked": len(census["untracked_files"]),
+            "rows": [
+                {
+                    "path": path,
+                    "classification": "UNKNOWN_REVIEW_REQUIRED",
+                    "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+                }
+                for path in census["untracked_files"]
+            ],
+            "no_delete_authority": True,
+            "claim_ceiling_preserved": True,
+        },
+    )
     write_json(
         REPORTS / "current" / "current_truth_receipt.json",
         {

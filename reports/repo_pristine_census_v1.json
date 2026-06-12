@@ -1,45 +1,14 @@
 {
   "blockers": [],
-  "branch": "codex/repo-pristine-dirty-path-parser",
+  "branch": "codex/ktclean-canonicalization-v1",
   "claim_ceiling_status": "PRESERVED",
-  "current_head": "9117fbabc62cf8e4a5e7ca58777d80dfb26d009e",
+  "current_head": "2df654896b881fa479c987ef0acb2b30d9c7ddbd",
   "current_next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
   "current_packet_hashes": {
     "packets/ktbud100_v1.zip": "216eb74184cf5649e9d9ba2a08401b34ad29df02362578c5b4569b27c232e500"
   },
   "dirty_files": [
-    "governance/repo_layout_contract.json",
-    "memory/ACTIVE_CUTLINE.md",
-    "memory/ARTIFACT_INDEX.json",
-    "memory/CURRENT_CONTEXT.md",
-    "memory/DECISION_LOG.jsonl",
-    "memory/MISTAKE_LEDGER.md",
-    "memory/NEXT_LAWFUL_MOVE.md",
-    "packets/current/manifest.json",
-    "registry/artifact_authority_registry.json",
-    "registry/artifact_authority_registry.schema.json",
-    "reports/artifact_authority_registry_receipt.json",
-    "reports/artifact_supersession_map_v1.json",
-    "reports/current/current_truth_receipt.json",
-    "reports/duplicate_artifact_resolution_plan_v1.json",
-    "reports/generated_artifact_quarantine_plan_v1.json",
-    "reports/kt_memory_ledger_bootstrap_plan.json",
-    "reports/repo_bloat_heatmap_v1.json",
-    "reports/repo_duplicate_content_index_v1.json",
-    "reports/repo_duplicate_filename_index_v1.json",
-    "reports/repo_generated_artifact_index_v1.json",
-    "reports/repo_large_file_index_v1.json",
-    "reports/repo_path_length_risk_index_v1.json",
-    "reports/repo_pristine_census_v1.json",
-    "reports/repo_stale_head_reference_index_v1.json",
-    "reports/repo_unregistered_controlling_artifact_index_v1.json",
-    "reports/stale_packet_quarantine_plan_v1.json",
-    "reports/unknown_artifact_review_queue.json",
-    "rules/ARCHIVE_QUARANTINE_POLICY.md",
-    "rules/GENERATED_ARTIFACT_POLICY.md",
-    "rules/NO_BLOAT_EXECUTION_RULES.md",
-    "rules/PACKET_NAMING_POLICY.md",
-    "scripts/repo_pristine_census.py"
+    ".github/workflows/ktclean_no_bloat.yml"
   ],
   "duplicate_current_authority_status": "PASS",
   "extension_counts": {
@@ -52,7 +21,7 @@
     ".in": 1,
     ".ini": 1,
     ".js": 1,
-    ".json": 5971,
+    ".json": 5973,
     ".jsonl": 123,
     ".log": 5,
     ".md": 505,
@@ -71,12 +40,12 @@
     ".toml": 1,
     ".txt": 13,
     ".yaml": 44,
-    ".yml": 24,
+    ".yml": 25,
     ".zip": 35,
     "<none>": 6
   },
-  "generated_utc": "2026-06-12T20:17:44Z",
-  "git_object_size": "count: 74\nsize: 2.54 MiB\nin-pack: 29771\npacks: 1\nsize-pack: 17.85 MiB\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes",
+  "generated_utc": "2026-06-12T22:37:16Z",
+  "git_object_size": "count: 2211\nsize: 1.16 GiB\nin-pack: 28364\npacks: 7\nsize-pack: 21.50 MiB\nprune-packable: 33\ngarbage: 0\nsize-garbage: 0 bytes",
   "largest_tracked_files": [
     {
       "path": "reports/v17_7_4_math_corpus_record_table.jsonl",
@@ -136,7 +105,7 @@
     {
       "path": "registry/artifact_authority_registry.json",
       "primary_class": "CANONICAL_GOVERNANCE",
-      "size_bytes": 6624355
+      "size_bytes": 6626382
     },
     {
       "path": "reports/v17_7_4_math_corpus_schema_inference.json",
@@ -166,7 +135,7 @@
     {
       "path": "admission/v17_5_measured_benchmark_predictions.jsonl",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 1234814
+      "size_bytes": 1235074
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
@@ -176,7 +145,7 @@
     {
       "path": "reports/repo_generated_artifact_index_v1.json",
       "primary_class": "CANONICAL_RECEIPT_CURRENT",
-      "size_bytes": 929919
+      "size_bytes": 930302
     },
     {
       "path": "reports/v17_7_4_alternative_surface_replay_matrix.jsonl",
@@ -216,7 +185,7 @@
     {
       "path": "admission/v17_7_route_outcome_table.jsonl",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 272332
+      "size_bytes": 272592
     },
     {
       "path": "reports/v17_7_4_extraction_harm_row_table.jsonl",
@@ -226,7 +195,7 @@
     {
       "path": "admission/sddr_route_decisions.jsonl",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 244833
+      "size_bytes": 245093
     },
     {
       "path": "KT_PROD_CLEANROOM/tools/operator/follow_on_campaign_v16_validate.py",
@@ -261,7 +230,12 @@
     {
       "path": "reports/generated_artifact_quarantine_plan_v1.json",
       "primary_class": "ARCHIVE_HISTORY",
-      "size_bytes": 210417
+      "size_bytes": 210392
+    },
+    {
+      "path": "admission/v17_1_margin_sweep_decision_rows_by_margin.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 198771
     },
     {
       "path": "reports/v17_7_4_extraction_aware_cheapest_correct_route_table_v3.jsonl",
@@ -269,14 +243,9 @@
       "size_bytes": 197705
     },
     {
-      "path": "admission/v17_1_margin_sweep_decision_rows_by_margin.jsonl",
-      "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 197471
-    },
-    {
       "path": "admission/v17_7_4_truegen_row_manifest.json",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 192996
+      "size_bytes": 197017
     },
     {
       "path": "reports/v17_7_4_gsm8k_row_difficulty_table.jsonl",
@@ -296,7 +265,7 @@
     {
       "path": "admission/v17_1_repaired_reference_predictions.jsonl",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 181507
+      "size_bytes": 181767
     },
     {
       "path": "reports/v17_7_4_gsm8k_deterministic_rescue_row_table.jsonl",
@@ -306,7 +275,7 @@
     {
       "path": "admission/v17_1_measured_benchmark_predictions.jsonl",
       "primary_class": "LAB_PROVISIONAL",
-      "size_bytes": 176726
+      "size_bytes": 176986
     },
     {
       "path": "reports/v17_7_4_control_only_gsm8k_row_level_autopsy.jsonl",
@@ -332,8 +301,8 @@
   "next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
   "path_length_blocker_count": 0,
   "primary_class_counts": {
-    "ARCHIVE_HISTORY": 1333,
-    "CANONICAL_GOVERNANCE": 199,
+    "ARCHIVE_HISTORY": 1335,
+    "CANONICAL_GOVERNANCE": 200,
     "CANONICAL_PACKET_CURRENT": 1,
     "CANONICAL_RECEIPT_CURRENT": 30,
     "CANONICAL_SCHEMA": 380,
@@ -344,12 +313,14 @@
     "HEAVY_ARTIFACT_POINTER": 4,
     "LAB_PROVISIONAL": 265
   },
-  "prospective_file_count": 8930,
+  "prospective_file_count": 8933,
   "raw_worktree_clean": false,
   "schema_id": "kt.repo_pristine_census.v1",
-  "tracked_file_count": 8930,
-  "unrelated_dirty_files": [],
+  "tracked_file_count": 8933,
+  "unrelated_dirty_files": [
+    ".github/workflows/ktclean_no_bloat.yml"
+  ],
   "untracked_files": [],
-  "worktree_clean": true,
+  "worktree_clean": false,
   "worktree_clean_basis": "clean except generated repo-pristine census lane outputs"
 }

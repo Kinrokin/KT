@@ -1,0 +1,40 @@
+name: ktclean-no-bloat
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  ktclean-no-bloat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run repo pristine census
+        run: |
+          python scripts/repo_pristine_census.py
+          python scripts/repo_pristine_census.py
+      - name: Run KTCLEAN gates
+        run: |
+          python scripts/check_no_bloat.py
+          python scripts/check_artifact_authority_registry.py
+          python scripts/check_packet_name_lengths.py
+          python scripts/check_duplicate_artifacts.py
+          python scripts/check_stale_head_refs.py
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Run focused KTCLEAN tests
+        run: |
+          python -m pytest -q \
+            tests/test_no_unregistered_controlling_artifacts.py \
+            tests/test_no_duplicate_current_authority.py \
+            tests/test_packet_name_length_policy.py \
+            tests/test_no_large_binary_without_allowlist.py \
+            tests/test_generated_artifacts_not_current_law.py \
+            tests/test_archive_files_not_live_authority.py \
+            tests/test_memory_ledger_presence.py \
+            tests/test_repo_layout_contract.py
