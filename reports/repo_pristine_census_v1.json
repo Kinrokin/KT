@@ -1,0 +1,368 @@
+{
+  "blockers": [],
+  "branch": "codex/repo-pristine-census-no-bloat",
+  "claim_ceiling_status": "PRESERVED",
+  "current_head": "56bfcff3e14ea457bf52441d2d197f927906142b",
+  "current_next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
+  "current_packet_hashes": {
+    "packets/ktbud100_v1.zip": "216eb74184cf5649e9d9ba2a08401b34ad29df02362578c5b4569b27c232e500"
+  },
+  "dirty_files": [
+    "governance/repo_layout_contract.json",
+    "memory/ACTIVE_CUTLINE.md",
+    "memory/ARTIFACT_INDEX.json",
+    "memory/CURRENT_CONTEXT.md",
+    "memory/DECISION_LOG.jsonl",
+    "memory/MISTAKE_LEDGER.md",
+    "memory/NEXT_LAWFUL_MOVE.md",
+    "packets/current/manifest.json",
+    "registry/artifact_authority_registry.json",
+    "registry/artifact_authority_registry.schema.json",
+    "reports/artifact_authority_registry_receipt.json",
+    "reports/artifact_supersession_map_v1.json",
+    "reports/current/current_truth_receipt.json",
+    "reports/duplicate_artifact_resolution_plan_v1.json",
+    "reports/generated_artifact_quarantine_plan_v1.json",
+    "reports/kt_memory_ledger_bootstrap_plan.json",
+    "reports/repo_bloat_heatmap_v1.json",
+    "reports/repo_duplicate_content_index_v1.json",
+    "reports/repo_duplicate_filename_index_v1.json",
+    "reports/repo_generated_artifact_index_v1.json",
+    "reports/repo_large_file_index_v1.json",
+    "reports/repo_path_length_risk_index_v1.json",
+    "reports/repo_pristine_census_v1.json",
+    "reports/repo_stale_head_reference_index_v1.json",
+    "reports/repo_unregistered_controlling_artifact_index_v1.json",
+    "reports/stale_packet_quarantine_plan_v1.json",
+    "reports/unknown_artifact_review_queue.json",
+    "rules/ARCHIVE_QUARANTINE_POLICY.md",
+    "rules/GENERATED_ARTIFACT_POLICY.md",
+    "rules/NO_BLOAT_EXECUTION_RULES.md",
+    "rules/PACKET_NAMING_POLICY.md",
+    "scripts/check_artifact_authority_registry.py",
+    "scripts/check_duplicate_artifacts.py",
+    "scripts/check_no_bloat.py",
+    "scripts/check_packet_name_lengths.py",
+    "scripts/check_stale_head_refs.py",
+    "scripts/repo_pristine_census.py",
+    "tests/test_archive_files_not_live_authority.py",
+    "tests/test_generated_artifacts_not_current_law.py",
+    "tests/test_memory_ledger_presence.py",
+    "tests/test_no_duplicate_current_authority.py",
+    "tests/test_no_large_binary_without_allowlist.py",
+    "tests/test_no_unregistered_controlling_artifacts.py",
+    "tests/test_packet_name_length_policy.py",
+    "tests/test_repo_layout_contract.py"
+  ],
+  "duplicate_current_authority_status": "PASS",
+  "extension_counts": {
+    ".css": 1,
+    ".dsse": 4,
+    ".gsn": 1,
+    ".gz": 2,
+    ".hash": 119,
+    ".html": 1,
+    ".in": 1,
+    ".ini": 1,
+    ".js": 1,
+    ".json": 5971,
+    ".jsonl": 123,
+    ".log": 5,
+    ".md": 505,
+    ".op1": 1,
+    ".op2": 1,
+    ".patch": 1,
+    ".pem": 2,
+    ".ps1": 2,
+    ".pub": 1,
+    ".py": 2044,
+    ".sh": 10,
+    ".sha256": 2,
+    ".sig": 2,
+    ".tla": 2,
+    ".tmpl": 4,
+    ".toml": 1,
+    ".txt": 13,
+    ".yaml": 44,
+    ".yml": 24,
+    ".zip": 35,
+    "<none>": 6
+  },
+  "generated_utc": "2026-06-12T20:10:45Z",
+  "git_object_size": "count: 53\nsize: 1.66 MiB\nin-pack: 29771\npacks: 1\nsize-pack: 17.85 MiB\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes",
+  "largest_tracked_files": [
+    {
+      "path": "reports/v17_7_4_math_corpus_record_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 22831202
+    },
+    {
+      "path": "reports/v17_7_4_math_row_trust_tier_assignment_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 16314551
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_row_action_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 15558011
+    },
+    {
+      "path": "reports/v17_7_4_math_capability_density_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 15476435
+    },
+    {
+      "path": "reports/v17_7_4_math_doctrine_contamination_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 11572266
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_source_authority_map.json",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 11121850
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_source_candidate_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 9865165
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_training_use_authority_matrix.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 9233691
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_use_authority_remediation_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 9233691
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_source_action_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 9106610
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_parsed_source_index.json",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 7939465
+    },
+    {
+      "path": "registry/artifact_authority_registry.json",
+      "primary_class": "CANONICAL_GOVERNANCE",
+      "size_bytes": 6624354
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_schema_inference.json",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 6272425
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_fact_graph.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 2565065
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_symbol_index.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 2330602
+    },
+    {
+      "path": "reports/v17_7_4_reprolock_oracle_offline_extraction_row_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 1496132
+    },
+    {
+      "path": "reports/v17_7_4_math_corpus_expected_answer_visibility_matrix.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 1282168
+    },
+    {
+      "path": "admission/v17_5_measured_benchmark_predictions.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 1234814
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 937344
+    },
+    {
+      "path": "reports/repo_generated_artifact_index_v1.json",
+      "primary_class": "CANONICAL_RECEIPT_CURRENT",
+      "size_bytes": 929918
+    },
+    {
+      "path": "reports/v17_7_4_alternative_surface_replay_matrix.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 782952
+    },
+    {
+      "path": "reports/v17_7_4_g2_offline_extraction_row_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 679747
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_snapshot_manifest.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 650174
+    },
+    {
+      "path": "admission/v17_7_3_targeted_boundary_row_manifest.json",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 557142
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_physical_inventory.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 469218
+    },
+    {
+      "path": "admission/v17_7_4_control_only_gsm8k_extension_row_manifest.json",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 295054
+    },
+    {
+      "path": "reports/g32_signal_density_matrix.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 278914
+    },
+    {
+      "path": "admission/v17_7_route_outcome_table.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 272332
+    },
+    {
+      "path": "reports/v17_7_4_extraction_harm_row_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 255259
+    },
+    {
+      "path": "admission/sddr_route_decisions.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 244833
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/tools/operator/follow_on_campaign_v16_validate.py",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 227489
+    },
+    {
+      "path": "packets/ktg31_v1/g31_per_sample_causal_trace.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 227487
+    },
+    {
+      "path": "reports/g31_per_sample_causal_trace.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 227487
+    },
+    {
+      "path": "reports/v17_7_4_g2_offline_replay_input_manifest.json",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 220289
+    },
+    {
+      "path": "reports/repo_unregistered_controlling_artifact_index_v1.json",
+      "primary_class": "CANONICAL_RECEIPT_CURRENT",
+      "size_bytes": 219650
+    },
+    {
+      "path": "reports/repo_stale_head_reference_index_v1.json",
+      "primary_class": "CANONICAL_RECEIPT_CURRENT",
+      "size_bytes": 217893
+    },
+    {
+      "path": "reports/generated_artifact_quarantine_plan_v1.json",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 210417
+    },
+    {
+      "path": "reports/v17_7_4_extraction_aware_cheapest_correct_route_table_v3.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 197705
+    },
+    {
+      "path": "admission/v17_1_margin_sweep_decision_rows_by_margin.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 197471
+    },
+    {
+      "path": "admission/v17_7_4_truegen_row_manifest.json",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 192996
+    },
+    {
+      "path": "reports/v17_7_4_gsm8k_row_difficulty_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 192732
+    },
+    {
+      "path": "runtime/v17_7_4/KT_V1774_TRUEGEN_ARM_CORE.py",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 188647
+    },
+    {
+      "path": "reports/v17_7_4_gsm8k_output_length_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 182888
+    },
+    {
+      "path": "admission/v17_1_repaired_reference_predictions.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 181507
+    },
+    {
+      "path": "reports/v17_7_4_gsm8k_deterministic_rescue_row_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 181072
+    },
+    {
+      "path": "admission/v17_1_measured_benchmark_predictions.jsonl",
+      "primary_class": "LAB_PROVISIONAL",
+      "size_bytes": 176726
+    },
+    {
+      "path": "reports/v17_7_4_control_only_gsm8k_row_level_autopsy.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 176454
+    },
+    {
+      "path": "KT_PROD_CLEANROOM/reports/kt_data_lineage.json",
+      "primary_class": "CANONICAL_SOURCE",
+      "size_bytes": 175710
+    },
+    {
+      "path": "reports/v17_7_4_scoring_surface_replay_table.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 175146
+    },
+    {
+      "path": "reports/v17_7_4_gsm8k_wrong_row_autopsy.jsonl",
+      "primary_class": "ARCHIVE_HISTORY",
+      "size_bytes": 172029
+    }
+  ],
+  "next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
+  "path_length_blocker_count": 0,
+  "primary_class_counts": {
+    "ARCHIVE_HISTORY": 1333,
+    "CANONICAL_GOVERNANCE": 199,
+    "CANONICAL_PACKET_CURRENT": 1,
+    "CANONICAL_RECEIPT_CURRENT": 30,
+    "CANONICAL_SCHEMA": 380,
+    "CANONICAL_SOURCE": 5778,
+    "CANONICAL_TEST": 876,
+    "COMMERCIAL_SURFACE": 32,
+    "EXTERNAL_POINTER": 32,
+    "HEAVY_ARTIFACT_POINTER": 4,
+    "LAB_PROVISIONAL": 265
+  },
+  "prospective_file_count": 8930,
+  "raw_worktree_clean": false,
+  "schema_id": "kt.repo_pristine_census.v1",
+  "tracked_file_count": 8930,
+  "unrelated_dirty_files": [],
+  "untracked_files": [],
+  "worktree_clean": true,
+  "worktree_clean_basis": "clean except generated repo-pristine census lane outputs"
+}

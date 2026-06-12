@@ -1,9 +1,11 @@
 {
   "$id": "kt.artifact_authority_registry.schema.v3",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
   "properties": {
     "artifacts": {
       "items": {
+        "additionalProperties": true,
         "properties": {
           "artifact_id": {
             "type": "string"
@@ -35,11 +37,25 @@
           "controls_execution": {
             "type": "boolean"
           },
-          "notes": {
-            "type": "string"
-          },
           "path": {
             "type": "string"
+          },
+          "primary_class": {
+            "enum": [
+              "CANONICAL_SOURCE",
+              "CANONICAL_SCHEMA",
+              "CANONICAL_TEST",
+              "CANONICAL_GOVERNANCE",
+              "CANONICAL_RECEIPT_CURRENT",
+              "CANONICAL_PACKET_CURRENT",
+              "LAB_PROVISIONAL",
+              "ARCHIVE_HISTORY",
+              "COMMERCIAL_SURFACE",
+              "GENERATED_OUTPUT",
+              "EXTERNAL_POINTER",
+              "HEAVY_ARTIFACT_POINTER",
+              "UNKNOWN_REVIEW_REQUIRED"
+            ]
           },
           "role": {
             "type": "string"
@@ -49,18 +65,6 @@
               "string",
               "null"
             ]
-          },
-          "superseded_by": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "supersedes": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
           },
           "validation_status": {
             "enum": [
@@ -76,6 +80,7 @@
           "artifact_id",
           "path",
           "role",
+          "primary_class",
           "authority_state",
           "validation_status",
           "controls_execution",
@@ -90,6 +95,9 @@
       "type": "string"
     },
     "generated_utc": {
+      "type": "string"
+    },
+    "registry_profile": {
       "type": "string"
     },
     "schema_id": {
