@@ -1,8 +1,8 @@
 {
   "blockers": [],
-  "branch": "codex/repo-pristine-census-no-bloat",
+  "branch": "codex/repo-pristine-dirty-path-parser",
   "claim_ceiling_status": "PRESERVED",
-  "current_head": "56bfcff3e14ea457bf52441d2d197f927906142b",
+  "current_head": "9117fbabc62cf8e4a5e7ca58777d80dfb26d009e",
   "current_next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
   "current_packet_hashes": {
     "packets/ktbud100_v1.zip": "216eb74184cf5649e9d9ba2a08401b34ad29df02362578c5b4569b27c232e500"
@@ -39,20 +39,7 @@
     "rules/GENERATED_ARTIFACT_POLICY.md",
     "rules/NO_BLOAT_EXECUTION_RULES.md",
     "rules/PACKET_NAMING_POLICY.md",
-    "scripts/check_artifact_authority_registry.py",
-    "scripts/check_duplicate_artifacts.py",
-    "scripts/check_no_bloat.py",
-    "scripts/check_packet_name_lengths.py",
-    "scripts/check_stale_head_refs.py",
-    "scripts/repo_pristine_census.py",
-    "tests/test_archive_files_not_live_authority.py",
-    "tests/test_generated_artifacts_not_current_law.py",
-    "tests/test_memory_ledger_presence.py",
-    "tests/test_no_duplicate_current_authority.py",
-    "tests/test_no_large_binary_without_allowlist.py",
-    "tests/test_no_unregistered_controlling_artifacts.py",
-    "tests/test_packet_name_length_policy.py",
-    "tests/test_repo_layout_contract.py"
+    "scripts/repo_pristine_census.py"
   ],
   "duplicate_current_authority_status": "PASS",
   "extension_counts": {
@@ -88,8 +75,8 @@
     ".zip": 35,
     "<none>": 6
   },
-  "generated_utc": "2026-06-12T20:10:45Z",
-  "git_object_size": "count: 53\nsize: 1.66 MiB\nin-pack: 29771\npacks: 1\nsize-pack: 17.85 MiB\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes",
+  "generated_utc": "2026-06-12T20:17:44Z",
+  "git_object_size": "count: 74\nsize: 2.54 MiB\nin-pack: 29771\npacks: 1\nsize-pack: 17.85 MiB\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes",
   "largest_tracked_files": [
     {
       "path": "reports/v17_7_4_math_corpus_record_table.jsonl",
@@ -149,7 +136,7 @@
     {
       "path": "registry/artifact_authority_registry.json",
       "primary_class": "CANONICAL_GOVERNANCE",
-      "size_bytes": 6624354
+      "size_bytes": 6624355
     },
     {
       "path": "reports/v17_7_4_math_corpus_schema_inference.json",
@@ -189,7 +176,7 @@
     {
       "path": "reports/repo_generated_artifact_index_v1.json",
       "primary_class": "CANONICAL_RECEIPT_CURRENT",
-      "size_bytes": 929918
+      "size_bytes": 929919
     },
     {
       "path": "reports/v17_7_4_alternative_surface_replay_matrix.jsonl",
