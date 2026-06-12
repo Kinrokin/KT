@@ -1,0 +1,15 @@
+{
+  "claim_ceiling_preserved": true,
+  "schema_id": "kt.bud25.g32_causal_repair_safety_receipt.v1",
+  "status": "PASS",
+  "surfaces": {
+    "schemas/kt.do_not_train_receipt.schema.json": true,
+    "schemas/kt.g32_training_decision_receipt.schema.json": true,
+    "schemas/kt.signal_density_row.schema.json": true,
+    "scripts/enforce_do_not_train.py": true,
+    "tests/test_g32_do_not_train_enforcement.py": true
+  },
+  "train_adapter_authorized_by_this_lane": false,
+  "train_router_authorized_by_this_lane": false,
+  "training_like_pr_requires_g32_training_decision_receipt": true
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {},
+    "kaggle_dataset_name": {},
+    "packet_path": {},
+    "packet_sha256": {},
+    "run_mode": {},
+    "schema_id": {
+      "const": "kt.bud100_packet_decision.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "packet_path",
+    "packet_sha256",
+    "kaggle_dataset_name",
+    "run_mode",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

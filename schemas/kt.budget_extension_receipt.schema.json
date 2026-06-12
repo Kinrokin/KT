@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "arm_id": {},
+    "budget_cap_hit": {},
+    "extensions_used": {},
+    "final_marker_detected": {},
+    "row_id": {},
+    "schema_id": {
+      "const": "kt.budget_extension_receipt.v1"
+    },
+    "stop_reason": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "arm_id",
+    "extensions_used",
+    "budget_cap_hit",
+    "final_marker_detected",
+    "stop_reason"
+  ],
+  "type": "object"
+}

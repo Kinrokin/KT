@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "budget_cap_hit": {},
+    "correct": {},
+    "extension_size": {},
+    "extensions_used": {},
+    "final_marker_detected": {},
+    "hard_ceiling": {},
+    "initial_budget": {},
+    "output_tokens": {},
+    "prompt_tokens": {},
+    "sample_id": {},
+    "schema_id": {
+      "const": "kt.budget_monitor_trace.v1"
+    },
+    "stop_reason": {},
+    "task_class": {},
+    "total_tokens": {},
+    "verifier_or_scorer_status": {}
+  },
+  "required": [
+    "schema_id",
+    "sample_id",
+    "task_class",
+    "initial_budget",
+    "extensions_used",
+    "extension_size",
+    "hard_ceiling",
+    "stop_reason",
+    "final_marker_detected",
+    "budget_cap_hit",
+    "prompt_tokens",
+    "output_tokens",
+    "total_tokens",
+    "correct",
+    "verifier_or_scorer_status"
+  ],
+  "type": "object"
+}

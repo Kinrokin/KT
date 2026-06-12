@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assessment_sha256": {},
+    "budget_metrics": {},
+    "claim_ceiling_preserved": {},
+    "oracle_diagnostic_score": {},
+    "row_count": {},
+    "schema_id": {
+      "const": "kt.bud25_assessment_import_receipt.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "assessment_sha256",
+    "row_count",
+    "oracle_diagnostic_score",
+    "budget_metrics",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}
