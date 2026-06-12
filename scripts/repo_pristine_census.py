@@ -156,7 +156,7 @@ def tracked_files() -> list[str]:
 def dirty_paths(status_lines: list[str]) -> list[str]:
     paths = []
     for line in status_lines:
-        raw = line[3:] if len(line) > 3 else line
+        raw = line[3:] if len(line) > 3 and line[2] == " " else line[2:].lstrip()
         if " -> " in raw:
             raw = raw.split(" -> ", 1)[1]
         paths.append(raw.replace("\\", "/"))
