@@ -1,0 +1,33 @@
+{
+  "assessment_path": "d:\\user\\rober\\Downloads\\KT_BUD25_V1_ASSESSMENT_ONLY.zip",
+  "assessment_sha256": "eac831622bdf48008a7bcf0d3dd4ba2604179dc05f9eff937403c7b696aba0da",
+  "assessment_sha256_expected": "eac831622bdf48008a7bcf0d3dd4ba2604179dc05f9eff937403c7b696aba0da",
+  "assessment_sha256_matches_expected": true,
+  "authority": {
+    "adapter_mutation_authority": false,
+    "dataset_generation_authority": false,
+    "production_prompt_mutation_authority": false,
+    "promotion_authority": false,
+    "runtime_authority": false,
+    "training_authority": false
+  },
+  "budget_metrics": {
+    "adaptive_monitor_accuracy": 0.88,
+    "answer_only_96_accuracy": 0.24,
+    "best_arm": "A3_COT_512_FIXED",
+    "conclusion": "TOKEN_BUDGET_SENSITIVITY_SUPPORTED__COT_BEATS_ANSWER_ONLY",
+    "cot_192_accuracy": 0.28,
+    "cot_256_accuracy": 0.68,
+    "cot_512_accuracy": 0.92,
+    "cot_96_accuracy": 0.0,
+    "cot_accuracy_monotonic_non_decreasing": true,
+    "oracle_diagnostic_score": 1.0,
+    "token_budget_sensitivity_supported": true
+  },
+  "claim_ceiling_preserved": true,
+  "mismatches": {},
+  "oracle_diagnostic_score": 1.0,
+  "row_count": 25,
+  "schema_id": "kt.bud25_assessment_import_receipt.v1",
+  "status": "PASS"
+}

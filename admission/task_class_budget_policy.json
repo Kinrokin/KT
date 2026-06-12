@@ -1,0 +1,44 @@
+{
+  "authority": {
+    "adapter_mutation_authority": false,
+    "dataset_generation_authority": false,
+    "production_prompt_mutation_authority": false,
+    "promotion_authority": false,
+    "runtime_authority": false,
+    "training_authority": false
+  },
+  "claim_authority": "INTERNAL_EVIDENCE_ONLY",
+  "classes": {
+    "formal_proof": {
+      "extension_size": 0,
+      "final_marker_stop": true,
+      "hard_ceiling": 512,
+      "initial_tokens": 512,
+      "max_extensions": 0
+    },
+    "multi_step_math": {
+      "extension_size": 128,
+      "final_marker_stop": true,
+      "hard_ceiling": 512,
+      "initial_tokens": 256,
+      "max_extensions": 2
+    },
+    "short_answer": {
+      "extension_size": 0,
+      "final_marker_stop": true,
+      "hard_ceiling": 64,
+      "initial_tokens": 64,
+      "max_extensions": 0
+    },
+    "simple_fact": {
+      "extension_size": 0,
+      "final_marker_stop": true,
+      "hard_ceiling": 32,
+      "initial_tokens": 32,
+      "max_extensions": 0
+    }
+  },
+  "policy_id": "BUDGET_MONITOR_MATH_V1",
+  "schema_id": "kt.task_class_budget_policy.v1",
+  "status": "CANDIDATE_CONFIRMATION_ONLY"
+}

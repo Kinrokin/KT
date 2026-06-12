@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authority": {},
+    "claim_authority": {},
+    "classes": {},
+    "policy_id": {},
+    "schema_id": {
+      "const": "kt.task_class_budget_policy.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "policy_id",
+    "status",
+    "claim_authority",
+    "classes",
+    "authority"
+  ],
+  "type": "object"
+}
