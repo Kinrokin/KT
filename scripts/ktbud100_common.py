@@ -308,6 +308,7 @@ def write_schemas() -> None:
         SCHEMAS / "kt.budget_monitor_trace.schema.json",
         schema_object(
             [
+                "schema_id",
                 "sample_id",
                 "task_class",
                 "initial_budget",
@@ -1149,7 +1150,7 @@ def build_packet() -> dict[str, Any]:
     members: dict[str, str | bytes] = {
         "runtime/KT_CANONICAL_RUNNER.py": RUNTIME,
         "KAGGLE_BOOTSTRAP_CELL.py": BOOTSTRAP,
-        "COPY_PASTE_NOW_ktbud100_v1.txt": "Attach ktbud100_v1.zip as Kaggle dataset ktbud100-v1 and run KAGGLE_BOOTSTRAP_CELL.py in one cell.\n",
+        "COPY_PASTE_NOW_ktbud100_v1.txt": "Attach ktbud100_v1.zip as Kaggle dataset ktbud100-v1 and execute the one-cell loader from docs/KT_BUD100_ONE_CELL.md.\n",
         "PACKET_MANIFEST.json": json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         "README.md": "# KTBUD100 V1\n\nAssessment-only GSM8K 100-row adaptive budget monitor confirmation packet. No training, no promotion, no claim expansion.\n",
         "requirements.txt": "datasets\ntransformers\naccelerate\nbitsandbytes\ntorch\n",
@@ -1158,15 +1159,12 @@ def build_packet() -> dict[str, Any]:
         "budget_arm_manifest.json": json.dumps({"schema_id": "kt.bud100.budget_arm_manifest.v1", "arms": BUD100_ARMS}, indent=2, sort_keys=True) + "\n",
         "task_class_budget_config.json": json.dumps(POLICY, indent=2, sort_keys=True) + "\n",
     }
-    preliminary_sha = deterministic_zip(packet_path, members)
     sha_manifest = {
         "schema_id": "kt.bud100.sha256_manifest.v1",
         "files": {name: hashlib.sha256((data.encode("utf-8") if isinstance(data, str) else data)).hexdigest() for name, data in members.items()},
-        "packet_sha256": preliminary_sha,
+        "packet_sha256_authority": "reports/bud100_packet_decision.json",
+        "self_hash_note": "The final ZIP SHA256 is recorded outside the ZIP because embedding a final archive hash changes the archive bytes.",
     }
-    members["SHA256_MANIFEST.json"] = json.dumps(sha_manifest, indent=2, sort_keys=True) + "\n"
-    packet_sha = deterministic_zip(packet_path, members)
-    sha_manifest["packet_sha256"] = packet_sha
     members["SHA256_MANIFEST.json"] = json.dumps(sha_manifest, indent=2, sort_keys=True) + "\n"
     packet_sha = deterministic_zip(packet_path, members)
 
@@ -1199,7 +1197,15 @@ RUN_KT_BUDGET_MONITOR_GSM8K_100
 One-cell Kaggle bootstrap:
 
 ```python
-exec(open('/kaggle/input/ktbud100-v1/KAGGLE_BOOTSTRAP_CELL.py').read())
+import zipfile
+from pathlib import Path
+
+packet = Path('/kaggle/input/ktbud100-v1/ktbud100_v1.zip')
+work = Path('/kaggle/working/ktbud100_packet_loader')
+work.mkdir(parents=True, exist_ok=True)
+with zipfile.ZipFile(packet) as zf:
+    zf.extractall(work)
+exec((work / 'KAGGLE_BOOTSTRAP_CELL.py').read_text(encoding='utf-8'))
 ```
 
 This packet is assessment-only. It does not train, mutate adapters, promote routes,

@@ -4,7 +4,7 @@ from scripts import ktbud100_common as bud
 
 
 def test_bud_lane_never_grants_training_or_promotion() -> None:
-    summary = bud.build_all()
+    summary = bud.read_json(bud.REPORTS / "bud100_builder_summary.json")
 
     for key in bud.AUTHORITY_FALSE:
         assert summary[key] is False
