@@ -1,12 +1,44 @@
 {
   "claim_ceiling_preserved": true,
-  "expected_gain_sources": [
-    "Preserve fixed 512 accuracy as default for multi_step_math.",
-    "Recover cost on rows where answer-only or 256 is sufficient.",
-    "Avoid V1 extension overhead unless a row class demands continuation."
-  ],
-  "measured_gain_claim": false,
-  "requires_followup_policy_replay": true,
-  "schema_id": "kt.bud100.monitor_v2_expected_gain_model.v1",
-  "status": "DESIGN_ONLY_NO_MEASURED_GAIN"
+  "interpretation": "Savings exist in the measured rows, but the repo has not bound a legal predictive downshift feature model.",
+  "legal_v2_replay": {
+    "accuracy": 0.91,
+    "beats_fixed512_accuracy": false,
+    "beats_fixed512_tpc": false,
+    "claim_ceiling_preserved": true,
+    "correct": 91,
+    "damage_count_vs_fixed512": 0,
+    "full_tokens_per_correct": 374.57142857142856,
+    "microfurnace_candidate": false,
+    "output_tokens": 22466,
+    "policy_id": "BUDGET_MONITOR_MATH_V2_CANDIDATE",
+    "row_count": 100,
+    "schema_id": "kt.bud100_monitor_v2_offline_replay.v1",
+    "selected_arm_counts": {
+      "A2_COT_512_FIXED": 100
+    },
+    "status": "PASS_NO_GAIN_FIXED512_RETAINED",
+    "token_saving_rows_vs_fixed512": 0,
+    "total_tokens": 34086
+  },
+  "schema_id": "kt.bud100_monitor_v2_expected_gain_model.v1",
+  "status": "NO_DEPLOYABLE_GAIN_OBSERVED",
+  "teacher_oracle_upper_bound": {
+    "accuracy": 0.91,
+    "claim_ceiling_preserved": true,
+    "correct": 91,
+    "full_tokens_per_correct": 283.65934065934067,
+    "reason_not_deployable": "uses posthoc measured correctness/cost_optimal_correct_arm",
+    "schema_id": "kt.bud100_monitor_v2_teacher_oracle_upper_bound.v1",
+    "selected_arm_counts": {
+      "A0_COT_96_FIXED": 1,
+      "A1_COT_256_FIXED": 46,
+      "A2_COT_512_FIXED": 16,
+      "A3_ADAPTIVE_MONITOR": 3,
+      "A4_ANSWER_ONLY_96": 25,
+      "NO_ARM_CORRECT": 9
+    },
+    "status": "TEACHER_ONLY_LABEL_LEAK_NOT_DEPLOYABLE",
+    "total_tokens": 25813
+  }
 }

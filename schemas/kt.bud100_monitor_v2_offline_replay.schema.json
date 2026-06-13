@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "accuracy": {},
+    "full_tokens_per_correct": {},
+    "row_count": {},
+    "schema_id": {
+      "const": "kt.bud100_monitor_v2_offline_replay.v1"
+    },
+    "selected_arm_counts": {},
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "row_count",
+    "accuracy",
+    "full_tokens_per_correct",
+    "selected_arm_counts"
+  ],
+  "type": "object"
+}

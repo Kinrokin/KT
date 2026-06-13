@@ -1,6 +1,6 @@
 # Current Context
 
-Head at census generation: `c3127af5349136b8058499690e4e15fac0525961`
+Head at census generation: `b4b967e3dd5921c3875408c16fe8780d6131b5e7`
 
 Current posture: BUD100 is canonical on public main and remains the next furnace candidate if this census finds no blockers.
 

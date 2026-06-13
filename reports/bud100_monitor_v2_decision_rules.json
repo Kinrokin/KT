@@ -1,0 +1,28 @@
+{
+  "claim_ceiling_preserved": true,
+  "decision_order": [
+    {
+      "action": "A2_COT_512_FIXED",
+      "condition": "default for uncertain multi_step_math when no legal predictive downshift model is bound",
+      "feature_legality": "PASS",
+      "rule_id": "COT512_DEFAULT_SAFE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    },
+    {
+      "action": "A4_ANSWER_ONLY_96",
+      "condition": "disabled until simple_arithmetic_or_direct_answer_confidence >= 0.95 is validated without label leakage",
+      "feature_legality": "LAB_ONLY_NOT_ACTIVE",
+      "rule_id": "ANSWER_ONLY_HIGH_CONFIDENCE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    },
+    {
+      "action": "A1_COT_256_FIXED",
+      "condition": "disabled until cot256_sufficiency_confidence >= 0.90 is validated without label leakage",
+      "feature_legality": "LAB_ONLY_NOT_ACTIVE",
+      "rule_id": "COT256_HIGH_CONFIDENCE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    }
+  ],
+  "schema_id": "kt.bud100_monitor_v2_decision_rules.v1",
+  "status": "PASS"
+}

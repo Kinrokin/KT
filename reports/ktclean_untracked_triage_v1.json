@@ -1,8 +1,74 @@
 {
   "claim_ceiling_preserved": true,
   "no_delete_authority": true,
-  "rows": [],
+  "rows": [
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "schemas/kt.bud100_monitor_v2_decision_rule.schema.json"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "schemas/kt.bud100_monitor_v2_failure_autopsy.schema.json"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "schemas/kt.bud100_monitor_v2_offline_replay.schema.json"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "schemas/kt.bud100_monitor_v2_policy.schema.json"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "scripts/build_bud100_monitor_v2_policy.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "scripts/compare_bud100_v2_against_fixed512.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "scripts/ktbud100_v2_policy_common.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "scripts/replay_bud100_monitor_v2_offline.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "scripts/score_bud100_monitor_v2_policy.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "tests/test_bud100_monitor_v2_claim_ceiling.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "tests/test_bud100_monitor_v2_offline_replay.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "tests/test_bud100_monitor_v2_policy_schema.py"
+    },
+    {
+      "action": "REVIEW_BEFORE_COMMIT_OR_EXTERNAL_STAGING",
+      "classification": "UNKNOWN_REVIEW_REQUIRED",
+      "path": "tests/test_bud100_monitor_v2_vs_fixed512.py"
+    }
+  ],
   "schema_id": "kt.ktclean_untracked_triage.v1",
-  "status": "PASS_EMPTY",
-  "total_untracked": 0
+  "status": "REVIEW_REQUIRED",
+  "total_untracked": 13
 }

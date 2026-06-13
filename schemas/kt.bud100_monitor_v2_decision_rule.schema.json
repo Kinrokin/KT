@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "action": {},
+    "condition": {},
+    "feature_legality": {},
+    "rule_id": {},
+    "schema_id": {
+      "const": "kt.bud100_monitor_v2_decision_rule.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "rule_id",
+    "action",
+    "condition",
+    "feature_legality"
+  ],
+  "type": "object"
+}
