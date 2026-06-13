@@ -7,15 +7,78 @@
     "runtime_authority": false,
     "training_authority": false
   },
+  "baseline": {
+    "accuracy": 0.91,
+    "current_best": "A2_COT_512_FIXED",
+    "full_tokens_per_correct": 374.57142857142856
+  },
   "claim_ceiling_preserved": true,
+  "decision_order": [
+    {
+      "action": "A2_COT_512_FIXED",
+      "condition": "default for uncertain multi_step_math when no legal predictive downshift model is bound",
+      "feature_legality": "PASS",
+      "rule_id": "COT512_DEFAULT_SAFE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    },
+    {
+      "action": "A4_ANSWER_ONLY_96",
+      "condition": "disabled until simple_arithmetic_or_direct_answer_confidence >= 0.95 is validated without label leakage",
+      "feature_legality": "LAB_ONLY_NOT_ACTIVE",
+      "rule_id": "ANSWER_ONLY_HIGH_CONFIDENCE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    },
+    {
+      "action": "A1_COT_256_FIXED",
+      "condition": "disabled until cot256_sufficiency_confidence >= 0.90 is validated without label leakage",
+      "feature_legality": "LAB_ONLY_NOT_ACTIVE",
+      "rule_id": "COT256_HIGH_CONFIDENCE",
+      "schema_id": "kt.bud100_monitor_v2_decision_rule.v1"
+    }
+  ],
+  "feature_legality": {
+    "allowed_intra_generation_features": [
+      "final_marker_detected",
+      "budget_cap_hit",
+      "output_tokens_used",
+      "numeric_surface_count"
+    ],
+    "allowed_pre_generation_features": [
+      "question_length_tokens",
+      "number_count",
+      "operation_keyword_count",
+      "contains_rate_or_ratio_terms",
+      "contains_percent_terms",
+      "contains_unit_conversion_terms",
+      "contains_multi_entity_tracking_terms",
+      "contains_comparison_terms",
+      "estimated_step_count"
+    ],
+    "forbidden_features": [
+      "expected_answer",
+      "ground_truth_correctness",
+      "row_id_memorization",
+      "measured_arm_correctness_as_selector",
+      "posthoc_label_leak"
+    ],
+    "legal_predictive_downshift_model_bound": false,
+    "status": "PASS_CONSERVATIVE"
+  },
+  "forbidden": [
+    "default_to_96_for_multi_step_math",
+    "compress_reasoning_before_correctness",
+    "production_prompt_mutation",
+    "adapter_mutation",
+    "training_authority",
+    "posthoc_correctness_feature"
+  ],
   "multi_step_math": {
-    "allow_answer_only": "only_if deterministic/simple-arithmetic classifier confidence >= 0.95",
-    "allow_downshift_to_256": "only_if_task_complexity_classifier_confidence >= 0.90 and historical row-class error risk low",
     "default_budget": 512,
-    "extension_policy": "disabled_by_default; use only for hard_ceiling rows after V2 repair study",
+    "status": "FIXED512_BASELINE_RETAINED_UNTIL_LEGAL_DOWNSHIFT_MODEL_EXISTS",
     "stop_on_final_marker": true
   },
   "policy_id": "BUDGET_MONITOR_MATH_V2_CANDIDATE",
-  "schema_id": "kt.bud100.monitor_v2_candidate_policy.v1",
+  "schema_id": "kt.bud100_monitor_v2_policy.v1",
+  "scope": "GSM8K-style multi_step_math only",
   "status": "DESIGN_ONLY_NO_PRODUCTION_AUTHORITY"
 }

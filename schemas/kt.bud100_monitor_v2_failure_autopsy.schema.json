@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "damage_count": {},
+    "fixed512_dominant": {},
+    "next_lawful_move": {},
+    "schema_id": {
+      "const": "kt.bud100_monitor_v2_failure_autopsy.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "damage_count",
+    "fixed512_dominant",
+    "next_lawful_move"
+  ],
+  "type": "object"
+}

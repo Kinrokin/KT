@@ -1,0 +1,24 @@
+{
+  "claim_ceiling_preserved": true,
+  "inputs": [
+    "reports/bud100_scorecard_reconciliation.json",
+    "reports/bud100_budget_curve_scorecard.json",
+    "reports/bud100_row_level_policy_matrix.jsonl",
+    "reports/bud100_arm_win_matrix.json",
+    "reports/bud100_adaptive_vs_cot512_delta_matrix.json",
+    "reports/bud100_extension_failure_autopsy.json",
+    "reports/bud100_hard_ceiling_failure_rows.jsonl",
+    "reports/bud100_answer_only_salvage_rows.jsonl",
+    "reports/bud100_cot256_sufficient_rows.jsonl",
+    "reports/bud100_cot512_required_rows.jsonl",
+    "reports/bud100_all_budget_arms_fail_rows.jsonl",
+    "reports/bud100_monitor_wrong_but_cot512_right_rows.jsonl",
+    "reports/bud100_monitor_right_but_cot512_wrong_rows.jsonl",
+    "reports/bud100_token_economics_by_row.jsonl",
+    "reports/bud100_cost_optimal_oracle_policy.json"
+  ],
+  "live_repo_truth_wins": true,
+  "method_lock_applied": true,
+  "schema_id": "kt.bud100_v2.source_evidence_index.v1",
+  "status": "PASS"
+}
