@@ -1,26 +1,19 @@
 {
   "blockers": [],
-  "branch": "codex/bud100-review-v1",
+  "branch": "codex/bud100-review-main-replay-v1",
   "claim_ceiling_status": "PRESERVED",
-  "current_head": "435a55471730bc0e243c93b45fb573c7817ce447",
+  "current_head": "c3127af5349136b8058499690e4e15fac0525961",
   "current_next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
   "current_packet_hashes": {
     "packets/ktbud100_v1.zip": "216eb74184cf5649e9d9ba2a08401b34ad29df02362578c5b4569b27c232e500"
   },
   "dirty_files": [
     "admission/bud100_adaptive_monitor_v2_candidate_policy.json",
-    "governance/repo_layout_contract.json",
-    "memory/ACTIVE_CUTLINE.md",
     "memory/ARTIFACT_INDEX.json",
     "memory/CURRENT_CONTEXT.md",
     "memory/DECISION_LOG.jsonl",
-    "memory/MISTAKE_LEDGER.md",
-    "memory/NEXT_LAWFUL_MOVE.md",
-    "packets/current/manifest.json",
     "registry/artifact_authority_registry.json",
-    "registry/artifact_authority_registry.schema.json",
     "reports/artifact_authority_registry_receipt.json",
-    "reports/artifact_supersession_map_v1.json",
     "reports/bud100_adaptive_monitor_v2_design_receipt.json",
     "reports/bud100_adaptive_vs_cot512_delta_matrix.json",
     "reports/bud100_all_budget_arms_fail_rows.jsonl",
@@ -38,7 +31,6 @@
     "reports/bud100_import_predecessor_map.json",
     "reports/bud100_live_repo_delta_if_any.json",
     "reports/bud100_monitor_not_production_ready_receipt.json",
-    "reports/bud100_monitor_right_but_cot512_wrong_rows.jsonl",
     "reports/bud100_monitor_v1_failure_modes.json",
     "reports/bud100_monitor_v2_expected_gain_model.json",
     "reports/bud100_monitor_v2_no_production_mutation_receipt.json",
@@ -56,40 +48,16 @@
     "reports/bud100_training_not_authorized_receipt.json",
     "reports/bud100_truth_pin_receipt.json",
     "reports/current/current_truth_receipt.json",
-    "reports/duplicate_artifact_resolution_plan_v1.json",
-    "reports/external_archive_move_plan_v1.json",
-    "reports/generated_artifact_quarantine_plan_v1.json",
-    "reports/kt_memory_ledger_bootstrap_plan.json",
-    "reports/ktclean_untracked_triage_v1.json",
     "reports/repo_bloat_heatmap_v1.json",
     "reports/repo_duplicate_content_index_v1.json",
-    "reports/repo_duplicate_filename_index_v1.json",
     "reports/repo_generated_artifact_index_v1.json",
     "reports/repo_large_file_index_v1.json",
-    "reports/repo_path_length_risk_index_v1.json",
     "reports/repo_pristine_census_v1.json",
     "reports/repo_stale_head_reference_index_v1.json",
-    "reports/repo_unregistered_controlling_artifact_index_v1.json",
-    "reports/stale_packet_quarantine_plan_v1.json",
-    "reports/unknown_artifact_review_queue.json",
-    "rules/ARCHIVE_QUARANTINE_POLICY.md",
-    "rules/GENERATED_ARTIFACT_POLICY.md",
-    "rules/NO_BLOAT_EXECUTION_RULES.md",
-    "rules/PACKET_NAMING_POLICY.md",
     "schemas/kt.bud100_assessment_import_receipt.schema.json",
     "schemas/kt.bud100_budget_scorecard.schema.json",
     "schemas/kt.bud100_monitor_v2_design.schema.json",
-    "schemas/kt.bud100_row_policy_autopsy.schema.json",
-    "scripts/build_bud100_row_policy_autopsy.py",
-    "scripts/design_bud100_adaptive_monitor_v2.py",
-    "scripts/import_bud100_assessment.py",
-    "scripts/ktbud100_review_common.py",
-    "scripts/reconcile_bud100_scorecard.py",
-    "tests/test_bud100_assessment_import.py",
-    "tests/test_bud100_claim_ceiling.py",
-    "tests/test_bud100_monitor_v2_design.py",
-    "tests/test_bud100_row_policy_autopsy.py",
-    "tests/test_bud100_scorecard_reconciliation.py"
+    "schemas/kt.bud100_row_policy_autopsy.schema.json"
   ],
   "duplicate_current_authority_status": "PASS",
   "extension_counts": {
@@ -125,8 +93,8 @@
     ".zip": 35,
     "<none>": 6
   },
-  "generated_utc": "2026-06-13T16:29:50Z",
-  "git_object_size": "count: 2284\nsize: 1.16 GiB\nin-pack: 28364\npacks: 7\nsize-pack: 21.50 MiB\nprune-packable: 33\ngarbage: 0\nsize-garbage: 0 bytes",
+  "generated_utc": "2026-06-13T17:50:25Z",
+  "git_object_size": "count: 2309\nsize: 1.16 GiB\nin-pack: 28364\npacks: 7\nsize-pack: 21.50 MiB\nprune-packable: 33\ngarbage: 0\nsize-garbage: 0 bytes",
   "largest_tracked_files": [
     {
       "path": "reports/v17_7_4_math_corpus_record_table.jsonl",
@@ -186,7 +154,7 @@
     {
       "path": "registry/artifact_authority_registry.json",
       "primary_class": "CANONICAL_GOVERNANCE",
-      "size_bytes": 6661149
+      "size_bytes": 6661150
     },
     {
       "path": "reports/v17_7_4_math_corpus_schema_inference.json",
@@ -221,7 +189,7 @@
     {
       "path": "reports/repo_generated_artifact_index_v1.json",
       "primary_class": "CANONICAL_RECEIPT_CURRENT",
-      "size_bytes": 938360
+      "size_bytes": 938361
     },
     {
       "path": "KT_PROD_CLEANROOM/reports/kt_tag_catalog.json",
@@ -417,7 +385,6 @@
     "reports/bud100_import_predecessor_map.json",
     "reports/bud100_live_repo_delta_if_any.json",
     "reports/bud100_monitor_not_production_ready_receipt.json",
-    "reports/bud100_monitor_right_but_cot512_wrong_rows.jsonl",
     "reports/bud100_monitor_v1_failure_modes.json",
     "reports/bud100_monitor_v2_expected_gain_model.json",
     "reports/bud100_monitor_v2_no_production_mutation_receipt.json",
@@ -437,17 +404,7 @@
     "schemas/kt.bud100_assessment_import_receipt.schema.json",
     "schemas/kt.bud100_budget_scorecard.schema.json",
     "schemas/kt.bud100_monitor_v2_design.schema.json",
-    "schemas/kt.bud100_row_policy_autopsy.schema.json",
-    "scripts/build_bud100_row_policy_autopsy.py",
-    "scripts/design_bud100_adaptive_monitor_v2.py",
-    "scripts/import_bud100_assessment.py",
-    "scripts/ktbud100_review_common.py",
-    "scripts/reconcile_bud100_scorecard.py",
-    "tests/test_bud100_assessment_import.py",
-    "tests/test_bud100_claim_ceiling.py",
-    "tests/test_bud100_monitor_v2_design.py",
-    "tests/test_bud100_row_policy_autopsy.py",
-    "tests/test_bud100_scorecard_reconciliation.py"
+    "schemas/kt.bud100_row_policy_autopsy.schema.json"
   ],
   "untracked_files": [],
   "worktree_clean": false,
