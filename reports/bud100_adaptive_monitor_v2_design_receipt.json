@@ -1,0 +1,50 @@
+{
+  "authority": {
+    "adapter_mutation_authority": false,
+    "dataset_generation_authority": false,
+    "production_prompt_mutation_authority": false,
+    "promotion_authority": false,
+    "runtime_authority": false,
+    "training_authority": false
+  },
+  "claim_ceiling_preserved": true,
+  "design_principles": [
+    "Default multi_step_math to 512 unless a high-confidence downshift is justified.",
+    "Do not use multi-pass extension when fixed 512 is cheaper or stronger.",
+    "Stop on final marker with streaming stopping when feasible.",
+    "Preserve full token accounting.",
+    "Do not compress internal reasoning before math capability is stable.",
+    "Compress delivery/final answer before reasoning."
+  ],
+  "input_autopsy": {
+    "answer_only_sufficient_count": 25,
+    "capability_gap_count": 9,
+    "claim_ceiling_preserved": true,
+    "classification_counts": {
+      "ANSWER_ONLY_SUFFICIENT": 25,
+      "CAPABILITY_GAP": 9,
+      "COT256_SUFFICIENT": 71,
+      "COT512_REQUIRED": 20,
+      "EXTENSION_HARM_OR_INSUFFICIENCY": 5,
+      "HARD_CEILING_FAILURE": 2,
+      "MONITOR_POLICY_FAILURE": 2,
+      "MONITOR_RECOVERY": 0,
+      "OVERTHINK_RISK": 0,
+      "TOKEN_STARVATION": 89
+    },
+    "cot256_sufficient_count": 71,
+    "cot512_required_count": 20,
+    "extension_harm_or_insufficiency_count": 5,
+    "hard_ceiling_failure_count": 2,
+    "monitor_policy_failure_count": 2,
+    "monitor_recovery_count": 0,
+    "overthink_risk_count": 0,
+    "row_count": 100,
+    "schema_id": "kt.bud100_row_policy_autopsy.v1",
+    "status": "PASS",
+    "token_starvation_count": 89
+  },
+  "policy_id": "BUDGET_MONITOR_MATH_V2_CANDIDATE",
+  "schema_id": "kt.bud100_monitor_v2_design.v1",
+  "status": "PASS_DESIGN_ONLY"
+}

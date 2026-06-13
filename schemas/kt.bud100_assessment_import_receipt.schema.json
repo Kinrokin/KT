@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assessment_sha256": {},
+    "claim_ceiling_preserved": {},
+    "overlap_with_bud25": {},
+    "row_count": {},
+    "row_slice": {},
+    "schema_id": {},
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "assessment_sha256",
+    "row_count",
+    "row_slice",
+    "overlap_with_bud25",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

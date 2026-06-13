@@ -1,0 +1,21 @@
+{
+  "authority": {
+    "adapter_mutation_authority": false,
+    "dataset_generation_authority": false,
+    "production_prompt_mutation_authority": false,
+    "promotion_authority": false,
+    "runtime_authority": false,
+    "training_authority": false
+  },
+  "claim_ceiling_preserved": true,
+  "multi_step_math": {
+    "allow_answer_only": "only_if deterministic/simple-arithmetic classifier confidence >= 0.95",
+    "allow_downshift_to_256": "only_if_task_complexity_classifier_confidence >= 0.90 and historical row-class error risk low",
+    "default_budget": 512,
+    "extension_policy": "disabled_by_default; use only for hard_ceiling rows after V2 repair study",
+    "stop_on_final_marker": true
+  },
+  "policy_id": "BUDGET_MONITOR_MATH_V2_CANDIDATE",
+  "schema_id": "kt.bud100.monitor_v2_candidate_policy.v1",
+  "status": "DESIGN_ONLY_NO_PRODUCTION_AUTHORITY"
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "best_measured_arm": {},
+    "schema_id": {},
+    "scorecard": {},
+    "status": {},
+    "token_budget_sensitivity_confirmed": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "scorecard",
+    "token_budget_sensitivity_confirmed",
+    "best_measured_arm"
+  ],
+  "type": "object"
+}

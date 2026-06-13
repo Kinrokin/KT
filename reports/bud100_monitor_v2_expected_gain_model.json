@@ -1,0 +1,12 @@
+{
+  "claim_ceiling_preserved": true,
+  "expected_gain_sources": [
+    "Preserve fixed 512 accuracy as default for multi_step_math.",
+    "Recover cost on rows where answer-only or 256 is sufficient.",
+    "Avoid V1 extension overhead unless a row class demands continuation."
+  ],
+  "measured_gain_claim": false,
+  "requires_followup_policy_replay": true,
+  "schema_id": "kt.bud100.monitor_v2_expected_gain_model.v1",
+  "status": "DESIGN_ONLY_NO_MEASURED_GAIN"
+}
