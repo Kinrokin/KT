@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "budget_knee_candidate": {},
+    "claim_boundary": {},
+    "marginal_efficiency_by_transition": {},
+    "method": {},
+    "schema_id": {
+      "const": "kt.ktpareto.knee_detection.v1"
+    },
+    "sse_by_breakpoint": {}
+  },
+  "required": [
+    "schema_id",
+    "method",
+    "budget_knee_candidate",
+    "marginal_efficiency_by_transition",
+    "sse_by_breakpoint",
+    "claim_boundary"
+  ],
+  "type": "object"
+}

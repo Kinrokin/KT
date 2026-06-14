@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dataset": {},
+    "overlap_with_bud100": {},
+    "overlap_with_bud25": {},
+    "overlap_with_kt512base": {},
+    "row_count": {},
+    "schema_id": {
+      "const": "kt.ktpareto.row_policy.v1"
+    },
+    "slice_end": {},
+    "slice_start": {},
+    "split": {}
+  },
+  "required": [
+    "schema_id",
+    "dataset",
+    "split",
+    "slice_start",
+    "slice_end",
+    "row_count",
+    "overlap_with_bud25",
+    "overlap_with_bud100",
+    "overlap_with_kt512base"
+  ],
+  "type": "object"
+}

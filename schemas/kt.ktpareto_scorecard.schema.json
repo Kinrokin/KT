@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "accuracy": {},
+    "arm_id": {},
+    "correct": {},
+    "full_tokens_per_correct": {},
+    "row_count": {},
+    "schema_id": {
+      "const": "kt.ktpareto.scorecard.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "arm_id",
+    "correct",
+    "row_count",
+    "accuracy",
+    "full_tokens_per_correct"
+  ],
+  "type": "object"
+}

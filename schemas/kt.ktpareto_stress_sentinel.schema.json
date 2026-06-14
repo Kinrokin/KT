@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {},
+    "schema_id": {
+      "const": "kt.ktpareto.stress_sentinel.v1"
+    },
+    "status": {},
+    "stress_rows": {},
+    "variants_per_row": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "stress_rows",
+    "variants_per_row",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

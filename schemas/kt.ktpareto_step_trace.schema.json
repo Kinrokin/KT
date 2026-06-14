@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "arm_id": {},
+    "raw_output_hash": {},
+    "row_id": {},
+    "schema_id": {
+      "const": "kt.ktpareto.step_trace.v1"
+    },
+    "step_count": {},
+    "steps": {},
+    "verifier_training_authority": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "arm_id",
+    "raw_output_hash",
+    "step_count",
+    "steps",
+    "verifier_training_authority"
+  ],
+  "type": "object"
+}
