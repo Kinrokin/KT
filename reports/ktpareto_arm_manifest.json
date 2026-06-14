@@ -1,0 +1,71 @@
+{
+  "arms": [
+    {
+      "arm_id": "A0_COT_96_FIXED",
+      "budget": 96,
+      "claim_bound": "under_evaluation_low_budget_diagnostic_only",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A1_COT_192_FIXED",
+      "budget": 192,
+      "claim_bound": "under_evaluation_low_budget_diagnostic_only",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A2_COT_256_FIXED",
+      "budget": 256,
+      "claim_bound": "known_prior_false_economy_risk_not_globally_safe",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A3_COT_320_FIXED",
+      "budget": 320,
+      "claim_bound": "under_evaluation",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A4_COT_384_FIXED",
+      "budget": 384,
+      "claim_bound": "under_evaluation",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A5_COT_448_FIXED",
+      "budget": 448,
+      "claim_bound": "under_evaluation",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A6_COT_512_FIXED_CONTROL",
+      "budget": 512,
+      "claim_bound": "current_measured_control_must_be_remeasured_on_this_slice",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A7_COT_640_FIXED_SENTINEL",
+      "budget": 640,
+      "claim_bound": "sentinel_not_deployable_by_default",
+      "mode": "cot"
+    },
+    {
+      "arm_id": "A8_ANSWER_ONLY_NO_COT",
+      "budget": 96,
+      "claim_bound": "weak_simple_row_control_only_not_gsm8k_strategy",
+      "mode": "answer_only"
+    },
+    {
+      "arm_id": "A9_ORACLE_DIAGNOSTIC_PER_ARM",
+      "budget": null,
+      "claim_bound": "hindsight_only_non_deployable",
+      "mode": "oracle"
+    }
+  ],
+  "claim_ceiling_preserved": true,
+  "cot640_sentinel_arm": "A7_COT_640_FIXED_SENTINEL",
+  "fixed512_control_arm": "A6_COT_512_FIXED_CONTROL",
+  "oracle_diagnostic_arm": "A9_ORACLE_DIAGNOSTIC_PER_ARM",
+  "run_mode": "RUN_KT_BUDGET_PARETO_SWEEP_GSM8K_100",
+  "schema_id": "kt.ktpareto.arm_manifest.v1",
+  "status": "PASS"
+}

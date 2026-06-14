@@ -1,0 +1,19 @@
+{
+  "claim_ceiling_preserved": true,
+  "dataset": "openai/gsm8k",
+  "overlap_with_bud100": false,
+  "overlap_with_bud25": false,
+  "overlap_with_kt512base": false,
+  "predecessor_slices": {
+    "BUD100": "openai/gsm8k:test[25:125]",
+    "KT512BASE": "openai/gsm8k:test[125:325]",
+    "KTPARETO": "openai/gsm8k:test[325:425]"
+  },
+  "row_count": 100,
+  "row_slice": "openai/gsm8k:test[325:425]",
+  "schema_id": "kt.ktpareto.row_policy.v1",
+  "slice_end": 425,
+  "slice_start": 325,
+  "split": "test",
+  "status": "PASS"
+}

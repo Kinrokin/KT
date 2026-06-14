@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "arm_id": {},
+    "claim_bound": {},
+    "promotion_authority": {},
+    "schema_id": {
+      "const": "kt.ktpareto.claim_bounds.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "arm_id",
+    "claim_bound",
+    "promotion_authority"
+  ],
+  "type": "object"
+}

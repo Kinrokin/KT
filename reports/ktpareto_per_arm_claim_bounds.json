@@ -1,0 +1,86 @@
+{
+  "rows": [
+    {
+      "arm_id": "A0_COT_96_FIXED",
+      "claim_bound": "under_evaluation_low_budget_diagnostic_only",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A1_COT_192_FIXED",
+      "claim_bound": "under_evaluation_low_budget_diagnostic_only",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A2_COT_256_FIXED",
+      "claim_bound": "known_prior_false_economy_risk_not_globally_safe",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A3_COT_320_FIXED",
+      "claim_bound": "under_evaluation",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A4_COT_384_FIXED",
+      "claim_bound": "under_evaluation",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A5_COT_448_FIXED",
+      "claim_bound": "under_evaluation",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A6_COT_512_FIXED_CONTROL",
+      "claim_bound": "current_measured_control_must_be_remeasured_on_this_slice",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A7_COT_640_FIXED_SENTINEL",
+      "claim_bound": "sentinel_not_deployable_by_default",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A8_ANSWER_ONLY_NO_COT",
+      "claim_bound": "weak_simple_row_control_only_not_gsm8k_strategy",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    },
+    {
+      "arm_id": "A9_ORACLE_DIAGNOSTIC_PER_ARM",
+      "claim_bound": "hindsight_only_non_deployable",
+      "claim_ceiling_preserved": true,
+      "promotion_authority": false,
+      "runtime_selector_deployment": false,
+      "schema_id": "kt.ktpareto.claim_bounds.v1"
+    }
+  ],
+  "schema_id": "kt.ktpareto.claim_bounds_set.v1",
+  "status": "PASS"
+}
