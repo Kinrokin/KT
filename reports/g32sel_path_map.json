@@ -1,0 +1,21 @@
+{
+  "claim_ceiling_preserved": true,
+  "current_surface_patching_rule": "PATCH_EXISTING_SURFACES_WHEN_EQUIVALENT",
+  "new_surfaces_required_because_no_equivalent_existed": [
+    "policies/g32_noregret_v1.json",
+    "schemas/kt.process_verifier.v1.schema.json",
+    "reports/g32_selector_replay.json",
+    "reports/g32_next_ledger.json"
+  ],
+  "patched_existing_surfaces": [
+    "scripts/kt512g32_common.py",
+    "scripts/import_kt512base_assessment.py",
+    "scripts/validate_kt512g32_import.py",
+    "schemas/kt.no_regret_selector_policy.schema.json",
+    "schemas/kt.cheapest_correct_oracle_frontier.schema.json",
+    "tests/test_kt512base_no_regret_selector_negative_class.py",
+    "tests/test_kt512base_oracle_frontier_not_deployable.py"
+  ],
+  "schema_id": "kt.g32sel.path_map.v1",
+  "status": "PASS"
+}

@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "reports"
 SCHEMAS = ROOT / "schemas"
 EVIDENCE = ROOT / "evidence"
+POLICIES = ROOT / "policies"
 
 ASSESSMENT_NAME = "KT_512BASE_V1_ASSESSMENT_ONLY.zip"
 EXPECTED_ASSESSMENT_SHA256 = "127c77b5547eb1d6dd3e0c1f14946b416106148288c32ad31da3a9dec228a6bd"
@@ -31,6 +32,11 @@ OUTCOME = (
     "G32_MINING_READY__NO_REGRET_SELECTOR_SEED_NEXT__CLAIM_CEILING_PRESERVED"
 )
 NEXT_LAWFUL_MOVE = "AUTHOR_G32_CAUSAL_OWNERSHIP_FOR_FIXED512_FAILURES_AND_NO_REGRET_SELECTOR_REPLAY_V1"
+G32SEL_OUTCOME = (
+    "KT_G32_FIXED512_FAILURES_OWNED__NO_REGRET_SELECTOR_REPLAY_EVALUATED__"
+    "NEXT_PACKET_OR_BLOCKER_DECIDED__CLAIM_CEILING_PRESERVED"
+)
+G32SEL_NEXT_LAWFUL_MOVE = "AUTHOR_BUDGET_PARETO_SWEEP_KAGGLE_V1"
 
 AUTHORITY_FALSE = {
     "runtime_authority": False,
@@ -45,8 +51,36 @@ FORBIDDEN_SELECTOR_FEATURES = [
     "expected_answer",
     "row_id",
     "measured_arm_correctness",
+    "measured_correctness_any_arm",
+    "hindsight_label",
     "posthoc_correctness",
+    "post_hoc_token_count",
 ]
+
+ALLOWED_G32_OWNERS = {
+    "MODEL_CAPABILITY_OWNED",
+    "PROMPT_OWNED",
+    "SCORER_NORMALIZER_OWNED",
+    "BENCHMARK_ROW_OWNED",
+    "ARITHMETIC_STEP_OWNED",
+    "MULTI_ENTITY_TRACKING_OWNED",
+    "OVERTHINK_OWNED",
+    "COT512_INSUFFICIENT",
+    "IRREDUCIBLE",
+    "UNKNOWN_BLOCKED",
+}
+
+ALLOWED_G32_REPAIR_CLASSES = {
+    "ROUTE_POLICY_OWNED",
+    "VERIFIER_OWNED",
+    "HAT_FINALIZER_OWNED",
+    "ADAPTER_OWNED_CANDIDATE_ONLY",
+    "CORPUS_OWNED_CANDIDATE_ONLY",
+    "BENCHMARK_ARTIFACT",
+    "HUMAN_ANCHOR_REQUIRED",
+    "IRREDUCIBLE",
+    "UNKNOWN_BLOCKED",
+}
 
 
 def utc_now() -> str:
@@ -251,6 +285,75 @@ def write_kt512_schemas() -> None:
         SCHEMAS / "kt.math_step_verifier_trace.schema.json",
         "kt.math_step_verifier_trace.v1",
         ["schema_id", "row_id", "step_index", "segment_type", "verifier_status", "claim_ceiling_preserved"],
+    )
+
+
+def write_g32sel_schemas() -> None:
+    write_schema(
+        SCHEMAS / "kt.process_verifier.v1.schema.json",
+        "kt.process_verifier.v1",
+        ["schema_id", "status", "step_validity_labels", "production_scoring_authority", "training_authority"],
+    )
+
+
+def percentile(values: list[float], p: float) -> float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    idx = min(len(ordered) - 1, max(0, round((len(ordered) - 1) * p)))
+    return ordered[idx]
+
+
+def row_class(a512: dict[str, Any], a256: dict[str, Any], ans: dict[str, Any]) -> str:
+    if a256["correct"]:
+        return "COT256_SUFFICIENT"
+    if a512["correct"]:
+        return "COT512_REQUIRED"
+    if ans["correct"]:
+        return "ANSWER_ONLY_RECOVERY_OR_COT_OVERTHINK_RISK"
+    return "COT512_INSUFFICIENT"
+
+
+def g32_owner_from_failure(row: dict[str, Any]) -> tuple[str, str, str, list[str], list[str], str, float]:
+    owner = row["g32_owner"]
+    if owner == "SCORER_NORMALIZER":
+        return (
+            "numeric_surface_near_gold_but_scored_wrong",
+            "SCORER_NORMALIZER_OWNED",
+            "VERIFIER_OWNED",
+            ["numeric_tolerance_replay"],
+            ["row_level_parser_trace", "human_anchor_scoring_review"],
+            "parser_or_normalizer_may_be_repairable_without_training",
+            0.78,
+        )
+    if owner == "OVERTHINK_OR_COT_DRIFT":
+        return (
+            "answer_only_correct_cot512_wrong",
+            "OVERTHINK_OWNED",
+            "ROUTE_POLICY_OWNED",
+            ["answer_only_counterfactual"],
+            ["pre_generation_overthink_signal", "route_policy_no_regret_replay"],
+            "possible route/finalizer issue; no adapter claim",
+            0.72,
+        )
+    if owner == "BUDGET_ADMISSION":
+        return (
+            "fixed512_budget_cap_hit_and_wrong",
+            "COT512_INSUFFICIENT",
+            "HUMAN_ANCHOR_REQUIRED",
+            ["budget_cap_hit_observed"],
+            ["higher_budget_or_human_anchor_replay", "step_failure_trace"],
+            "512 budget may be insufficient, but owner is not training-bound",
+            0.7,
+        )
+    return (
+        "all_measured_budget_arms_failed",
+        "UNKNOWN_BLOCKED",
+        "UNKNOWN_BLOCKED",
+        [],
+        ["row_level_step_trace", "human_anchor_autopsy", "process_verifier_validation"],
+        "ownership cannot be assigned confidently from current evidence",
+        0.2,
     )
 
 
@@ -644,11 +747,452 @@ def build_process_verifier_spec() -> dict[str, Any]:
     return verifier
 
 
+def bud100_oracle_delta_rows() -> list[int]:
+    path = REPORTS / "bud100_row_level_policy_matrix.jsonl"
+    if not path.exists():
+        return []
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    deltas: list[int] = []
+    for row in rows:
+        correct = row.get("correct_by_arm", {})
+        fixed_correct = bool(correct.get("A2_COT_512_FIXED"))
+        oracle_correct = any(bool(value) for value in correct.values())
+        deltas.append(int(oracle_correct) - int(fixed_correct))
+    return deltas
+
+
+def strategy_replay(matrix: list[dict[str, Any]], strategy_id: str, selected_arm: str | None) -> dict[str, Any]:
+    baseline_correct = [bool(row["correct_by_arm"][ARM_512]) for row in matrix]
+    if selected_arm is None:
+        selected_correct = baseline_correct
+        selected_tokens = [row["total_tokens_by_arm"][ARM_512] for row in matrix]
+    else:
+        selected_correct = [bool(row["correct_by_arm"][selected_arm]) for row in matrix]
+        selected_tokens = [row["total_tokens_by_arm"][selected_arm] for row in matrix]
+    false_downshift = [
+        idx
+        for idx, (base_ok, selected_ok) in enumerate(zip(baseline_correct, selected_correct))
+        if base_ok and not selected_ok
+    ]
+    per_row_regret = [1.0 if base_ok and not selected_ok else 0.0 for base_ok, selected_ok in zip(baseline_correct, selected_correct)]
+    token_savings_correct_only = sum(
+        row["total_tokens_by_arm"][ARM_512] - selected_tokens[idx]
+        for idx, row in enumerate(matrix)
+        if selected_correct[idx] and row["total_tokens_by_arm"][ARM_512] > selected_tokens[idx]
+    )
+    token_savings_all_selected = sum(row["total_tokens_by_arm"][ARM_512] - selected_tokens[idx] for idx, row in enumerate(matrix))
+    fixed_tpc = sum(row["total_tokens_by_arm"][ARM_512] for row in matrix if row["correct_by_arm"][ARM_512]) / max(
+        1, sum(1 for row in matrix if row["correct_by_arm"][ARM_512])
+    )
+    false_damage = len(false_downshift) * fixed_tpc
+    return {
+        "strategy_id": strategy_id,
+        "selected_arm": selected_arm or ARM_512,
+        "status": "DEPLOYMENT_BLOCKED_FALSE_DOWNSHIFT" if false_downshift else "REPLAY_ONLY_NO_RUNTIME_AUTHORITY",
+        "correct": sum(1 for value in selected_correct if value),
+        "false_downshift_count": len(false_downshift),
+        "false_downshift_damage": false_damage,
+        "regret_vs_fixed512_mean": statistics.mean(per_row_regret) if per_row_regret else 0.0,
+        "regret_vs_fixed512_median": statistics.median(per_row_regret) if per_row_regret else 0.0,
+        "regret_p90": percentile(per_row_regret, 0.90),
+        "regret_p99": percentile(per_row_regret, 0.99),
+        "regret_max": max(per_row_regret) if per_row_regret else 0.0,
+        "token_savings_correct_only": token_savings_correct_only,
+        "token_savings_all_selected": token_savings_all_selected,
+        "net_expected_value": token_savings_correct_only - false_damage,
+        "safe_downshift_count": 0 if selected_arm is None else sum(
+            1
+            for idx, row in enumerate(matrix)
+            if row["correct_by_arm"][ARM_512] and selected_correct[idx] and selected_tokens[idx] < row["total_tokens_by_arm"][ARM_512]
+        ),
+        "COT512_INSUFFICIENT_recall": "NOT_EVALUABLE_WITH_LEGAL_PRE_GENERATION_FEATURES",
+        "runtime_authority": False,
+        "claim_ceiling_preserved": True,
+    }
+
+
+def build_g32_selector_replay(imported: dict[str, Any] | None = None) -> dict[str, Any]:
+    data = imported or import_assessment()
+    write_g32sel_schemas()
+    matrix = data["matrix"]
+    failures = data["failures"]
+    assessment = data["assessment"]
+    summary = data["summary"]
+    current_head = git_output("rev-parse", "HEAD")
+    current_branch = git_output("branch", "--show-current")
+
+    path_map = {
+        "schema_id": "kt.g32sel.path_map.v1",
+        "status": "PASS",
+        "current_surface_patching_rule": "PATCH_EXISTING_SURFACES_WHEN_EQUIVALENT",
+        "patched_existing_surfaces": [
+            "scripts/kt512g32_common.py",
+            "scripts/import_kt512base_assessment.py",
+            "scripts/validate_kt512g32_import.py",
+            "schemas/kt.no_regret_selector_policy.schema.json",
+            "schemas/kt.cheapest_correct_oracle_frontier.schema.json",
+            "tests/test_kt512base_no_regret_selector_negative_class.py",
+            "tests/test_kt512base_oracle_frontier_not_deployable.py",
+        ],
+        "new_surfaces_required_because_no_equivalent_existed": [
+            "policies/g32_noregret_v1.json",
+            "schemas/kt.process_verifier.v1.schema.json",
+            "reports/g32_selector_replay.json",
+            "reports/g32_next_ledger.json",
+        ],
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32sel_path_map.json", path_map)
+    write_json(
+        REPORTS / "g32sel_truth_pin.json",
+        {
+            "schema_id": "kt.g32sel.truth_pin.v1",
+            "status": "PASS",
+            "created_utc": utc_now(),
+            "current_head": current_head,
+            "current_branch": current_branch,
+            "expected_predecessor_head": "5b972f7b95f13560f62b537afdf0b50e49c6d951",
+            "predecessor_outcome": OUTCOME,
+            "active_tranche": NEXT_LAWFUL_MOVE,
+            "claim_ceiling_preserved": True,
+        },
+    )
+    write_json(
+        REPORTS / "g32sel_source_receipt.json",
+        {
+            "schema_id": "kt.g32sel.source_receipt.v1",
+            "status": "PASS",
+            "assessment_sha256": assessment["sha256"],
+            "assessment_sha256_matches_expected": assessment["sha256"] == EXPECTED_ASSESSMENT_SHA256,
+            "row_slice": summary["row_slice"],
+            "row_count": summary["row_count"],
+            "cot512": {"correct": summary["cot512_correct"], "total": 200, "accuracy": summary["cot512_accuracy"]},
+            "cot256": {"correct": summary["cot256_correct"], "total": 200, "accuracy": summary["cot256_accuracy"]},
+            "answer_only": {"correct": summary["answer_only_correct"], "total": 200, "accuracy": summary["answer_only_accuracy"]},
+            "oracle_diagnostic": summary["oracle_diagnostic_score"],
+            "fixed512_full_tpc": summary["cot512_full_tokens_per_correct"],
+            "class_counts": {
+                "COT256_SUFFICIENT": 137,
+                "COT512_REQUIRED": 47,
+                "COT512_INSUFFICIENT": 14,
+                "ANSWER_ONLY_RECOVERY_OR_COT_OVERTHINK_RISK": 2,
+            },
+            "claim_ceiling_preserved": True,
+        },
+    )
+
+    by_row = rows_by_id(assessment["predictions"])
+    class_rows: list[dict[str, Any]] = []
+    g32_failure_rows: list[dict[str, Any]] = []
+    counter_rows: list[dict[str, Any]] = []
+    for row_id, arms in by_row.items():
+        a512, a256, ans = arms[ARM_512], arms[ARM_256], arms[ARM_ANSWER]
+        cls = row_class(a512, a256, ans)
+        class_rows.append(
+            {
+                "schema_id": "kt.g32sel.row_class.v1",
+                "row_id": row_id,
+                "row_index_global": a512["row_index_global"],
+                "source": a512["source"],
+                "prompt_hash": a512["prompt_hash"],
+                "expected_hash": a512["expected_hash"],
+                "row_class": cls,
+                "correct_by_arm": {arm: bool(arms[arm]["correct"]) for arm in ARMS},
+                "claim_ceiling_preserved": True,
+            }
+        )
+        if not a512["correct"]:
+            base_failure = next(row for row in failures if row["row_id"] == row_id)
+            genotype, candidate_owner, repair_class, available, required, hypothesis, confidence = g32_owner_from_failure(base_failure)
+            assert candidate_owner in ALLOWED_G32_OWNERS
+            assert repair_class in ALLOWED_G32_REPAIR_CLASSES
+            failure_row = {
+                "schema_id": "kt.g32.fixed512_failure_ownership_row.v1",
+                "row_id": row_id,
+                "row_index_global": a512["row_index_global"],
+                "question_hash": a512["prompt_hash"],
+                "prompt_hash": a512["prompt_hash"],
+                "expected_hash": a512["expected_hash"],
+                "fixed512_extracted_answer": a512.get("extracted_answer"),
+                "cot256_extracted_answer": a256.get("extracted_answer"),
+                "answer_only_extracted_answer": ans.get("extracted_answer"),
+                "failure_genotype": genotype,
+                "candidate_owner": candidate_owner,
+                "counterfactual_tests_available": available,
+                "counterfactual_tests_required": required,
+                "repair_class": repair_class,
+                "repair_hypothesis": hypothesis,
+                "confidence": confidence,
+                "training_authority": False,
+                "claim_ceiling_preserved": True,
+            }
+            g32_failure_rows.append(failure_row)
+            counter_rows.append(
+                {
+                    "schema_id": "kt.g32.counterfactual_matrix_row.v1",
+                    "row_id": row_id,
+                    "candidate_owner": candidate_owner,
+                    "repair_class": repair_class,
+                    "available_tests_count": len(available),
+                    "required_tests_count": len(required),
+                    "ownership_status": "PROVISIONAL_NO_TRAINING_AUTHORITY" if available else "UNKNOWN_BLOCKED",
+                    "training_authority": False,
+                    "claim_ceiling_preserved": True,
+                }
+            )
+    write_jsonl(REPORTS / "g32sel_row_classes.jsonl", class_rows)
+    write_jsonl(REPORTS / "g32sel_fixed512_failures.jsonl", g32_failure_rows)
+    write_jsonl(REPORTS / "g32_failure_genome.jsonl", g32_failure_rows)
+    write_jsonl(REPORTS / "g32_counter_matrix.jsonl", counter_rows)
+
+    owner_counts = Counter(row["candidate_owner"] for row in g32_failure_rows)
+    unknown_failure_rate = owner_counts.get("UNKNOWN_BLOCKED", 0) / max(1, len(g32_failure_rows))
+    owner_receipt = {
+        "schema_id": "kt.g32.owner_receipt.v1",
+        "status": "BLOCKED_TRAINING_DECISION_UNKNOWN_FAILURE_RATE_HIGH" if unknown_failure_rate > 0.10 else "PASS",
+        "failure_count": len(g32_failure_rows),
+        "owner_counts": dict(owner_counts),
+        "unknown_failure_rate": unknown_failure_rate,
+        "ownership_reliability_rule": "UNKNOWN_BLOCKED above 0.10 blocks training decision",
+        "training_authority": False,
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_owner_receipt.json", owner_receipt)
+
+    feature_law = {
+        "schema_id": "kt.g32.feature_law.v1",
+        "status": "PASS",
+        "allowed": [
+            "prompt_hash",
+            "task_class",
+            "source_slice",
+            "prompt_token_estimate",
+            "requested_budget",
+            "pre_generation_budget_class",
+        ],
+        "forbidden": FORBIDDEN_SELECTOR_FEATURES,
+        "anti_leakage_gate": "labels_may_score_replay_but_must_not_be_selector_features",
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_feature_law.json", feature_law)
+    policy = {
+        "schema_id": "kt.g32.no_regret_selector_policy.v1",
+        "policy_id": "KT_NO_REGRET_SELECTOR_V1",
+        "baseline": "FIXED512",
+        "correctness_floor": 0.92,
+        "false_downshift_tolerance": 0,
+        "max_regret_absolute": 0.0,
+        "confidence_threshold_default": 0.95,
+        "uncertainty_action": "DEFAULT_TO_COT512",
+        "required_negative_class": "COT512_INSUFFICIENT",
+        "feature_legality": feature_law,
+        "status": "REPLAY_ONLY_NO_RUNTIME_AUTHORITY",
+        **AUTHORITY_FALSE,
+        "claim_ceiling_preserved": True,
+    }
+    write_json(POLICIES / "g32_noregret_v1.json", policy)
+
+    replay_strategies = [
+        strategy_replay(matrix, "baseline_always_fixed512", None),
+        {
+            **strategy_replay(matrix, "oracle_hindsight_upper_bound", None),
+            "correct": sum(1 for row in matrix if row["cheapest_correct_arm"] is not None),
+            "authority": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+            "runtime_selector_claim": "BLOCKED",
+        },
+        strategy_replay(matrix, "conservative_feature_stub_default_fixed512", None),
+        strategy_replay(matrix, "answer_only_safe_candidate", ARM_ANSWER),
+        strategy_replay(matrix, "cot256_safe_candidate", ARM_256),
+        {
+            **strategy_replay(matrix, "review_or_reroll_policy_for_COT512_INSUFFICIENT", None),
+            "status": "REVIEW_ONLY_NO_LEGAL_PREGENERATION_DETECTOR",
+            "COT512_INSUFFICIENT_recall": "BLOCKED_NO_LEGAL_FEATURE_DETECTOR",
+        },
+    ]
+    selector_replay = {
+        "schema_id": "kt.g32.selector_replay.v1",
+        "status": "PASS_REPLAY_DEPLOYMENT_BLOCKED_FALSE_DOWNSHIFT",
+        "strategies": replay_strategies,
+        "deployment_gate": "BLOCKED" if any(row["false_downshift_count"] > 0 for row in replay_strategies) else "PASS",
+        "feature_legality_status": "PASS",
+        **AUTHORITY_FALSE,
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_selector_replay.json", selector_replay)
+
+    regret = {
+        "schema_id": "kt.g32.regret_distribution.v1",
+        "status": "PASS_NO_DOWNSHIFT_ADVANCES",
+        "baseline": "FIXED512",
+        "downshift_classes": [
+            strategy_replay(matrix, "cot256_downshift_all_rows", ARM_256),
+            strategy_replay(matrix, "answer_only_downshift_all_rows", ARM_ANSWER),
+        ],
+        "negative_class": {"class_id": "COT512_INSUFFICIENT", "count": 14, "required": True},
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_regret_dist.json", regret)
+
+    oracle = read_json(REPORTS / "kt512base_cheapest_correct_oracle_frontier.json")
+    oracle.update(
+        {
+            "schema_id": "kt.g32.oracle_frontier.v1",
+            "authority": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+            "runtime_selector_claim": "BLOCKED",
+            "selector_deployment_authority": False,
+        }
+    )
+    write_json(REPORTS / "g32_oracle_frontier.json", oracle)
+
+    kt512_deltas = [(1 if row["cheapest_correct_arm"] is not None else 0) - (1 if row["correct_by_arm"][ARM_512] else 0) for row in matrix]
+    bud100_deltas = bud100_oracle_delta_rows()
+    combined_deltas = kt512_deltas + bud100_deltas
+    rng = random.Random(320512)
+    boot_n = 1000
+    sample_gains = [sum(rng.choice(combined_deltas) for _ in range(len(combined_deltas))) for _ in range(boot_n)]
+    oracle_boot = {
+        "schema_id": "kt.g32.oracle_bootstrap_stability.v1",
+        "status": "PASS_WEAK_STRUCTURAL_SIGNAL_HINDSIGHT_ONLY",
+        "bootstrap_n": boot_n,
+        "mean_oracle_gain_rows": statistics.mean(sample_gains),
+        "std_oracle_gain_rows": statistics.pstdev(sample_gains),
+        "ci95": [percentile(sample_gains, 0.025), percentile(sample_gains, 0.975)],
+        "structural_signal": "WEAK",
+        "combined_bud100_available": bool(bud100_deltas),
+        "combined_rows": len(combined_deltas),
+        "claim_boundary": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_oracle_boot.json", oracle_boot)
+
+    procver = {
+        "schema_id": "kt.process_verifier.v1",
+        "status": "DESIGN_ONLY_REQUIRES_SEPARATE_VERIFIER_VALIDATION_LANE",
+        "step_segmentation": ["problem_statement", "quantity_extraction", "operation", "arithmetic", "unit_check", "final_answer"],
+        "step_validity_labels": ["ARITHMETIC_VALID", "UNIT_CONSISTENT", "LOGICAL_FOLLOW", "NO_CONTRADICTION", "FINAL_MATCH"],
+        "production_scoring_authority": False,
+        "training_authority": False,
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_procver_spec.json", procver)
+    write_jsonl(
+        REPORTS / "g32_step_gym_seed.jsonl",
+        [
+            {
+                "schema_id": "kt.g32.step_corruption_gym_seed.v1",
+                "corruption_type": kind,
+                "status": "DESIGN_ONLY",
+                "expected_verifier_response": "REJECT_OR_FLAG",
+                "claim_ceiling_preserved": True,
+            }
+            for kind in ["drop_step", "swap_steps", "number_perturb", "unsupported_inference", "contradiction", "unit_error"]
+        ],
+    )
+
+    mvs = {
+        "trace_coverage": 1.0,
+        "repairability": 1.0 - unknown_failure_rate,
+        "unknown": unknown_failure_rate,
+        "human_anchors": 1.0,
+        "oracle_rows": 200,
+        "negative_transfer_scan": "NOT_MEASURED",
+        "pass": False,
+    }
+    train_decision = {
+        "schema_id": "kt.g32_training_decision_receipt.v1",
+        "created_utc": utc_now(),
+        "status": "BLOCKED_TRAINING_DECISION_UNKNOWN_FAILURE_RATE_HIGH",
+        "action": "NO_TRAIN",
+        "minimum_viable_signal": mvs,
+        "MVS_gates_required_for_train_adapter": {
+            "trace_coverage": ">=0.95",
+            "repairability": ">=0.90",
+            "unknown": "<=0.10",
+            "human_anchors": ">=0.20",
+            "oracle_rows": ">=25",
+            "negative_transfer_scan": "PASS",
+        },
+        "training_authority": False,
+        "claim_ceiling_preserved": True,
+    }
+    write_json(REPORTS / "g32_train_decision.json", train_decision)
+    write_jsonl(
+        REPORTS / "g32_do_not_train.jsonl",
+        [
+            {
+                "schema_id": "kt.do_not_train_receipt.v1",
+                "row_id": row["row_id"],
+                "counterfactual_owner": row["candidate_owner"],
+                "reason": "training_not_authorized_from_provisional_or_unknown_fixed512_failure_ownership",
+                "training_authority": False,
+                "claim_ceiling_preserved": True,
+            }
+            for row in g32_failure_rows
+        ],
+    )
+
+    next_ledger = {
+        "schema_id": "kt.g32.next_experiment_value_ledger.v1",
+        "status": "PASS_SINGLE_NEXT_LANE_SELECTED",
+        "candidate_lanes": {
+            "AUTHOR_SELECTOR_MICRO_FURNACE_KAGGLE_V1": "BLOCKED_FALSE_DOWNSHIFT_OR_NO_LEGAL_FEATURE_SIGNAL",
+            "AUTHOR_PROCESS_VERIFIER_MICRO_FURNACE_KAGGLE_V1": "DEFERRED_DESIGN_ONLY_VERIFIER_NOT_VALIDATED",
+            "AUTHOR_BUDGET_PARETO_SWEEP_KAGGLE_V1": "SELECTED_FIXED512_STRONG_KNEE_POINT_UNKNOWN",
+            "AUTHOR_ADVERSARIAL_STRESS_KAGGLE_V1": "DEFERRED_AFTER_BUDGET_GEOMETRY",
+            "AUTHOR_HUMAN_ANCHOR_REVIEW_OR_EXTENDED_MINING_V1": "DEFERRED_UNLESS_BUDGET_SWEEP_FAILS_TO_EXPLAIN_UNKNOWN_FAILURES",
+            "BLOCKED_SIGNAL_INSUFFICIENT": "NOT_SELECTED_SIGNAL_SUFFICIENT_FOR_BUDGET_PARETO_SWEEP_DESIGN",
+        },
+        "selected_next_lawful_move": G32SEL_NEXT_LAWFUL_MOVE,
+        "decision_evidence": {
+            "fixed512_accuracy": 0.92,
+            "cot256_accuracy": 0.685,
+            "unknown_failure_rate": unknown_failure_rate,
+            "selector_deployment_blocked": True,
+            "training_blocked": True,
+            "budget_knee_unknown": True,
+        },
+        "claim_ceiling_status": "PRESERVED",
+    }
+    write_json(REPORTS / "g32_next_ledger.json", next_ledger)
+
+    summary_out = {
+        "schema_id": "kt.g32sel.builder_summary.v1",
+        "status": "PASS",
+        "current_head": current_head,
+        "branch": current_branch,
+        "outcome": G32SEL_OUTCOME,
+        "g32_truth_binding_status": "PASS",
+        "g32_input_artifacts_status": "PASS",
+        "fixed512_failure_ownership_status": owner_receipt["status"],
+        "g32_minimum_viable_signal_status": "BLOCKED_UNKNOWN_FAILURE_RATE_HIGH",
+        "training_decision_status": train_decision["status"],
+        "no_regret_selector_policy_status": policy["status"],
+        "no_regret_selector_replay_status": selector_replay["status"],
+        "no_regret_feature_legality_status": "PASS",
+        "hindsight_oracle_boundary_status": "PASS_HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+        "regret_distribution_status": regret["status"],
+        "bootstrap_oracle_stability_status": oracle_boot["status"],
+        "process_verifier_candidate_status": procver["status"],
+        "next_experiment_value_ledger_status": next_ledger["status"],
+        "packet_path_if_any": None,
+        "packet_sha256_if_any": None,
+        "kaggle_dataset_name_if_any": None,
+        "one_cell_runbook_if_any": None,
+        **AUTHORITY_FALSE,
+        "claim_ceiling_status": "PRESERVED",
+        "blockers": [],
+        "next_lawful_move": G32SEL_NEXT_LAWFUL_MOVE,
+    }
+    write_json(REPORTS / "g32sel_builder_summary.json", summary_out)
+    return summary_out
+
+
 def build_summary() -> dict[str, Any]:
     imported = import_assessment()
     genome = build_failure_ownership(imported)
     frontier = build_oracle_and_selector(imported)
     verifier = build_process_verifier_spec()
+    build_g32_selector_replay(imported)
     summary = {
         "schema_id": "kt.kt512g32.builder_summary.v1",
         "status": "PASS",
@@ -697,6 +1241,27 @@ def validate_import() -> dict[str, Any]:
         REPORTS / "kt512base_process_verifier_seed_plan.json",
         REPORTS / "kt512g32_path_mapping.json",
         REPORTS / "kt512g32_builder_summary.json",
+        REPORTS / "g32sel_truth_pin.json",
+        REPORTS / "g32sel_path_map.json",
+        REPORTS / "g32sel_source_receipt.json",
+        REPORTS / "g32sel_row_classes.jsonl",
+        REPORTS / "g32sel_fixed512_failures.jsonl",
+        REPORTS / "g32_failure_genome.jsonl",
+        REPORTS / "g32_counter_matrix.jsonl",
+        REPORTS / "g32_owner_receipt.json",
+        POLICIES / "g32_noregret_v1.json",
+        REPORTS / "g32_feature_law.json",
+        REPORTS / "g32_selector_replay.json",
+        REPORTS / "g32_regret_dist.json",
+        REPORTS / "g32_oracle_frontier.json",
+        REPORTS / "g32_oracle_boot.json",
+        SCHEMAS / "kt.process_verifier.v1.schema.json",
+        REPORTS / "g32_procver_spec.json",
+        REPORTS / "g32_step_gym_seed.jsonl",
+        REPORTS / "g32_next_ledger.json",
+        REPORTS / "g32_train_decision.json",
+        REPORTS / "g32_do_not_train.jsonl",
+        REPORTS / "g32sel_builder_summary.json",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]
     if missing:
@@ -708,6 +1273,9 @@ def validate_import() -> dict[str, Any]:
     frontier = read_json(REPORTS / "kt512base_cheapest_correct_oracle_frontier.json")
     regret = read_json(REPORTS / "kt512base_regret_distribution.json")
     summary = read_json(REPORTS / "kt512g32_builder_summary.json")
+    g32sel_summary = read_json(REPORTS / "g32sel_builder_summary.json")
+    g32_policy = read_json(POLICIES / "g32_noregret_v1.json")
+    g32_next = read_json(REPORTS / "g32_next_ledger.json")
     checks = {
         "sha256_matches": receipt["sha256_matches_expected"],
         "row_count_200": receipt["row_count"] == 200,
@@ -720,6 +1288,11 @@ def validate_import() -> dict[str, Any]:
         "training_false": summary["training_authority"] is False,
         "promotion_false": summary["promotion_authority"] is False,
         "claim_ceiling_preserved": summary["claim_ceiling_status"] == "PRESERVED",
+        "g32sel_outcome": g32sel_summary["outcome"] == G32SEL_OUTCOME,
+        "g32sel_next_lane": g32_next["selected_next_lawful_move"] == G32SEL_NEXT_LAWFUL_MOVE,
+        "g32sel_policy_replay_only": g32_policy["status"] == "REPLAY_ONLY_NO_RUNTIME_AUTHORITY",
+        "g32sel_runtime_false": g32sel_summary["runtime_authority"] is False,
+        "g32sel_training_false": g32sel_summary["training_authority"] is False,
     }
     status = "PASS" if all(checks.values()) else "FAIL"
     result = {

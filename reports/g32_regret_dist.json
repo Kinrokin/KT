@@ -1,0 +1,53 @@
+{
+  "baseline": "FIXED512",
+  "claim_ceiling_preserved": true,
+  "downshift_classes": [
+    {
+      "COT512_INSUFFICIENT_recall": "NOT_EVALUABLE_WITH_LEGAL_PRE_GENERATION_FEATURES",
+      "claim_ceiling_preserved": true,
+      "correct": 137,
+      "false_downshift_count": 47,
+      "false_downshift_damage": 15984.597826086956,
+      "net_expected_value": -15932.597826086956,
+      "regret_max": 1.0,
+      "regret_p90": 1.0,
+      "regret_p99": 1.0,
+      "regret_vs_fixed512_mean": 0.235,
+      "regret_vs_fixed512_median": 0.0,
+      "runtime_authority": false,
+      "safe_downshift_count": 6,
+      "selected_arm": "A1_COT_256_FIXED_ECONOMY",
+      "status": "DEPLOYMENT_BLOCKED_FALSE_DOWNSHIFT",
+      "strategy_id": "cot256_downshift_all_rows",
+      "token_savings_all_selected": 4285,
+      "token_savings_correct_only": 52
+    },
+    {
+      "COT512_INSUFFICIENT_recall": "NOT_EVALUABLE_WITH_LEGAL_PRE_GENERATION_FEATURES",
+      "claim_ceiling_preserved": true,
+      "correct": 30,
+      "false_downshift_count": 156,
+      "false_downshift_damage": 53055.260869565216,
+      "net_expected_value": -46713.260869565216,
+      "regret_max": 1.0,
+      "regret_p90": 1.0,
+      "regret_p99": 1.0,
+      "regret_vs_fixed512_mean": 0.78,
+      "regret_vs_fixed512_median": 1.0,
+      "runtime_authority": false,
+      "safe_downshift_count": 28,
+      "selected_arm": "A2_ANSWER_ONLY_96_CONTROL",
+      "status": "DEPLOYMENT_BLOCKED_FALSE_DOWNSHIFT",
+      "strategy_id": "answer_only_downshift_all_rows",
+      "token_savings_all_selected": 49567,
+      "token_savings_correct_only": 6342
+    }
+  ],
+  "negative_class": {
+    "class_id": "COT512_INSUFFICIENT",
+    "count": 14,
+    "required": true
+  },
+  "schema_id": "kt.g32.regret_distribution.v1",
+  "status": "PASS_NO_DOWNSHIFT_ADVANCES"
+}

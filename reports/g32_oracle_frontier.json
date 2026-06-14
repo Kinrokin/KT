@@ -1,0 +1,34 @@
+{
+  "authority": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+  "cheapest_correct_choice_counts": {
+    "A0_COT_512_FIXED_PRIMARY": 150,
+    "A1_COT_256_FIXED_ECONOMY": 6,
+    "A2_ANSWER_ONLY_96_CONTROL": 30,
+    "NO_ARM_CORRECT": 14
+  },
+  "claim_ceiling_preserved": true,
+  "fixed512_correct": 184,
+  "fixed512_full_tokens_per_correct": 379.0108695652174,
+  "fixed512_total_tokens": 69738,
+  "forbidden_selector_features_excluded": [
+    "expected_answer",
+    "row_id",
+    "measured_arm_correctness",
+    "measured_correctness_any_arm",
+    "hindsight_label",
+    "posthoc_correctness",
+    "post_hoc_token_count"
+  ],
+  "hindsight_oracle_correct": 186,
+  "hindsight_oracle_correctness_delta_vs_fixed512": 2,
+  "hindsight_oracle_full_tokens_per_correct": 306.21505376344084,
+  "hindsight_oracle_token_savings_vs_fixed512_total_tokens": 12782,
+  "hindsight_oracle_total_tokens": 56956,
+  "method": "per_row_choose_measured_correct_arm_with_min_total_tokens",
+  "must_not_claim_deployable_selector": true,
+  "rows_total": 200,
+  "runtime_selector_claim": "BLOCKED",
+  "schema_id": "kt.g32.oracle_frontier.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS_HINDSIGHT_ONLY"
+}

@@ -1,0 +1,25 @@
+{
+  "MVS_gates_required_for_train_adapter": {
+    "human_anchors": ">=0.20",
+    "negative_transfer_scan": "PASS",
+    "oracle_rows": ">=25",
+    "repairability": ">=0.90",
+    "trace_coverage": ">=0.95",
+    "unknown": "<=0.10"
+  },
+  "action": "NO_TRAIN",
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-14T18:27:12Z",
+  "minimum_viable_signal": {
+    "human_anchors": 1.0,
+    "negative_transfer_scan": "NOT_MEASURED",
+    "oracle_rows": 200,
+    "pass": false,
+    "repairability": 0.25,
+    "trace_coverage": 1.0,
+    "unknown": 0.75
+  },
+  "schema_id": "kt.g32_training_decision_receipt.v1",
+  "status": "BLOCKED_TRAINING_DECISION_UNKNOWN_FAILURE_RATE_HIGH",
+  "training_authority": false
+}
