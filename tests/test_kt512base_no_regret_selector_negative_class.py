@@ -4,7 +4,15 @@ import json
 from pathlib import Path
 
 
-FORBIDDEN = {"expected_answer", "row_id", "measured_arm_correctness", "posthoc_correctness"}
+FORBIDDEN = {
+    "expected_answer",
+    "row_id",
+    "measured_arm_correctness",
+    "measured_correctness_any_arm",
+    "hindsight_label",
+    "posthoc_correctness",
+    "post_hoc_token_count",
+}
 
 
 def load_json(path: str) -> dict:

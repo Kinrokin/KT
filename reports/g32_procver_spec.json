@@ -1,0 +1,22 @@
+{
+  "claim_ceiling_preserved": true,
+  "production_scoring_authority": false,
+  "schema_id": "kt.process_verifier.v1",
+  "status": "DESIGN_ONLY_REQUIRES_SEPARATE_VERIFIER_VALIDATION_LANE",
+  "step_segmentation": [
+    "problem_statement",
+    "quantity_extraction",
+    "operation",
+    "arithmetic",
+    "unit_check",
+    "final_answer"
+  ],
+  "step_validity_labels": [
+    "ARITHMETIC_VALID",
+    "UNIT_CONSISTENT",
+    "LOGICAL_FOLLOW",
+    "NO_CONTRADICTION",
+    "FINAL_MATCH"
+  ],
+  "training_authority": false
+}

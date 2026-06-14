@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "production_scoring_authority": {},
+    "schema_id": {
+      "const": "kt.process_verifier.v1"
+    },
+    "status": {},
+    "step_validity_labels": {},
+    "training_authority": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "step_validity_labels",
+    "production_scoring_authority",
+    "training_authority"
+  ],
+  "type": "object"
+}

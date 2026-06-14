@@ -1,0 +1,42 @@
+{
+  "adapter_mutation_authority": false,
+  "baseline": "FIXED512",
+  "claim_ceiling_preserved": true,
+  "confidence_threshold_default": 0.95,
+  "correctness_floor": 0.92,
+  "dataset_generation_authority": false,
+  "false_downshift_tolerance": 0,
+  "feature_legality": {
+    "allowed": [
+      "prompt_hash",
+      "task_class",
+      "source_slice",
+      "prompt_token_estimate",
+      "requested_budget",
+      "pre_generation_budget_class"
+    ],
+    "anti_leakage_gate": "labels_may_score_replay_but_must_not_be_selector_features",
+    "claim_ceiling_preserved": true,
+    "forbidden": [
+      "expected_answer",
+      "row_id",
+      "measured_arm_correctness",
+      "measured_correctness_any_arm",
+      "hindsight_label",
+      "posthoc_correctness",
+      "post_hoc_token_count"
+    ],
+    "schema_id": "kt.g32.feature_law.v1",
+    "status": "PASS"
+  },
+  "max_regret_absolute": 0.0,
+  "policy_id": "KT_NO_REGRET_SELECTOR_V1",
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "required_negative_class": "COT512_INSUFFICIENT",
+  "runtime_authority": false,
+  "schema_id": "kt.g32.no_regret_selector_policy.v1",
+  "status": "REPLAY_ONLY_NO_RUNTIME_AUTHORITY",
+  "training_authority": false,
+  "uncertainty_action": "DEFAULT_TO_COT512"
+}
