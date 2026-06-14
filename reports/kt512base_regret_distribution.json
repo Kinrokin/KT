@@ -1,0 +1,37 @@
+{
+  "claim_ceiling_preserved": true,
+  "downshift_classes": [
+    {
+      "advance_allowed": false,
+      "candidate_downshift_arm": "A1_COT_256_FIXED_ECONOMY",
+      "expected_regret_bounded": false,
+      "false_downshift_count": 47,
+      "false_downshift_damage": 15984.597826086956,
+      "net_expected_value": -15932.597826086956,
+      "regret_vs_fixed512": 0.2554347826086957,
+      "token_savings_when_correct": 52
+    },
+    {
+      "advance_allowed": false,
+      "candidate_downshift_arm": "A2_ANSWER_ONLY_96_CONTROL",
+      "expected_regret_bounded": false,
+      "false_downshift_count": 156,
+      "false_downshift_damage": 53055.260869565216,
+      "net_expected_value": -47313.260869565216,
+      "regret_vs_fixed512": 0.8478260869565217,
+      "token_savings_when_correct": 5742
+    }
+  ],
+  "fixed512_baseline": {
+    "arm_id": "A0_COT_512_FIXED_PRIMARY",
+    "correct": 184,
+    "full_tokens_per_correct": 379.0108695652174
+  },
+  "negative_class": {
+    "class_id": "COT512_INSUFFICIENT",
+    "count": 16,
+    "required": true
+  },
+  "schema_id": "kt.kt512.regret_distribution.v1",
+  "status": "PASS_NO_DOWNSHIFT_ADVANCES"
+}

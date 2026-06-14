@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "forbidden_features_excluded": {},
+    "label": {},
+    "row_id": {},
+    "schema_id": {
+      "const": "kt.kt512.economy_classifier_seed_row.v1"
+    },
+    "selection_features": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "selection_features",
+    "label",
+    "forbidden_features_excluded"
+  ],
+  "type": "object"
+}

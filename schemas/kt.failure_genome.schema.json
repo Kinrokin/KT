@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "fixed512_failure_count": {},
+    "owner_counts": {},
+    "schema_id": {
+      "const": "kt.kt512.failure_genome.v1"
+    },
+    "unknown_failure_rate": {}
+  },
+  "required": [
+    "schema_id",
+    "fixed512_failure_count",
+    "owner_counts",
+    "unknown_failure_rate"
+  ],
+  "type": "object"
+}

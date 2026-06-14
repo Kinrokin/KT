@@ -393,7 +393,9 @@ def path_length_index(files: list[str]) -> dict[str, Any]:
 
 
 def stale_head_refs(files: list[str], head: str) -> dict[str, Any]:
-    hex40 = re.compile(r"\b[0-9a-f]{40}\b", re.IGNORECASE)
+    # Match standalone git object IDs without treating SHA256 packet hashes as
+    # stale 40-character refs.
+    hex40 = re.compile(r"(?<![0-9a-f])[0-9a-f]{40}(?![0-9a-f])", re.IGNORECASE)
     rows = []
     current_truth_stale_refs = 0
     for path in files:

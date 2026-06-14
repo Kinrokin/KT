@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "default_arm": {},
+    "negative_class": {},
+    "runtime_authority": {},
+    "schema_id": {
+      "const": "kt.kt512.no_regret_selector_policy.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "default_arm",
+    "negative_class",
+    "runtime_authority"
+  ],
+  "type": "object"
+}

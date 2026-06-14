@@ -1,0 +1,23 @@
+{
+  "claim_ceiling_preserved": true,
+  "current_surface_patching_rule": "PATCH_EXISTING_SURFACES_WHEN_EQUIVALENT",
+  "new_kt512_surfaces": [
+    "scripts/kt512g32_common.py",
+    "scripts/import_kt512base_assessment.py",
+    "scripts/validate_kt512g32_import.py"
+  ],
+  "schema_id": "kt.kt512g32.path_mapping.v1",
+  "status": "PASS",
+  "substitutions": [
+    {
+      "reason": "existing G3.2 training decision schema already canonical",
+      "requested_surface": "schemas/kt.g32_training_decision_receipt.schema.json",
+      "used_existing_surface": "schemas/kt.g32_training_decision_receipt.schema.json"
+    },
+    {
+      "reason": "existing do-not-train schema already canonical",
+      "requested_surface": "schemas/kt.do_not_train_receipt.schema.json",
+      "used_existing_surface": "schemas/kt.do_not_train_receipt.schema.json"
+    }
+  ]
+}
