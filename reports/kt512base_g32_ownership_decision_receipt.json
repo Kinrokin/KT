@@ -1,0 +1,52 @@
+{
+  "claim_ceiling_preserved": true,
+  "created_utc": "2026-06-14T16:30:15Z",
+  "decisions": [
+    {
+      "cluster_id": "BUDGET_ADMISSION::openai/gsm8k::multi_step_math::fixed512_failure",
+      "counterfactual_owner": "BUDGET_ADMISSION",
+      "decision": "NO_TRAIN_CONTROL_AUTOPSY_FIRST",
+      "failure_count": 2,
+      "required_next_action": "ownership_specific_repair_design",
+      "training_authority": false
+    },
+    {
+      "cluster_id": "OVERTHINK_OR_COT_DRIFT::openai/gsm8k::multi_step_math::fixed512_failure",
+      "counterfactual_owner": "OVERTHINK_OR_COT_DRIFT",
+      "decision": "NO_TRAIN_CONTROL_AUTOPSY_FIRST",
+      "failure_count": 1,
+      "required_next_action": "ownership_specific_repair_design",
+      "training_authority": false
+    },
+    {
+      "cluster_id": "SCORER_NORMALIZER::openai/gsm8k::multi_step_math::fixed512_failure",
+      "counterfactual_owner": "SCORER_NORMALIZER",
+      "decision": "NO_TRAIN_CONTROL_AUTOPSY_FIRST",
+      "failure_count": 1,
+      "required_next_action": "ownership_specific_repair_design",
+      "training_authority": false
+    },
+    {
+      "cluster_id": "UNKNOWN_BLOCKED::openai/gsm8k::multi_step_math::fixed512_failure",
+      "counterfactual_owner": "UNKNOWN_BLOCKED",
+      "decision": "NO_TRAIN_UNKNOWN_BLOCKED",
+      "failure_count": 12,
+      "required_next_action": "further_autopsy",
+      "training_authority": false
+    }
+  ],
+  "minimum_viable_signal": {
+    "human_anchor_ratio": 1.0,
+    "negative_transfer_scan": "NOT_MEASURED",
+    "oracle_rows": 200,
+    "pass": false,
+    "per_sample_trace_coverage": 1.0,
+    "repairability_classified_rate": 0.25,
+    "unknown_failure_rate": 0.75
+  },
+  "next_lawful_move": "AUTHOR_G32_CAUSAL_OWNERSHIP_FOR_FIXED512_FAILURES_AND_NO_REGRET_SELECTOR_REPLAY_V1",
+  "promotion_authority": false,
+  "schema_id": "kt.g32_training_decision_receipt.v1",
+  "status": "BLOCKED_TRAINING_DECISION_UNKNOWN_FAILURE_RATE_HIGH",
+  "training_authority": false
+}

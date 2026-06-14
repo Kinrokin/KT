@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authority": {},
+    "claim_ceiling_preserved": {},
+    "rows_total": {},
+    "runtime_selector_claim": {},
+    "schema_id": {
+      "const": "kt.kt512.cheapest_correct_oracle_frontier.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "authority",
+    "runtime_selector_claim",
+    "rows_total",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

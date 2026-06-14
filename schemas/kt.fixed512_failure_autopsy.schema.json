@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "g32_owner": {},
+    "owner_confidence": {},
+    "row_id": {},
+    "schema_id": {
+      "const": "kt.fixed512_failure_autopsy.v1"
+    },
+    "training_authority": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "g32_owner",
+    "owner_confidence",
+    "training_authority"
+  ],
+  "type": "object"
+}

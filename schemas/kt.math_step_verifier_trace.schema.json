@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_preserved": {},
+    "row_id": {},
+    "schema_id": {
+      "const": "kt.math_step_verifier_trace.v1"
+    },
+    "segment_type": {},
+    "step_index": {},
+    "verifier_status": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "step_index",
+    "segment_type",
+    "verifier_status",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

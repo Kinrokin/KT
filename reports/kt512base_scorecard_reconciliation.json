@@ -1,0 +1,61 @@
+{
+  "checks": {
+    "answer_only_30": true,
+    "cot256_137": true,
+    "cot512_184": true,
+    "oracle_1_0": true,
+    "row_count_200": true
+  },
+  "claim_ceiling_preserved": true,
+  "final_summary_facts": {
+    "answer_only_correct": 30,
+    "cot256_correct": 137,
+    "cot512_correct": 184,
+    "oracle_diagnostic_score": 1.0,
+    "row_count": 200,
+    "row_slice": "openai/gsm8k:test[125:325]"
+  },
+  "schema_id": "kt.kt512.scorecard_reconciliation.v1",
+  "scorecard_by_arm": {
+    "A0_COT_512_FIXED_PRIMARY": {
+      "accuracy": 0.92,
+      "answer_format_pass_rate": 1.0,
+      "arm_id": "A0_COT_512_FIXED_PRIMARY",
+      "budget_cap_hit_rate": 0.01,
+      "correct": 184,
+      "final_marker_rate": 0.99,
+      "full_tokens_per_correct": 379.0108695652174,
+      "output_tokens": 46505,
+      "prompt_tokens": 23233,
+      "total": 200,
+      "total_tokens": 69738
+    },
+    "A1_COT_256_FIXED_ECONOMY": {
+      "accuracy": 0.685,
+      "answer_format_pass_rate": 1.0,
+      "arm_id": "A1_COT_256_FIXED_ECONOMY",
+      "budget_cap_hit_rate": 0.325,
+      "correct": 137,
+      "final_marker_rate": 0.68,
+      "full_tokens_per_correct": 477.75912408759126,
+      "output_tokens": 42220,
+      "prompt_tokens": 23233,
+      "total": 200,
+      "total_tokens": 65453
+    },
+    "A2_ANSWER_ONLY_96_CONTROL": {
+      "accuracy": 0.15,
+      "answer_format_pass_rate": 1.0,
+      "arm_id": "A2_ANSWER_ONLY_96_CONTROL",
+      "budget_cap_hit_rate": 0.0,
+      "correct": 30,
+      "final_marker_rate": 0.0,
+      "full_tokens_per_correct": 672.3666666666667,
+      "output_tokens": 690,
+      "prompt_tokens": 19481,
+      "total": 200,
+      "total_tokens": 20171
+    }
+  },
+  "status": "PASS"
+}

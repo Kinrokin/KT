@@ -1,0 +1,25 @@
+{
+  "anti_leakage_gate": {
+    "forbidden_selection_features": [
+      "expected_answer",
+      "row_id",
+      "measured_arm_correctness",
+      "posthoc_correctness"
+    ],
+    "labels_may_score_but_not_select": true,
+    "status": "PASS"
+  },
+  "candidate_downshifts": [
+    "A1_COT_256_FIXED_ECONOMY",
+    "A2_ANSWER_ONLY_96_CONTROL"
+  ],
+  "claim_ceiling_preserved": true,
+  "default_arm": "A0_COT_512_FIXED_PRIMARY",
+  "negative_class": "COT512_INSUFFICIENT",
+  "promotion_authority": false,
+  "regret_accounting_report": "reports/kt512base_regret_distribution.json",
+  "runtime_authority": false,
+  "schema_id": "kt.kt512.no_regret_selector_policy.v1",
+  "status": "SEED_ONLY_NO_RUNTIME_AUTHORITY",
+  "training_authority": false
+}
