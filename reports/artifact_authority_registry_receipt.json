@@ -2,15 +2,9 @@
   "artifact_count": 9140,
   "claim_ceiling_status": "PRESERVED",
   "schema_id": "kt.artifact_authority_registry_receipt.v1",
-  "source_lane": "AUTHOR_KTPARETO_STRATIFIED_IMPORT_REVIEW_V1",
+  "source_lane": "AUTHOR_KTPARETO_STRATIFIED_IMPORT_REVIEW_V1_MAIN_REPLAY",
   "status": "PASS",
   "updated_artifacts": [
-    {
-      "authority_class": "CANONICAL_RECEIPT_CURRENT",
-      "path": "evidence/KT_PARETO_V1_ASSESSMENT_ONLY.zip",
-      "sha256": "fa417a164604301131be89317991f1ecc4289095dc021e92cc7b6fdf549837af",
-      "size_bytes": 139149
-    },
     {
       "authority_class": "CANONICAL_RECEIPT_CURRENT",
       "path": "reports/ktpareto_384_false_downshift_genome.json",
@@ -32,8 +26,8 @@
     {
       "authority_class": "CANONICAL_RECEIPT_CURRENT",
       "path": "reports/ktpareto_assessment_import_receipt.json",
-      "sha256": "67e19f6295a5114bbd820438b549fcb5ec17e1af7b112d77af39a5f145a1c1b7",
-      "size_bytes": 705
+      "sha256": "c7ec05fb3bcfac753dce49d2429edf46431ff8aebdd74df7820fb5ec2582b4f3",
+      "size_bytes": 717
     },
     {
       "authority_class": "CANONICAL_RECEIPT_CURRENT",
@@ -91,15 +85,9 @@
     },
     {
       "authority_class": "CANONICAL_RECEIPT_CURRENT",
-      "path": "reports/ktpareto_packet_validation_receipt.json",
-      "sha256": "5aaa0414bb7e0a380f1a0168283cfc4e7a67fa81e123ef07e038eee48f503198",
-      "size_bytes": 404
-    },
-    {
-      "authority_class": "CANONICAL_RECEIPT_CURRENT",
       "path": "reports/ktpareto_review_builder_summary.json",
-      "sha256": "aa792e77116933465b1c7d8b356d006f6aca2d6a3e27f699d628bbf7b2dac856",
-      "size_bytes": 1601
+      "sha256": "f869c24da92dda1c06540319b3f677a56ee16e38d95f4b31eaa2aff5d8f60792",
+      "size_bytes": 1613
     },
     {
       "authority_class": "CANONICAL_RECEIPT_CURRENT",
@@ -142,62 +130,8 @@
       "path": "reports/ktpareto_validation_path_mapping.json",
       "sha256": "61bc7d70990777508b05b6a0735919513cdf801c41b352a1bed6e8058ffec4d8",
       "size_bytes": 1073
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_640_recovery_damage.schema.json",
-      "sha256": "7f49393ab884d06553cf389a75ffa6556a0214e4458ed1f22c64901481406d2e",
-      "size_bytes": 428
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_difficulty_proxy_row.schema.json",
-      "sha256": "9f08b44b7e75a800aac25f44d2eb9816e8ed2599f57f04bbe78d77880898066f",
-      "size_bytes": 392
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_false_downshift.schema.json",
-      "sha256": "c65d8b600b0a5c62b0508106c3121c8059315dacf448b504a28b0133a08e8a1c",
-      "size_bytes": 432
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_no_correct_arm.schema.json",
-      "sha256": "eb70c38d007be5b47010ce02f85724e9db6e61716898624a09730bb8d78ea040",
-      "size_bytes": 499
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_slice_exchangeability.schema.json",
-      "sha256": "c995b28ffaf5d7488865b4f6cbc125406426c8c7e6dfb2f9ac8644cdc3c8e2e0",
-      "size_bytes": 494
-    },
-    {
-      "authority_class": "CANONICAL_SCHEMA",
-      "path": "schemas/kt.ktpareto_stratified_frontier.schema.json",
-      "sha256": "8da45ac9c995ad78dbb581523a7036c1b4f0207f7478151a7db9c47258ac20e4",
-      "size_bytes": 363
-    },
-    {
-      "authority_class": "CANONICAL_SOURCE",
-      "path": "scripts/import_ktpareto_assessment.py",
-      "sha256": "e970c3a5c2ce25951bdd35cf9dee195c16eb32eff9235ff548b72f152a17a610",
-      "size_bytes": 33124
-    },
-    {
-      "authority_class": "CANONICAL_SOURCE",
-      "path": "scripts/validate_ktpareto_review.py",
-      "sha256": "b2b4834ba7fdf45b019137d88a99304766b28c0d2663a3eca0f2b0c9935aa783",
-      "size_bytes": 6532
-    },
-    {
-      "authority_class": "CANONICAL_TEST",
-      "path": "tests/test_ktpareto_review_import.py",
-      "sha256": "c3424d31ef5edf90efd0fcc5f9662a92d1d3e5df70ccd3f112d5324aeec8ecb8",
-      "size_bytes": 4861
     }
   ],
-  "updated_count": 32,
-  "updated_utc": "2026-06-15T16:37:17Z"
+  "updated_count": 21,
+  "updated_utc": "2026-06-15T16:40:37Z"
 }
