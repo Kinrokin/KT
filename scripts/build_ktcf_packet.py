@@ -142,6 +142,19 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def repo_artifact_bytes(path: Path) -> bytes:
+    data = path.read_bytes()
+    if path.suffix.lower() in {".json", ".jsonl", ".md", ".py", ".txt"}:
+        # Match the LF-normalized blob bytes that Git stores on public main.
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return data
+
+
+def repo_artifact_stats(path: Path) -> tuple[str, int]:
+    data = repo_artifact_bytes(path)
+    return hashlib.sha256(data).hexdigest(), len(data)
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
@@ -152,17 +165,17 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("".join(json.dumps(row, sort_keys=True) + "\n" for row in rows), encoding="utf-8")
+    path.write_text("".join(json.dumps(row, sort_keys=True) + "\n" for row in rows), encoding="utf-8", newline="\n")
 
 
 def write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="\n")
 
 
 def fail(status: str, reason: str, **extra: Any) -> None:
@@ -1148,6 +1161,7 @@ def build_packet(config: dict[str, Any], packet_sha_placeholder: str | None = No
 
 def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
     registry_path = REGISTRY / "artifact_authority_registry.json"
+    delta_path = REGISTRY / "artifact_authority_registry_ktcf_delta_receipt.json"
     registry = read_json(registry_path)
     artifacts = registry.setdefault("artifacts", [])
     by_path = {artifact["path"]: artifact for artifact in artifacts}
@@ -1180,6 +1194,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             continue
         rel = path.relative_to(ROOT).as_posix()
         cls = primary_class(rel)
+        artifact_sha, artifact_size = repo_artifact_stats(path)
         entry = {
             "artifact_id": rel.upper().replace("/", "_").replace(".", "_").replace("-", "_"),
             "path": rel,
@@ -1190,8 +1205,8 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "controls_execution": cls in {"CANONICAL_SOURCE", "CANONICAL_SCHEMA", "CANONICAL_TEST", "CANONICAL_GOVERNANCE", "CANONICAL_PACKET_CURRENT"},
             "claim_authority": claim_authority(cls),
             "current_authority": True,
-            "sha256": sha256_file(path),
-            "size_bytes": path.stat().st_size,
+            "sha256": artifact_sha,
+            "size_bytes": artifact_size,
             "source_lane": lane,
             "supersedes": [],
             "superseded_by": None,
@@ -1204,19 +1219,52 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             artifacts.append(entry)
         additions.append(entry)
     registry["current_head"] = git_output("rev-parse", "HEAD")
-    registry["generated_utc"] = utc_now()
+    registry_timestamp = utc_now()
+    registry["generated_utc"] = registry_timestamp
+    registry["updated_utc"] = registry_timestamp
     write_json(registry_path, registry)
     write_json(
-        REGISTRY / "artifact_authority_registry_ktcf_delta_receipt.json",
+        delta_path,
         {
             "schema_id": "kt.artifact_authority_registry.ktcf_delta_receipt.v1",
             "status": "PASS",
             "source_lane": lane,
             "artifacts_added_or_updated": additions,
+            "delta_receipt_registry_entry_refreshed_after_write": True,
             **AUTHORITY_FALSE,
             "claim_ceiling_status": "PRESERVED",
         },
     )
+    rel = delta_path.relative_to(ROOT).as_posix()
+    cls = primary_class(rel)
+    artifact_sha, artifact_size = repo_artifact_stats(delta_path)
+    delta_entry = {
+        "artifact_id": rel.upper().replace("/", "_").replace(".", "_").replace("-", "_"),
+        "path": rel,
+        "role": "ktcf_counterfactual_microfurnace_packet_forge",
+        "primary_class": cls,
+        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+        "validation_status": "PASS",
+        "controls_execution": False,
+        "claim_authority": claim_authority(cls),
+        "current_authority": True,
+        "sha256": artifact_sha,
+        "size_bytes": artifact_size,
+        "source_lane": lane,
+        "supersedes": [],
+        "superseded_by": None,
+        "updated_utc": utc_now(),
+        "notes": "KTCF repo-side packet forge delta receipt; no runtime, training, promotion, selector deployment, adapter mutation, production prompt mutation, or production math-mode authority.",
+    }
+    by_path = {artifact["path"]: artifact for artifact in artifacts}
+    if rel in by_path:
+        by_path[rel].update(delta_entry)
+    else:
+        artifacts.append(delta_entry)
+    registry_timestamp = utc_now()
+    registry["generated_utc"] = registry_timestamp
+    registry["updated_utc"] = registry_timestamp
+    write_json(registry_path, registry)
 
 
 def build() -> dict[str, Any]:
@@ -1410,8 +1458,8 @@ production prompts, or create production math-mode authority.
         "ktcf_gold_prompt_leakage_firewall_status": firewall["status"],
         "ktcf_feature_legality_status": feature_legality["status"],
         "ktcf_claim_boundary_status": claim_boundary["status"],
-        "head_binding_status": "BRANCH_BOUND_REPLAY_REQUIRED_AFTER_MERGE",
-        "fresh_clone_packet_sha256_status": "PENDING_MERGED_MAIN",
+        "head_binding_status": "MERGED_MAIN_SUBJECT_BOUND__FINAL_PUBLIC_MAIN_VERIFY_AFTER_MERGE",
+        "fresh_clone_packet_sha256_status": "PENDING_FINAL_PUBLIC_MAIN_VERIFY_AFTER_MERGE",
         "packet_path_if_any": "packets/ktcf_v1.zip",
         "packet_sha256_if_any": packet_sha,
         "kaggle_dataset_name_if_any": KAGGLE_DATASET_NAME,
