@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.ktpareto.cot640_recovery_damage.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "classification",
+    "cot640_recovery_count",
+    "cot640_damage_count",
+    "sentinel_only",
+    "deployment_authority",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

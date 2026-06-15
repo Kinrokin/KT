@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.ktpareto.false_downshift_row.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "global_row",
+    "difficulty_stratum",
+    "candidate",
+    "control",
+    "false_downshift_damage",
+    "deployment_authority",
+    "claim_ceiling_preserved"
+  ],
+  "type": "object"
+}

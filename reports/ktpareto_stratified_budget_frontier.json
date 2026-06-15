@@ -1,0 +1,327 @@
+{
+  "claim_ceiling_preserved": true,
+  "global_frontier": {
+    "fixed512_control_accuracy": 0.82,
+    "oracle_cheapest_correct_ceiling": 0.86,
+    "pareto_frontier": [
+      "A0_COT_96_FIXED",
+      "A1_COT_192_FIXED",
+      "A2_COT_256_FIXED",
+      "A3_COT_320_FIXED",
+      "A4_COT_384_FIXED"
+    ],
+    "schema_id": "kt.ktpareto.frontier.v1"
+  },
+  "schema_id": "kt.ktpareto.stratified_frontier.v1",
+  "status": "PASS",
+  "strata": {
+    "HIGH_PROXY_COMPLEXITY": {
+      "arms": {
+        "A0_COT_96_FIXED": {
+          "accuracy": 0.052632,
+          "correct": 1,
+          "full_tokens_per_correct": 3701.0,
+          "row_count": 19,
+          "total_tokens": 3701
+        },
+        "A1_COT_192_FIXED": {
+          "accuracy": 0.157895,
+          "correct": 3,
+          "full_tokens_per_correct": 1841.666667,
+          "row_count": 19,
+          "total_tokens": 5525
+        },
+        "A2_COT_256_FIXED": {
+          "accuracy": 0.368421,
+          "correct": 7,
+          "full_tokens_per_correct": 949.142857,
+          "row_count": 19,
+          "total_tokens": 6644
+        },
+        "A3_COT_320_FIXED": {
+          "accuracy": 0.578947,
+          "correct": 11,
+          "full_tokens_per_correct": 690.363636,
+          "row_count": 19,
+          "total_tokens": 7594
+        },
+        "A4_COT_384_FIXED": {
+          "accuracy": 0.578947,
+          "correct": 11,
+          "full_tokens_per_correct": 760.0,
+          "row_count": 19,
+          "total_tokens": 8360
+        },
+        "A5_COT_448_FIXED": {
+          "accuracy": 0.736842,
+          "correct": 14,
+          "full_tokens_per_correct": 647.357143,
+          "row_count": 19,
+          "total_tokens": 9063
+        },
+        "A6_COT_512_FIXED_CONTROL": {
+          "accuracy": 0.684211,
+          "correct": 13,
+          "full_tokens_per_correct": 742.384615,
+          "row_count": 19,
+          "total_tokens": 9651
+        },
+        "A7_COT_640_FIXED_SENTINEL": {
+          "accuracy": 0.684211,
+          "correct": 13,
+          "full_tokens_per_correct": 807.538462,
+          "row_count": 19,
+          "total_tokens": 10498
+        },
+        "A8_ANSWER_ONLY_NO_COT": {
+          "accuracy": 0.052632,
+          "correct": 1,
+          "full_tokens_per_correct": 3568.0,
+          "row_count": 19,
+          "total_tokens": 3568
+        }
+      },
+      "rows": [
+        "gsm8k_test_329",
+        "gsm8k_test_331",
+        "gsm8k_test_333",
+        "gsm8k_test_338",
+        "gsm8k_test_342",
+        "gsm8k_test_356",
+        "gsm8k_test_369",
+        "gsm8k_test_375",
+        "gsm8k_test_386",
+        "gsm8k_test_389",
+        "gsm8k_test_395",
+        "gsm8k_test_404",
+        "gsm8k_test_405",
+        "gsm8k_test_407",
+        "gsm8k_test_410",
+        "gsm8k_test_411",
+        "gsm8k_test_419",
+        "gsm8k_test_421",
+        "gsm8k_test_422"
+      ]
+    },
+    "LOW_PROXY_COMPLEXITY": {
+      "arms": {
+        "A0_COT_96_FIXED": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "full_tokens_per_correct": null,
+          "row_count": 38,
+          "total_tokens": 6510
+        },
+        "A1_COT_192_FIXED": {
+          "accuracy": 0.236842,
+          "correct": 9,
+          "full_tokens_per_correct": 1123.888889,
+          "row_count": 38,
+          "total_tokens": 10115
+        },
+        "A2_COT_256_FIXED": {
+          "accuracy": 0.421053,
+          "correct": 16,
+          "full_tokens_per_correct": 761.8125,
+          "row_count": 38,
+          "total_tokens": 12189
+        },
+        "A3_COT_320_FIXED": {
+          "accuracy": 0.684211,
+          "correct": 26,
+          "full_tokens_per_correct": 525.269231,
+          "row_count": 38,
+          "total_tokens": 13657
+        },
+        "A4_COT_384_FIXED": {
+          "accuracy": 0.815789,
+          "correct": 31,
+          "full_tokens_per_correct": 477.741935,
+          "row_count": 38,
+          "total_tokens": 14810
+        },
+        "A5_COT_448_FIXED": {
+          "accuracy": 0.842105,
+          "correct": 32,
+          "full_tokens_per_correct": 491.875,
+          "row_count": 38,
+          "total_tokens": 15740
+        },
+        "A6_COT_512_FIXED_CONTROL": {
+          "accuracy": 0.868421,
+          "correct": 33,
+          "full_tokens_per_correct": 500.363636,
+          "row_count": 38,
+          "total_tokens": 16512
+        },
+        "A7_COT_640_FIXED_SENTINEL": {
+          "accuracy": 0.868421,
+          "correct": 33,
+          "full_tokens_per_correct": 543.121212,
+          "row_count": 38,
+          "total_tokens": 17923
+        },
+        "A8_ANSWER_ONLY_NO_COT": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "full_tokens_per_correct": null,
+          "row_count": 38,
+          "total_tokens": 6244
+        }
+      },
+      "rows": [
+        "gsm8k_test_328",
+        "gsm8k_test_332",
+        "gsm8k_test_337",
+        "gsm8k_test_339",
+        "gsm8k_test_340",
+        "gsm8k_test_343",
+        "gsm8k_test_344",
+        "gsm8k_test_350",
+        "gsm8k_test_351",
+        "gsm8k_test_352",
+        "gsm8k_test_355",
+        "gsm8k_test_360",
+        "gsm8k_test_365",
+        "gsm8k_test_367",
+        "gsm8k_test_371",
+        "gsm8k_test_372",
+        "gsm8k_test_373",
+        "gsm8k_test_374",
+        "gsm8k_test_376",
+        "gsm8k_test_377",
+        "gsm8k_test_378",
+        "gsm8k_test_379",
+        "gsm8k_test_380",
+        "gsm8k_test_382",
+        "gsm8k_test_384",
+        "gsm8k_test_388",
+        "gsm8k_test_391",
+        "gsm8k_test_394",
+        "gsm8k_test_397",
+        "gsm8k_test_398",
+        "gsm8k_test_399",
+        "gsm8k_test_400",
+        "gsm8k_test_401",
+        "gsm8k_test_406",
+        "gsm8k_test_413",
+        "gsm8k_test_416",
+        "gsm8k_test_418",
+        "gsm8k_test_420"
+      ]
+    },
+    "MEDIUM_PROXY_COMPLEXITY": {
+      "arms": {
+        "A0_COT_96_FIXED": {
+          "accuracy": 0.0,
+          "correct": 0,
+          "full_tokens_per_correct": null,
+          "row_count": 43,
+          "total_tokens": 7991
+        },
+        "A1_COT_192_FIXED": {
+          "accuracy": 0.139535,
+          "correct": 6,
+          "full_tokens_per_correct": 2016.5,
+          "row_count": 43,
+          "total_tokens": 12099
+        },
+        "A2_COT_256_FIXED": {
+          "accuracy": 0.488372,
+          "correct": 21,
+          "full_tokens_per_correct": 692.238095,
+          "row_count": 43,
+          "total_tokens": 14537
+        },
+        "A3_COT_320_FIXED": {
+          "accuracy": 0.604651,
+          "correct": 26,
+          "full_tokens_per_correct": 642.538462,
+          "row_count": 43,
+          "total_tokens": 16706
+        },
+        "A4_COT_384_FIXED": {
+          "accuracy": 0.790698,
+          "correct": 34,
+          "full_tokens_per_correct": 549.205882,
+          "row_count": 43,
+          "total_tokens": 18673
+        },
+        "A5_COT_448_FIXED": {
+          "accuracy": 0.813953,
+          "correct": 35,
+          "full_tokens_per_correct": 583.714286,
+          "row_count": 43,
+          "total_tokens": 20430
+        },
+        "A6_COT_512_FIXED_CONTROL": {
+          "accuracy": 0.837209,
+          "correct": 36,
+          "full_tokens_per_correct": 607.75,
+          "row_count": 43,
+          "total_tokens": 21879
+        },
+        "A7_COT_640_FIXED_SENTINEL": {
+          "accuracy": 0.883721,
+          "correct": 38,
+          "full_tokens_per_correct": 640.631579,
+          "row_count": 43,
+          "total_tokens": 24344
+        },
+        "A8_ANSWER_ONLY_NO_COT": {
+          "accuracy": 0.046512,
+          "correct": 2,
+          "full_tokens_per_correct": 3835.5,
+          "row_count": 43,
+          "total_tokens": 7671
+        }
+      },
+      "rows": [
+        "gsm8k_test_325",
+        "gsm8k_test_326",
+        "gsm8k_test_327",
+        "gsm8k_test_330",
+        "gsm8k_test_334",
+        "gsm8k_test_335",
+        "gsm8k_test_336",
+        "gsm8k_test_341",
+        "gsm8k_test_345",
+        "gsm8k_test_346",
+        "gsm8k_test_347",
+        "gsm8k_test_348",
+        "gsm8k_test_349",
+        "gsm8k_test_353",
+        "gsm8k_test_354",
+        "gsm8k_test_357",
+        "gsm8k_test_358",
+        "gsm8k_test_359",
+        "gsm8k_test_361",
+        "gsm8k_test_362",
+        "gsm8k_test_363",
+        "gsm8k_test_364",
+        "gsm8k_test_366",
+        "gsm8k_test_368",
+        "gsm8k_test_370",
+        "gsm8k_test_381",
+        "gsm8k_test_383",
+        "gsm8k_test_385",
+        "gsm8k_test_387",
+        "gsm8k_test_390",
+        "gsm8k_test_392",
+        "gsm8k_test_393",
+        "gsm8k_test_396",
+        "gsm8k_test_402",
+        "gsm8k_test_403",
+        "gsm8k_test_408",
+        "gsm8k_test_409",
+        "gsm8k_test_412",
+        "gsm8k_test_414",
+        "gsm8k_test_415",
+        "gsm8k_test_417",
+        "gsm8k_test_423",
+        "gsm8k_test_424"
+      ]
+    }
+  },
+  "stratification_basis": "pre_generation_difficulty_proxy"
+}

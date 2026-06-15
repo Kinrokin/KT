@@ -1,0 +1,243 @@
+{
+  "claim_ceiling_preserved": true,
+  "difficulty_proxy_fields": [
+    "question_text_available",
+    "question_token_length",
+    "number_count",
+    "entity_count",
+    "operation_keyword_count",
+    "estimated_step_count",
+    "rate_ratio_percent_terms",
+    "fraction_decimal_terms",
+    "unit_conversion_terms",
+    "comparison_terms",
+    "multi_entity_tracking_terms"
+  ],
+  "exchangeability_verdict": "ROW_DIFFICULTY_STRATUM_REQUIRED",
+  "material_delta_threshold": 0.15,
+  "material_deltas": [
+    {
+      "field": "rate_ratio_percent_terms",
+      "mean_a": 0.47,
+      "mean_b": 0.315,
+      "relative_delta": 0.155,
+      "slice_a": "KTPARETO",
+      "slice_b": "KT512BASE"
+    }
+  ],
+  "question_text_status": "PASS_QUESTION_TEXT_LOADED_FROM_HF_DATASET_VIEWER",
+  "raw_slice_scores_equal_population_estimate": false,
+  "schema_id": "kt.ktpareto.slice_exchangeability_receipt.v1",
+  "slice_summaries": {
+    "BUD100": {
+      "comparison_terms": {
+        "max": 1.0,
+        "mean": 0.14,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "entity_count": {
+        "max": 7.0,
+        "mean": 2.13,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "estimated_step_count": {
+        "max": 10.0,
+        "mean": 3.15,
+        "median": 3.0,
+        "min": 1.0
+      },
+      "fraction_decimal_terms": {
+        "max": 3.0,
+        "mean": 0.27,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "multi_entity_tracking_terms": {
+        "max": 2.0,
+        "mean": 0.51,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "number_count": {
+        "max": 9.0,
+        "mean": 3.21,
+        "median": 3.0,
+        "min": 0.0
+      },
+      "operation_keyword_count": {
+        "max": 7.0,
+        "mean": 1.88,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "question_text_available": {
+        "max": 1.0,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0
+      },
+      "question_token_length": {
+        "max": 111.0,
+        "mean": 53.46,
+        "median": 48.0,
+        "min": 21.0
+      },
+      "rate_ratio_percent_terms": {
+        "max": 3.0,
+        "mean": 0.39,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "unit_conversion_terms": {
+        "max": 7.0,
+        "mean": 1.21,
+        "median": 1.0,
+        "min": 0.0
+      }
+    },
+    "KT512BASE": {
+      "comparison_terms": {
+        "max": 2.0,
+        "mean": 0.125,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "entity_count": {
+        "max": 11.0,
+        "mean": 2.225,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "estimated_step_count": {
+        "max": 9.0,
+        "mean": 3.22,
+        "median": 3.0,
+        "min": 1.0
+      },
+      "fraction_decimal_terms": {
+        "max": 7.0,
+        "mean": 0.235,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "multi_entity_tracking_terms": {
+        "max": 4.0,
+        "mean": 0.61,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "number_count": {
+        "max": 8.0,
+        "mean": 3.285,
+        "median": 3.0,
+        "min": 0.0
+      },
+      "operation_keyword_count": {
+        "max": 6.0,
+        "mean": 1.95,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "question_text_available": {
+        "max": 1.0,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0
+      },
+      "question_token_length": {
+        "max": 126.0,
+        "mean": 53.165,
+        "median": 49.0,
+        "min": 19.0
+      },
+      "rate_ratio_percent_terms": {
+        "max": 2.0,
+        "mean": 0.315,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "unit_conversion_terms": {
+        "max": 6.0,
+        "mean": 1.115,
+        "median": 0.0,
+        "min": 0.0
+      }
+    },
+    "KTPARETO": {
+      "comparison_terms": {
+        "max": 2.0,
+        "mean": 0.16,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "entity_count": {
+        "max": 6.0,
+        "mean": 2.26,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "estimated_step_count": {
+        "max": 10.0,
+        "mean": 3.46,
+        "median": 3.0,
+        "min": 1.0
+      },
+      "fraction_decimal_terms": {
+        "max": 3.0,
+        "mean": 0.19,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "multi_entity_tracking_terms": {
+        "max": 3.0,
+        "mean": 0.57,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "number_count": {
+        "max": 9.0,
+        "mean": 3.56,
+        "median": 3.0,
+        "min": 0.0
+      },
+      "operation_keyword_count": {
+        "max": 5.0,
+        "mean": 2.1,
+        "median": 2.0,
+        "min": 0.0
+      },
+      "question_text_available": {
+        "max": 1.0,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0
+      },
+      "question_token_length": {
+        "max": 111.0,
+        "mean": 55.23,
+        "median": 54.5,
+        "min": 22.0
+      },
+      "rate_ratio_percent_terms": {
+        "max": 4.0,
+        "mean": 0.47,
+        "median": 0.0,
+        "min": 0.0
+      },
+      "unit_conversion_terms": {
+        "max": 5.0,
+        "mean": 1.08,
+        "median": 0.0,
+        "min": 0.0
+      }
+    }
+  },
+  "slices_compared": [
+    "BUD100",
+    "KT512BASE",
+    "KTPARETO"
+  ],
+  "status": "PASS_MATERIAL_DIFFICULTY_DIFFERENCES_FOUND"
+}
