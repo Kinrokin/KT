@@ -2,7 +2,7 @@
   "artifact_count": 9169,
   "claim_ceiling_status": "PRESERVED",
   "schema_id": "kt.artifact_authority_registry_receipt.v1",
-  "source_lane": "AUTHOR_G32_STRATIFIED_FIXED512_WEAK_BASELINE_FAILURE_OWNERSHIP_V1",
+  "source_lane": "AUTHOR_G32_STRATIFIED_FIXED512_WEAK_BASELINE_FAILURE_OWNERSHIP_V1_MAIN_REPLAY",
   "status": "PASS",
   "updated_artifacts": [
     {
@@ -32,8 +32,8 @@
     {
       "path": "reports/g32s_builder_summary.json",
       "primary_class": "CANONICAL_RECEIPT",
-      "sha256": "4422a7c801874d398f1ac036e895444d9342551b70fb754079262af10b5630dc",
-      "size_bytes": 2422
+      "sha256": "1afb890d509a11a9a743f59568fd99e3f0ef2b46536e4104b738260bd9174d9c",
+      "size_bytes": 2434
     },
     {
       "path": "reports/g32s_continue_when_helpful_seed.jsonl",
@@ -86,7 +86,7 @@
     {
       "path": "reports/g32s_input_path_mapping.json",
       "primary_class": "CANONICAL_RECEIPT",
-      "sha256": "7d4010253ee64abeb90d9e9b4e2ef4d3fabc06002c5ec79122156e14e6de556b",
+      "sha256": "41967e0eba286e557961b34d9eb1290f6934f5713e1f48d2f601272aef9bf4a8",
       "size_bytes": 2753
     },
     {
@@ -154,32 +154,8 @@
       "primary_class": "CANONICAL_RECEIPT",
       "sha256": "1dfc6ff7a1efad03fea242ca5469b69ce9f32f2b18bb836bc0baee61fb709f5d",
       "size_bytes": 750
-    },
-    {
-      "path": "scripts/build_g32s_stratified_ownership.py",
-      "primary_class": "CANONICAL_SOURCE",
-      "sha256": "1fdc8bf14c91acf02ccb0e59e96ea66324b90370460565eb17b8002c3fecf172",
-      "size_bytes": 29037
-    },
-    {
-      "path": "scripts/validate_g32s_stratified_ownership.py",
-      "primary_class": "CANONICAL_SOURCE",
-      "sha256": "efa4b026186c780daea63e859d6f97ffbce0b1318f4f1cd9d098dd91f012cdc8",
-      "size_bytes": 5756
-    },
-    {
-      "path": "tests/test_g32s_packet_contract.py",
-      "primary_class": "CANONICAL_TEST",
-      "sha256": "4f1c1040f182bf0a99346d4692bc7a5cb191d48c00f62de8b645db2b0ca150da",
-      "size_bytes": 1521
-    },
-    {
-      "path": "tests/test_g32s_v2_contract.py",
-      "primary_class": "CANONICAL_TEST",
-      "sha256": "196bb7c4bf355a8185ee896dfc19e35310f8e7f489cb3646ab90f01f5e9732c1",
-      "size_bytes": 2166
     }
   ],
-  "updated_count": 29,
-  "updated_utc": "2026-06-15T18:18:55Z"
+  "updated_count": 25,
+  "updated_utc": "2026-06-15T18:21:37Z"
 }
