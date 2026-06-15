@@ -1,0 +1,44 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "schema_id": "kt.ktcf.prompt_templates.v1",
+  "scorer_side_fields_excluded_from_prompt": [
+    "expected_answer",
+    "expected_answer_hash",
+    "source_classes",
+    "prior_correctness",
+    "row_id"
+  ],
+  "status": "PASS",
+  "templates": [
+    {
+      "contains_final_answer_marker": true,
+      "template_id": "ANSWER_ONLY_NO_COT",
+      "template_sha256": "b1aaff5e21d6c750eef6e5fd4aea860eb580d020d7afd6eb4aa6f3fe18b0f906",
+      "template_text": "Give only the final answer. Do not show reasoning.\nFINAL_ANSWER: <answer>"
+    },
+    {
+      "contains_final_answer_marker": true,
+      "template_id": "BASELINE_COT",
+      "template_sha256": "07fa205610835e30f69168657f1e2ec16c72a0cdc12239ab6ee7978087657fec",
+      "template_text": "Solve the problem step by step. Keep the reasoning concise but complete. End with exactly one line in this form:\nFINAL_ANSWER: <answer>"
+    },
+    {
+      "contains_final_answer_marker": true,
+      "template_id": "EXPLICIT_VARIABLE_COT",
+      "template_sha256": "f18eefc3b7b9e6e34b3f6aa2b69c0350cd02529b7d23b6752ab860ca11fe18b4",
+      "template_text": "Solve the problem step by step. After each arithmetic step, restate the current value of every named quantity or variable needed for the solution. Do not skip variable updates. End with exactly one line in this form:\nFINAL_ANSWER: <answer>"
+    },
+    {
+      "contains_final_answer_marker": true,
+      "template_id": "MINIMAL_PLAIN_COT",
+      "template_sha256": "05aafba2c9ddf5283ff0194b85b223d62678af1a9748adf161059f21717618d9",
+      "template_text": "Solve with the fewest necessary reasoning steps. Avoid extra explanation. Do not introduce unrelated assumptions. End with exactly one line in this form:\nFINAL_ANSWER: <answer>"
+    },
+    {
+      "contains_final_answer_marker": true,
+      "template_id": "STRUCTURED_FACT_EQUATION_COT",
+      "template_sha256": "e2b73f70f39c2147ad69e9e6439e473f687bac7eed6dcdd7be633c3ee1bca14d",
+      "template_text": "First list the given facts. Then define needed variables. Then write the arithmetic/equations. Then compute. End with exactly one line in this form:\nFINAL_ANSWER: <answer>"
+    }
+  ]
+}

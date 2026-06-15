@@ -1,0 +1,14 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "interpretation_table": {
+    "benchmark_audit_suspects_wrong_or_ambiguous_expected_answer": "BENCHMARK_OWNED_PENDING_HUMAN_ANCHOR",
+    "control_rows_damaged": "NON_DEPLOYABLE_DIAGNOSTIC_ONLY_EVEN_IF_TARGET_IMPROVES",
+    "finalizer_replay_fixes_row": "FINALIZER_SCORER_OWNED",
+    "higher_budget_fixes_row_prompt_variants_do_not": "BUDGET_CONTINUATION_OWNED_OR_REASONING_DEPTH_OWNED",
+    "no_prompt_budget_finalizer_fix_and_benchmark_clean": "MODEL_CAPABILITY_OWNED_OR_IRREDUCIBLE_PENDING_HUMAN_ANCHOR",
+    "prompt_variant_fixes_row_at_same_512_budget": "PROMPT_ELICITATION_OWNED_OR_MULTI_ENTITY_TRACKING_OWNED_NOT_RAW_MODEL_CAPABILITY"
+  },
+  "proof_threshold": "preregistered_hypothesis_plus_bounded_control_damage_plus_shared_failure_genotype",
+  "schema_id": "kt.ktcf.causal_interpretation_law.v1",
+  "status": "PASS"
+}

@@ -1,0 +1,11 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "rules": [
+    "STOP broad prompt/budget counterfactuals if every generation arm recovers <=2/14 and finalizer replay recovers <=1/14.",
+    "CONTINUE to targeted lane if any arm hits threshold with shared genotype and low control damage.",
+    "ESCALATE to benchmark/human-anchor court if benchmark audit suspects >=2 row answer ambiguity.",
+    "BLOCK training if MVS unknown rate remains above gate or human anchors are absent."
+  ],
+  "schema_id": "kt.ktcf.stop_rules.v1",
+  "status": "PASS"
+}

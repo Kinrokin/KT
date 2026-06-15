@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "audited_no_correct_rows": {},
+    "claim_ceiling_status": {},
+    "schema_id": {
+      "const": "kt.ktcf.benchmark_audit_receipt.v1"
+    },
+    "status": {},
+    "suspected_error_count": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "audited_no_correct_rows",
+    "suspected_error_count",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}

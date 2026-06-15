@@ -1,0 +1,52 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "control_rows": 14,
+  "deduplicated_target_rows": [
+    "gsm8k_test_329",
+    "gsm8k_test_331",
+    "gsm8k_test_333",
+    "gsm8k_test_340",
+    "gsm8k_test_349",
+    "gsm8k_test_353",
+    "gsm8k_test_359",
+    "gsm8k_test_362",
+    "gsm8k_test_363",
+    "gsm8k_test_368",
+    "gsm8k_test_369",
+    "gsm8k_test_380",
+    "gsm8k_test_391",
+    "gsm8k_test_395",
+    "gsm8k_test_399",
+    "gsm8k_test_403",
+    "gsm8k_test_406",
+    "gsm8k_test_407",
+    "gsm8k_test_409",
+    "gsm8k_test_411",
+    "gsm8k_test_413",
+    "gsm8k_test_415",
+    "gsm8k_test_416",
+    "gsm8k_test_417",
+    "gsm8k_test_422",
+    "gsm8k_test_423"
+  ],
+  "schema_id": "kt.ktcf.row_selection_receipt.v1",
+  "source_evidence": [
+    "reports/g32s_no_correct_counterfactual_matrix.jsonl",
+    "reports/g32s_false384_causal_matrix.jsonl",
+    "reports/g32s_cot640_recovery_damage_matrix.jsonl"
+  ],
+  "status": "PASS",
+  "target_row_class_order": [
+    "NO_CORRECT_ARM",
+    "FALSE384",
+    "COT640_RECOVERY",
+    "COT640_DAMAGE"
+  ],
+  "target_rows_unique": 26,
+  "target_source_class_counts": {
+    "COT640_DAMAGE": 2,
+    "COT640_RECOVERY": 4,
+    "FALSE384": 7,
+    "NO_CORRECT_ARM": 14
+  }
+}

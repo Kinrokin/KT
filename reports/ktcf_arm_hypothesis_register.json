@@ -1,0 +1,57 @@
+{
+  "arms": [
+    {
+      "arm_id": "A0_FIXED512_BASELINE",
+      "arm_type": "generation",
+      "claim_bound": "fixed512_control_baseline_not_deployable"
+    },
+    {
+      "arm_id": "A1_FIXED640_SENTINEL",
+      "arm_type": "generation",
+      "claim_bound": "sentinel_only_not_deployable"
+    },
+    {
+      "arm_id": "A2_FIXED768_CONTINUATION",
+      "arm_type": "generation",
+      "claim_bound": "continuation_probe_only_not_deployable"
+    },
+    {
+      "arm_id": "A3_FIXED1024_CEILING",
+      "arm_type": "generation",
+      "claim_bound": "ceiling_diagnostic_only_not_global_policy"
+    },
+    {
+      "arm_id": "A4_EXPLICIT_VARIABLE_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "prompt_elicitation_candidate_only"
+    },
+    {
+      "arm_id": "A5_MINIMAL_PLAIN_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "overthink_reduction_candidate_only"
+    },
+    {
+      "arm_id": "A6_STRUCTURED_FACT_EQUATION_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "prompt_structure_candidate_only"
+    },
+    {
+      "arm_id": "A7_ANSWER_ONLY_NO_COT",
+      "arm_type": "generation",
+      "claim_bound": "answer_only_diagnostic_not_strategy"
+    },
+    {
+      "arm_id": "A8_FINALIZER_REPLAY_ONLY",
+      "arm_type": "analysis_only",
+      "claim_bound": "finalizer_scorer_diagnostic_only"
+    },
+    {
+      "arm_id": "A9_ORACLE_DIAGNOSTIC",
+      "arm_type": "analysis_only",
+      "claim_bound": "HINDSIGHT_ONLY_NOT_DEPLOYABLE"
+    }
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "schema_id": "kt.ktcf.arm_hypothesis_register.v1",
+  "status": "PASS"
+}

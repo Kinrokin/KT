@@ -1,0 +1,25 @@
+{
+  "allowed_features": [
+    "pre_generation_proxy_stratum",
+    "question_token_length_bucket",
+    "number_count_bucket",
+    "operation_keyword_count_bucket",
+    "estimated_step_count_bucket"
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "forbidden_features": [
+    "row_id",
+    "expected_answer",
+    "expected_answer_hash",
+    "measured_arm_correctness",
+    "posthoc_correctness",
+    "oracle_correct_arm",
+    "oracle_cheapest_correct_arm"
+  ],
+  "runtime_authority": false,
+  "schema_id": "kt.g32s.feature_legality_receipt.v1",
+  "selector_deployment_authority": false,
+  "source_policy": "policies/g32s_difficulty_aware_selector_v2.json",
+  "status": "PASS_DERIVED_FROM_G32S_SELECTOR_POLICY",
+  "training_authority": false
+}

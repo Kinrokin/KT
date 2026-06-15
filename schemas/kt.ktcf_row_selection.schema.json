@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_status": {},
+    "control_rows": {},
+    "schema_id": {
+      "const": "kt.ktcf.row_selection_receipt.v1"
+    },
+    "status": {},
+    "target_rows_unique": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "target_rows_unique",
+    "control_rows",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}
