@@ -158,6 +158,7 @@ def validate() -> dict[str, Any]:
         assert_true("checkpoint_state.json" in runner, "runner must support checkpoint/resume")
         assert_true("HF_UPLOAD_RECEIPT.json" in runner, "runner must emit HF upload receipt")
         assert_true("KT_CF_V1_ASSESSMENT_ONLY.zip" in runner, "runner must emit assessment zip")
+        assert_true("finalizer_candidates" in runner and "output_tail" in runner, "finalizer replay must use untruncated scorer-side candidates or output tail")
         assert_true("KT_CANONICAL_RUNNER.py" in bootstrap, "bootstrap must invoke canonical runner")
 
     receipt = {

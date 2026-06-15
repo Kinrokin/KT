@@ -919,6 +919,7 @@ def main() -> None:
                     raise RuntimeError(f"expected answer literal appeared in rendered prompt for {key}")
                 output, prompt_tokens, output_tokens, latency_ms = generate(model, tokenizer, prompt, int(arm["max_new_tokens"]))
                 extracted = extract_answer(output)
+                finalizer_candidates = alternate_extract_answer(output)
                 record = {
                     "schema_id": "kt.ktcf.counterfactual_trial_row.v1",
                     "run_mode": RUN_MODE,
@@ -935,6 +936,8 @@ def main() -> None:
                     "prompt_hash": sha256_text(prompt),
                     "output_hash": sha256_text(output),
                     "output_preview": output[:1000],
+                    "output_tail": output[-2000:],
+                    "finalizer_candidates": finalizer_candidates,
                     "prompt_tokens": prompt_tokens,
                     "output_tokens": output_tokens,
                     "total_tokens": prompt_tokens + output_tokens,
@@ -961,7 +964,9 @@ def main() -> None:
             recovered = False
             candidates = []
             if fixed512:
-                candidates = alternate_extract_answer(fixed512.get("output_preview", ""))
+                candidates = fixed512.get("finalizer_candidates") or alternate_extract_answer(
+                    fixed512.get("output_tail") or fixed512.get("output_preview", "")
+                )
                 recovered = any(score_candidate(candidate, expected) for candidate in candidates)
             finalizer_rows.append({
                 "schema_id": "kt.ktcf.finalizer_replay_row.v1",

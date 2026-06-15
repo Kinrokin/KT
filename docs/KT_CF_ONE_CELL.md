@@ -15,7 +15,7 @@ packets/ktcf_v1.zip
 Packet SHA256:
 
 ```text
-90432c48b50d4731c0886bab9a8211f5bfe400f25a7732718b80637a727a85a5
+96b4621fa27fb999a04c0c4a3c56a359402e0d6fa8ce69eca841d47e901a7db3
 ```
 
 Run mode:
