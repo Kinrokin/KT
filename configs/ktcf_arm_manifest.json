@@ -1,0 +1,97 @@
+{
+  "adapter_mutation_authority": false,
+  "arms": [
+    {
+      "arm_id": "A0_FIXED512_BASELINE",
+      "arm_type": "generation",
+      "claim_bound": "fixed512_control_baseline_not_deployable",
+      "max_new_tokens": 512,
+      "prompt_template_id": "BASELINE_COT"
+    },
+    {
+      "arm_id": "A1_FIXED640_SENTINEL",
+      "arm_type": "generation",
+      "claim_bound": "sentinel_only_not_deployable",
+      "max_new_tokens": 640,
+      "prompt_template_id": "BASELINE_COT"
+    },
+    {
+      "arm_id": "A2_FIXED768_CONTINUATION",
+      "arm_type": "generation",
+      "claim_bound": "continuation_probe_only_not_deployable",
+      "max_new_tokens": 768,
+      "prompt_template_id": "BASELINE_COT"
+    },
+    {
+      "arm_id": "A3_FIXED1024_CEILING",
+      "arm_type": "generation",
+      "claim_bound": "ceiling_diagnostic_only_not_global_policy",
+      "max_new_tokens": 1024,
+      "prompt_template_id": "BASELINE_COT"
+    },
+    {
+      "arm_id": "A4_EXPLICIT_VARIABLE_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "prompt_elicitation_candidate_only",
+      "max_new_tokens": 512,
+      "prompt_template_id": "EXPLICIT_VARIABLE_COT"
+    },
+    {
+      "arm_id": "A5_MINIMAL_PLAIN_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "overthink_reduction_candidate_only",
+      "max_new_tokens": 512,
+      "prompt_template_id": "MINIMAL_PLAIN_COT"
+    },
+    {
+      "arm_id": "A6_STRUCTURED_FACT_EQUATION_COT_512",
+      "arm_type": "generation",
+      "claim_bound": "prompt_structure_candidate_only",
+      "max_new_tokens": 512,
+      "prompt_template_id": "STRUCTURED_FACT_EQUATION_COT"
+    },
+    {
+      "arm_id": "A7_ANSWER_ONLY_NO_COT",
+      "arm_type": "generation",
+      "claim_bound": "answer_only_diagnostic_not_strategy",
+      "max_new_tokens": 96,
+      "prompt_template_id": "ANSWER_ONLY_NO_COT"
+    },
+    {
+      "arm_id": "A8_FINALIZER_REPLAY_ONLY",
+      "arm_type": "analysis_only",
+      "claim_bound": "finalizer_scorer_diagnostic_only",
+      "max_new_tokens": null,
+      "prompt_template_id": null
+    },
+    {
+      "arm_id": "A9_ORACLE_DIAGNOSTIC",
+      "arm_type": "analysis_only",
+      "claim_bound": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+      "max_new_tokens": null,
+      "prompt_template_id": null
+    }
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "commercial_claim": false,
+  "dataset_generation_authority": false,
+  "deploy_1024": false,
+  "deploy_384": false,
+  "deploy_640": false,
+  "deploy_768": false,
+  "external_validation_claim": false,
+  "frontier_or_s_tier_claim": false,
+  "generation_arm_count": 8,
+  "learned_router_superiority_claim": false,
+  "oracle_diagnostic": "HINDSIGHT_ONLY_NOT_DEPLOYABLE",
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "router_superiority_claim": false,
+  "run_mode": "RUN_KTPARETO_COUNTERFACTUAL_MICROFURNACE_V1",
+  "runtime_authority": false,
+  "schema_id": "kt.ktcf.arm_manifest.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS",
+  "training_authority": false
+}

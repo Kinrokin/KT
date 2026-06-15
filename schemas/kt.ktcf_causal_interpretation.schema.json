@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_status": {},
+    "interpretation_table": {},
+    "schema_id": {
+      "const": "kt.ktcf.causal_interpretation_law.v1"
+    },
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "interpretation_table",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}

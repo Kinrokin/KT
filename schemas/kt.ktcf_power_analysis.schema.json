@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_status": {},
+    "interpretation": {},
+    "schema_id": {
+      "const": "kt.ktcf.power_analysis.v1"
+    },
+    "status": {},
+    "target_n": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "target_n",
+    "interpretation",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "forbidden_features": {},
+    "schema_id": {
+      "const": "kt.ktcf.feature_legality_receipt.v1"
+    },
+    "selector_deployment_authority": {},
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "forbidden_features",
+    "selector_deployment_authority"
+  ],
+  "type": "object"
+}

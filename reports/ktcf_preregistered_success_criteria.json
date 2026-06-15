@@ -1,0 +1,31 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "criteria": {
+    "EXPLICIT_VARIABLE_COT": {
+      "interpretation": "prompt-elicitation / multi-entity-tracking repair candidate, not raw capability proof",
+      "success": ">=5/14 no-correct-arm rows newly correct AND matched-control damage <=1"
+    },
+    "FINALIZER_REPLAY_ONLY": {
+      "interpretation": "finalizer/scorer owned, not reasoning owned",
+      "success": ">=4/14 no-correct-arm rows rescored correct from prior/current raw outputs"
+    },
+    "FIXED1024_CEILING": {
+      "interpretation": "budget ceiling diagnostic only, never global policy",
+      "success": ">=3/14 no-correct-arm rows newly correct AND no net control damage >2"
+    },
+    "FIXED768_CONTINUATION": {
+      "interpretation": "budget/continuation candidate only",
+      "success": ">=3/14 no-correct-arm rows newly correct AND no net control damage >1"
+    },
+    "MINIMAL_PLAIN_COT": {
+      "interpretation": "overthink/verbosity repair candidate",
+      "success": ">=3/14 no-correct-arm rows newly correct OR clear reduction in overthink/damage rows"
+    },
+    "STRUCTURED_FACT_EQUATION_COT": {
+      "interpretation": "prompt structure / equation extraction repair candidate",
+      "success": ">=5/14 no-correct-arm rows newly correct AND matched-control damage <=1"
+    }
+  },
+  "schema_id": "kt.ktcf.preregistered_success_criteria.v1",
+  "status": "PASS"
+}

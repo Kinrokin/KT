@@ -1,0 +1,33 @@
+{
+  "allowed_features_for_offline_matching": [
+    "question_token_length",
+    "number_count",
+    "entity_count",
+    "operation_keyword_count",
+    "estimated_step_count",
+    "rate_ratio_percent_terms",
+    "fraction_decimal_terms",
+    "unit_conversion_terms",
+    "comparison_terms",
+    "multi_entity_tracking_terms"
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "forbidden_features": [
+    "expected_answer",
+    "expected_answer_hash",
+    "measured_arm_correctness",
+    "oracle_cheapest_correct_arm",
+    "oracle_correct_arm",
+    "posthoc_correctness",
+    "row_id",
+    "source_classes",
+    "target_class"
+  ],
+  "measured_prior_correctness_not_selector_feature": true,
+  "oracle_correctness_not_input_feature": true,
+  "row_id_not_selector_feature": true,
+  "runtime_selector_enabled": false,
+  "schema_id": "kt.ktcf.feature_legality_receipt.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS"
+}
