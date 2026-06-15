@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "schema_id": {
+      "const": "kt.ktpareto.no_correct_arm_autopsy_row.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "global_row",
+    "difficulty_stratum",
+    "expected_answer_hash",
+    "wrong_answer_patterns_by_budget",
+    "repair_owner_candidate",
+    "counterfactual_needed",
+    "human_anchor_required",
+    "training_authority"
+  ],
+  "type": "object"
+}

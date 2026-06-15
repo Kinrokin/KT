@@ -1,5 +1,24 @@
 {
   "claim_ceiling_preserved": true,
+  "requested_commands": [
+    "python scripts/import_ktpareto_assessment.py",
+    "python scripts/validate_ktpareto_review.py",
+    "python -m pytest --no-cov -q tests/test_ktpareto_*.py",
+    "python scripts/validate_json_artifacts.py",
+    "python scripts/scan_for_forbidden_claims.py",
+    "python KT_PROD_CLEANROOM/tools/operator/taxonomy_drift_scan.py",
+    "PYTHONPATH=KT_PROD_CLEANROOM python KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+    "python scripts/check_artifact_authority_registry.py",
+    "python scripts/check_no_bloat.py",
+    "python scripts/check_stale_head_refs.py",
+    "git diff --check"
+  ],
   "schema_id": "kt.ktpareto.validation_path_mapping.v1",
-  "status": "PASS_REPO_NATIVE_PATHS_USED"
+  "status": "PASS_REPO_NATIVE_PATHS_USED",
+  "substitutions": [
+    {
+      "requested": "PYTHONPATH=KT_PROD_CLEANROOM python KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py",
+      "used_on_windows": "$env:PYTHONPATH='KT_PROD_CLEANROOM'; python KT_PROD_CLEANROOM/tools/operator/trust_zone_validate.py"
+    }
+  ]
 }
