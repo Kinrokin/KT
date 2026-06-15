@@ -1,0 +1,31 @@
+{
+  "allowed_features": [
+    "pre_generation_proxy_stratum",
+    "question_token_length_bucket",
+    "number_count_bucket",
+    "operation_keyword_count_bucket",
+    "estimated_step_count_bucket"
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "classes": [
+    "COT256_SAFE",
+    "COT384_ECONOMIC_KNEE_CANDIDATE_ONLY",
+    "COT512_REQUIRED",
+    "COT512_INSUFFICIENT",
+    "COT640_SENTINEL_ONLY",
+    "REVIEW_OR_COUNTERFACTUAL"
+  ],
+  "fallback": "COT512_OR_COUNTERFACTUAL_REVIEW_ON_UNCERTAINTY",
+  "forbidden_features": [
+    "row_id",
+    "expected_answer",
+    "expected_answer_hash",
+    "measured_arm_correctness",
+    "posthoc_correctness",
+    "oracle_correct_arm",
+    "oracle_cheapest_correct_arm"
+  ],
+  "schema_id": "kt.g32s.selector_policy.v2",
+  "selector_deployment_authority": false,
+  "status": "SEED_ONLY_NO_RUNTIME_AUTHORITY"
+}
