@@ -1,0 +1,22 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "global_deployment_gate": "BLOCKED_FALSE_DOWNSHIFT_DAMAGE",
+  "rule": "A stratum can only remain a review candidate if false_downshift_rows == 0.",
+  "schema_id": "kt.g32s.safe384_candidate.v1",
+  "selector_deployment_authority": false,
+  "status": "CANDIDATE_ONLY_NOT_DEPLOYABLE",
+  "strata": {
+    "HIGH_PROXY_COMPLEXITY": {
+      "candidate_review_only": false,
+      "false384_rows": 2
+    },
+    "LOW_PROXY_COMPLEXITY": {
+      "candidate_review_only": false,
+      "false384_rows": 2
+    },
+    "MEDIUM_PROXY_COMPLEXITY": {
+      "candidate_review_only": false,
+      "false384_rows": 3
+    }
+  }
+}

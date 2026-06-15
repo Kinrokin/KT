@@ -1,0 +1,66 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "row_count": 100,
+  "row_slice": "openai/gsm8k:test[325:425]",
+  "schema_id": "kt.g32s.stratified_baseline_matrix.v2",
+  "status": "PASS_REPLAY_BOUND",
+  "strata": {
+    "HIGH_PROXY_COMPLEXITY": {
+      "arm_accuracy": {
+        "A0_COT_96_FIXED": 0.05263157894736842,
+        "A1_COT_192_FIXED": 0.15789473684210525,
+        "A2_COT_256_FIXED": 0.3684210526315789,
+        "A3_COT_320_FIXED": 0.5789473684210527,
+        "A4_COT_384_FIXED": 0.5789473684210527,
+        "A5_COT_448_FIXED": 0.7368421052631579,
+        "A6_COT_512_FIXED_CONTROL": 0.6842105263157895,
+        "A7_COT_640_FIXED_SENTINEL": 0.6842105263157895,
+        "A8_ANSWER_ONLY_NO_COT": 0.05263157894736842
+      },
+      "cot640_damage_rows": 1,
+      "cot640_recovery_rows": 1,
+      "false384_rows": 2,
+      "fixed512_failures": 6,
+      "no_correct_arm_rows": 5,
+      "row_count": 19
+    },
+    "LOW_PROXY_COMPLEXITY": {
+      "arm_accuracy": {
+        "A0_COT_96_FIXED": 0.0,
+        "A1_COT_192_FIXED": 0.23684210526315788,
+        "A2_COT_256_FIXED": 0.42105263157894735,
+        "A3_COT_320_FIXED": 0.6842105263157895,
+        "A4_COT_384_FIXED": 0.8157894736842105,
+        "A5_COT_448_FIXED": 0.8421052631578947,
+        "A6_COT_512_FIXED_CONTROL": 0.868421052631579,
+        "A7_COT_640_FIXED_SENTINEL": 0.868421052631579,
+        "A8_ANSWER_ONLY_NO_COT": 0.0
+      },
+      "cot640_damage_rows": 0,
+      "cot640_recovery_rows": 0,
+      "false384_rows": 2,
+      "fixed512_failures": 5,
+      "no_correct_arm_rows": 5,
+      "row_count": 38
+    },
+    "MEDIUM_PROXY_COMPLEXITY": {
+      "arm_accuracy": {
+        "A0_COT_96_FIXED": 0.0,
+        "A1_COT_192_FIXED": 0.13953488372093023,
+        "A2_COT_256_FIXED": 0.4883720930232558,
+        "A3_COT_320_FIXED": 0.6046511627906976,
+        "A4_COT_384_FIXED": 0.7906976744186046,
+        "A5_COT_448_FIXED": 0.813953488372093,
+        "A6_COT_512_FIXED_CONTROL": 0.8372093023255814,
+        "A7_COT_640_FIXED_SENTINEL": 0.8837209302325582,
+        "A8_ANSWER_ONLY_NO_COT": 0.046511627906976744
+      },
+      "cot640_damage_rows": 1,
+      "cot640_recovery_rows": 3,
+      "false384_rows": 3,
+      "fixed512_failures": 7,
+      "no_correct_arm_rows": 4,
+      "row_count": 43
+    }
+  }
+}
