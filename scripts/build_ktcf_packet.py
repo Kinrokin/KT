@@ -694,6 +694,7 @@ def claim_boundary_receipt(packet_sha: str | None = None) -> dict[str, Any]:
         "schema_id": "kt.ktcf.claim_boundary_receipt.v1",
         "status": "PASS",
         "packet_sha256_if_known": packet_sha,
+        "packet_sha256_authority": "reports/ktcf_packet_decision.json" if packet_sha else "BOUND_AFTER_PACKET_BUILD",
         "allowed_claim": "A repo-side packet was forged to run a targeted counterfactual microfurnace over selected Pareto/G32S rows under preregistered diagnostic rules.",
         **AUTHORITY_FALSE,
         **FORBIDDEN_DEPLOYMENT_FALSE,
@@ -1023,7 +1024,12 @@ def main() -> None:
                 "claim_bound": arm["claim_bound"],
             })
 
-        finalizer_recovered = sum(1 for row in finalizer_rows if row["rescored_correct"])
+        finalizer_recovered = sum(
+            1
+            for row in finalizer_rows
+            if row["rescored_correct"] and row["role"] == "TARGET" and "NO_CORRECT_ARM" in row.get("source_classes", [])
+        )
+        finalizer_recovered_any_scope = sum(1 for row in finalizer_rows if row["rescored_correct"])
         final_summary = {
             "schema_id": "kt.ktcf.final_summary.v1",
             "run_mode": RUN_MODE,
@@ -1033,6 +1039,8 @@ def main() -> None:
             "control_rows": sum(1 for row in config["rows"] if row["role"] != "TARGET"),
             "generation_trials": len(matrix),
             "finalizer_recovered_count": finalizer_recovered,
+            "finalizer_recovered_count_scope": "NO_CORRECT_ARM_TARGET_ROWS_ONLY",
+            "finalizer_recovered_any_scope_count": finalizer_recovered_any_scope,
             "oracle_any_correct_rows": sum(1 for row in oracle_rows if row["any_generated_arm_correct"]),
             "next_lawful_move": "IMPORT_KTCF_ASSESSMENT_AND_ADJUDICATE_CAUSAL_OWNERSHIP",
             "training_authority": False,
@@ -1043,7 +1051,16 @@ def main() -> None:
 
         write_jsonl(outdir / "counterfactual_row_trial_matrix.jsonl", matrix)
         write_json(outdir / "counterfactual_scorecard.json", {"schema_id": "kt.ktcf.counterfactual_scorecard.v1", "scorecard": scorecard})
-        write_json(outdir / "finalizer_replay_report.json", {"schema_id": "kt.ktcf.finalizer_replay_report.v1", "rows": finalizer_rows, "recovered_count": finalizer_recovered})
+        write_json(
+            outdir / "finalizer_replay_report.json",
+            {
+                "schema_id": "kt.ktcf.finalizer_replay_report.v1",
+                "rows": finalizer_rows,
+                "recovered_count": finalizer_recovered,
+                "recovered_count_scope": "NO_CORRECT_ARM_TARGET_ROWS_ONLY",
+                "recovered_any_scope_count": finalizer_recovered_any_scope,
+            },
+        )
         write_json(outdir / "oracle_diagnostic_receipt.json", {"schema_id": "kt.ktcf.oracle_diagnostic_receipt.v1", "status": "HINDSIGHT_ONLY_NOT_DEPLOYABLE", "rows": oracle_rows})
         write_jsonl(outdir / "causal_verdict_candidates.jsonl", causal_rows)
         write_json(outdir / "final_summary.json", final_summary)
@@ -1296,11 +1313,12 @@ def build() -> dict[str, Any]:
     write_json(REPORTS / "ktcf_feature_legality_receipt.json", feature_legality)
     write_json(REPORTS / "ktcf_claim_boundary_receipt.json", claim_boundary)
 
+    # The final packet SHA cannot be embedded inside the packet without changing
+    # the packet. Keep runtime config pointed to the external receipt, then bind
+    # the final packet SHA in repo-side reports after the zip is closed.
     packet_sha = build_packet(runtime_config)
     claim_boundary = claim_boundary_receipt(packet_sha)
-    runtime_config["claim_boundary"] = claim_boundary
     write_json(REPORTS / "ktcf_claim_boundary_receipt.json", claim_boundary)
-    packet_sha = build_packet(runtime_config)
 
     decision = {
         "schema_id": "kt.ktcf.packet_decision.v1",
@@ -1351,13 +1369,14 @@ One-cell Kaggle bootstrap:
 ```python
 import zipfile
 from pathlib import Path
+import runpy
 
 packet = Path('/kaggle/input/{KAGGLE_DATASET_NAME}/ktcf_v1.zip')
 work = Path('/kaggle/working/ktcf_packet_loader')
 work.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(packet) as zf:
     zf.extractall(work)
-exec((work / 'KAGGLE_BOOTSTRAP_CELL.py').read_text(encoding='utf-8'))
+runpy.run_path(str(work / 'KAGGLE_BOOTSTRAP_CELL.py'), run_name='__main__')
 ```
 
 This is a diagnostic counterfactual microfurnace only. It does not train,

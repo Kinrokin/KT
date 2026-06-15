@@ -93,6 +93,7 @@ def validate() -> dict[str, Any]:
     packet_sha = sha256_file(PACKET_PATH)
     assert_true(decision["packet_sha256"] == packet_sha, "decision packet SHA mismatch")
     assert_true(summary["packet_sha256_if_any"] == packet_sha, "summary packet SHA mismatch")
+    assert_true(claim_boundary["packet_sha256_if_known"] == packet_sha, "claim boundary packet SHA mismatch")
     assert_true(decision["packet_path"] == "packets/ktcf_v1.zip", "unexpected packet path")
     assert_true(decision["kaggle_dataset_name"] == "ktcf-v1", "unexpected Kaggle dataset name")
     assert_true(decision["run_mode"] == "RUN_KTPARETO_COUNTERFACTUAL_MICROFURNACE_V1", "unexpected run mode")

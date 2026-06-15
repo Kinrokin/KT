@@ -15,7 +15,7 @@ packets/ktcf_v1.zip
 Packet SHA256:
 
 ```text
-33332094005a25ca3ace961139eee1f7a5ae51ee1c3f9f918413373536a178dd
+90432c48b50d4731c0886bab9a8211f5bfe400f25a7732718b80637a727a85a5
 ```
 
 Run mode:
@@ -29,13 +29,14 @@ One-cell Kaggle bootstrap:
 ```python
 import zipfile
 from pathlib import Path
+import runpy
 
 packet = Path('/kaggle/input/ktcf-v1/ktcf_v1.zip')
 work = Path('/kaggle/working/ktcf_packet_loader')
 work.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(packet) as zf:
     zf.extractall(work)
-exec((work / 'KAGGLE_BOOTSTRAP_CELL.py').read_text(encoding='utf-8'))
+runpy.run_path(str(work / 'KAGGLE_BOOTSTRAP_CELL.py'), run_name='__main__')
 ```
 
 This is a diagnostic counterfactual microfurnace only. It does not train,
