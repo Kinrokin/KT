@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "next_lawful_move": {},
+    "packet_path": {},
+    "packet_sha256": {},
+    "schema_id": {},
+    "status": {}
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "packet_path",
+    "packet_sha256",
+    "next_lawful_move"
+  ],
+  "type": "object"
+}
