@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "claim_ceiling_status": {},
+    "pass_gate": {},
+    "run_mode": {},
+    "schema_id": {}
+  },
+  "required": [
+    "schema_id",
+    "run_mode",
+    "pass_gate",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}

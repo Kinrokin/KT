@@ -1,0 +1,42 @@
+{
+  "adapter_mutation_authority": false,
+  "arms": [
+    {
+      "arm_id": "A0_CURRENT_PROMPT",
+      "claim_bound": "baseline_current_prompt_diagnostic_only",
+      "do_sample": false,
+      "max_new_tokens": 512,
+      "temperature": null,
+      "template_id": "BASELINE_COT",
+      "template_sha256": "07fa205610835e30f69168657f1e2ec16c72a0cdc12239ab6ee7978087657fec",
+      "template_text": "Solve the problem step by step. Keep the reasoning concise but complete. End with exactly one line in this form:\nFINAL_ANSWER: <answer>"
+    },
+    {
+      "arm_id": "A1_STOP_AFTER_FINAL_ANSWER",
+      "claim_bound": "stop_sequence_prompt_delta_diagnostic_only_not_production_prompt_mutation",
+      "do_sample": false,
+      "max_new_tokens": 512,
+      "temperature": null,
+      "template_id": "BASELINE_COT_STOP_AFTER_FINAL_ANSWER",
+      "template_sha256": "ae57c00130d788b4c021d0bae68be0d7be43da1583552587ac00964d56249e46",
+      "template_text": "Solve the problem step by step. Keep the reasoning concise but complete. End with exactly one line in this form:\nFINAL_ANSWER: <answer>\nAfter writing FINAL_ANSWER, stop immediately.\nDo not add explanation, restatement, confidence text, alternate answer, or any additional text.\nThe output must end with the final answer and nothing else."
+    }
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "dataset_generation_authority": false,
+  "generation_config": {
+    "do_sample": false,
+    "max_new_tokens": 512,
+    "seed": "fixed_if_runtime_supports_it",
+    "temperature": null
+  },
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "run_mode": "RUN_STOPSEQ_10ROW_PROMPT_PROBE_V1",
+  "runtime_authority": false,
+  "schema_id": "kt.ktstop10.prompt_arm_manifest.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS",
+  "training_authority": false
+}
