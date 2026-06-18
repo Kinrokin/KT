@@ -1,0 +1,71 @@
+{
+  "assessment_sha256": "7a11037aa4ea0f45fad7d794c458d30b14ac77c9b1a51e06d1ea8f2af80a9ab6",
+  "assessment_status": "PASS_MODEL_GENERATED_AND_SCORED",
+  "claim_ceiling_status": "PRESERVED",
+  "created_utc": "2026-06-18T16:30:25Z",
+  "current_defensible_statement": "On the 10-row sandbox sample, runtime stopping produced the intended output-boundary behavior, saved measured output tokens, and caused no observed correctness damage. The official court was defective; causal latency benefit and wider safety remain unproven.",
+  "future_dataset": "ktstop50-v1",
+  "future_packet": "packets/ktstop50_v1.zip",
+  "future_run_mode": "RUN_STOPSEQ_RUNTIME_STOP_CRITERIA_50ROW_V1",
+  "immutable_trace_recompute": {
+    "b0_correct": 6,
+    "b0_full_tokens": 4209,
+    "b0_full_tokens_per_correct": 701.5,
+    "b0_latency_seconds_observed": 273.593,
+    "b0_output_tokens": 3142,
+    "b0_repeated_final_marker_rows": 5,
+    "b0_semantic_trailer_rows": 8,
+    "b1_correct": 6,
+    "b1_full_tokens": 3849,
+    "b1_full_tokens_per_correct": 641.5,
+    "b1_latency_seconds_observed": 242.423,
+    "b1_output_tokens": 2782,
+    "b1_repeated_final_marker_rows": 0,
+    "b1_semantic_trailer_rows": 0,
+    "control_damage_count": 0,
+    "control_damage_rows": [],
+    "full_token_reduction_pct": 8.553100498930863,
+    "full_tokens_saved": 360,
+    "latency_claim_status": "PROVISIONAL_REQUIRES_CAUSAL_TIMING_PROTOCOL",
+    "latency_reduction_pct_observed": 11.392835343009512,
+    "latency_saved_seconds_observed": 31.170000000000016,
+    "output_token_reduction_pct": 11.457670273711013,
+    "output_tokens_saved": 360
+  },
+  "next_repo_lane": "AUTHOR_KTSTOPRT_RECONCILED_COURT_ENVIRONMENT_AND_PAIRED50_PACKET_V1",
+  "observed_main_at_packet_authoring": "f5f25bdbf4071b7a7a6f1abd080fd8a5401c820a",
+  "official_receipt": {
+    "b0_correct": 6,
+    "b0_total_output_tokens": 3142,
+    "b1_correct": 6,
+    "b1_total_output_tokens": 2782,
+    "pass_gate": false,
+    "prefix_equivalence": "8/10",
+    "semantic_trailer_rate": 0.2
+  },
+  "prefix_mismatch_details": [
+    {
+      "b0_output_tokens": 290,
+      "b1_output_tokens": 290,
+      "baseline_prefix_token_count": 289,
+      "official_prefix_equal": false,
+      "raw_output_equal": true,
+      "row_id": "gsm8k_test_340",
+      "runtime_stop_token_count": 290,
+      "token_count_delta": 1
+    },
+    {
+      "b0_output_tokens": 333,
+      "b1_output_tokens": 333,
+      "baseline_prefix_token_count": 332,
+      "official_prefix_equal": false,
+      "raw_output_equal": true,
+      "row_id": "gsm8k_test_368",
+      "runtime_stop_token_count": 333,
+      "token_count_delta": 1
+    }
+  ],
+  "schema_id": "kt.stop50_repo.evidence_summary.v1",
+  "source_packet": "packets/ktstoprt_v1.zip",
+  "source_packet_sha256": "620dda5b47587da4927d57545378b51ecc1879be75965e5fe72dbc3bce064eec"
+}

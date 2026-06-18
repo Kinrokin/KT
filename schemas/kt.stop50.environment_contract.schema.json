@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "bitsandbytes_functional_required": {
+      "type": "boolean"
+    },
+    "cuda_required": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "cuda_required",
+    "bitsandbytes_functional_required"
+  ],
+  "schema_id": "kt.stop50.environment_contract.schema.v1",
+  "type": "object"
+}

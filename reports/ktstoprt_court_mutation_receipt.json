@@ -1,0 +1,23 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "created_utc": "2026-06-18T16:30:25Z",
+  "dataset_generation_authority": false,
+  "mutations_required_in_stop50_packet": [
+    "marker in prompt must be ignored",
+    "quoted marker in reasoning must not stop",
+    "marker not at generated line start must not stop",
+    "CRLF, LF, and CR line endings must close answer line",
+    "EOS after non-empty final answer line is accepted as EOS_AFTER_FINAL_ANSWER_LINE",
+    "batch_size greater than one must fail closed"
+  ],
+  "no_row_specific_logic": true,
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stoprt.court_mutation_receipt.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS_MUTATION_AND_ADVERSARIAL_GRAMMAR_REQUIRED_FOR_STOP50",
+  "training_authority": false
+}
