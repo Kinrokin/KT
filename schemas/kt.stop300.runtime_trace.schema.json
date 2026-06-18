@@ -1,0 +1,16 @@
+{
+  "$id": "kt.stop300.runtime_trace.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {},
+  "required": [
+    "raw_generated_token_ids",
+    "raw_generated_text",
+    "generator_termination_source",
+    "semantic_boundary_type",
+    "returned_visible_text",
+    "scorer_input",
+    "runtime_fsm_trace"
+  ],
+  "type": "object"
+}

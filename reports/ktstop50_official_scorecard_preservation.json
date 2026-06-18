@@ -1,0 +1,43 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "created_utc": "2026-06-18T23:35:01Z",
+  "dataset_generation_authority": false,
+  "do_not_reinterpret_repetitions_as_independent_rows": true,
+  "final_summary_status": "PASS_MODEL_GENERATED_AND_SCORED",
+  "official_scorecard": {
+    "arm_scorecard": {
+      "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE": {
+        "accuracy": 0.9,
+        "correct": 45,
+        "row_count": 50,
+        "tokens_per_correct": 430.06666666666666,
+        "total_output_tokens": 14683
+      },
+      "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP": {
+        "accuracy": 0.9,
+        "correct": 45,
+        "row_count": 50,
+        "tokens_per_correct": 372.77777777777777,
+        "total_output_tokens": 12105
+      }
+    },
+    "claim_ceiling_status": "PRESERVED",
+    "prefix_equal_count": 150,
+    "prefix_total": 150,
+    "row_count": 50,
+    "run_mode": "RUN_STOPSEQ_RUNTIME_STOP_CRITERIA_50ROW_V1",
+    "schema_id": "kt.stop50.runtime_scorecard.v1",
+    "status": "PASS_MODEL_GENERATED_AND_SCORED"
+  },
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stop50.official_scorecard_preservation.v1",
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "source": "evidence/KT_STOP50_V1_ASSESSMENT_ONLY.zip::runtime_stop_scorecard.json",
+  "status": "PRESERVED",
+  "training_authority": false
+}

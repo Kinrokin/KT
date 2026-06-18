@@ -1,0 +1,9 @@
+{"eos": false, "expected": "FINAL_LINE_CLOSE", "id": "newline", "lawful": true, "text": "work\nFINAL_ANSWER: 42 apples\nextra"}
+{"eos": false, "expected": "FINAL_LINE_CLOSE", "id": "crlf", "lawful": true, "text": "FINAL_ANSWER: -3.5 meters\r\nextra"}
+{"eos": true, "expected": "EOS_AFTER_NONEMPTY_FINAL", "id": "eos", "lawful": true, "text": "FINAL_ANSWER: $4"}
+{"eos": false, "expected": "SECOND_MARKER_CLOSE", "id": "second_marker", "lawful": true, "text": "FINAL_ANSWER: 7 oranges FINAL_ANSWER:"}
+{"eos": true, "expected": "NO_VALID_BOUNDARY", "id": "quoted", "lawful": false, "text": "I discuss \"FINAL_ANSWER:\" here."}
+{"eos": true, "expected": "MALFORMED_FINAL", "id": "empty", "lawful": false, "text": "FINAL_ANSWER:   "}
+{"eos": false, "expected": "FINAL_LINE_CLOSE", "id": "fraction", "lawful": true, "text": "FINAL_ANSWER: 3/4 cup\n"}
+{"eos": false, "expected": "FINAL_LINE_CLOSE", "id": "percent", "lawful": true, "text": "FINAL_ANSWER: 12.5%\n"}
+{"eos": false, "expected": "FINAL_LINE_CLOSE", "id": "scientific", "lawful": true, "text": "FINAL_ANSWER: 6.02e23 particles\n"}

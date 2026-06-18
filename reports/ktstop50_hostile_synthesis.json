@@ -1,0 +1,132 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "created_utc": "2026-06-18T23:35:01Z",
+  "dataset_generation_authority": false,
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stop50.hostile_synthesis_receipt.v2",
+  "scoped_findings": [
+    "MECHANISM_SIGNAL_STRONG_POSITIVE",
+    "ZERO_OBSERVED_DAMAGE_ON_50_UNIQUE_ROWS",
+    "TOKEN_ECONOMICS_CONFIRMED_POSITIVE",
+    "LATENCY_SIGNAL_STRONGLY_MECHANISTIC_BUT_NOT_CANONICAL",
+    "GENERAL_RUNTIME_SAFETY_UNPROVEN",
+    "PRODUCTION_AUTHORITY_NOT_EARNED"
+  ],
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "status": "MECHANISM_SIGNAL_STRONG_POSITIVE",
+  "synthesis": {
+    "bindings": {
+      "assessment_sha256": "50d94b6b3688c5917547fb7ff12747defc9ba0ab7944c1231d4b218f74383ec9",
+      "repo_head": "5c88770d09091f248375d21040bb53b403517ab3",
+      "source_packet": "packets/ktstop50_v1.zip",
+      "source_packet_sha256": "88897536607e923a0723ad60bb9219712a447a00abd18cd8c0b2db21aa71bc18",
+      "wrapper_sha256": "59f530d378e80720c925fbd2d916622a345f588e292d17bfaf4bc761bf25917d"
+    },
+    "claim_ceiling_status": "PRESERVED",
+    "correctness": {
+      "baseline_correct": 45,
+      "candidate_correct": 45,
+      "damage_rows": 0,
+      "prefix_equal": 150,
+      "prefix_total": 150,
+      "rescue_rows": 0
+    },
+    "created_utc": "2026-06-18T22:46:57Z",
+    "current_claim": "FIRST_COMPLETE_FINAL_ANSWER_TERMINATION_STRONGLY_SUPPORTED_FOR_EXACT_TESTED_STATE__GENERAL_RUNTIME_SAFETY_UNPROVEN",
+    "distribution": {
+      "leave_one_out_reduction_max": 0.1817925393131655,
+      "leave_one_out_reduction_min": 0.1520005645332016,
+      "max": 424,
+      "mean": 51.56,
+      "median": 29.0,
+      "min": 0,
+      "negative_rows": 0,
+      "p10": 5.0,
+      "p25": 22.5,
+      "p50": 29.0,
+      "p75": 39.0,
+      "p90": 81.60000000000002,
+      "positive_rows": 46,
+      "top10_share": 0.6322730799069046,
+      "top1_share": 0.16446858029480219,
+      "top5_share": 0.5015515903801396,
+      "trimmed_mean_10pct": 32,
+      "zero_rows": 4
+    },
+    "economics": {
+      "baseline_full_tokens": 19353,
+      "baseline_full_tpc": 430.06666666666666,
+      "baseline_output_tokens": 14683,
+      "candidate_full_tokens": 16775,
+      "candidate_full_tpc": 372.77777777777777,
+      "candidate_output_tokens": 12105,
+      "full_reduction_fraction": 0.13320932155221413,
+      "full_tokens_saved": 2578,
+      "output_reduction_fraction": 0.17557719812027514,
+      "output_tokens_saved": 2578
+    },
+    "edge_rows": {
+      "natural_eos_candidates": [
+        "gsm8k_test_443",
+        "gsm8k_test_450",
+        "gsm8k_test_451",
+        "gsm8k_test_459"
+      ],
+      "second_marker_close_candidates": [
+        "gsm8k_test_428",
+        "gsm8k_test_435",
+        "gsm8k_test_437",
+        "gsm8k_test_438",
+        "gsm8k_test_447",
+        "gsm8k_test_458",
+        "gsm8k_test_469",
+        "gsm8k_test_473"
+      ]
+    },
+    "environment": {
+      "bnb_version": "0.49.2",
+      "cpu_offload": 0,
+      "disk_offload": 0,
+      "functional_for_exact_run": true,
+      "generally_clean": false,
+      "gpu": "Tesla T4",
+      "linear4bit_module_count": 196,
+      "new_dependency_conflicts": 0
+    },
+    "evidence_units": {
+      "independent_safety_n": 50,
+      "paired_generation_pairs": 150,
+      "repetitions_per_row": 3,
+      "unique_rows": 50
+    },
+    "schema_id": "kt.stop50.hostile_synthesis.v2",
+    "stop_reason_economics": {
+      "CONTINUE": {
+        "rows": 4,
+        "tokens_saved": 0
+      },
+      "FINAL_ANSWER_LINE_COMPLETE": {
+        "rows": 38,
+        "tokens_saved": 2457
+      },
+      "REPEATED_MARKER_BEFORE_CLOSE": {
+        "rows": 8,
+        "tokens_saved": 121
+      }
+    },
+    "timing_mediation": {
+      "claim_status": "STRONG_SUPPORTIVE_NOT_CANONICAL",
+      "intercept_seconds": -0.1214569954026068,
+      "pair_level_correlation": 0.9996091401809146,
+      "r_squared": 0.9992184331332276,
+      "slope_seconds_per_token": 0.08760432039291106,
+      "unique_row_correlation": 0.9998265624349624
+    }
+  },
+  "training_authority": false
+}
