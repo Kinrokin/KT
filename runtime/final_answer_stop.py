@@ -43,7 +43,7 @@ def evaluate_generated_text(
         return StopDecision(
             True,
             StopState.REPEATED_MARKER_BEFORE_CLOSE,
-            StopReason.REPEATED_MARKER_BEFORE_CLOSE,
+            StopReason.SECOND_MARKER_CLOSE,
             marker_start,
             marker_end,
             answer_start,

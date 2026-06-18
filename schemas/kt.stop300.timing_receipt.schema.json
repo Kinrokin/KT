@@ -1,0 +1,27 @@
+{
+  "$id": "kt.stop300.timing_receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "cluster_bootstrap_by_row": {
+      "const": true
+    },
+    "cuda_events": {
+      "const": true
+    },
+    "detector_cpu_timer": {
+      "const": true
+    },
+    "wall_clock": {
+      "const": "perf_counter_ns"
+    }
+  },
+  "required": [
+    "arms",
+    "cuda_events",
+    "wall_clock",
+    "detector_cpu_timer",
+    "cluster_bootstrap_by_row"
+  ],
+  "type": "object"
+}

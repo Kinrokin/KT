@@ -1,0 +1,79 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "dataset_generation_authority": false,
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stop300.output_protocol_signature_registry.v1",
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "signatures": {
+    "A0_CURRENT_PROMPT|UNKNOWN_OR_CROSS_PROTOCOL|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|UNKNOWN_OR_CROSS_PROTOCOL|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "A0_CURRENT_PROMPT",
+      "final_answer_grammar_hash": "UNKNOWN_OR_CROSS_PROTOCOL",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "UNKNOWN_OR_CROSS_PROTOCOL",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "A1_STOP_AFTER_FINAL_ANSWER|UNKNOWN_OR_CROSS_PROTOCOL|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|UNKNOWN_OR_CROSS_PROTOCOL|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "A1_STOP_AFTER_FINAL_ANSWER",
+      "final_answer_grammar_hash": "UNKNOWN_OR_CROSS_PROTOCOL",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "UNKNOWN_OR_CROSS_PROTOCOL",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "B0_CURRENT_PROMPT_LEGACY_GENERATION|FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|STOPRT_CURRENT_PROMPT|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "B0_CURRENT_PROMPT_LEGACY_GENERATION",
+      "final_answer_grammar_hash": "FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "STOPRT_CURRENT_PROMPT",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "B1_CURRENT_PROMPT_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|STOPRT_CURRENT_PROMPT|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "B1_CURRENT_PROMPT_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "final_answer_grammar_hash": "FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "STOPRT_CURRENT_PROMPT",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "B2_B1_PLUS_CANONICALIZER_V2_REPLAY|FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|STOPRT_CURRENT_PROMPT|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "B2_B1_PLUS_CANONICALIZER_V2_REPLAY",
+      "final_answer_grammar_hash": "FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "STOPRT_CURRENT_PROMPT",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE|FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|STOP50_CURRENT_PROMPT|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE",
+      "final_answer_grammar_hash": "FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "STOP50_CURRENT_PROMPT",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    },
+    "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP|do_sample_false_max_new_tokens_512|unsloth/Qwen2.5-7B-Instruct-bnb-4bit|STOP50_CURRENT_PROMPT|historical_assessment_embedded|same_as_model_unpinned_in_historical_assessment": {
+      "arm_id": "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "final_answer_grammar_hash": "FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP",
+      "generation_config_hash": "do_sample_false_max_new_tokens_512",
+      "model_revision": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "rendered_prompt_template_hash": "STOP50_CURRENT_PROMPT",
+      "scorer_canonicalizer_hash": "historical_assessment_embedded",
+      "tokenizer_revision": "same_as_model_unpinned_in_historical_assessment"
+    }
+  },
+  "status": "PASS",
+  "training_authority": false
+}

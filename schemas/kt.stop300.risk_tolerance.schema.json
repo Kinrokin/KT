@@ -1,0 +1,30 @@
+{
+  "$id": "kt.stop300.risk_tolerance.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "alpha": {
+      "const": 0.05
+    },
+    "claim_ceiling_status": {
+      "const": "PRESERVED"
+    },
+    "damage_tolerance_count": {
+      "const": 0
+    },
+    "independent_rows": {
+      "const": 300
+    },
+    "one_sided_95pct_damage_upper_bound_max": {
+      "maximum": 0.01
+    }
+  },
+  "required": [
+    "alpha",
+    "independent_rows",
+    "damage_tolerance_count",
+    "one_sided_95pct_damage_upper_bound_max",
+    "claim_ceiling_status"
+  ],
+  "type": "object"
+}

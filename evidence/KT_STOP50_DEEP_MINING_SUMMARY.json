@@ -1,0 +1,473 @@
+{
+  "bootstrap_over_unique_rows": {
+    "mean_latency_seconds_saved_per_row_95pct": [
+      2.7005064511299133,
+      6.500523157000543
+    ],
+    "mean_output_tokens_saved_per_row_95pct": [
+      32.1995,
+      75.5405
+    ],
+    "relative_latency_reduction_95pct": [
+      0.10449252162450028,
+      0.23698001326580478
+    ],
+    "relative_output_token_reduction_95pct": [
+      0.11235670308229198,
+      0.24765861079702306
+    ],
+    "timing_claim_status": "SUPPORTIVE_BUT_NOT_CANONICAL_DUE_PROTOCOL_IMPLEMENTATION_GAPS"
+  },
+  "created_utc": "2026-06-18T20:53:48Z",
+  "environment": {
+    "canonical_environment_contract": {
+      "bitsandbytes_functional_required": true,
+      "bitsandbytes_version": "0.49.2",
+      "bitsandbytes_version_ok": true,
+      "cuda_available": true,
+      "cuda_required": true,
+      "schema_id": "kt.stop50.cuda_environment_contract.runtime.v1",
+      "status": "PASS_IMPORTS",
+      "torch_version": "2.10.0+cu128"
+    },
+    "dependency_delta": {
+      "created_utc": "2026-06-18T18:11:27Z",
+      "new_conflict_count": 0,
+      "new_conflicts": [],
+      "postinstall_conflicts": [
+        "bigframes 2.39.0 requires google-cloud-bigquery-storage, which is not installed.",
+        "cuda-python 12.9.4 has requirement cuda-bindings~=12.9.4, but you have cuda-bindings 13.2.0.",
+        "cudf-cu12 26.2.1 has requirement numba-cuda[cu12]<0.23.0,>=0.22.2, but you have numba-cuda 0.30.2.",
+        "cudf-cu12 26.2.1 has requirement numba<0.62.0,>=0.60.0, but you have numba 0.65.1.",
+        "cuml-cu12 26.2.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "cuml-cu12 26.2.0 has requirement numba<0.62.0,>=0.60.0, but you have numba 0.65.1.",
+        "dask-cuda 26.2.0 has requirement cuda-core==0.3.*, but you have cuda-core 1.0.1.",
+        "dask-cuda 26.2.0 has requirement numba-cuda<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "distributed-ucxx-cu12 0.48.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "dopamine-rl 4.1.2 has requirement gym<=0.25.2, but you have gym 0.26.2.",
+        "google-adk 1.29.0 requires google-cloud-bigquery-storage, which is not installed.",
+        "google-colab 1.0.0 has requirement jupyter-server==2.14.0, but you have jupyter-server 2.12.5.",
+        "google-colab 1.0.0 has requirement pandas==2.2.2, but you have pandas 2.3.3.",
+        "moviepy 1.0.3 has requirement decorator<5.0,>=4.0.2, but you have decorator 5.3.1.",
+        "tensorflow 2.19.0 has requirement numpy<2.2.0,>=1.26.0, but you have numpy 2.4.6.",
+        "torch 2.10.0+cu128 has requirement cuda-bindings==12.9.4; platform_system == \"Linux\", but you have cuda-bindings 13.2.0.",
+        "ucxx-cu12 0.48.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "ydata-profiling 4.18.4 has requirement numba<0.63,>=0.60, but you have numba 0.65.1.",
+        "ydata-profiling 4.18.4 has requirement numpy<2.4,>=1.22, but you have numpy 2.4.6."
+      ],
+      "preexisting_conflicts": [
+        "bigframes 2.39.0 requires google-cloud-bigquery-storage, which is not installed.",
+        "cuda-python 12.9.4 has requirement cuda-bindings~=12.9.4, but you have cuda-bindings 13.2.0.",
+        "cudf-cu12 26.2.1 has requirement numba-cuda[cu12]<0.23.0,>=0.22.2, but you have numba-cuda 0.30.2.",
+        "cudf-cu12 26.2.1 has requirement numba<0.62.0,>=0.60.0, but you have numba 0.65.1.",
+        "cuml-cu12 26.2.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "cuml-cu12 26.2.0 has requirement numba<0.62.0,>=0.60.0, but you have numba 0.65.1.",
+        "dask-cuda 26.2.0 has requirement cuda-core==0.3.*, but you have cuda-core 1.0.1.",
+        "dask-cuda 26.2.0 has requirement numba-cuda<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "distributed-ucxx-cu12 0.48.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "dopamine-rl 4.1.2 has requirement gym<=0.25.2, but you have gym 0.26.2.",
+        "google-adk 1.29.0 requires google-cloud-bigquery-storage, which is not installed.",
+        "google-colab 1.0.0 has requirement jupyter-server==2.14.0, but you have jupyter-server 2.12.5.",
+        "google-colab 1.0.0 has requirement pandas==2.2.2, but you have pandas 2.3.3.",
+        "moviepy 1.0.3 has requirement decorator<5.0,>=4.0.2, but you have decorator 5.3.1.",
+        "tensorflow 2.19.0 has requirement numpy<2.2.0,>=1.26.0, but you have numpy 2.4.6.",
+        "torch 2.10.0+cu128 has requirement cuda-bindings==12.9.4; platform_system == \"Linux\", but you have cuda-bindings 13.2.0.",
+        "ucxx-cu12 0.48.0 has requirement numba-cuda[cu12]<0.23.0,>=0.22.1, but you have numba-cuda 0.30.2.",
+        "ydata-profiling 4.18.4 has requirement numba<0.63,>=0.60, but you have numba 0.65.1.",
+        "ydata-profiling 4.18.4 has requirement numpy<2.4,>=1.22, but you have numpy 2.4.6."
+      ],
+      "resolved_conflicts": [],
+      "schema_id": "kt.ktstop50.launcher_dependency_delta.v1",
+      "status": "PASS_NO_NEW_CONFLICTS"
+    },
+    "dependency_install": {
+      "bitsandbytes": {
+        "distribution_path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/__init__.py",
+        "installed": true,
+        "version": "0.49.2",
+        "wheel_name": "bitsandbytes-0.49.2-py3-none-manylinux_2_24_x86_64.whl",
+        "wheel_sha256": "54b771f06e1a3c73af5c7f16ccf0fc23a846052813d4b008d10cb6e017dd1c8c"
+      },
+      "claim_ceiling_status": "PRESERVED",
+      "created_utc": "2026-06-18T18:11:28Z",
+      "other_packages_installed_if_missing": [],
+      "schema_id": "kt.ktstop50.launcher_dependency_install.v1"
+    },
+    "functional_inference_statement": "Completed 300 model generations with 196 Linear4bit modules, CUDA available, zero CPU/disk offload, exact bitsandbytes 0.49.2 wheel, and no new pip conflicts.",
+    "generation_config": {
+      "claim_ceiling_status": "PRESERVED",
+      "do_sample": false,
+      "effective_generation_config": {
+        "do_sample": false,
+        "max_new_tokens": 512,
+        "temperature": null,
+        "top_p": null
+      },
+      "effective_generation_config_sha256": "f688b93ee3abcd43455aeb65b267c40226aa32b8c0faddce176b767c13554d4d",
+      "schema_id": "kt.stop50.generation_config_authority.v1",
+      "status": "PASS_SINGULAR_EFFECTIVE_GENERATION_CONFIG_BOUND"
+    },
+    "model_loader": {
+      "auto_model_for_causal_lm": true,
+      "cpu_offloaded_module_count": 0,
+      "disk_offloaded_module_count": 0,
+      "linear4bit_module_count": 196,
+      "model_is_loaded_in_4bit": true,
+      "model_repo": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "runtime_quantization_config_used": false,
+      "schema_id": "kt.stop50.model_loader_receipt.runtime.v1",
+      "status": "PASS"
+    },
+    "preexisting_environment_debt_preserved": true,
+    "quantization": {
+      "claim_ceiling_status": "PRESERVED",
+      "conflict_count": 0,
+      "model_repo": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "quantization_authority": "MODEL_EMBEDDED",
+      "runtime_bitsandbytes_config_allowed": false,
+      "schema_id": "kt.stop50.quantization_authority.v1",
+      "status": "PASS_SINGLE_MODEL_EMBEDDED_QUANTIZATION_AUTHORITY"
+    },
+    "wrapper_environment": {
+      "bitsandbytes_native_libraries": [
+        {
+          "bytes": 71800,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cpu.so",
+          "sha256": "251ebeee9d0df06897691b0be1791bffdbf58866dc47efa0326b8ef9242f0cac"
+        },
+        {
+          "bytes": 17254304,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda118.so",
+          "sha256": "f66825dbda48e114563e7095ad02eeb161aacc95c2d06824a9dee5d1a770d7cb"
+        },
+        {
+          "bytes": 16705440,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda120.so",
+          "sha256": "b3467337c79e0d8ce6dd493b2c75b066e5cca23cea3625f8d297899ac67b8ab0"
+        },
+        {
+          "bytes": 16709536,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda121.so",
+          "sha256": "e1f7fbe7d3f8ed2f88a271a4ace8721e71eb2f756af0f5a0b14d5a154c11d1d6"
+        },
+        {
+          "bytes": 16746624,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda122.so",
+          "sha256": "960480b4bf26434e5828172e6e3bbb399e6ab79afe7d6f8ef2d1d7ee45ae884b"
+        },
+        {
+          "bytes": 16783488,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda123.so",
+          "sha256": "85aaeccb14634fb9d8d786f2685b0d82fab106a89b6b56da80ced1ebbdaa3568"
+        },
+        {
+          "bytes": 16362352,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda124.so",
+          "sha256": "96b5733d020a62b3adf6477879078dd5a519f2fa35182af80eb0e37e74830090"
+        },
+        {
+          "bytes": 16387728,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda125.so",
+          "sha256": "585a7a9439eda109641899002c781f2105446125c2322f3aff6a06e2b6c12a83"
+        },
+        {
+          "bytes": 16456224,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda126.so",
+          "sha256": "2ed8364b0c60478ab59c6597951c0800f227debe5005c2df468c49a27b717c2b"
+        },
+        {
+          "bytes": 19831200,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda128.so",
+          "sha256": "a0acd01adbd2ba51d5f0db062eb2e849fee1711e70ce2bcdc830e66acefe38b3"
+        },
+        {
+          "bytes": 20245240,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda129.so",
+          "sha256": "a28704b162ef8e05dee9eb363c0c7985f7c31e5439d46218f15b80111c7318f2"
+        },
+        {
+          "bytes": 3523408,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_cuda130.so",
+          "sha256": "91f26e14e840ccdeef8aae505e969ba6ec7e5b37d43cc99c48b775d0cdb48caa"
+        },
+        {
+          "bytes": 1197712,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm62.so",
+          "sha256": "faf8e1231a9a9b4078c2fed7b1c0261d581814ec162662686955c7ec5ace0c02"
+        },
+        {
+          "bytes": 796320,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm63.so",
+          "sha256": "27ea7a403183bea5d0bb656843cb0f7ac338fa06c1c34a9b430603a034afbee9"
+        },
+        {
+          "bytes": 1042080,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm64.so",
+          "sha256": "9e68e186475df98b4fb98db962b9dc64c30286c29c7336a9b69731a82727134a"
+        },
+        {
+          "bytes": 1078944,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm70.so",
+          "sha256": "497912564b961d3749cb44cffd3522c781ca47c627814a68594ff1f16a0c21c6"
+        },
+        {
+          "bytes": 1078944,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm71.so",
+          "sha256": "d014b7ff0229b691af268cd6b516b3fa93d27da5fd275650ddb9541c7accef9e"
+        },
+        {
+          "bytes": 1144480,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_rocm72.so",
+          "sha256": "6206a4a914264ec8b07623d9209db06ad466df61c92fce86f7251451e2010ce3"
+        },
+        {
+          "bytes": 304688,
+          "path": "/usr/local/lib/python3.12/dist-packages/bitsandbytes/libbitsandbytes_xpu.so",
+          "sha256": "601df92ea69434be24ec1eb85d30d4d30e90f8802bcb0b5c5afa89b28b9d01b0"
+        }
+      ],
+      "bitsandbytes_version": "0.49.2",
+      "claim_ceiling_status": "PRESERVED",
+      "compute_capability": [
+        7,
+        5
+      ],
+      "created_utc": "2026-06-18T18:11:28Z",
+      "cuda_available": true,
+      "cuda_device_name": "Tesla T4",
+      "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+      "schema_id": "kt.ktstop50.launcher_environment_preflight.v1",
+      "torch_cuda_version": "12.8",
+      "torch_version": "2.10.0+cu128"
+    }
+  },
+  "independent_evidence_units": {
+    "note": "Repetitions establish deterministic reproducibility, not 150 independent safety rows.",
+    "paired_generation_pairs": 150,
+    "paired_repetitions_per_row": 3,
+    "safety_n_for_generalization": 50,
+    "unique_rows": 50
+  },
+  "known_implementation_gaps": [
+    "C0 is declared detector-monitor mode but does not execute the streaming detector per token.",
+    "Timing receipt declares three warmups and CUDA events, but runner uses one short warmup per row and time.time with synchronization.",
+    "Eight of fifty C1 rows stop on REPEATED_MARKER_BEFORE_CLOSE and retain a dangling second marker in visible text.",
+    "Four natural-EOS rows are re-adjudicated with eos=False and remain CONTINUE.",
+    "Canonical HF upload occurs before the assessment file exists and fails non-fatally; wrapper backup succeeds.",
+    "Canonical environment receipt is import-level; functional evidence is split across wrapper and model-loader receipts.",
+    "Scorecard primary arm metrics use repetition 0 while prefix count pools all three repetitions; independent and replicate counts must be separated.",
+    "No explicit final pass gate enforces zero damage, safe-stop-only behavior, trailer, timing, and environment predicates."
+  ],
+  "official_result": {
+    "claim_ceiling_status": "PRESERVED",
+    "scorecard": {
+      "arm_scorecard": {
+        "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE": {
+          "accuracy": 0.9,
+          "correct": 45,
+          "row_count": 50,
+          "tokens_per_correct": 430.06666666666666,
+          "total_output_tokens": 14683
+        },
+        "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP": {
+          "accuracy": 0.9,
+          "correct": 45,
+          "row_count": 50,
+          "tokens_per_correct": 372.77777777777777,
+          "total_output_tokens": 12105
+        }
+      },
+      "claim_ceiling_status": "PRESERVED",
+      "prefix_equal_count": 150,
+      "prefix_total": 150,
+      "row_count": 50,
+      "run_mode": "RUN_STOPSEQ_RUNTIME_STOP_CRITERIA_50ROW_V1",
+      "schema_id": "kt.stop50.runtime_scorecard.v1",
+      "status": "PASS_MODEL_GENERATED_AND_SCORED"
+    },
+    "status": "PASS_MODEL_GENERATED_AND_SCORED"
+  },
+  "prefix_equivalence": {
+    "equal": 150,
+    "total": 150
+  },
+  "rep0_primary_metrics": {
+    "c0_correct": 45,
+    "c0_full_tokens": 19353,
+    "c0_full_tokens_per_correct": 430.06666666666666,
+    "c0_latency_seconds": 1321.6280798912048,
+    "c0_output_tokens": 14683,
+    "c0_repeated_marker_rows": 35,
+    "c0_semantic_trailer_rows": 40,
+    "c1_correct": 45,
+    "c1_full_tokens": 16775,
+    "c1_full_tokens_per_correct": 372.77777777777777,
+    "c1_latency_seconds": 1102.4017164707184,
+    "c1_output_tokens": 12105,
+    "c1_repeated_marker_rows": 8,
+    "c1_semantic_trailer_rows": 0,
+    "correctness_damage_rows": 0,
+    "correctness_rescue_rows": 0,
+    "full_token_reduction_fraction": 0.13320932155221413,
+    "full_tokens_saved": 2578,
+    "latency_reduction_fraction": 0.16587598792432812,
+    "latency_seconds_saved": 219.22636342048645,
+    "output_token_reduction_fraction": 0.17557719812027514,
+    "output_tokens_saved": 2578
+  },
+  "repo_binding": {
+    "assessment_sha256": "50d94b6b3688c5917547fb7ff12747defc9ba0ab7944c1231d4b218f74383ec9",
+    "observed_main": "5c88770d09091f248375d21040bb53b403517ab3",
+    "source_packet": "packets/ktstop50_v1.zip",
+    "source_packet_sha256": "88897536607e923a0723ad60bb9219712a447a00abd18cd8c0b2db21aa71bc18",
+    "wrapper_collection_sha256": "59f530d378e80720c925fbd2d916622a345f588e292d17bfaf4bc761bf25917d",
+    "wrapper_hf_backup": {
+      "assessment_sha256": "50d94b6b3688c5917547fb7ff12747defc9ba0ab7944c1231d4b218f74383ec9",
+      "commit": "https://huggingface.co/datasets/Kinrokin/ktstop50-v1-results-20260618-201620/commit/6a86f8973d1f65f7816542531302d117f9066fb7",
+      "created_utc": "2026-06-18T20:16:22Z",
+      "path_in_repo": "runs/20260618-201621/5c88770d09091f248375d21040bb53b403517ab3/88897536607e923a0723ad60bb9219712a447a00abd18cd8c0b2db21aa71bc18/KT_STOP50_V1_ASSESSMENT_ONLY.zip",
+      "private": true,
+      "repo_id": "Kinrokin/ktstop50-v1-results-20260618-201620",
+      "schema_id": "kt.ktstop50.launcher_hf_backup_receipt.v1",
+      "status": "PASS",
+      "url": "https://huggingface.co/datasets/Kinrokin/ktstop50-v1-results-20260618-201620"
+    }
+  },
+  "schema_id": "kt.stop50.deep_mining_summary.v1",
+  "stop_reason_court": {
+    "c1_rep0": {
+      "CONTINUE": 4,
+      "FINAL_ANSWER_LINE_COMPLETE": 38,
+      "REPEATED_MARKER_BEFORE_CLOSE": 8
+    },
+    "eos_row_ids": [
+      "gsm8k_test_443",
+      "gsm8k_test_450",
+      "gsm8k_test_451",
+      "gsm8k_test_459"
+    ],
+    "natural_eos_misclassified_continue_rows": 4,
+    "repeated_marker_boundary_rows": 8,
+    "repeated_marker_row_ids": [
+      "gsm8k_test_428",
+      "gsm8k_test_435",
+      "gsm8k_test_437",
+      "gsm8k_test_438",
+      "gsm8k_test_447",
+      "gsm8k_test_458",
+      "gsm8k_test_469",
+      "gsm8k_test_473"
+    ],
+    "safe_line_complete_rows": 38,
+    "safe_stop_only_gate_as_originally_written": "FAIL_38_OF_50",
+    "wrong_row_ids": [
+      "gsm8k_test_427",
+      "gsm8k_test_428",
+      "gsm8k_test_454",
+      "gsm8k_test_459",
+      "gsm8k_test_464"
+    ]
+  },
+  "three_repetition_stability": {
+    "0": {
+      "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE": {
+        "correct": 45,
+        "full_tokens": 19353,
+        "latency_seconds": 1321.6280798912048,
+        "output_tokens": 14683,
+        "repeated_marker_rows": 35,
+        "row_count": 50,
+        "semantic_trailer_rows": 40,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      },
+      "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP": {
+        "correct": 45,
+        "full_tokens": 16775,
+        "latency_seconds": 1102.4017164707184,
+        "output_tokens": 12105,
+        "repeated_marker_rows": 8,
+        "row_count": 50,
+        "semantic_trailer_rows": 0,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      }
+    },
+    "1": {
+      "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE": {
+        "correct": 45,
+        "full_tokens": 19353,
+        "latency_seconds": 1321.6207568645477,
+        "output_tokens": 14683,
+        "repeated_marker_rows": 35,
+        "row_count": 50,
+        "semantic_trailer_rows": 40,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      },
+      "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP": {
+        "correct": 45,
+        "full_tokens": 16775,
+        "latency_seconds": 1101.2692172527313,
+        "output_tokens": 12105,
+        "repeated_marker_rows": 8,
+        "row_count": 50,
+        "semantic_trailer_rows": 0,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      }
+    },
+    "2": {
+      "C0_MONITOR_FIRST_COMPLETE_FINAL_ANSWER_LINE": {
+        "correct": 45,
+        "full_tokens": 19353,
+        "latency_seconds": 1320.6149985790253,
+        "output_tokens": 14683,
+        "repeated_marker_rows": 35,
+        "row_count": 50,
+        "semantic_trailer_rows": 40,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      },
+      "C1_TERMINATE_FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP": {
+        "correct": 45,
+        "full_tokens": 16775,
+        "latency_seconds": 1100.879637002945,
+        "output_tokens": 12105,
+        "repeated_marker_rows": 8,
+        "row_count": 50,
+        "semantic_trailer_rows": 0,
+        "stop_reasons": {
+          "CONTINUE": 4,
+          "FINAL_ANSWER_LINE_COMPLETE": 38,
+          "REPEATED_MARKER_BEFORE_CLOSE": 8
+        }
+      }
+    }
+  },
+  "verdict": {
+    "correctness": "ZERO_OBSERVED_DAMAGE_ON_50_UNIQUE_ROWS",
+    "latency": "STRONG_SUPPORTIVE_SIGNAL_PROTOCOL_REPAIR_REQUIRED",
+    "mechanism_signal": "STRONG_POSITIVE",
+    "next_lane": "AUTHOR_KTSTOP50_IMPORT_RUNTIME_STOP_GRAMMAR_V3_AND_PAIRED300_PACKET_V1",
+    "next_side": "REPO",
+    "output_hygiene": "POST_LINE_TRAILER_ELIMINATED_BUT_DANGLING_REPEATED_MARKER_REMAINS_8_OF_50",
+    "production_authority": false,
+    "token_economics": "CONFIRMED_POSITIVE"
+  }
+}

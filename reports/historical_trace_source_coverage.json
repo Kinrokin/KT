@@ -1,0 +1,93 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "dataset_generation_authority": false,
+  "known_corpus_families_requested": [
+    "STOP10",
+    "STOP50",
+    "KTCF_CFFIX",
+    "BUD",
+    "512BASE",
+    "PARETO",
+    "ReproLock",
+    "shuffle_generalization_controls",
+    "Oracle_Academy"
+  ],
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stop300.historical_trace_source_coverage.v1",
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "sources": [
+    {
+      "prediction_members": [
+        "predictions.jsonl"
+      ],
+      "processed_rows": 0,
+      "sha256": "127c77b5547eb1d6dd3e0c1f14946b416106148288c32ad31da3a9dec228a6bd",
+      "source": "evidence/KT_512BASE_V1_ASSESSMENT_ONLY.zip",
+      "status": "NO_SCORABLE_RAW_OUTPUT_ROWS"
+    },
+    {
+      "processed_rows": 0,
+      "sha256": "ef5f7719bb35094eb66a53c6a780a36c5ec2d167577d4896e332ea59c13b247f",
+      "source": "evidence/KT_CF_V1_ASSESSMENT_ONLY.zip",
+      "status": "NO_COMPATIBLE_PREDICTIONS_MEMBER"
+    },
+    {
+      "prediction_members": [
+        "budget_predictions.jsonl"
+      ],
+      "processed_rows": 0,
+      "sha256": "fa417a164604301131be89317991f1ecc4289095dc021e92cc7b6fdf549837af",
+      "source": "evidence/KT_PARETO_V1_ASSESSMENT_ONLY.zip",
+      "status": "NO_SCORABLE_RAW_OUTPUT_ROWS"
+    },
+    {
+      "prediction_members": [
+        "predictions.jsonl"
+      ],
+      "processed_rows": 20,
+      "sha256": "c1580bec70abea0da8ef86441b6a2158a9f8325ba151bf5a3e6bd197cab15076",
+      "source": "evidence/KT_STOP10_V1_ASSESSMENT_ONLY.zip",
+      "status": "PROCESSED"
+    },
+    {
+      "prediction_members": [
+        "predictions.jsonl"
+      ],
+      "processed_rows": 300,
+      "sha256": "50d94b6b3688c5917547fb7ff12747defc9ba0ab7944c1231d4b218f74383ec9",
+      "source": "evidence/KT_STOP50_V1_ASSESSMENT_ONLY.zip",
+      "status": "PROCESSED"
+    },
+    {
+      "processed_rows": 0,
+      "sha256": "59f530d378e80720c925fbd2d916622a345f588e292d17bfaf4bc761bf25917d",
+      "source": "evidence/KT_STOP50_V1_WRAPPER_COLLECTION.zip",
+      "status": "NO_COMPATIBLE_PREDICTIONS_MEMBER"
+    },
+    {
+      "prediction_members": [
+        "predictions.jsonl"
+      ],
+      "processed_rows": 30,
+      "sha256": "7a11037aa4ea0f45fad7d794c458d30b14ac77c9b1a51e06d1ea8f2af80a9ab6",
+      "source": "evidence/KT_STOPRT_V1_ASSESSMENT_ONLY.zip",
+      "status": "PROCESSED"
+    },
+    {
+      "prediction_members": [
+        "canonicalizer_repair_predictions.jsonl"
+      ],
+      "processed_rows": 0,
+      "sha256": "83d7fd1d1a1d03586d7b4aacdcee1ecd759279b9ac437252daf4b675d09816c2",
+      "source": "evidence/KTCFFIX_V1_ASSESSMENT_ONLY.zip",
+      "status": "NO_SCORABLE_RAW_OUTPUT_ROWS"
+    }
+  ],
+  "status": "PASS_WITH_NAMED_COVERAGE_LEDGER",
+  "training_authority": false
+}

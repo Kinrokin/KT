@@ -1,0 +1,23 @@
+{
+  "$id": "kt.stop300.evidence_scope.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "batch_size": {
+      "const": 1
+    }
+  },
+  "required": [
+    "model_revision",
+    "tokenizer_revision",
+    "prompt_hash",
+    "generation_config_hash",
+    "stop_grammar_hash",
+    "runtime_fsm_hash",
+    "reference_court_hash",
+    "finalizer_hash",
+    "scorer_hash",
+    "batch_size"
+  ],
+  "type": "object"
+}

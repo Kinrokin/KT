@@ -1,0 +1,24 @@
+{
+  "$id": "kt.stop300.row_manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "overlap_count": {
+      "const": 0
+    },
+    "row_count": {
+      "const": 300
+    },
+    "selection_frozen_before_generation": {
+      "const": true
+    }
+  },
+  "required": [
+    "row_count",
+    "strata_counts",
+    "overlap_count",
+    "selection_frozen_before_generation",
+    "manifest_sha256"
+  ],
+  "type": "object"
+}

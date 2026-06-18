@@ -1,0 +1,24 @@
+{
+  "$id": "kt.stop300.savings_distribution.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {},
+  "required": [
+    "mean",
+    "median",
+    "trimmed_mean_10pct",
+    "p10",
+    "p25",
+    "p50",
+    "p75",
+    "p90",
+    "positive_rows",
+    "zero_rows",
+    "negative_rows",
+    "top5_share",
+    "top10_share",
+    "leave_one_out_reduction_min",
+    "leave_one_out_reduction_max"
+  ],
+  "type": "object"
+}

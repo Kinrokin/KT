@@ -1,0 +1,19 @@
+{
+  "$id": "kt.stop300.reference_court.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "independent_implementation": {
+      "const": true
+    },
+    "mutation_suite_pass": {
+      "const": true
+    }
+  },
+  "required": [
+    "runtime_reference_agreement",
+    "independent_implementation",
+    "mutation_suite_pass"
+  ],
+  "type": "object"
+}

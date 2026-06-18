@@ -1,0 +1,20 @@
+{
+  "$id": "kt.stop300.preregistration.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "frozen_before_generation": {
+      "const": true
+    },
+    "primary_endpoint": {
+      "const": "PAIRED_CORRECTNESS_DAMAGE"
+    }
+  },
+  "required": [
+    "frozen_before_generation",
+    "primary_endpoint",
+    "sample_seed",
+    "timing_seed"
+  ],
+  "type": "object"
+}

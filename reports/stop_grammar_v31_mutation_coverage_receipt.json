@@ -1,0 +1,222 @@
+{
+  "adapter_mutation_authority": false,
+  "case_count": 9,
+  "claim_ceiling_status": "PRESERVED",
+  "coverage_rows": [
+    {
+      "case_id": null,
+      "reference_boundary": "FINAL_LINE_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "FINAL_LINE_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "FINAL_LINE_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 34,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 339900.0,
+        "detector_cpu_ns_total": 339900,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "FINAL_LINE_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "FINAL_LINE_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "FINAL_LINE_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 32,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 13300.0,
+        "detector_cpu_ns_total": 13300,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "EOS_AFTER_NONEMPTY_FINAL",
+      "reference_lawful": true,
+      "runtime_boundary": "EOS_AFTER_NONEMPTY_FINAL",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "EOS_AFTER_NONEMPTY_FINAL",
+        "candidate_boundaries": 1,
+        "characters_examined": 16,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 10300.0,
+        "detector_cpu_ns_total": 10300,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "SECOND_MARKER_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "SECOND_MARKER_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "SECOND_MARKER_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 37,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 10900.0,
+        "detector_cpu_ns_total": 10900,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "NO_VALID_BOUNDARY",
+      "reference_lawful": false,
+      "runtime_boundary": "NO_VALID_BOUNDARY",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": false,
+      "runtime_telemetry": {
+        "accepted_boundary": null,
+        "candidate_boundaries": 0,
+        "characters_examined": 31,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 5200.0,
+        "detector_cpu_ns_total": 5200,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [
+          "SEARCH_MARKER"
+        ],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "MALFORMED_FINAL",
+      "reference_lawful": false,
+      "runtime_boundary": "MALFORMED_FINAL",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": false,
+      "runtime_telemetry": {
+        "accepted_boundary": null,
+        "candidate_boundaries": 1,
+        "characters_examined": 16,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 6200.0,
+        "detector_cpu_ns_total": 6200,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 1,
+        "state_transitions": [
+          "MALFORMED_EMPTY_PAYLOAD"
+        ],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "FINAL_LINE_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "FINAL_LINE_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "FINAL_LINE_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 22,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 10200.0,
+        "detector_cpu_ns_total": 10200,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "FINAL_LINE_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "FINAL_LINE_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "FINAL_LINE_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 20,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 9200.0,
+        "detector_cpu_ns_total": 9200,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    },
+    {
+      "case_id": null,
+      "reference_boundary": "FINAL_LINE_CLOSE",
+      "reference_lawful": true,
+      "runtime_boundary": "FINAL_LINE_CLOSE",
+      "runtime_full_sequence_rescan_count": 0,
+      "runtime_should_stop": true,
+      "runtime_telemetry": {
+        "accepted_boundary": "FINAL_LINE_CLOSE",
+        "candidate_boundaries": 1,
+        "characters_examined": 32,
+        "detector_calls": 1,
+        "detector_cpu_ns_per_generated_token": 9500.0,
+        "detector_cpu_ns_total": 9500,
+        "full_sequence_rescan_count": 0,
+        "incremental_decode_count": 1,
+        "rejected_boundaries": 0,
+        "state_transitions": [],
+        "suffix_buffer_max_tokens": 1,
+        "tokens_examined": 1
+      }
+    }
+  ],
+  "dataset_generation_authority": false,
+  "full_sequence_rescan_count": 0,
+  "mutation_fixture": "fixtures/stop_grammar_v31_mutations.json",
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "required_fixture": "fixtures/stop_grammar_v31_adversarial_cases.jsonl",
+  "runtime_authority": false,
+  "schema_id": "kt.stop300.stop_grammar_v31_mutation_coverage_receipt.v1",
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "status": "PASS",
+  "training_authority": false
+}

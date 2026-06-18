@@ -1,0 +1,46 @@
+{
+  "adapter_mutation_authority": false,
+  "claim_ceiling_status": "PRESERVED",
+  "created_utc": "2026-06-18T23:35:01Z",
+  "dataset_generation_authority": false,
+  "environment_contract_receipt": {
+    "bitsandbytes_functional_required": true,
+    "bitsandbytes_version": "0.49.2",
+    "bitsandbytes_version_ok": true,
+    "cuda_available": true,
+    "cuda_required": true,
+    "schema_id": "kt.stop50.cuda_environment_contract.runtime.v1",
+    "status": "PASS_IMPORTS",
+    "torch_version": "2.10.0+cu128"
+  },
+  "hostile_synthesis_environment": {
+    "bnb_version": "0.49.2",
+    "cpu_offload": 0,
+    "disk_offload": 0,
+    "functional_for_exact_run": true,
+    "generally_clean": false,
+    "gpu": "Tesla T4",
+    "linear4bit_module_count": 196,
+    "new_dependency_conflicts": 0
+  },
+  "model_loader_receipt": {
+    "auto_model_for_causal_lm": true,
+    "cpu_offloaded_module_count": 0,
+    "disk_offloaded_module_count": 0,
+    "linear4bit_module_count": 196,
+    "model_is_loaded_in_4bit": true,
+    "model_repo": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+    "runtime_quantization_config_used": false,
+    "schema_id": "kt.stop50.model_loader_receipt.runtime.v1",
+    "status": "PASS"
+  },
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.stop50.environment_composite_receipt.v1",
+  "selector_deployment_authority": false,
+  "shadow_runtime_authority": false,
+  "status": "FUNCTIONAL_FOR_STOP50_EXACT_RUN__NOT_GENERALLY_CLEAN",
+  "training_authority": false
+}
