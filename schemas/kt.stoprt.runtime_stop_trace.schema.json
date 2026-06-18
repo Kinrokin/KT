@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "arm_id": {},
+    "row_id": {},
+    "schema_id": {},
+    "stop_reason": {}
+  },
+  "required": [
+    "schema_id",
+    "row_id",
+    "arm_id",
+    "stop_reason"
+  ],
+  "type": "object"
+}

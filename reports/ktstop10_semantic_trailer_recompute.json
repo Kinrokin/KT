@@ -1,0 +1,39 @@
+{
+  "adapter_mutation_authority": false,
+  "by_arm": {
+    "A0_CURRENT_PROMPT": {
+      "correct": 6,
+      "legacy_post_final_tokens": 357,
+      "legacy_trailer_rows": 9,
+      "max_new_tokens_hit_rows": 0,
+      "repeated_marker_rows": 5,
+      "rows": 10,
+      "semantic_trailer_rows": 8,
+      "total_output_tokens": 3142
+    },
+    "A1_STOP_AFTER_FINAL_ANSWER": {
+      "correct": 6,
+      "legacy_post_final_tokens": 1318,
+      "legacy_trailer_rows": 9,
+      "max_new_tokens_hit_rows": 5,
+      "repeated_marker_rows": 7,
+      "rows": 10,
+      "semantic_trailer_rows": 7,
+      "total_output_tokens": 3750
+    }
+  },
+  "claim_ceiling_status": "PRESERVED",
+  "dataset_generation_authority": false,
+  "expectation_status": "PASS",
+  "expected_a0_semantic_trailer_rows": 8,
+  "expected_a1_semantic_trailer_rows": 7,
+  "metric_contract": "same-line units/currency/percent/punctuation are answer-line content, not semantic trailer",
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "runtime_authority": false,
+  "schema_id": "kt.ktstop10.semantic_trailer_recompute.v1",
+  "selector_deployment_authority": false,
+  "status": "PASS",
+  "training_authority": false
+}
