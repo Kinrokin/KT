@@ -1,0 +1,106 @@
+{
+  "adapter_mutation_authority": false,
+  "adjudicated_rows": [
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_325",
+      "token_delta_b0_minus_b1": 26
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_329",
+      "token_delta_b0_minus_b1": 28
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_331",
+      "token_delta_b0_minus_b1": 34
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_332",
+      "token_delta_b0_minus_b1": 86
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_333",
+      "token_delta_b0_minus_b1": 49
+    },
+    {
+      "adjudication_reason": "SYMMETRIC_TERMINAL_SPECIAL_TOKEN_NORMALIZATION",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": false,
+      "raw_output_equal": true,
+      "row_id": "gsm8k_test_340",
+      "token_delta_b0_minus_b1": 0
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_349",
+      "token_delta_b0_minus_b1": 30
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_359",
+      "token_delta_b0_minus_b1": 91
+    },
+    {
+      "adjudication_reason": "SYMMETRIC_TERMINAL_SPECIAL_TOKEN_NORMALIZATION",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": false,
+      "raw_output_equal": true,
+      "row_id": "gsm8k_test_368",
+      "token_delta_b0_minus_b1": 0
+    },
+    {
+      "adjudication_reason": "OFFICIAL_PREFIX_EQUAL",
+      "court_v2_prefix_equal": true,
+      "official_prefix_equal": true,
+      "raw_output_equal": false,
+      "row_id": "gsm8k_test_369",
+      "token_delta_b0_minus_b1": 16
+    }
+  ],
+  "claim_ceiling_status": "PRESERVED",
+  "court_v2_prefix_equal_count": 10,
+  "court_v2_status": "RECONCILED_PASS_10_OF_10",
+  "created_utc": "2026-06-18T16:30:25Z",
+  "dataset_generation_authority": false,
+  "important_limitation": "Court-v2 is a new adjudication for STOP50 design; it does not mutate the immutable STOPRT failed receipt.",
+  "official_receipt_status": "PRESERVED_FAILED_8_OF_10",
+  "production_math_mode_claim": false,
+  "production_prompt_mutation_authority": false,
+  "promotion_authority": false,
+  "row_count": 10,
+  "runtime_authority": false,
+  "schema_id": "kt.stoprt.prefix_equivalence_v2.v1",
+  "selector_deployment_authority": false,
+  "source_evidence": [
+    "assessment/prefix_equivalence_receipt.json",
+    "evidence/KT_STOPRT_PREFIX_MISMATCH_DETAILS.json",
+    "assessment/predictions.jsonl"
+  ],
+  "status": "PASS_10_OF_10_ORIGINAL_TOKEN_IDS_WITH_SYMMETRIC_EOS_NORMALIZATION",
+  "training_authority": false
+}

@@ -6,6 +6,11 @@ from typing import Optional
 from runtime.final_answer_stop_types import StopDecision, StopReason, StopState
 
 
+def _line_anchored_marker_match(generated_text: str, marker: str) -> Optional[re.Match[str]]:
+    """Only honor generated markers that begin a generated answer line."""
+    return re.search(r"(?m)^[ \t]*" + re.escape(marker), generated_text)
+
+
 def evaluate_generated_text(
     generated_text: str,
     *,
@@ -14,13 +19,14 @@ def evaluate_generated_text(
     max_answer_tail_chars: int = 160,
 ) -> StopDecision:
     """Evaluate generated text only. Prompt text must be sliced away by caller."""
-    marker_start = generated_text.find(marker)
-    if marker_start < 0:
+    marker_match = _line_anchored_marker_match(generated_text, marker)
+    if marker_match is None:
         if eos:
             return StopDecision(True, StopState.EOS_BEFORE_MARKER, StopReason.EOS_BEFORE_MARKER)
         return StopDecision(False, StopState.SEARCH_MARKER, StopReason.CONTINUE)
 
-    marker_end = marker_start + len(marker)
+    marker_start = marker_match.start()
+    marker_end = marker_match.end()
     tail = generated_text[marker_end:]
     non_ws = re.search(r"\S", tail)
     if not non_ws:
@@ -62,7 +68,7 @@ def evaluate_generated_text(
         return StopDecision(
             True,
             StopState.COMPLETE_STOP,
-            StopReason.EOS,
+            StopReason.EOS_AFTER_FINAL_ANSWER_LINE,
             marker_start,
             marker_end,
             answer_start,
@@ -99,12 +105,15 @@ class GeneratedOnlyBatchOneAdapter:
         self.prompt_token_count = prompt_token_count
         self.eos_token_id = eos_token_id
         self.last_decision: Optional[StopDecision] = None
+        self.decode_call_count = 0
+        self.full_sequence_rescan_count = 0
 
     def evaluate_ids(self, full_input_ids) -> StopDecision:
         ids = full_input_ids.tolist() if hasattr(full_input_ids, "tolist") else list(full_input_ids)
         if len(ids) < self.prompt_token_count:
             raise ValueError("full_input_ids shorter than prompt boundary")
         generated_ids = ids[self.prompt_token_count :]
+        self.decode_call_count += 1
         generated_text = self.tokenizer.decode(generated_ids, skip_special_tokens=False)
         eos = bool(generated_ids and self.eos_token_id is not None and generated_ids[-1] == self.eos_token_id)
         self.last_decision = evaluate_generated_text(generated_text, eos=eos)
@@ -124,4 +133,12 @@ class FirstCompleteFinalAnswerLineStoppingCriteria:
             raise ValueError("FIRST_COMPLETE_FINAL_ANSWER_LINE_STOP is batch-size-one only")
         row = input_ids[0]
         self.last_decision = self.adapter.evaluate_ids(row)
-        return self.last_decision.should_stop
+        result = bool(self.last_decision.should_stop)
+        try:
+            import torch
+
+            if hasattr(input_ids, "device"):
+                return torch.tensor([result], dtype=torch.bool, device=input_ids.device)
+        except Exception:
+            pass
+        return result
