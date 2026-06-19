@@ -1180,6 +1180,7 @@ def update_v4_registry() -> None:
         "stop300_v3_review_thread_binding.json",
         "stop300_v3_supersession_receipt.json",
         "stop300_v4_review_completion_receipt.json",
+        "stop300_v4_builder_summary.json",
         "stop300_v4_startup_dependency_contract.json",
         "stop300_v4_packet_identity_contract.json",
         "stop300_v4_physical_token_accounting_contract.json",

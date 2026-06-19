@@ -19,8 +19,8 @@ actual_sha = hashlib.sha256(packet.read_bytes()).hexdigest()
 if actual_sha != expected_sha:
     raise RuntimeError(f'packet sha mismatch: {actual_sha}')
 os.environ['KT_AUTHORIZED_PACKET_SHA256'] = actual_sha
-os.environ['KT_AUTHORIZED_PACKET_SUBJECT_HEAD'] = os.environ['KT_AUTHORIZED_PACKET_SUBJECT_HEAD']
-os.environ['KT_CURRENT_MAIN_HEAD'] = os.environ['KT_CURRENT_MAIN_HEAD']
+os.environ['KT_AUTHORIZED_PACKET_SUBJECT_HEAD'] = '105e7d842404e71267b830807e942bd7954abace'
+os.environ['KT_CURRENT_MAIN_HEAD'] = '105e7d842404e71267b830807e942bd7954abace'
 os.environ['KT_EXPECTED_RUN_MODE'] = 'RUN_KTSTOP_RUNTIME_STOP_PAIRED300_V4'
 os.environ.setdefault('KT_RAISE_ON_BLOCKER', '0')
 work = Path('/kaggle/working/ktstop300_v4_packet_loader')
