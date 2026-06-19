@@ -1,0 +1,1 @@
+Temporary operational branch used only to recover the completed STOP300 V4.1 assessment from the private Hugging Face artifact vault after the Kaggle session expired. Do not merge into canonical main.
