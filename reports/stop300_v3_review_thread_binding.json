@@ -1,0 +1,44 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "pr_number": 384,
+  "schema_id": "kt.stop300.v3_review_thread_binding.v1",
+  "status": "BOUND_AND_SUPERSEDED",
+  "threads": [
+    {
+      "finding": "Authority flags validated with not manifest.get(key), allowing missing keys to pass.",
+      "id": "PRRT_kwDOQx5TJM6KuHEh",
+      "path": "scripts/validate_ktstop300_v3_packet.py",
+      "required_fix": "Require every authority key to exist and be exactly False.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Checkpoint cadence rescans/parses every record after each S1 natural generation.",
+      "id": "PRRT_kwDOQx5TJM6KuHEq",
+      "path": "scripts/build_ktstop300_v3_packet.py",
+      "required_fix": "Maintain and update an in-memory completed-key set; scan disk only on startup/recovery.",
+      "severity": "P2"
+    },
+    {
+      "finding": "Core result court receives evidence-upload status before final assessment upload and therefore blocks every otherwise-successful run.",
+      "id": "PRRT_kwDOQx5TJM6KuHLF",
+      "path": "scripts/build_ktstop300_v3_packet.py",
+      "required_fix": "Separate core scientific verdict from final publication disposition; remove circular final-upload dependency.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Publisher writes a final assessment receipt but returns the earlier evidence receipt.",
+      "id": "PRRT_kwDOQx5TJM6KuHLG",
+      "path": "scripts/build_ktstop300_v3_packet.py",
+      "required_fix": "Return and persist the final receipt from the final-upload branch.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Measured records hard-code prefix_equivalence/runtime_reference_agree/unsafe_stop to safe values.",
+      "id": "PRRT_kwDOQx5TJM6KuHLI",
+      "path": "scripts/build_ktstop300_v3_packet.py",
+      "required_fix": "Derive every court predicate independently from immutable raw token, runtime, and reference evidence.",
+      "severity": "P1"
+    }
+  ],
+  "unresolved_count": 5
+}
