@@ -1,0 +1,15 @@
+{
+  "claim_ceiling_status": "PRESERVED",
+  "immutable_path_template": "runs/<run_id>/<repo_head>/<packet_sha>/...",
+  "order": [
+    "write all evidence",
+    "package evidence-core checkpoint",
+    "upload checkpoint/evidence folder",
+    "write HF evidence receipt",
+    "package final assessment containing evidence receipt",
+    "upload final assessment",
+    "write final-assessment upload receipt into wrapper collection"
+  ],
+  "schema_id": "kt.stop300.v2.publication_order_receipt.v1",
+  "status": "PASS"
+}
