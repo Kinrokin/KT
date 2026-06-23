@@ -1,0 +1,301 @@
+{
+  "$id": "https://kt.local/schemas/kt.system_evidence_graph_payload.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "contradictions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "conflicting_source_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 2,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "contradiction_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "resolution_ref": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "OPEN",
+              "RESOLVED",
+              "WAIVED_WITH_BOUNDARY"
+            ]
+          },
+          "subject": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "contradiction_id",
+          "subject",
+          "conflicting_source_refs",
+          "status",
+          "resolution_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "edge_id": {
+            "pattern": "^[A-Za-z0-9._:-]+$",
+            "type": "string"
+          },
+          "edge_type": {
+            "enum": [
+              "IMPLEMENTS",
+              "CONFIGURES",
+              "CALLS",
+              "INVOKES",
+              "EMITS",
+              "CONSUMES",
+              "VERIFIES",
+              "GATES",
+              "AUTHORIZES",
+              "SUPPORTS",
+              "DECIDES_CLAIM",
+              "EXPOSES_PRODUCT",
+              "BOUNDS",
+              "SUPERSEDES",
+              "INVALIDATES",
+              "ROLLS_BACK_TO",
+              "DERIVED_FROM",
+              "REPRODUCES"
+            ]
+          },
+          "evidence_status": {
+            "enum": [
+              "RAW_VERIFIED",
+              "RECEIPT_VERIFIED",
+              "DETACHED_RECOMPUTED",
+              "INFERRED",
+              "BLOCKED",
+              "STALE",
+              "SUPERSEDED"
+            ]
+          },
+          "from_node": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "inference": {
+            "type": "boolean"
+          },
+          "observed_head": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "scope": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "to_node": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "edge_id",
+          "from_node",
+          "to_node",
+          "edge_type",
+          "scope",
+          "evidence_status",
+          "source_refs",
+          "observed_head",
+          "inference"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "generated_from_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "authority_state": {
+            "enum": [
+              "NONE",
+              "LAB",
+              "PREP_ONLY",
+              "SANDBOX_ONLY",
+              "INTERNAL_SHADOW",
+              "CURRENT_HEAD",
+              "EXTERNAL",
+              "COMMERCIAL",
+              "STALE",
+              "SUPERSEDED",
+              "BLOCKED",
+              "RETIRED"
+            ]
+          },
+          "claim_authority": {
+            "enum": [
+              "NONE",
+              "INTERNAL",
+              "CURRENT_HEAD",
+              "EXTERNAL",
+              "COMMERCIAL"
+            ]
+          },
+          "expires_at": {
+            "oneOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_verified_head": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "last_verified_run": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "node_id": {
+            "pattern": "^[A-Za-z0-9._:-]+$",
+            "type": "string"
+          },
+          "node_type": {
+            "enum": [
+              "component",
+              "configuration",
+              "dataset",
+              "model",
+              "tokenizer",
+              "adapter",
+              "tool",
+              "run",
+              "receipt",
+              "fact",
+              "authority_decision",
+              "claim_decision",
+              "claim",
+              "deployment",
+              "product_exposure",
+              "source_artifact",
+              "result"
+            ]
+          },
+          "payload_sha256": {
+            "oneOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scope": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "truth_plane": {
+            "enum": [
+              "FACT",
+              "AUTHORITY",
+              "CLAIM",
+              "PRODUCT",
+              "NONE"
+            ]
+          }
+        },
+        "required": [
+          "node_id",
+          "node_type",
+          "truth_plane",
+          "status",
+          "scope",
+          "authority_state",
+          "claim_authority",
+          "source_refs",
+          "last_verified_head",
+          "last_verified_run",
+          "payload_sha256",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.system_evidence_graph_payload.v2"
+    },
+    "source_set_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "generated_from_head",
+    "source_set_sha256",
+    "nodes",
+    "edges",
+    "contradictions"
+  ],
+  "title": "KT System Evidence Graph Deterministic Payload V2",
+  "type": "object"
+}

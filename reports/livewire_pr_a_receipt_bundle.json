@@ -1,0 +1,137 @@
+{
+  "authority_registry_reconciliation": {
+    "artifact_registry_file": "registry/artifact_authority_registry.json",
+    "claim_ceiling_status": "PRESERVED",
+    "demoted_artifact_id": "stop300_v41_packet_decision",
+    "demotion_reason": "completed STOP300 assessment imported; old run-next instruction is lineage, not current live instruction",
+    "runtime_authority_granted": false
+  },
+  "cleanroom_recomputation_receipt": {
+    "claim_ceiling_status": "PRESERVED",
+    "derived_field_dependency_count": 0,
+    "duplicate_work_key_count": 0,
+    "edge_execution_count": 36,
+    "forbidden_dependency_fields": [
+      "record.correct",
+      "record.prediction",
+      "record.canonical_extracted_answer",
+      "existing result summary verdicts"
+    ],
+    "generated_from_branch": "codex/kt-livewire-v22-pr-a",
+    "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "l0_correct": 261,
+    "measured_record_count": 1176,
+    "natural_pair_count": 300,
+    "negative_savings_rows": 0,
+    "official_active_statuses": [
+      "BLOCK_TOKEN_ECONOMICS",
+      "BLOCK_UNSAFE_STOP"
+    ],
+    "official_recomputed_status": "BLOCK_UNSAFE_STOP",
+    "official_unlawful_reference_count": 3,
+    "official_verdict_preserved": true,
+    "output_tokens_saved": 1500,
+    "paired_correctness_damage": 0,
+    "predicate_vector": {
+      "dangling_repeated_markers": 1,
+      "exact_no_intervention_fallback_count": 271,
+      "l0_full_tokens_per_correct": 383.4406130268199,
+      "median_physical_output_token_savings": 0.0,
+      "phase_counts": {
+        "edge": 36,
+        "natural": 600,
+        "timing": 540,
+        "warmup": 9
+      },
+      "repaired_unsafe_stop_count": 0,
+      "s1_full_tokens_per_correct": 377.69348659003833,
+      "semantic_post_boundary_trailers": 15,
+      "trimmed_mean_physical_output_token_savings": 0.0
+    },
+    "production_authority": false,
+    "promotion_authority": false,
+    "raw_prefix_mismatch_count": 0,
+    "receipt_id": "stop300_v41_cleanroom_recomputation_current_head",
+    "record_count_total": 1185,
+    "repaired_counterfactual_status": "BLOCK_TOKEN_ECONOMICS",
+    "repaired_court_is_counterfactual_only": true,
+    "runtime_authority": false,
+    "s1_correct": 261,
+    "schema_id": "kt.stop300.v41.cleanroom_recomputation.v2",
+    "scorer_reconciliation_mismatch_count": 0,
+    "source_assessment_sha256": "e8152d7f08b668e3ac1d0d173140872a48a0eea2849cfa45da84568725305143",
+    "timing_triplet_count": 180
+  },
+  "discovery_receipt": {
+    "artifact_registry_file": "registry/artifact_authority_registry.json",
+    "branch": "codex/kt-livewire-v22-pr-a",
+    "claim_ceiling_file": "governance/current_claim_ceiling.json",
+    "claim_ceiling_sha256": "899f82b8fd363fe9001e9be2e4f5b43e4f54d03fc5f4d284d00258609a6d1846",
+    "claim_ceiling_status": "PRESERVED",
+    "equivalent_livewire_graph_surfaces_found": false,
+    "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "heavy_stop300_evidence_policy": "POINTERS_AND_HASHES_ONLY_IN_GIT",
+    "hf_token_available": false,
+    "origin_main_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "schema_id": "kt.livewire.pr_a.discovery_receipt.v1",
+    "stop300_current_packet_decision": "reports/stop300_v41_packet_decision.json",
+    "stop300_current_packet_decision_sha256": "430c7b4d3810cb03cc0f2d592fbc44067110cc88703031198196c90089e6f750",
+    "stop300_current_packet_sha256": "8ff159f76e22767bca73c16e512d7b97643fe101b056211ab708b5e078100c0a",
+    "worktree_was_clean_at_start": true
+  },
+  "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+  "heavy_evidence_pointer_manifest": {
+    "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "heavy_artifacts_not_committed": true,
+    "hf_token_available_at_build": false,
+    "schema_id": "kt.livewire.stop300.heavy_evidence_pointer_manifest.v1",
+    "sources": [
+      {
+        "action": "HASH_BOUND_NOT_COMMITTED",
+        "bytes": 3833374,
+        "locator": "hf://datasets/Kinrokin/ktstop300-v4-1-results/KT_STOP300_V4_1_ASSESSMENT_ONLY_HF_RECOVERED.zip",
+        "packet_relative_path": "evidence/stop300/KT_STOP300_V4_1_ASSESSMENT_ONLY_HF_RECOVERED.zip",
+        "sha256": "e8152d7f08b668e3ac1d0d173140872a48a0eea2849cfa45da84568725305143",
+        "source_id": "src:stop300_assessment",
+        "transport_identity_status": "REPACKAGED_NOT_BYTE_IDENTICAL"
+      },
+      {
+        "action": "HASH_BOUND_NOT_COMMITTED_RAW_PAIR_ROWS",
+        "bytes": 218993,
+        "locator": "packet:evidence/stop300/stop300_cleanroom_pair_rows_v2.jsonl",
+        "packet_relative_path": "evidence/stop300/stop300_cleanroom_pair_rows_v2.jsonl",
+        "sha256": "f4796ca5391eb97cdf38328a67aea6f1b338190caa1b82b688641e18a6ccb2cf",
+        "source_id": "src:stop300_pair_rows",
+        "transport_identity_status": "NOT_APPLICABLE"
+      }
+    ]
+  },
+  "official_block_preservation_receipt": {
+    "claim_ceiling_status": "PRESERVED",
+    "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "official_active_statuses": [
+      "BLOCK_TOKEN_ECONOMICS",
+      "BLOCK_UNSAFE_STOP"
+    ],
+    "official_primary_status": "BLOCK_UNSAFE_STOP",
+    "official_unlawful_reference_count": 3,
+    "official_verdict_overwritten": false,
+    "official_verdict_preserved": true,
+    "receipt_id": "stop300_v41_official_block_preserved",
+    "repaired_counterfactual_status": "BLOCK_TOKEN_ECONOMICS",
+    "schema_id": "kt.livewire.stop300.official_block_preservation_receipt.v1"
+  },
+  "repaired_court_counterfactual_receipt": {
+    "claim_authority": "INTERNAL_REVIEW_ONLY",
+    "claim_ceiling_status": "PRESERVED",
+    "counterfactual_scope": "REPAIRED_COURT_ONLY_NOT_OFFICIAL_VERDICT",
+    "counterfactual_status": "BLOCK_TOKEN_ECONOMICS",
+    "generated_from_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+    "official_primary_status_remains": "BLOCK_UNSAFE_STOP",
+    "production_authority": false,
+    "receipt_id": "stop300_v41_repaired_court_counterfactual_only",
+    "runtime_authority": false,
+    "schema_id": "kt.livewire.stop300.repaired_court_counterfactual_receipt.v1"
+  },
+  "schema_id": "kt.livewire.pr_a.receipt_bundle.v1"
+}

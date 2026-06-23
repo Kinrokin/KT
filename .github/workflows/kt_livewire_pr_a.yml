@@ -1,0 +1,31 @@
+name: livewire-pr-a
+on:
+  pull_request:
+    paths:
+      - 'SOURCE_EVIDENCE_INDEX.json'
+      - 'evidence/stop300/**'
+      - 'reports/livewire_pr_a_*'
+      - 'scripts/*livewire*'
+      - 'scripts/*stop300_cleanroom*'
+      - 'scripts/canonical_payload_envelope.py'
+      - 'scripts/compile_next_tranche_packet.py'
+      - 'schemas/*livewire*'
+      - 'schemas/*evidence_graph*'
+      - 'schemas/*current_program_truth*'
+      - 'schemas/*claim_decision*'
+      - 'tests/test_livewire_pr_a_stop300_import.py'
+      - 'registry/artifact_authority_registry.json'
+jobs:
+  semantic-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest jsonschema
+      - run: python scripts/validate_json_artifacts.py
+      - run: python scripts/validate_json_schemas.py
+      - run: python scripts/validate_livewire_semantic_invariants.py --source-index SOURCE_EVIDENCE_INDEX.json --graph reports/livewire_pr_a_system_evidence_graph_payload.json --current-truth reports/livewire_pr_a_current_program_truth_payload.json --claim-decisions reports/livewire_pr_a_claim_decisions.json
+      - run: pytest -q tests/test_livewire_pr_a_stop300_import.py
+      - run: git diff --check

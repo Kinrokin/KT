@@ -1,0 +1,172 @@
+{
+  "$id": "https://kt.local/schemas/kt.stop300.v41.cleanroom_recomputation.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claim_ceiling_status": {
+      "const": "PRESERVED"
+    },
+    "derived_field_dependency_count": {
+      "const": 0
+    },
+    "duplicate_work_key_count": {
+      "const": 0
+    },
+    "edge_execution_count": {
+      "const": 36
+    },
+    "l0_correct": {
+      "const": 261
+    },
+    "measured_record_count": {
+      "const": 1176
+    },
+    "natural_pair_count": {
+      "const": 300
+    },
+    "negative_savings_rows": {
+      "const": 0
+    },
+    "official_active_statuses": {
+      "const": [
+        "BLOCK_TOKEN_ECONOMICS",
+        "BLOCK_UNSAFE_STOP"
+      ],
+      "type": "array"
+    },
+    "official_recomputed_status": {
+      "const": "BLOCK_UNSAFE_STOP"
+    },
+    "official_unlawful_reference_count": {
+      "const": 3
+    },
+    "output_tokens_saved": {
+      "const": 1500
+    },
+    "paired_correctness_damage": {
+      "const": 0
+    },
+    "predicate_vector": {
+      "additionalProperties": false,
+      "properties": {
+        "dangling_repeated_markers": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "exact_no_intervention_fallback_count": {
+          "maximum": 300,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "l0_full_tokens_per_correct": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "median_physical_output_token_savings": {
+          "type": "number"
+        },
+        "phase_counts": {
+          "additionalProperties": false,
+          "properties": {
+            "edge": {
+              "const": 36
+            },
+            "natural": {
+              "const": 600
+            },
+            "timing": {
+              "const": 540
+            },
+            "warmup": {
+              "const": 9
+            }
+          },
+          "required": [
+            "edge",
+            "natural",
+            "timing",
+            "warmup"
+          ],
+          "type": "object"
+        },
+        "repaired_unsafe_stop_count": {
+          "const": 0
+        },
+        "s1_full_tokens_per_correct": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "semantic_post_boundary_trailers": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trimmed_mean_physical_output_token_savings": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "phase_counts",
+        "exact_no_intervention_fallback_count",
+        "semantic_post_boundary_trailers",
+        "dangling_repeated_markers",
+        "repaired_unsafe_stop_count",
+        "median_physical_output_token_savings",
+        "trimmed_mean_physical_output_token_savings",
+        "l0_full_tokens_per_correct",
+        "s1_full_tokens_per_correct"
+      ],
+      "type": "object"
+    },
+    "raw_prefix_mismatch_count": {
+      "const": 0
+    },
+    "record_count_total": {
+      "const": 1185
+    },
+    "repaired_counterfactual_status": {
+      "const": "BLOCK_TOKEN_ECONOMICS"
+    },
+    "s1_correct": {
+      "const": 261
+    },
+    "schema_id": {
+      "const": "kt.stop300.v41.cleanroom_recomputation.v2"
+    },
+    "scorer_reconciliation_mismatch_count": {
+      "const": 0
+    },
+    "source_assessment_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "timing_triplet_count": {
+      "const": 180
+    }
+  },
+  "required": [
+    "schema_id",
+    "source_assessment_sha256",
+    "record_count_total",
+    "measured_record_count",
+    "natural_pair_count",
+    "timing_triplet_count",
+    "edge_execution_count",
+    "l0_correct",
+    "s1_correct",
+    "paired_correctness_damage",
+    "output_tokens_saved",
+    "negative_savings_rows",
+    "raw_prefix_mismatch_count",
+    "duplicate_work_key_count",
+    "official_unlawful_reference_count",
+    "official_recomputed_status",
+    "official_active_statuses",
+    "repaired_counterfactual_status",
+    "derived_field_dependency_count",
+    "scorer_reconciliation_mismatch_count",
+    "predicate_vector",
+    "claim_ceiling_status"
+  ],
+  "title": "KT STOP300 Clean-Room Recalculation V2",
+  "type": "object"
+}
