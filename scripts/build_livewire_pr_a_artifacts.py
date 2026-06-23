@@ -247,7 +247,7 @@ def build(args: argparse.Namespace) -> None:
         {
             "source_id": "src:stop300_cleanroom",
             "authority_class": "IMMUTABLE_MEASURED_EVIDENCE",
-            "packet_relative_path": "evidence/stop300/stop300_cleanroom_recomputation_v2.json",
+            "packet_relative_path": None,
             "repo_path": "evidence/stop300/stop300_cleanroom_recomputation_v2.json",
             "external_locator": None,
             "head": head,
