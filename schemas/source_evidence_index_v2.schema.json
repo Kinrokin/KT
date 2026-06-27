@@ -11,12 +11,51 @@
       "minLength": 1,
       "type": "string"
     },
-    "observed_main": {
+    "build_subject_head": {
       "pattern": "^[0-9a-f]{40}$",
       "type": "string"
     },
+    "merged_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "observed_main": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "origin_main_discovery_status": {
+      "enum": [
+        "FOUND",
+        "UNKNOWN"
+      ]
+    },
     "schema_id": {
       "const": "kt.livewire.source_evidence_index.v2"
+    },
+    "starting_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "sources": {
       "items": {
@@ -116,11 +155,27 @@
       },
       "minItems": 1,
       "type": "array"
+    },
+    "validated_at_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "required": [
     "schema_id",
     "observed_main",
+    "starting_main_head",
+    "build_subject_head",
+    "validated_at_head",
+    "merged_main_head",
+    "origin_main_discovery_status",
     "created_utc",
     "law",
     "sources"

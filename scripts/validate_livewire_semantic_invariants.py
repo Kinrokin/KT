@@ -11,9 +11,10 @@ import argparse
 import hashlib
 import json
 import math
+import stat
 import sys
 from collections import Counter, defaultdict, deque
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any, Iterable
 
 EPS = 1e-12
@@ -40,6 +41,60 @@ def require(condition: bool, code: str) -> None:
         raise SemanticError(code)
 
 
+def sha256_file_bytes(path: Path) -> tuple[int, str]:
+    data = path.read_bytes()
+    return len(data), hashlib.sha256(data).hexdigest()
+
+
+def validate_local_regular_file(
+    *,
+    trusted_root: Path,
+    relative_path: str | None,
+    declared_bytes: int,
+    declared_sha256: str,
+    source_id: str,
+    field_name: str,
+) -> Path:
+    """Validate a repo-local evidence path without prefix-string containment.
+
+    The path is intentionally validated component by component before bytes are
+    read. This rejects symlink leaves, symlink ancestors, directory targets,
+    special files, absolute paths, traversal, and sibling-prefix tricks.
+    """
+    require(relative_path is not None, f"source_index:{field_name}_missing:{source_id}")
+    require(isinstance(relative_path, str) and relative_path.strip(), f"source_index:{field_name}_empty:{source_id}")
+    require("\\" not in relative_path, f"source_index:{field_name}_backslash:{source_id}")
+    windows_path = PureWindowsPath(relative_path)
+    require(not windows_path.is_absolute() and not windows_path.drive and not windows_path.root,
+            f"source_index:{field_name}_windows_anchor:{source_id}")
+    path = Path(relative_path)
+    require(not path.is_absolute(), f"source_index:{field_name}_absolute:{source_id}")
+    require(all(part not in {"", ".", ".."} for part in path.parts),
+            f"source_index:{field_name}_traversal:{source_id}")
+
+    root = trusted_root.resolve(strict=True)
+    current = root
+    for part in path.parts:
+        current = current / part
+        try:
+            info = current.lstat()
+        except FileNotFoundError as exc:
+            raise SemanticError(f"source_index:{field_name}_missing:{source_id}") from exc
+        require(not stat.S_ISLNK(info.st_mode), f"source_index:{field_name}_symlink:{source_id}")
+
+    resolved = current.resolve(strict=True)
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise SemanticError(f"source_index:{field_name}_escape:{source_id}") from exc
+    info = resolved.stat()
+    require(stat.S_ISREG(info.st_mode), f"source_index:{field_name}_nonregular:{source_id}")
+    actual_bytes, actual_sha = sha256_file_bytes(resolved)
+    require(actual_bytes == declared_bytes, f"source_index:{field_name}_size_mismatch:{source_id}")
+    require(actual_sha == declared_sha256, f"source_index:{field_name}_hash_mismatch:{source_id}")
+    return resolved
+
+
 def unique(values: Iterable[str], code: str) -> None:
     items = list(values)
     require(len(items) == len(set(items)), code)
@@ -53,6 +108,7 @@ def ratio_equal(numerator: int, denominator: int, declared: float, code: str) ->
 def validate_graph(graph: dict[str, Any], source_index: dict[str, Any] | None = None) -> None:
     nodes = graph["nodes"]
     edges = graph["edges"]
+    require(graph["generated_from_head"] == graph["build_subject_head"], "graph:generated_head_not_build_subject")
     unique((n["node_id"] for n in nodes), "graph:duplicate_node_id")
     unique((e["edge_id"] for e in edges), "graph:duplicate_edge_id")
     node_map = {n["node_id"]: n for n in nodes}
@@ -79,6 +135,9 @@ def validate_graph(graph: dict[str, Any], source_index: dict[str, Any] | None = 
             require(node["payload_sha256"] is not None, f"graph:authoritative_node_without_payload_hash:{node['node_id']}")
         if node["claim_authority"] == "COMMERCIAL":
             require(node["authority_state"] == "COMMERCIAL", f"graph:commercial_claim_without_commercial_authority:{node['node_id']}")
+        if graph["merged_main_head"] is None:
+            require(node["authority_state"] != "CURRENT_HEAD", f"graph:branch_artifact_current_head_authority:{node['node_id']}")
+            require(node["claim_authority"] != "CURRENT_HEAD", f"graph:branch_artifact_current_claim_authority:{node['node_id']}")
 
     # Supersession must be a DAG.
     supersedes: dict[str, list[str]] = defaultdict(list)
@@ -145,6 +204,8 @@ def validate_current_truth(projection: dict[str, Any], graph: dict[str, Any]) ->
     graph_hash = sha256_json(graph)
     require(projection["generated_from_graph_sha256"] == graph_hash, "current_truth:graph_hash_mismatch")
     require(projection["generated_from_head"] == graph["generated_from_head"], "current_truth:head_mismatch")
+    for field in ("starting_main_head", "build_subject_head", "validated_at_head", "merged_main_head"):
+        require(projection[field] == graph[field], f"current_truth:{field}_mismatch")
     require(projection["source_set_sha256"] == graph["source_set_sha256"], "current_truth:source_set_mismatch")
     require(projection["open_contradiction_count"] == 0, "current_truth:open_contradictions")
     require(not any(c["status"] == "OPEN" for c in graph["contradictions"]), "current_truth:graph_open_contradictions")
@@ -347,20 +408,45 @@ def validate_reviewer(reviewer: dict[str, Any], ledger: dict[str, Any]) -> None:
 
 def validate_source_index(index: dict[str, Any], packet_root: Path) -> None:
     unique((s["source_id"] for s in index["sources"]), "source_index:duplicate_source_id")
+    require(index["observed_main"] == index["starting_main_head"], "source_index:observed_main_head_mismatch")
+    if index["merged_main_head"] is None:
+        require(index["validated_at_head"] is None, "source_index:branch_artifact_validated_at_head")
+    repo_root = Path(__file__).resolve().parents[1]
+    pointer_only = {
+        ("RECOVERED_REPACKAGED_EVIDENCE", "REPACKAGED_NOT_BYTE_IDENTICAL"),
+        ("EXTERNAL_POINTER", "NOT_APPLICABLE"),
+        ("IMMUTABLE_MEASURED_EVIDENCE", "NOT_APPLICABLE"),
+    }
     for source in index["sources"]:
-        path = source["packet_relative_path"]
-        if path is not None:
-            require(not Path(path).is_absolute(), f"source_index:absolute_path:{source['source_id']}")
-            resolved = (packet_root / path).resolve()
-            require(str(resolved).startswith(str(packet_root.resolve())), f"source_index:path_escape:{source['source_id']}")
-            require(resolved.is_file(), f"source_index:missing_packet_file:{source['source_id']}")
-            data = resolved.read_bytes()
-            require(len(data) == source["bytes"], f"source_index:size_mismatch:{source['source_id']}")
-            require(hashlib.sha256(data).hexdigest() == source["sha256"], f"source_index:hash_mismatch:{source['source_id']}")
+        source_id = source["source_id"]
+        packet_path = source["packet_relative_path"]
+        repo_path = source["repo_path"]
+        if packet_path is not None:
+            validate_local_regular_file(
+                trusted_root=packet_root,
+                relative_path=packet_path,
+                declared_bytes=source["bytes"],
+                declared_sha256=source["sha256"],
+                source_id=source_id,
+                field_name="packet_relative_path",
+            )
+        if repo_path is not None:
+            validate_local_regular_file(
+                trusted_root=repo_root,
+                relative_path=repo_path,
+                declared_bytes=source["bytes"],
+                declared_sha256=source["sha256"],
+                source_id=source_id,
+                field_name="repo_path",
+            )
+        if packet_path is None and repo_path is None:
+            require(source["external_locator"] is not None, f"source_index:orphan_pointer:{source_id}")
+            require((source["authority_class"], source["transport_identity_status"]) in pointer_only,
+                    f"source_index:pointer_not_allowed:{source_id}")
         if source["authority_class"] == "RECOVERED_REPACKAGED_EVIDENCE":
-            require(source["transport_identity_status"] == "REPACKAGED_NOT_BYTE_IDENTICAL", f"source_index:repackaged_misclassified:{source['source_id']}")
+            require(source["transport_identity_status"] == "REPACKAGED_NOT_BYTE_IDENTICAL", f"source_index:repackaged_misclassified:{source_id}")
         if source["authority_class"] == "NONCONTROLLING_CONTEXT":
-            require(source["controlling"] is False, f"source_index:context_marked_controlling:{source['source_id']}")
+            require(source["controlling"] is False, f"source_index:context_marked_controlling:{source_id}")
 
 
 def validate_path(kind: str, path: str, graph: dict[str, Any] | None, source_index: dict[str, Any] | None, mutation: dict[str, Any] | None) -> None:

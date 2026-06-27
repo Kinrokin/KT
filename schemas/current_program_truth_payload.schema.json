@@ -185,6 +185,21 @@
       "pattern": "^[0-9a-f]{40}$",
       "type": "string"
     },
+    "build_subject_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "merged_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "next_moves": {
       "items": {
         "additionalProperties": false,
@@ -289,15 +304,41 @@
     "schema_id": {
       "const": "kt.current_program_truth_payload.v2"
     },
+    "starting_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "source_set_sha256": {
       "pattern": "^[0-9a-f]{64}$",
       "type": "string"
+    },
+    "validated_at_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "required": [
     "schema_id",
     "generated_from_graph_sha256",
     "generated_from_head",
+    "starting_main_head",
+    "build_subject_head",
+    "validated_at_head",
+    "merged_main_head",
     "source_set_sha256",
     "claim_ceiling_sha256",
     "fact_truth",
