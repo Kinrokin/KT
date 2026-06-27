@@ -114,14 +114,18 @@ def test_graph_truth_claims_and_registry_reconcile_current_authority():
     artifacts = {artifact["artifact_id"]: artifact for artifact in registry["artifacts"]}
     assert artifacts["stop300_v41_packet_decision"]["authority_state"] == "STALE"
     assert artifacts["stop300_v41_packet_decision"]["controls_execution"] is False
-    assert artifacts["livewire_pr_a_system_evidence_graph_payload"]["authority_state"] == "GENERATED_PENDING_VALIDATION"
 
     assert graph["build_subject_head"] == graph["generated_from_head"]
-    assert graph["merged_main_head"] is None
     assert truth["build_subject_head"] == graph["build_subject_head"]
-    assert truth["merged_main_head"] is None
-    assert all(node["authority_state"] != "CURRENT_HEAD" for node in graph["nodes"])
-    assert all(node["claim_authority"] != "CURRENT_HEAD" for node in graph["nodes"])
+    assert truth["merged_main_head"] == graph["merged_main_head"]
+    if graph["merged_main_head"] is None:
+        assert artifacts["livewire_pr_a_system_evidence_graph_payload"]["authority_state"] == "GENERATED_PENDING_VALIDATION"
+        assert all(node["authority_state"] != "CURRENT_HEAD" for node in graph["nodes"])
+        assert all(node["claim_authority"] != "CURRENT_HEAD" for node in graph["nodes"])
+    else:
+        assert graph["validated_at_head"] == graph["merged_main_head"] == graph["generated_from_head"]
+        assert artifacts["livewire_pr_a_system_evidence_graph_payload"]["authority_state"] == "LIVE_CURRENT_HEAD_VALIDATED"
+        assert not any(node["authority_state"] == "BRANCH_DERIVED_PENDING_PROTECTED_MERGE" for node in graph["nodes"])
 
 
 def test_semantic_court_rejects_false_pass_fixtures():

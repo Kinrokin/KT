@@ -7,9 +7,8 @@ It emits a head-bound prompt only after the parent tranche is merged and replaye
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-from datetime import datetime, timezone
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -28,7 +27,8 @@ def load(path: Path) -> Any:
 
 def write(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
 
 
 def main() -> int:
@@ -91,7 +91,7 @@ def main() -> int:
         "generator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "source_set_sha256": graph["source_set_sha256"],
         "generated_from_head": head,
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": "2026-06-23T00:00:00Z",
         "build_execution_id": "next-tranche-compiler",
         "build_host_fingerprint_sha256": hashlib.sha256(b"repo-agent").hexdigest(),
     }
@@ -103,7 +103,8 @@ def main() -> int:
         prompt = f"""Execute {next_tranche} from merged main {head}.\n\nRead the current evidence graph and truth projection bound below:\n- graph SHA256: {graph_sha}\n- current truth SHA256: {sha(truth)}\n- claim ceiling SHA256: {sha(ceiling)}\n\nStart read-only. Select the smallest canonical runtime path. Prove actual caller, configuration, invocation, mandatory code-owned gates, output consumer, measured effect, rollback, event-chain integrity, static reachability, dynamic invocation, and mutation kill rate. Do not claim global runtime coverage. Do not train, promote, deploy selectors, expand claims, or execute PR C/D. Return only the tranche return contract.\n"""
     else:
         prompt = f"BLOCKED: {blocker}. Repair PR A truth at merged main {head}; do not author PR B.\n"
-    (out / "COPY_PASTE_NEXT.txt").write_text(prompt, encoding="utf-8")
+    with (out / "COPY_PASTE_NEXT.txt").open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(prompt)
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0 if decision == "AUTHOR_PR_B" else 2
 

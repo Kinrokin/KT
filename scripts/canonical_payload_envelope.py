@@ -92,19 +92,33 @@ def build_envelope(payload: Any, *, payload_schema_id: str, payload_path: str, g
 
 def main() -> int:
     p = argparse.ArgumentParser()
-    p.add_argument("--payload", required=True)
-    p.add_argument("--envelope", required=True)
-    p.add_argument("--payload-schema-id", required=True)
-    p.add_argument("--head", required=True)
-    p.add_argument("--source-set-sha256", required=True)
+    p.add_argument("--payload")
+    p.add_argument("--envelope")
+    p.add_argument("--payload-schema-id")
+    p.add_argument("--head")
+    p.add_argument("--source-set-sha256")
     p.add_argument("--build-execution-id", default=os.environ.get("GITHUB_RUN_ID", "local"))
     p.add_argument("--repo-root", default=str(repo_root_default()))
     p.add_argument("--verify", action="store_true")
     args = p.parse_args()
     repo_root = Path(args.repo_root)
+    if args.verify and args.payload is None:
+        args.payload = "reports/livewire_pr_a_system_evidence_graph_payload.json"
+    if args.verify and args.envelope is None:
+        args.envelope = "reports/livewire_pr_a_system_evidence_graph_payload.envelope.json"
+    if not args.verify:
+        for name in ("payload", "envelope", "payload_schema_id", "head", "source_set_sha256"):
+            if getattr(args, name) is None:
+                p.error(f"--{name.replace('_', '-')} is required unless --verify defaults are used")
     payload_path, normalized_payload_path = resolve_repo_payload_path(repo_root, args.payload)
     envelope_path = Path(args.envelope)
     payload = read(payload_path)
+    if args.verify:
+        args.payload_schema_id = args.payload_schema_id or payload.get("schema_id")
+        args.head = args.head or payload.get("generated_from_head")
+        args.source_set_sha256 = args.source_set_sha256 or payload.get("source_set_sha256")
+        if not args.payload_schema_id or not args.head or not args.source_set_sha256:
+            p.error("--verify default payload must carry schema_id, generated_from_head, and source_set_sha256")
     if args.verify:
         envelope = read(envelope_path)
         expected_payload_sha = sha256_bytes(canonical_bytes(payload))
