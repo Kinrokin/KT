@@ -1,0 +1,43 @@
+{
+  "decisions": [
+    {
+      "allowed_claim_classes": [
+        "bounded internal STOP300 mechanism result",
+        "governed evidence import and detached clean-room recomputation"
+      ],
+      "authority_evidence_refs": [
+        "authority:claim_ceiling_current",
+        "authority:stop300_import_bounded",
+        "authority:stop300_run_next_demoted"
+      ],
+      "claim_ceiling_ref": "authority:claim_ceiling_current",
+      "claim_id": "claim:stop300_bounded_internal",
+      "decision": "ALLOW_INTERNAL",
+      "decision_node_id": "claim_decision:stop300_bounded",
+      "decision_sha256": "3cbe85b57db6d7a0580c0ed850e026eb420cef4e0a5bc8f5aa0aa32580c7d87f",
+      "fact_evidence_refs": [
+        "fact:stop300_v41_completed",
+        "fact:stop300_v41_official_block",
+        "fact:stop300_v41_cleanroom_recomputed"
+      ],
+      "forbidden_claim_classes": [
+        "runtime authority",
+        "production authority",
+        "commercial authority",
+        "external certification",
+        "competitive superiority"
+      ],
+      "generated_from_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "limitations": [
+        "official result remains BLOCK_UNSAFE_STOP",
+        "repaired court is counterfactual-only and remains BLOCK_TOKEN_ECONOMICS",
+        "branch-derived artifacts are not merged-main truth until protected merge and replay",
+        "no production/runtime/certification/commercial authority granted",
+        "no fresh HF pull was performed because no HF token was present in this environment"
+      ],
+      "product_exposure_refs": [],
+      "schema_id": "kt.claim_decision.v1"
+    }
+  ],
+  "schema_id": "kt.claim_decision_set.v1"
+}

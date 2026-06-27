@@ -1,0 +1,356 @@
+{
+  "$id": "https://kt.local/schemas/kt.current_program_truth_payload.v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_truth": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_decision_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fact_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "result_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "result_id",
+          "status",
+          "fact_refs",
+          "claim_decision_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "claim_ceiling_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "claim_truth": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_decision_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fact_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "result_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "result_id",
+          "status",
+          "fact_refs",
+          "claim_decision_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "compute_pending": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "authority_required": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "work_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_id",
+          "description",
+          "owner",
+          "authority_required"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "critical_blockers": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "blocker_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minimal_corrective_action": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "blocker_id",
+          "description",
+          "owner",
+          "minimal_corrective_action"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "fact_truth": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_decision_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fact_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "result_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "result_id",
+          "status",
+          "fact_refs",
+          "claim_decision_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "generated_from_graph_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "generated_from_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "build_subject_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "merged_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "next_moves": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "authority_required": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "work_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_id",
+          "description",
+          "owner",
+          "authority_required"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "open_contradiction_count": {
+      "const": 0
+    },
+    "product_truth": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_decision_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fact_refs": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "result_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "result_id",
+          "status",
+          "fact_refs",
+          "claim_decision_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "repo_pending": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "authority_required": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "work_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_id",
+          "description",
+          "owner",
+          "authority_required"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema_id": {
+      "const": "kt.current_program_truth_payload.v2"
+    },
+    "starting_main_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_set_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "validated_at_head": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "generated_from_graph_sha256",
+    "generated_from_head",
+    "starting_main_head",
+    "build_subject_head",
+    "validated_at_head",
+    "merged_main_head",
+    "source_set_sha256",
+    "claim_ceiling_sha256",
+    "fact_truth",
+    "authority_truth",
+    "claim_truth",
+    "product_truth",
+    "compute_pending",
+    "repo_pending",
+    "critical_blockers",
+    "next_moves",
+    "open_contradiction_count"
+  ],
+  "title": "KT Current Program Truth Deterministic Payload V2",
+  "type": "object"
+}

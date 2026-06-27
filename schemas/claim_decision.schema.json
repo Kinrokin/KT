@@ -1,0 +1,107 @@
+{
+  "$id": "https://kt.local/schemas/kt.claim_decision.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allowed_claim_classes": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "authority_evidence_refs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "claim_ceiling_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "claim_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "ALLOW_INTERNAL",
+        "ALLOW_BOUNDED_PILOT",
+        "NARROW",
+        "DEFER",
+        "BLOCK"
+      ]
+    },
+    "decision_node_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "decision_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "fact_evidence_refs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "forbidden_claim_classes": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "generated_from_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "product_exposure_refs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema_id": {
+      "const": "kt.claim_decision.v1"
+    }
+  },
+  "required": [
+    "schema_id",
+    "claim_id",
+    "decision_node_id",
+    "generated_from_head",
+    "fact_evidence_refs",
+    "authority_evidence_refs",
+    "claim_ceiling_ref",
+    "decision",
+    "allowed_claim_classes",
+    "forbidden_claim_classes",
+    "limitations",
+    "product_exposure_refs",
+    "decision_sha256"
+  ],
+  "title": "KT Claim Decision Node V1",
+  "type": "object"
+}

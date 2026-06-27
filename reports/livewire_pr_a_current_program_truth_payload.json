@@ -1,0 +1,81 @@
+{
+  "authority_truth": [
+    {
+      "claim_decision_ref": "claim_decision:stop300_bounded",
+      "fact_refs": [
+        "fact:stop300_v41_completed"
+      ],
+      "result_id": "authority_result:stop300_import",
+      "status": "INTERNAL_IMPORT_ONLY_NO_RUNTIME_AUTHORITY_BRANCH_DERIVED"
+    },
+    {
+      "claim_decision_ref": "claim_decision:stop300_bounded",
+      "fact_refs": [
+        "fact:stop300_v41_official_block"
+      ],
+      "result_id": "authority_result:stop300_run_next_demoted",
+      "status": "STALE_RUN_NEXT_DEMOTED_NOT_CURRENT_MOVE"
+    }
+  ],
+  "build_subject_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+  "claim_ceiling_sha256": "899f82b8fd363fe9001e9be2e4f5b43e4f54d03fc5f4d284d00258609a6d1846",
+  "claim_truth": [
+    {
+      "claim_decision_ref": "claim_decision:stop300_bounded",
+      "fact_refs": [
+        "fact:stop300_v41_completed",
+        "fact:stop300_v41_official_block"
+      ],
+      "result_id": "claim_result:stop300_bounded",
+      "status": "ALLOW_INTERNAL_BOUNDED_ONLY_BRANCH_DERIVED"
+    }
+  ],
+  "compute_pending": [],
+  "critical_blockers": [],
+  "fact_truth": [
+    {
+      "claim_decision_ref": "claim_decision:stop300_bounded",
+      "fact_refs": [
+        "fact:stop300_v41_cleanroom_recomputed",
+        "fact:stop300_v41_completed",
+        "fact:stop300_v41_official_block"
+      ],
+      "result_id": "fact_result:stop300_completed",
+      "status": "COMPLETED_OFF_REPO_RECOVERED_AND_RECOMPUTED_BRANCH_DERIVED"
+    }
+  ],
+  "generated_from_graph_sha256": "81e0ab3e5f46e436b6ade44de9364d2796e86a40708ea3c4bad9c4c7fd5ea64b",
+  "generated_from_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+  "merged_main_head": null,
+  "next_moves": [
+    {
+      "authority_required": "MERGED_PR_A",
+      "description": "Author PR B from merged-main graph after fresh-clone replay",
+      "owner": "NEXT_TRANCHE_COMPILER",
+      "work_id": "pr_b"
+    }
+  ],
+  "open_contradiction_count": 0,
+  "product_truth": [
+    {
+      "claim_decision_ref": "claim_decision:stop300_bounded",
+      "fact_refs": [
+        "fact:stop300_v41_completed"
+      ],
+      "result_id": "product_result:stop300_demo",
+      "status": "NOT_PRODUCTIZED"
+    }
+  ],
+  "repo_pending": [
+    {
+      "authority_required": "MERGED_MAIN_GRAPH",
+      "description": "Compile one bounded proof-carrying runtime vertical after PR A merge and fresh-clone replay",
+      "owner": "NEXT_TRANCHE_COMPILER",
+      "work_id": "pr_b"
+    }
+  ],
+  "schema_id": "kt.current_program_truth_payload.v2",
+  "source_set_sha256": "047112adf3e1da62f7ba62cd72c790994e83b89c152b68e8567bf66c25c6b2fb",
+  "starting_main_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+  "validated_at_head": null
+}

@@ -1,0 +1,299 @@
+{
+  "build_subject_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+  "contradictions": [],
+  "edges": [
+    {
+      "edge_id": "e:completed_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "DETACHED_RECOMPUTED",
+      "from_node": "fact:stop300_v41_completed",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:recompute_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "DETACHED_RECOMPUTED",
+      "from_node": "fact:stop300_v41_cleanroom_recomputed",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom",
+        "src:stop300_pair_rows"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:block_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "DETACHED_RECOMPUTED",
+      "from_node": "fact:stop300_v41_official_block",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_official_preservation"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:authority_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "RECEIPT_VERIFIED",
+      "from_node": "authority:claim_ceiling_current",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:claim_ceiling_snapshot"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:import_authority_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "RECEIPT_VERIFIED",
+      "from_node": "authority:stop300_import_bounded",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:live_repo_snapshot"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:stale_run_demotion_supports_decision",
+      "edge_type": "SUPPORTS",
+      "evidence_status": "RECEIPT_VERIFIED",
+      "from_node": "authority:stop300_run_next_demoted",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:live_repo_snapshot"
+      ],
+      "to_node": "claim_decision:stop300_bounded"
+    },
+    {
+      "edge_id": "e:decision_decides_claim",
+      "edge_type": "DECIDES_CLAIM",
+      "evidence_status": "RECEIPT_VERIFIED",
+      "from_node": "claim_decision:stop300_bounded",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom",
+        "src:claim_ceiling_snapshot"
+      ],
+      "to_node": "claim:stop300_bounded_internal"
+    },
+    {
+      "edge_id": "e:counterfactual_derived",
+      "edge_type": "DERIVED_FROM",
+      "evidence_status": "DETACHED_RECOMPUTED",
+      "from_node": "fact:stop300_v41_counterfactual",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "COUNTERFACTUAL_SEPARATE",
+      "source_refs": [
+        "src:stop300_counterfactual"
+      ],
+      "to_node": "fact:stop300_v41_official_block"
+    },
+    {
+      "edge_id": "e:old_run_instruction_superseded",
+      "edge_type": "SUPERSEDES",
+      "evidence_status": "RECEIPT_VERIFIED",
+      "from_node": "authority:stop300_import_bounded",
+      "inference": false,
+      "observed_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:live_repo_snapshot"
+      ],
+      "to_node": "authority:stop300_run_next_demoted"
+    }
+  ],
+  "generated_from_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+  "merged_main_head": null,
+  "nodes": [
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "fact:stop300_v41_completed",
+      "node_type": "fact",
+      "payload_sha256": "0481d6c643852757ff335de3bca6954afb49a7ab24d7f63780aab59ebf33593c",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_assessment",
+        "src:stop300_cleanroom"
+      ],
+      "status": "COMPLETED_OFF_REPO_RECOVERED_REPACKAGED",
+      "truth_plane": "FACT"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "fact:stop300_v41_cleanroom_recomputed",
+      "node_type": "fact",
+      "payload_sha256": "0481d6c643852757ff335de3bca6954afb49a7ab24d7f63780aab59ebf33593c",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom",
+        "src:stop300_pair_rows"
+      ],
+      "status": "DETACHED_RECOMPUTATION_PASS",
+      "truth_plane": "FACT"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "fact:stop300_v41_official_block",
+      "node_type": "fact",
+      "payload_sha256": "f025839662a107c76c9be3621d655884948fc80e6250ba1f00a0bb5455e49d94",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_assessment",
+        "src:stop300_official_preservation"
+      ],
+      "status": "BLOCK_UNSAFE_STOP",
+      "truth_plane": "FACT"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "fact:stop300_v41_counterfactual",
+      "node_type": "fact",
+      "payload_sha256": "f025839662a107c76c9be3621d655884948fc80e6250ba1f00a0bb5455e49d94",
+      "scope": "STOP300_V4_1_REPAIRED_COUNTERFACTUAL",
+      "source_refs": [
+        "src:stop300_counterfactual"
+      ],
+      "status": "BLOCK_TOKEN_ECONOMICS_COUNTERFACTUAL_ONLY",
+      "truth_plane": "FACT"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "authority:claim_ceiling_current",
+      "node_type": "authority_decision",
+      "payload_sha256": "899f82b8fd363fe9001e9be2e4f5b43e4f54d03fc5f4d284d00258609a6d1846",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:claim_ceiling_snapshot"
+      ],
+      "status": "PRESERVED",
+      "truth_plane": "AUTHORITY"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "authority:stop300_import_bounded",
+      "node_type": "authority_decision",
+      "payload_sha256": "430c7b4d3810cb03cc0f2d592fbc44067110cc88703031198196c90089e6f750",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:live_repo_snapshot",
+        "src:claim_ceiling_snapshot"
+      ],
+      "status": "INTERNAL_EVIDENCE_IMPORT_ONLY",
+      "truth_plane": "AUTHORITY"
+    },
+    {
+      "authority_state": "STALE",
+      "claim_authority": "NONE",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "authority:stop300_run_next_demoted",
+      "node_type": "authority_decision",
+      "payload_sha256": "430c7b4d3810cb03cc0f2d592fbc44067110cc88703031198196c90089e6f750",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:live_repo_snapshot"
+      ],
+      "status": "STALE_DEMOTED_BY_COMPLETED_ASSESSMENT_IMPORT",
+      "truth_plane": "AUTHORITY"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "claim_decision:stop300_bounded",
+      "node_type": "claim_decision",
+      "payload_sha256": "3cbe85b57db6d7a0580c0ed850e026eb420cef4e0a5bc8f5aa0aa32580c7d87f",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom",
+        "src:claim_ceiling_snapshot"
+      ],
+      "status": "ALLOW_INTERNAL_BOUNDED_ONLY",
+      "truth_plane": "CLAIM"
+    },
+    {
+      "authority_state": "BRANCH_DERIVED_PENDING_PROTECTED_MERGE",
+      "claim_authority": "INTERNAL",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "claim:stop300_bounded_internal",
+      "node_type": "claim",
+      "payload_sha256": "3cbe85b57db6d7a0580c0ed850e026eb420cef4e0a5bc8f5aa0aa32580c7d87f",
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom",
+        "src:claim_ceiling_snapshot"
+      ],
+      "status": "BOUNDED_INTERNAL_MECHANISM_RESULT",
+      "truth_plane": "CLAIM"
+    },
+    {
+      "authority_state": "PREP_ONLY",
+      "claim_authority": "NONE",
+      "expires_at": null,
+      "last_verified_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "last_verified_run": "livewire_pr_a_branch_repair",
+      "node_id": "product:stop300_verify_demo",
+      "node_type": "product_exposure",
+      "payload_sha256": null,
+      "scope": "STOP300_V4_1",
+      "source_refs": [
+        "src:stop300_cleanroom"
+      ],
+      "status": "NOT_PRODUCTIZED",
+      "truth_plane": "PRODUCT"
+    }
+  ],
+  "schema_id": "kt.system_evidence_graph_payload.v2",
+  "source_set_sha256": "047112adf3e1da62f7ba62cd72c790994e83b89c152b68e8567bf66c25c6b2fb",
+  "starting_main_head": "29b15ecbf895b7f05c407ac2db6820be755dff5e",
+  "validated_at_head": null
+}
