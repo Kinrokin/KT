@@ -14,7 +14,7 @@
       "claim_id": "claim:stop300_bounded_internal",
       "decision": "ALLOW_INTERNAL",
       "decision_node_id": "claim_decision:stop300_bounded",
-      "decision_sha256": "3cbe85b57db6d7a0580c0ed850e026eb420cef4e0a5bc8f5aa0aa32580c7d87f",
+      "decision_sha256": "181d509eab0c7c214ab72428781b33d50035230ba86ff07f5c71c9fcc851593b",
       "fact_evidence_refs": [
         "fact:stop300_v41_completed",
         "fact:stop300_v41_official_block",
@@ -27,11 +27,11 @@
         "external certification",
         "competitive superiority"
       ],
-      "generated_from_head": "d9d95b55efdd4fd9ee5dd1abd14762c4d70d69cb",
+      "generated_from_head": "a8df3c8d89e572c3408d0ad000db127305ceca94",
       "limitations": [
         "official result remains BLOCK_UNSAFE_STOP",
         "repaired court is counterfactual-only and remains BLOCK_TOKEN_ECONOMICS",
-        "branch-derived artifacts are not merged-main truth until protected merge and replay",
+        "merged-main replay/rebind performed before PR-B compilation",
         "no production/runtime/certification/commercial authority granted",
         "no fresh HF pull was performed because no HF token was present in this environment"
       ],

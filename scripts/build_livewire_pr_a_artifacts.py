@@ -165,6 +165,31 @@ def build(args: argparse.Namespace) -> None:
         "validated_at_head": validated_at_head,
         "merged_main_head": merged_main_head,
     }
+    merged_main_rebind = (
+        merged_main_head is not None
+        and validated_at_head == build_subject_head
+        and merged_main_head == build_subject_head
+    )
+    evidence_authority_state = "CURRENT_HEAD" if merged_main_rebind else BRANCH_AUTHORITY
+    evidence_claim_authority = "CURRENT_HEAD" if merged_main_rebind else "INTERNAL"
+    registry_authority_state = "LIVE_CURRENT_HEAD_VALIDATED" if merged_main_rebind else REGISTRY_BRANCH_AUTHORITY
+    registry_claim_authority = "CURRENT_HEAD" if merged_main_rebind else "INTERNAL_SHADOW"
+    registry_status = "RECONCILED_MERGED_MAIN" if merged_main_rebind else "RECONCILED_BRANCH_DERIVED"
+    fact_truth_status = (
+        "COMPLETED_OFF_REPO_RECOVERED_AND_RECOMPUTED_MERGED_MAIN_REBOUND"
+        if merged_main_rebind
+        else "COMPLETED_OFF_REPO_RECOVERED_AND_RECOMPUTED_BRANCH_DERIVED"
+    )
+    authority_truth_status = (
+        "INTERNAL_IMPORT_ONLY_NO_RUNTIME_AUTHORITY_MERGED_MAIN_REBOUND"
+        if merged_main_rebind
+        else "INTERNAL_IMPORT_ONLY_NO_RUNTIME_AUTHORITY_BRANCH_DERIVED"
+    )
+    claim_truth_status = (
+        "ALLOW_INTERNAL_BOUNDED_ONLY_MERGED_MAIN_REBOUND"
+        if merged_main_rebind
+        else "ALLOW_INTERNAL_BOUNDED_ONLY_BRANCH_DERIVED"
+    )
     recompute_receipt = {
         **cleanroom,
         "receipt_id": "stop300_v41_cleanroom_recomputation_branch_derived",
@@ -384,15 +409,15 @@ def build(args: argparse.Namespace) -> None:
     source_index_sha = write(ROOT / "SOURCE_EVIDENCE_INDEX.json", source_index)
 
     nodes = [
-        ("fact:stop300_v41_completed", "fact", "FACT", "COMPLETED_OFF_REPO_RECOVERED_REPACKAGED", BRANCH_AUTHORITY, "INTERNAL", recompute_sha, ["src:stop300_assessment", "src:stop300_cleanroom"]),
-        ("fact:stop300_v41_cleanroom_recomputed", "fact", "FACT", "DETACHED_RECOMPUTATION_PASS", BRANCH_AUTHORITY, "INTERNAL", recompute_sha, ["src:stop300_cleanroom", "src:stop300_pair_rows"]),
-        ("fact:stop300_v41_official_block", "fact", "FACT", cleanroom["official_recomputed_status"], BRANCH_AUTHORITY, "INTERNAL", receipt_sha, ["src:stop300_assessment", "src:stop300_official_preservation"]),
-        ("fact:stop300_v41_counterfactual", "fact", "FACT", "BLOCK_TOKEN_ECONOMICS_COUNTERFACTUAL_ONLY", BRANCH_AUTHORITY, "INTERNAL", receipt_sha, ["src:stop300_counterfactual"]),
-        ("authority:claim_ceiling_current", "authority_decision", "AUTHORITY", "PRESERVED", BRANCH_AUTHORITY, "INTERNAL", claim_ceiling_sha, ["src:claim_ceiling_snapshot"]),
-        ("authority:stop300_import_bounded", "authority_decision", "AUTHORITY", "INTERNAL_EVIDENCE_IMPORT_ONLY", BRANCH_AUTHORITY, "INTERNAL", packet_decision_sha, ["src:live_repo_snapshot", "src:claim_ceiling_snapshot"]),
+        ("fact:stop300_v41_completed", "fact", "FACT", "COMPLETED_OFF_REPO_RECOVERED_REPACKAGED", evidence_authority_state, evidence_claim_authority, recompute_sha, ["src:stop300_assessment", "src:stop300_cleanroom"]),
+        ("fact:stop300_v41_cleanroom_recomputed", "fact", "FACT", "DETACHED_RECOMPUTATION_PASS", evidence_authority_state, evidence_claim_authority, recompute_sha, ["src:stop300_cleanroom", "src:stop300_pair_rows"]),
+        ("fact:stop300_v41_official_block", "fact", "FACT", cleanroom["official_recomputed_status"], evidence_authority_state, evidence_claim_authority, receipt_sha, ["src:stop300_assessment", "src:stop300_official_preservation"]),
+        ("fact:stop300_v41_counterfactual", "fact", "FACT", "BLOCK_TOKEN_ECONOMICS_COUNTERFACTUAL_ONLY", evidence_authority_state, evidence_claim_authority, receipt_sha, ["src:stop300_counterfactual"]),
+        ("authority:claim_ceiling_current", "authority_decision", "AUTHORITY", "PRESERVED", evidence_authority_state, evidence_claim_authority, claim_ceiling_sha, ["src:claim_ceiling_snapshot"]),
+        ("authority:stop300_import_bounded", "authority_decision", "AUTHORITY", "INTERNAL_EVIDENCE_IMPORT_ONLY", evidence_authority_state, evidence_claim_authority, packet_decision_sha, ["src:live_repo_snapshot", "src:claim_ceiling_snapshot"]),
         ("authority:stop300_run_next_demoted", "authority_decision", "AUTHORITY", "STALE_DEMOTED_BY_COMPLETED_ASSESSMENT_IMPORT", "STALE", "NONE", packet_decision_sha, ["src:live_repo_snapshot"]),
-        ("claim_decision:stop300_bounded", "claim_decision", "CLAIM", "ALLOW_INTERNAL_BOUNDED_ONLY", BRANCH_AUTHORITY, "INTERNAL", "0" * 64, ["src:stop300_cleanroom", "src:claim_ceiling_snapshot"]),
-        ("claim:stop300_bounded_internal", "claim", "CLAIM", "BOUNDED_INTERNAL_MECHANISM_RESULT", BRANCH_AUTHORITY, "INTERNAL", "0" * 64, ["src:stop300_cleanroom", "src:claim_ceiling_snapshot"]),
+        ("claim_decision:stop300_bounded", "claim_decision", "CLAIM", "ALLOW_INTERNAL_BOUNDED_ONLY", evidence_authority_state, evidence_claim_authority, "0" * 64, ["src:stop300_cleanroom", "src:claim_ceiling_snapshot"]),
+        ("claim:stop300_bounded_internal", "claim", "CLAIM", "BOUNDED_INTERNAL_MECHANISM_RESULT", evidence_authority_state, evidence_claim_authority, "0" * 64, ["src:stop300_cleanroom", "src:claim_ceiling_snapshot"]),
         ("product:stop300_verify_demo", "product_exposure", "PRODUCT", "NOT_PRODUCTIZED", "PREP_ONLY", "NONE", None, ["src:stop300_cleanroom"]),
     ]
 
@@ -445,7 +470,7 @@ def build(args: argparse.Namespace) -> None:
         "limitations": [
             "official result remains BLOCK_UNSAFE_STOP",
             "repaired court is counterfactual-only and remains BLOCK_TOKEN_ECONOMICS",
-            "branch-derived artifacts are not merged-main truth until protected merge and replay",
+            "branch-derived artifacts are not merged-main truth until protected merge and replay" if not merged_main_rebind else "merged-main replay/rebind performed before PR-B compilation",
             "no production/runtime/certification/commercial authority granted",
             "no fresh HF pull was performed because no HF token was present in this environment",
         ],
@@ -505,7 +530,7 @@ def build(args: argparse.Namespace) -> None:
         "fact_truth": [
             {
                 "result_id": "fact_result:stop300_completed",
-                "status": "COMPLETED_OFF_REPO_RECOVERED_AND_RECOMPUTED_BRANCH_DERIVED",
+                "status": fact_truth_status,
                 "fact_refs": ["fact:stop300_v41_cleanroom_recomputed", "fact:stop300_v41_completed", "fact:stop300_v41_official_block"],
                 "claim_decision_ref": "claim_decision:stop300_bounded",
             }
@@ -513,7 +538,7 @@ def build(args: argparse.Namespace) -> None:
         "authority_truth": [
             {
                 "result_id": "authority_result:stop300_import",
-                "status": "INTERNAL_IMPORT_ONLY_NO_RUNTIME_AUTHORITY_BRANCH_DERIVED",
+                "status": authority_truth_status,
                 "fact_refs": ["fact:stop300_v41_completed"],
                 "claim_decision_ref": "claim_decision:stop300_bounded",
             },
@@ -527,7 +552,7 @@ def build(args: argparse.Namespace) -> None:
         "claim_truth": [
             {
                 "result_id": "claim_result:stop300_bounded",
-                "status": "ALLOW_INTERNAL_BOUNDED_ONLY_BRANCH_DERIVED",
+                "status": claim_truth_status,
                 "fact_refs": ["fact:stop300_v41_completed", "fact:stop300_v41_official_block"],
                 "claim_decision_ref": "claim_decision:stop300_bounded",
             }
@@ -592,9 +617,10 @@ def build(args: argparse.Namespace) -> None:
             artifacts.append(item)
             by_id[item["artifact_id"]] = item
 
+    graph_role_prefix = "Merged-main rebound" if merged_main_rebind else "Branch-derived"
     for artifact_id, path, role, sha in (
-        ("livewire_pr_a_system_evidence_graph_payload", "reports/livewire_pr_a_system_evidence_graph_payload.json", "Branch-derived deterministic evidence graph payload for STOP300 import", graph_file_sha),
-        ("livewire_pr_a_current_program_truth_payload", "reports/livewire_pr_a_current_program_truth_payload.json", "Branch-derived current-truth projection from PR-A evidence graph", truth_file_sha),
+        ("livewire_pr_a_system_evidence_graph_payload", "reports/livewire_pr_a_system_evidence_graph_payload.json", f"{graph_role_prefix} deterministic evidence graph payload for STOP300 import", graph_file_sha),
+        ("livewire_pr_a_current_program_truth_payload", "reports/livewire_pr_a_current_program_truth_payload.json", f"{graph_role_prefix} current-truth projection from PR-A evidence graph", truth_file_sha),
         ("livewire_pr_a_stop300_cleanroom_recomputation", "evidence/stop300/stop300_cleanroom_recomputation_v2.json", "Detached STOP300 clean-room recomputation receipt; raw evidence not vendored", recompute_sha),
         ("livewire_pr_a_authority_registry_reconciliation", "reports/livewire_pr_a_receipt_bundle.json", "Registry reconciliation and stale STOP300 run instruction demotion receipt", receipt_sha),
     ):
@@ -603,10 +629,10 @@ def build(args: argparse.Namespace) -> None:
             "path": path,
             "role": role,
             "primary_class": "CANONICAL_RECEIPT_CURRENT",
-            "authority_state": REGISTRY_BRANCH_AUTHORITY,
+            "authority_state": registry_authority_state,
             "validation_status": "PASS",
             "controls_execution": False,
-            "claim_authority": "INTERNAL_SHADOW",
+            "claim_authority": registry_claim_authority,
             "sha256": sha,
         })
     upsert({
@@ -637,7 +663,7 @@ def build(args: argparse.Namespace) -> None:
         "build_subject_head": build_subject_head,
         "validated_at_head": validated_at_head,
         "merged_main_head": merged_main_head,
-        "registry_status": "RECONCILED_BRANCH_DERIVED",
+        "registry_status": registry_status,
     }, indent=2, sort_keys=True))
 
 
