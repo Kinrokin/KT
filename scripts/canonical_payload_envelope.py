@@ -71,6 +71,23 @@ def resolve_repo_payload_path(repo_root: Path, payload_path: str) -> tuple[Path,
     return resolved, repo_rel.as_posix()
 
 
+def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
+    """Resolve envelope metadata paths relative to repo root in verify mode."""
+    if not metadata_path or not metadata_path.strip():
+        raise SystemExit("metadata_path_empty")
+    win = PureWindowsPath(metadata_path)
+    raw = Path(metadata_path)
+    if win.is_absolute() or win.drive or win.root:
+        return raw
+    if raw.is_absolute():
+        return raw
+    if "\\" in metadata_path:
+        raise SystemExit("metadata_path_backslash")
+    if any(part in {"", ".", ".."} for part in raw.parts):
+        raise SystemExit("metadata_path_traversal")
+    return repo_root.resolve(strict=True) / raw
+
+
 def build_envelope(payload: Any, *, payload_schema_id: str, payload_path: str, generated_from_head: str, source_set_sha256: str, build_execution_id: str) -> dict[str, Any]:
     payload_sha = sha256_bytes(canonical_bytes(payload))
     generator_sha = sha256_bytes(Path(__file__).read_bytes())
@@ -102,31 +119,36 @@ def main() -> int:
     p.add_argument("--verify", action="store_true")
     args = p.parse_args()
     repo_root = Path(args.repo_root)
-    if args.verify and args.payload is None:
-        args.payload = "reports/livewire_pr_a_system_evidence_graph_payload.json"
-    if args.verify and args.envelope is None:
-        args.envelope = "reports/livewire_pr_a_system_evidence_graph_payload.envelope.json"
-    if not args.verify:
+    if args.verify:
+        provided_payload = args.payload is not None
+        provided_envelope = args.envelope is not None
+        if provided_payload != provided_envelope:
+            p.error("--verify requires --payload and --envelope to be supplied together, or neither for repo defaults")
+        if not provided_payload:
+            args.payload = "reports/livewire_pr_a_system_evidence_graph_payload.json"
+            args.envelope = "reports/livewire_pr_a_system_evidence_graph_payload.envelope.json"
+    else:
         for name in ("payload", "envelope", "payload_schema_id", "head", "source_set_sha256"):
             if getattr(args, name) is None:
                 p.error(f"--{name.replace('_', '-')} is required unless --verify defaults are used")
     payload_path, normalized_payload_path = resolve_repo_payload_path(repo_root, args.payload)
-    envelope_path = Path(args.envelope)
+    envelope_path = resolve_repo_metadata_path(repo_root, args.envelope) if args.verify else Path(args.envelope)
     payload = read(payload_path)
     if args.verify:
-        args.payload_schema_id = args.payload_schema_id or payload.get("schema_id")
-        args.head = args.head or payload.get("generated_from_head")
-        args.source_set_sha256 = args.source_set_sha256 or payload.get("source_set_sha256")
-        if not args.payload_schema_id or not args.head or not args.source_set_sha256:
-            p.error("--verify default payload must carry schema_id, generated_from_head, and source_set_sha256")
-    if args.verify:
         envelope = read(envelope_path)
+        args.payload_schema_id = args.payload_schema_id or envelope.get("payload_schema_id") or payload.get("schema_id")
+        args.head = args.head or envelope.get("generated_from_head") or payload.get("generated_from_head")
+        args.source_set_sha256 = args.source_set_sha256 or envelope.get("source_set_sha256") or payload.get("source_set_sha256")
+        if not args.payload_schema_id or not args.head or not args.source_set_sha256:
+            p.error("--verify payload/envelope must carry schema_id, generated_from_head, and source_set_sha256")
         expected_payload_sha = sha256_bytes(canonical_bytes(payload))
         if envelope["payload_sha256"] != expected_payload_sha:
             raise SystemExit("payload_digest_mismatch")
         body = {k: v for k, v in envelope.items() if k != "envelope_sha256"}
         if envelope["envelope_sha256"] != sha256_bytes(canonical_bytes(body)):
             raise SystemExit("envelope_digest_mismatch")
+        if envelope["payload_schema_id"] != args.payload_schema_id:
+            raise SystemExit("envelope_payload_schema_mismatch")
         if envelope["generated_from_head"] != args.head:
             raise SystemExit("envelope_head_mismatch")
         if envelope["source_set_sha256"] != args.source_set_sha256:

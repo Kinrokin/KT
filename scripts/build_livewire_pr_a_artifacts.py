@@ -192,7 +192,9 @@ def build(args: argparse.Namespace) -> None:
     )
     recompute_receipt = {
         **cleanroom,
-        "receipt_id": "stop300_v41_cleanroom_recomputation_branch_derived",
+        "receipt_id": "stop300_v41_cleanroom_recomputation_merged_main_rebound"
+        if merged_main_rebind
+        else "stop300_v41_cleanroom_recomputation_branch_derived",
         "generated_from_head": build_subject_head,
         **head_semantics,
         "generated_from_branch": branch,

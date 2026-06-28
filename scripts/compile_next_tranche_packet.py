@@ -12,6 +12,8 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
@@ -29,6 +31,14 @@ def write(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as fh:
         fh.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
+
+
+def repo_relative_posix(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(ROOT.resolve()).as_posix()
+    except ValueError as exc:
+        raise SystemExit("out_dir_must_be_inside_repo_for_reproducible_envelope") from exc
 
 
 def main() -> int:
@@ -83,10 +93,15 @@ def main() -> int:
         ],
     }
     payload_sha = sha(payload)
+    out = Path(args.out_dir)
+    if not out.is_absolute():
+        out = ROOT / out
+    decision_path = out / "NEXT_TRANCHE_DECISION.json"
+    envelope_path = out / "NEXT_TRANCHE_DECISION.envelope.json"
     envelope_body = {
         "schema_id": "kt.derivation_envelope.v1",
         "payload_schema_id": payload["schema_id"],
-        "payload_path": "NEXT_TRANCHE_DECISION.json",
+        "payload_path": repo_relative_posix(decision_path),
         "payload_sha256": payload_sha,
         "generator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "source_set_sha256": graph["source_set_sha256"],
@@ -96,9 +111,8 @@ def main() -> int:
         "build_host_fingerprint_sha256": hashlib.sha256(b"repo-agent").hexdigest(),
     }
     envelope = {**envelope_body, "envelope_sha256": sha(envelope_body)}
-    out = Path(args.out_dir)
-    write(out / "NEXT_TRANCHE_DECISION.json", payload)
-    write(out / "NEXT_TRANCHE_DECISION.envelope.json", envelope)
+    write(decision_path, payload)
+    write(envelope_path, envelope)
     if decision == "AUTHOR_PR_B":
         prompt = f"""Execute {next_tranche} from merged main {head}.\n\nRead the current evidence graph and truth projection bound below:\n- graph SHA256: {graph_sha}\n- current truth SHA256: {sha(truth)}\n- claim ceiling SHA256: {sha(ceiling)}\n\nStart read-only. Select the smallest canonical runtime path. Prove actual caller, configuration, invocation, mandatory code-owned gates, output consumer, measured effect, rollback, event-chain integrity, static reachability, dynamic invocation, and mutation kill rate. Do not claim global runtime coverage. Do not train, promote, deploy selectors, expand claims, or execute PR C/D. Return only the tranche return contract.\n"""
     else:
