@@ -77,6 +77,9 @@ def test_stop300_cleanroom_receipt_preserves_official_block_and_counterfactual_s
     assert official["official_primary_status"] == "BLOCK_UNSAFE_STOP"
     assert counterfactual["counterfactual_scope"] == "REPAIRED_COURT_ONLY_NOT_OFFICIAL_VERDICT"
     assert counterfactual["official_primary_status_remains"] == "BLOCK_UNSAFE_STOP"
+    if bundle["merged_main_head"] is not None:
+        receipt_ids = json.dumps(bundle, sort_keys=True)
+        assert "_branch_derived" not in receipt_ids
 
 
 def test_heavy_stop300_evidence_is_pointer_only_not_vendored():
@@ -346,6 +349,82 @@ def test_envelope_verify_rejects_non_normalized_payload_path(tmp_path):
     )
     assert result.returncode != 0
     assert "envelope_payload_path_mismatch" in result.stderr or "envelope_payload_path_mismatch" in result.stdout
+
+
+def test_canonical_envelope_verify_defaults_are_paired_and_repo_root_resolved(tmp_path):
+    default_verify = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/canonical_payload_envelope.py"), "--verify"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert default_verify.returncode == 0, default_verify.stderr
+
+    outside_verify = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--verify",
+            "--repo-root",
+            str(ROOT),
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+    )
+    assert outside_verify.returncode == 0, outside_verify.stderr
+
+    only_payload = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--verify",
+            "--payload",
+            "reports/livewire_pr_a_system_evidence_graph_payload.json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert only_payload.returncode != 0
+    assert "requires --payload and --envelope" in only_payload.stderr
+
+    only_envelope = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--verify",
+            "--envelope",
+            "reports/livewire_pr_a_system_evidence_graph_payload.envelope.json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert only_envelope.returncode != 0
+    assert "requires --payload and --envelope" in only_envelope.stderr
+
+
+def test_pr_b_next_tranche_envelope_is_repo_relative_and_verifiable(tmp_path):
+    envelope = load("reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.envelope.json")
+    assert envelope["payload_path"] == "reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--verify",
+            "--repo-root",
+            str(ROOT),
+            "--payload",
+            "reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.json",
+            "--envelope",
+            "reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.envelope.json",
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_origin_main_discovery_fails_soft(monkeypatch):
