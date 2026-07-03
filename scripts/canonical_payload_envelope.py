@@ -79,6 +79,12 @@ def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
     root = repo_root.resolve(strict=True)
     if raw.is_absolute():
         candidate = raw
+        if any(part in {"", ".", ".."} for part in candidate.parts):
+            raise SystemExit("metadata_path_traversal")
+        try:
+            rel = candidate.relative_to(root)
+        except ValueError as exc:
+            raise SystemExit("metadata_path_escape") from exc
     else:
         win = PureWindowsPath(metadata_path)
         if win.is_absolute() or win.drive or win.root:
@@ -87,12 +93,9 @@ def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
             raise SystemExit("metadata_path_backslash")
         if any(part in {"", ".", ".."} for part in raw.parts):
             raise SystemExit("metadata_path_traversal")
-        candidate = root / raw
-    try:
-        rel = candidate.resolve(strict=False).relative_to(root)
-    except ValueError as exc:
-        raise SystemExit("metadata_path_escape") from exc
+        rel = raw
     current = root
+    leaf_info: os.stat_result | None = None
     for part in rel.parts:
         current = current / part
         try:
@@ -101,13 +104,16 @@ def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
             raise SystemExit("metadata_path_missing") from exc
         if stat.S_ISLNK(info.st_mode):
             raise SystemExit("metadata_path_symlink")
+        leaf_info = info
+    if leaf_info is None:
+        raise SystemExit("metadata_path_empty")
+    if not stat.S_ISREG(leaf_info.st_mode):
+        raise SystemExit("metadata_path_nonregular")
     resolved = current.resolve(strict=True)
     try:
         resolved.relative_to(root)
     except ValueError as exc:
         raise SystemExit("metadata_path_escape") from exc
-    if not stat.S_ISREG(resolved.stat().st_mode):
-        raise SystemExit("metadata_path_nonregular")
     return resolved
 
 
