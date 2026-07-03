@@ -306,26 +306,16 @@ def test_source_index_commit_bound_repo_path_must_match_declared_commit_bytes():
     ))
     court.validate_source_index(exact, ROOT)
 
-    old_or_current_head = current_head
     path_for_mismatch = "governance/current_claim_ceiling.json"
-    declared_sha = "0" * 64
-    try:
-        heads = git_text("rev-list", "--max-count=2", "HEAD").splitlines()
-        if len(heads) == 2:
-            old_or_current_head = heads[1]
-            path_for_mismatch = "SOURCE_EVIDENCE_INDEX.json"
-            declared_sha = sha256_file(ROOT / path_for_mismatch)
-    except subprocess.CalledProcessError:
-        pass
     mismatch = source_index_with_source(source_row(
-        source_id="src:old_head_new_hash",
+        source_id="src:commit_wrong_hash",
         repo_path=path_for_mismatch,
-        head=old_or_current_head,
+        head=current_head,
         head_binding_mode="COMMIT_BOUND",
-        sha256=declared_sha,
+        sha256="0" * 64,
         bytes=(ROOT / path_for_mismatch).stat().st_size,
     ))
-    with pytest.raises(court.SemanticError, match="repo_path_commit_.*mismatch"):
+    with pytest.raises(court.SemanticError, match="repo_path_commit_hash_mismatch"):
         court.validate_source_index(mismatch, ROOT)
 
 
