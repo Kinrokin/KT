@@ -100,6 +100,14 @@
               }
             ]
           },
+          "head_binding_mode": {
+            "enum": [
+              "COMMIT_BOUND",
+              "CHECKOUT_RELATIVE_CURRENT_TREE",
+              "EXTERNAL_POINTER"
+            ],
+            "type": "string"
+          },
           "packet_relative_path": {
             "oneOf": [
               {
@@ -146,6 +154,7 @@
           "repo_path",
           "external_locator",
           "head",
+          "head_binding_mode",
           "sha256",
           "bytes",
           "transport_identity_status",

@@ -76,28 +76,85 @@ def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
     if not metadata_path or not metadata_path.strip():
         raise SystemExit("metadata_path_empty")
     raw = Path(metadata_path)
+    root = repo_root.resolve(strict=True)
     if raw.is_absolute():
-        return raw
-    win = PureWindowsPath(metadata_path)
-    if win.is_absolute() or win.drive or win.root:
-        raise SystemExit("metadata_path_windows_anchor")
-    if "\\" in metadata_path:
-        raise SystemExit("metadata_path_backslash")
-    if any(part in {"", ".", ".."} for part in raw.parts):
-        raise SystemExit("metadata_path_traversal")
-    return repo_root.resolve(strict=True) / raw
+        candidate = raw
+    else:
+        win = PureWindowsPath(metadata_path)
+        if win.is_absolute() or win.drive or win.root:
+            raise SystemExit("metadata_path_windows_anchor")
+        if "\\" in metadata_path:
+            raise SystemExit("metadata_path_backslash")
+        if any(part in {"", ".", ".."} for part in raw.parts):
+            raise SystemExit("metadata_path_traversal")
+        candidate = root / raw
+    try:
+        rel = candidate.resolve(strict=False).relative_to(root)
+    except ValueError as exc:
+        raise SystemExit("metadata_path_escape") from exc
+    current = root
+    for part in rel.parts:
+        current = current / part
+        try:
+            info = current.lstat()
+        except FileNotFoundError as exc:
+            raise SystemExit("metadata_path_missing") from exc
+        if stat.S_ISLNK(info.st_mode):
+            raise SystemExit("metadata_path_symlink")
+    resolved = current.resolve(strict=True)
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise SystemExit("metadata_path_escape") from exc
+    if not stat.S_ISREG(resolved.stat().st_mode):
+        raise SystemExit("metadata_path_nonregular")
+    return resolved
 
 
-def verification_expectation(explicit: str | None, payload_value: str | None, envelope_value: str | None, field_name: str) -> str:
-    """Resolve verify metadata with payload authority ahead of envelope fallback."""
-    if explicit:
-        if payload_value and explicit != payload_value:
+def clean_verify_value(value: Any, field_name: str, origin: str) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise SystemExit(f"{origin}_{field_name}_invalid_type")
+    if not value.strip():
+        raise SystemExit(f"{origin}_{field_name}_empty")
+    return value
+
+
+def payload_value(payload: dict[str, Any], field_name: str, keys: tuple[str, ...]) -> str | None:
+    for key in keys:
+        if key in payload:
+            value = clean_verify_value(payload[key], field_name, "payload")
+            if value is not None:
+                return value
+    return None
+
+
+def envelope_value(envelope: dict[str, Any], field_name: str, key: str) -> str | None:
+    return clean_verify_value(envelope.get(key), field_name, "envelope")
+
+
+def verification_expectation(
+    *,
+    explicit: str | None,
+    payload: dict[str, Any],
+    payload_keys: tuple[str, ...],
+    envelope: dict[str, Any],
+    envelope_key: str,
+    field_name: str,
+) -> str:
+    """Resolve verify metadata with explicit args, then payload, then envelope fallback."""
+    payload_field = payload_value(payload, field_name, payload_keys)
+    if explicit is not None:
+        explicit_value = clean_verify_value(explicit, field_name, "explicit")
+        if payload_field is not None and explicit_value != payload_field:
             raise SystemExit(f"explicit_{field_name}_payload_mismatch")
-        return explicit
-    if payload_value:
-        return payload_value
-    if envelope_value:
-        return envelope_value
+        return explicit_value
+    if payload_field is not None:
+        return payload_field
+    fallback = envelope_value(envelope, field_name, envelope_key)
+    if fallback is not None:
+        return fallback
     raise SystemExit(f"missing_{field_name}")
 
 
@@ -150,22 +207,28 @@ def main() -> int:
     if args.verify:
         envelope = read(envelope_path)
         expected_payload_schema_id = verification_expectation(
-            args.payload_schema_id,
-            payload.get("schema_id"),
-            envelope.get("payload_schema_id"),
-            "payload_schema_id",
+            explicit=args.payload_schema_id,
+            payload=payload,
+            payload_keys=("schema_id",),
+            envelope=envelope,
+            envelope_key="payload_schema_id",
+            field_name="payload_schema_id",
         )
         expected_head = verification_expectation(
-            args.head,
-            payload.get("generated_from_head") or payload.get("compiled_from_head"),
-            envelope.get("generated_from_head"),
-            "head",
+            explicit=args.head,
+            payload=payload,
+            payload_keys=("generated_from_head", "compiled_from_head"),
+            envelope=envelope,
+            envelope_key="generated_from_head",
+            field_name="head",
         )
         expected_source_set_sha256 = verification_expectation(
-            args.source_set_sha256,
-            payload.get("source_set_sha256"),
-            envelope.get("source_set_sha256"),
-            "source_set_sha256",
+            explicit=args.source_set_sha256,
+            payload=payload,
+            payload_keys=("source_set_sha256",),
+            envelope=envelope,
+            envelope_key="source_set_sha256",
+            field_name="source_set_sha256",
         )
         expected_payload_sha = sha256_bytes(canonical_bytes(payload))
         if envelope["payload_sha256"] != expected_payload_sha:
