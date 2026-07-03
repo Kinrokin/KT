@@ -52,6 +52,43 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def git_text(*args: str) -> str:
+    return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
+
+
+def source_index_with_source(source: dict):
+    return {
+        "schema_id": "kt.livewire.source_evidence_index.v2",
+        "observed_main": None,
+        "starting_main_head": None,
+        "build_subject_head": "a" * 40,
+        "validated_at_head": None,
+        "merged_main_head": None,
+        "origin_main_discovery_status": "UNKNOWN",
+        "created_utc": "2026-06-23T00:00:00Z",
+        "law": "test",
+        "sources": [source],
+    }
+
+
+def source_row(**overrides):
+    row = {
+        "source_id": "src:test",
+        "authority_class": "LIVE_CANONICAL",
+        "packet_relative_path": None,
+        "repo_path": "governance/current_claim_ceiling.json",
+        "external_locator": None,
+        "head": None,
+        "head_binding_mode": "CHECKOUT_RELATIVE_CURRENT_TREE",
+        "sha256": sha256_file(ROOT / "governance/current_claim_ceiling.json"),
+        "bytes": (ROOT / "governance/current_claim_ceiling.json").stat().st_size,
+        "transport_identity_status": "BYTE_IDENTICAL",
+        "controlling": True,
+    }
+    row.update(overrides)
+    return row
+
+
 def test_stop300_cleanroom_receipt_preserves_official_block_and_counterfactual_split():
     recompute = load("evidence/stop300/stop300_cleanroom_recomputation_v2.json")
     assert recompute["derived_field_dependency_count"] == 0
@@ -247,33 +284,65 @@ def test_source_index_path_validation_rejects_hostile_local_paths(tmp_path):
 def test_source_index_validates_repo_path_even_without_packet_relative_path():
     court = load_semantic_court()
     claim_path = ROOT / "governance/current_claim_ceiling.json"
-    bad_index = {
-        "schema_id": "kt.livewire.source_evidence_index.v2",
-        "observed_main": None,
-        "starting_main_head": None,
-        "build_subject_head": "a" * 40,
-        "validated_at_head": None,
-        "merged_main_head": None,
-        "origin_main_discovery_status": "UNKNOWN",
-        "created_utc": "2026-06-23T00:00:00Z",
-        "law": "test",
-        "sources": [
-            {
-                "source_id": "src:repo_hash_mismatch",
-                "authority_class": "LIVE_CANONICAL",
-                "packet_relative_path": None,
-                "repo_path": "governance/current_claim_ceiling.json",
-                "external_locator": None,
-                "head": "a" * 40,
-                "sha256": "0" * 64,
-                "bytes": claim_path.stat().st_size,
-                "transport_identity_status": "BYTE_IDENTICAL",
-                "controlling": True,
-            }
-        ],
-    }
+    bad_index = source_index_with_source(source_row(
+        source_id="src:repo_hash_mismatch",
+        sha256="0" * 64,
+        bytes=claim_path.stat().st_size,
+    ))
     with pytest.raises(court.SemanticError, match="repo_path_hash_mismatch"):
         court.validate_source_index(bad_index, ROOT)
+
+
+def test_source_index_commit_bound_repo_path_must_match_declared_commit_bytes():
+    court = load_semantic_court()
+    current_head = git_text("rev-parse", "HEAD")
+    current_path = ROOT / "governance/current_claim_ceiling.json"
+    exact = source_index_with_source(source_row(
+        source_id="src:commit_exact",
+        head=current_head,
+        head_binding_mode="COMMIT_BOUND",
+        sha256=sha256_file(current_path),
+        bytes=current_path.stat().st_size,
+    ))
+    court.validate_source_index(exact, ROOT)
+
+    path_for_mismatch = "governance/current_claim_ceiling.json"
+    mismatch = source_index_with_source(source_row(
+        source_id="src:commit_wrong_hash",
+        repo_path=path_for_mismatch,
+        head=current_head,
+        head_binding_mode="COMMIT_BOUND",
+        sha256="0" * 64,
+        bytes=(ROOT / path_for_mismatch).stat().st_size,
+    ))
+    with pytest.raises(court.SemanticError, match="repo_path_commit_hash_mismatch"):
+        court.validate_source_index(mismatch, ROOT)
+
+
+def test_source_index_checkout_relative_and_pointer_modes_are_explicit():
+    court = load_semantic_court()
+    checkout = source_index_with_source(source_row(source_id="src:checkout_current"))
+    court.validate_source_index(checkout, ROOT)
+
+    missing_mode_row = source_row(source_id="src:missing_mode")
+    missing_mode_row.pop("head_binding_mode")
+    with pytest.raises(court.SemanticError, match="head_binding_mode_invalid"):
+        court.validate_source_index(source_index_with_source(missing_mode_row), ROOT)
+
+    head_not_null = source_index_with_source(source_row(source_id="src:bad_checkout_head", head="a" * 40))
+    with pytest.raises(court.SemanticError, match="checkout_binding_head_not_null"):
+        court.validate_source_index(head_not_null, ROOT)
+
+    pointer = source_index_with_source(source_row(
+        source_id="src:pointer",
+        authority_class="EXTERNAL_POINTER",
+        repo_path=None,
+        external_locator="hf://datasets/Kinrokin/example",
+        head=None,
+        head_binding_mode="EXTERNAL_POINTER",
+        transport_identity_status="NOT_APPLICABLE",
+    ))
+    court.validate_source_index(pointer, ROOT)
 
 
 def test_canonical_envelope_payload_paths_are_repo_relative_posix(tmp_path):
@@ -393,6 +462,114 @@ def test_envelope_verify_rejects_stale_self_consistent_envelope_metadata(tmp_pat
     assert "envelope_head_mismatch" in result.stderr or "envelope_head_mismatch" in result.stdout
 
 
+def test_envelope_verify_rejects_stale_self_consistent_source_set_metadata(tmp_path):
+    repo_root = tmp_path / "repo"
+    payload_dir = repo_root / "reports"
+    payload_dir.mkdir(parents=True)
+    payload_obj = {
+        "schema_id": "x",
+        "generated_from_head": "a" * 40,
+        "source_set_sha256": "b" * 64,
+    }
+    payload = payload_dir / "payload.json"
+    payload.write_text(json.dumps(payload_obj), encoding="utf-8")
+    env = repo_root / "reports/payload.envelope.json"
+    tool = load_envelope_tool()
+    stale_envelope = tool.build_envelope(
+        payload_obj,
+        payload_schema_id="x",
+        payload_path="reports/payload.json",
+        generated_from_head="a" * 40,
+        source_set_sha256="d" * 64,
+        build_execution_id="test",
+    )
+    env.write_text(json.dumps(stale_envelope), encoding="utf-8")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--payload",
+            "reports/payload.json",
+            "--envelope",
+            str(env),
+            "--repo-root",
+            str(repo_root),
+            "--verify",
+        ],
+        cwd=repo_root,
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode != 0
+    assert "envelope_source_set_mismatch" in result.stderr or "envelope_source_set_mismatch" in result.stdout
+
+
+def test_envelope_verify_rejects_empty_payload_fields_and_explicit_conflicts(tmp_path):
+    repo_root = tmp_path / "repo"
+    payload_dir = repo_root / "reports"
+    payload_dir.mkdir(parents=True)
+    tool = load_envelope_tool()
+
+    def run_with_payload(payload_obj, *extra_args):
+        payload = payload_dir / "payload.json"
+        payload.write_text(json.dumps(payload_obj), encoding="utf-8")
+        env = repo_root / "reports/payload.envelope.json"
+        envelope_obj = tool.build_envelope(
+            payload_obj,
+            payload_schema_id=payload_obj.get("schema_id") or "x",
+            payload_path="reports/payload.json",
+            generated_from_head="a" * 40,
+            source_set_sha256="b" * 64,
+            build_execution_id="test",
+        )
+        env.write_text(json.dumps(envelope_obj), encoding="utf-8")
+        return subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/canonical_payload_envelope.py"),
+                "--payload",
+                "reports/payload.json",
+                "--envelope",
+                str(env),
+                "--repo-root",
+                str(repo_root),
+                "--verify",
+                *extra_args,
+            ],
+            cwd=repo_root,
+            text=True,
+            capture_output=True,
+        )
+
+    empty_head = run_with_payload({"schema_id": "x", "generated_from_head": "", "source_set_sha256": "b" * 64})
+    assert empty_head.returncode != 0
+    assert "payload_head_empty" in empty_head.stderr or "payload_head_empty" in empty_head.stdout
+
+    whitespace_source = run_with_payload({"schema_id": "x", "generated_from_head": "a" * 40, "source_set_sha256": "   "})
+    assert whitespace_source.returncode != 0
+    assert "payload_source_set_sha256_empty" in whitespace_source.stderr or "payload_source_set_sha256_empty" in whitespace_source.stdout
+
+    wrong_type_head = run_with_payload({"schema_id": "x", "generated_from_head": 123, "source_set_sha256": "b" * 64})
+    assert wrong_type_head.returncode != 0
+    assert "payload_head_invalid_type" in wrong_type_head.stderr or "payload_head_invalid_type" in wrong_type_head.stdout
+
+    empty_explicit = run_with_payload(
+        {"schema_id": "x", "generated_from_head": None, "source_set_sha256": "b" * 64},
+        "--head",
+        "",
+    )
+    assert empty_explicit.returncode != 0
+    assert "explicit_head_empty" in empty_explicit.stderr or "explicit_head_empty" in empty_explicit.stdout
+
+    conflicting_explicit = run_with_payload(
+        {"schema_id": "x", "generated_from_head": "a" * 40, "source_set_sha256": "b" * 64},
+        "--head",
+        "c" * 40,
+    )
+    assert conflicting_explicit.returncode != 0
+    assert "explicit_head_payload_mismatch" in conflicting_explicit.stderr or "explicit_head_payload_mismatch" in conflicting_explicit.stdout
+
+
 def test_metadata_path_rejects_windows_drive_relative_paths(tmp_path):
     envelope = load_envelope_tool()
     repo_root = tmp_path / "repo"
@@ -406,6 +583,35 @@ def test_metadata_path_rejects_windows_drive_relative_paths(tmp_path):
     for candidate in hostile_paths:
         with pytest.raises(SystemExit):
             envelope.resolve_repo_metadata_path(repo_root, candidate)
+
+
+def test_metadata_path_requires_existing_contained_regular_file(tmp_path):
+    envelope = load_envelope_tool()
+    repo_root = tmp_path / "repo"
+    reports = repo_root / "reports"
+    reports.mkdir(parents=True)
+    valid = reports / "payload.envelope.json"
+    valid.write_text("{}", encoding="utf-8")
+    assert envelope.resolve_repo_metadata_path(repo_root, "reports/payload.envelope.json") == valid.resolve()
+    assert envelope.resolve_repo_metadata_path(repo_root, str(valid.resolve())) == valid.resolve()
+
+    for candidate in ("reports/missing.envelope.json", "../outside.json", ".", "reports"):
+        with pytest.raises(SystemExit):
+            envelope.resolve_repo_metadata_path(repo_root, candidate)
+
+    outside = tmp_path / "outside.json"
+    outside.write_text("{}", encoding="utf-8")
+    with pytest.raises(SystemExit):
+        envelope.resolve_repo_metadata_path(repo_root, str(outside.resolve()))
+
+    link = reports / "link.envelope.json"
+    try:
+        link.symlink_to(valid)
+    except OSError:
+        link = None
+    if link is not None:
+        with pytest.raises(SystemExit):
+            envelope.resolve_repo_metadata_path(repo_root, "reports/link.envelope.json")
 
 
 def test_canonical_envelope_verify_defaults_are_paired_and_repo_root_resolved(tmp_path):
@@ -463,6 +669,11 @@ def test_canonical_envelope_verify_defaults_are_paired_and_repo_root_resolved(tm
 
 
 def test_pr_b_next_tranche_envelope_is_repo_relative_and_verifiable(tmp_path):
+    decision = load("reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.json")
+    assert decision["handoff_mode"] == "BRANCH_SIDE_COMPILE_EVIDENCE_NOT_EXECUTION_HANDOFF"
+    assert decision["pr_b_execution_authorized"] is False
+    prompt = (ROOT / "reports/livewire_pr_b_compiled_from_merged_main/COPY_PASTE_NEXT.txt").read_text(encoding="utf-8")
+    assert "DO NOT EXECUTE PR B FROM THIS COMMITTED ARTIFACT" in prompt
     envelope = load("reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.envelope.json")
     assert envelope["payload_path"] == "reports/livewire_pr_b_compiled_from_merged_main/NEXT_TRANCHE_DECISION.json"
     result = subprocess.run(

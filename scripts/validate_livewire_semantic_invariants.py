@@ -12,6 +12,7 @@ import hashlib
 import json
 import math
 import stat
+import subprocess
 import sys
 from collections import Counter, defaultdict, deque
 from pathlib import Path, PureWindowsPath
@@ -46,6 +47,20 @@ def sha256_file_bytes(path: Path) -> tuple[int, str]:
     return len(data), hashlib.sha256(data).hexdigest()
 
 
+def validate_relative_path_syntax(*, relative_path: str | None, source_id: str, field_name: str) -> Path:
+    require(relative_path is not None, f"source_index:{field_name}_missing:{source_id}")
+    require(isinstance(relative_path, str) and relative_path.strip(), f"source_index:{field_name}_empty:{source_id}")
+    require("\\" not in relative_path, f"source_index:{field_name}_backslash:{source_id}")
+    windows_path = PureWindowsPath(relative_path)
+    require(not windows_path.is_absolute() and not windows_path.drive and not windows_path.root,
+            f"source_index:{field_name}_windows_anchor:{source_id}")
+    path = Path(relative_path)
+    require(not path.is_absolute(), f"source_index:{field_name}_absolute:{source_id}")
+    require(all(part not in {"", ".", ".."} for part in path.parts),
+            f"source_index:{field_name}_traversal:{source_id}")
+    return path
+
+
 def validate_local_regular_file(
     *,
     trusted_root: Path,
@@ -61,17 +76,7 @@ def validate_local_regular_file(
     read. This rejects symlink leaves, symlink ancestors, directory targets,
     special files, absolute paths, traversal, and sibling-prefix tricks.
     """
-    require(relative_path is not None, f"source_index:{field_name}_missing:{source_id}")
-    require(isinstance(relative_path, str) and relative_path.strip(), f"source_index:{field_name}_empty:{source_id}")
-    require("\\" not in relative_path, f"source_index:{field_name}_backslash:{source_id}")
-    windows_path = PureWindowsPath(relative_path)
-    require(not windows_path.is_absolute() and not windows_path.drive and not windows_path.root,
-            f"source_index:{field_name}_windows_anchor:{source_id}")
-    path = Path(relative_path)
-    require(not path.is_absolute(), f"source_index:{field_name}_absolute:{source_id}")
-    require(all(part not in {"", ".", ".."} for part in path.parts),
-            f"source_index:{field_name}_traversal:{source_id}")
-
+    path = validate_relative_path_syntax(relative_path=relative_path, source_id=source_id, field_name=field_name)
     root = trusted_root.resolve(strict=True)
     current = root
     for part in path.parts:
@@ -93,6 +98,39 @@ def validate_local_regular_file(
     require(actual_bytes == declared_bytes, f"source_index:{field_name}_size_mismatch:{source_id}")
     require(actual_sha == declared_sha256, f"source_index:{field_name}_hash_mismatch:{source_id}")
     return resolved
+
+
+def validate_git_commit_regular_file(
+    *,
+    repo_root: Path,
+    head: str | None,
+    relative_path: str | None,
+    declared_bytes: int,
+    declared_sha256: str,
+    source_id: str,
+    field_name: str,
+) -> None:
+    require(isinstance(head, str) and len(head) == 40 and all(c in "0123456789abcdef" for c in head),
+            f"source_index:{field_name}_commit_head_invalid:{source_id}")
+    path = validate_relative_path_syntax(relative_path=relative_path, source_id=source_id, field_name=field_name)
+    try:
+        subprocess.check_output(["git", "cat-file", "-e", f"{head}^{{commit}}"], cwd=repo_root, stderr=subprocess.STDOUT)
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        raise SemanticError(f"source_index:{field_name}_commit_missing:{source_id}") from exc
+    try:
+        ls_tree = subprocess.check_output(["git", "ls-tree", head, "--", path.as_posix()], cwd=repo_root, text=True, stderr=subprocess.STDOUT).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        raise SemanticError(f"source_index:{field_name}_commit_path_lookup_failed:{source_id}") from exc
+    require(bool(ls_tree), f"source_index:{field_name}_commit_path_missing:{source_id}")
+    mode = ls_tree.split(maxsplit=1)[0]
+    require(mode in {"100644", "100755"}, f"source_index:{field_name}_commit_nonregular:{source_id}")
+    try:
+        data = subprocess.check_output(["git", "show", f"{head}:{path.as_posix()}"], cwd=repo_root, stderr=subprocess.STDOUT)
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        raise SemanticError(f"source_index:{field_name}_commit_show_failed:{source_id}") from exc
+    actual_sha = hashlib.sha256(data).hexdigest()
+    require(len(data) == declared_bytes, f"source_index:{field_name}_commit_size_mismatch:{source_id}")
+    require(actual_sha == declared_sha256, f"source_index:{field_name}_commit_hash_mismatch:{source_id}")
 
 
 def unique(values: Iterable[str], code: str) -> None:
@@ -421,7 +459,13 @@ def validate_source_index(index: dict[str, Any], packet_root: Path) -> None:
         source_id = source["source_id"]
         packet_path = source["packet_relative_path"]
         repo_path = source["repo_path"]
+        binding_mode = source.get("head_binding_mode")
+        require(binding_mode in {"COMMIT_BOUND", "CHECKOUT_RELATIVE_CURRENT_TREE", "EXTERNAL_POINTER"},
+                f"source_index:head_binding_mode_invalid:{source_id}")
         if packet_path is not None:
+            require(binding_mode == "CHECKOUT_RELATIVE_CURRENT_TREE",
+                    f"source_index:packet_path_requires_checkout_binding:{source_id}")
+            require(source["head"] is None, f"source_index:checkout_binding_head_not_null:{source_id}")
             validate_local_regular_file(
                 trusted_root=packet_root,
                 relative_path=packet_path,
@@ -431,16 +475,32 @@ def validate_source_index(index: dict[str, Any], packet_root: Path) -> None:
                 field_name="packet_relative_path",
             )
         if repo_path is not None:
-            validate_local_regular_file(
-                trusted_root=repo_root,
-                relative_path=repo_path,
-                declared_bytes=source["bytes"],
-                declared_sha256=source["sha256"],
-                source_id=source_id,
-                field_name="repo_path",
-            )
+            if binding_mode == "COMMIT_BOUND":
+                validate_git_commit_regular_file(
+                    repo_root=repo_root,
+                    head=source["head"],
+                    relative_path=repo_path,
+                    declared_bytes=source["bytes"],
+                    declared_sha256=source["sha256"],
+                    source_id=source_id,
+                    field_name="repo_path",
+                )
+            elif binding_mode == "CHECKOUT_RELATIVE_CURRENT_TREE":
+                require(source["head"] is None, f"source_index:checkout_binding_head_not_null:{source_id}")
+                validate_local_regular_file(
+                    trusted_root=repo_root,
+                    relative_path=repo_path,
+                    declared_bytes=source["bytes"],
+                    declared_sha256=source["sha256"],
+                    source_id=source_id,
+                    field_name="repo_path",
+                )
+            else:
+                raise SemanticError(f"source_index:repo_path_external_pointer_mode:{source_id}")
         if packet_path is None and repo_path is None:
             require(source["external_locator"] is not None, f"source_index:orphan_pointer:{source_id}")
+            require(binding_mode == "EXTERNAL_POINTER", f"source_index:pointer_binding_mode_required:{source_id}")
+            require(source["head"] is None, f"source_index:pointer_head_not_null:{source_id}")
             require((source["authority_class"], source["transport_identity_status"]) in pointer_only,
                     f"source_index:pointer_not_allowed:{source_id}")
         if source["authority_class"] == "RECOVERED_REPACKAGED_EVIDENCE":

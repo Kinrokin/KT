@@ -48,6 +48,14 @@ def main() -> int:
     p.add_argument("--claim-ceiling", required=True)
     p.add_argument("--head", required=True)
     p.add_argument("--out-dir", required=True)
+    p.add_argument(
+        "--handoff-mode",
+        choices=[
+            "BRANCH_SIDE_COMPILE_EVIDENCE_NOT_EXECUTION_HANDOFF",
+            "FINAL_POSTMERGE_DETACHED_HANDOFF_NOT_EXECUTED",
+        ],
+        default="BRANCH_SIDE_COMPILE_EVIDENCE_NOT_EXECUTION_HANDOFF",
+    )
     args = p.parse_args()
     graph = load(Path(args.graph))
     truth = load(Path(args.current_truth))
@@ -85,6 +93,8 @@ def main() -> int:
         "current_truth_sha256": sha(truth),
         "claim_ceiling_sha256": sha(ceiling),
         "claim_ceiling_status": "PRESERVED",
+        "handoff_mode": args.handoff_mode,
+        "pr_b_execution_authorized": False,
         "forbidden_carryover": [
             "pre-merge branch assumptions",
             "unresolved PR A contradictions",
@@ -114,7 +124,10 @@ def main() -> int:
     write(decision_path, payload)
     write(envelope_path, envelope)
     if decision == "AUTHOR_PR_B":
-        prompt = f"""Execute {next_tranche} from merged main {head}.\n\nRead the current evidence graph and truth projection bound below:\n- graph SHA256: {graph_sha}\n- current truth SHA256: {sha(truth)}\n- claim ceiling SHA256: {sha(ceiling)}\n\nStart read-only. Select the smallest canonical runtime path. Prove actual caller, configuration, invocation, mandatory code-owned gates, output consumer, measured effect, rollback, event-chain integrity, static reachability, dynamic invocation, and mutation kill rate. Do not claim global runtime coverage. Do not train, promote, deploy selectors, expand claims, or execute PR C/D. Return only the tranche return contract.\n"""
+        if args.handoff_mode == "FINAL_POSTMERGE_DETACHED_HANDOFF_NOT_EXECUTED":
+            prompt = f"""Execute {next_tranche} from final post-merge fresh-clone main {head} only if separately authorized.\n\nRead the current evidence graph and truth projection bound below:\n- graph SHA256: {graph_sha}\n- current truth SHA256: {sha(truth)}\n- claim ceiling SHA256: {sha(ceiling)}\n\nStart read-only. Select the smallest canonical runtime path. Prove actual caller, configuration, invocation, mandatory code-owned gates, output consumer, measured effect, rollback, event-chain integrity, static reachability, dynamic invocation, and mutation kill rate. Do not claim global runtime coverage. Do not train, promote, deploy selectors, expand claims, or execute PR C/D. Return only the tranche return contract.\n"""
+        else:
+            prompt = f"""BRANCH-SIDE COMPILE EVIDENCE ONLY. DO NOT EXECUTE PR B FROM THIS COMMITTED ARTIFACT.\n\nCandidate tranche: {next_tranche}\nBranch-side compiled head: {head}\n\nA final PR-B execution handoff must be generated after this repair PR merges, from a fresh clone of final main, as a detached artifact. Current bound evidence:\n- graph SHA256: {graph_sha}\n- current truth SHA256: {sha(truth)}\n- claim ceiling SHA256: {sha(ceiling)}\n\nNo training, promotion, selector deployment, runtime authority expansion, commercial claim, or claim expansion is authorized.\n"""
     else:
         prompt = f"BLOCKED: {blocker}. Repair PR A truth at merged main {head}; do not author PR B.\n"
     with (out / "COPY_PASTE_NEXT.txt").open("w", encoding="utf-8", newline="\n") as fh:
