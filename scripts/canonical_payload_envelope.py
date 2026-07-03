@@ -75,17 +75,30 @@ def resolve_repo_metadata_path(repo_root: Path, metadata_path: str) -> Path:
     """Resolve envelope metadata paths relative to repo root in verify mode."""
     if not metadata_path or not metadata_path.strip():
         raise SystemExit("metadata_path_empty")
-    win = PureWindowsPath(metadata_path)
     raw = Path(metadata_path)
-    if win.is_absolute() or win.drive or win.root:
-        return raw
     if raw.is_absolute():
         return raw
+    win = PureWindowsPath(metadata_path)
+    if win.is_absolute() or win.drive or win.root:
+        raise SystemExit("metadata_path_windows_anchor")
     if "\\" in metadata_path:
         raise SystemExit("metadata_path_backslash")
     if any(part in {"", ".", ".."} for part in raw.parts):
         raise SystemExit("metadata_path_traversal")
     return repo_root.resolve(strict=True) / raw
+
+
+def verification_expectation(explicit: str | None, payload_value: str | None, envelope_value: str | None, field_name: str) -> str:
+    """Resolve verify metadata with payload authority ahead of envelope fallback."""
+    if explicit:
+        if payload_value and explicit != payload_value:
+            raise SystemExit(f"explicit_{field_name}_payload_mismatch")
+        return explicit
+    if payload_value:
+        return payload_value
+    if envelope_value:
+        return envelope_value
+    raise SystemExit(f"missing_{field_name}")
 
 
 def build_envelope(payload: Any, *, payload_schema_id: str, payload_path: str, generated_from_head: str, source_set_sha256: str, build_execution_id: str) -> dict[str, Any]:
@@ -136,22 +149,35 @@ def main() -> int:
     payload = read(payload_path)
     if args.verify:
         envelope = read(envelope_path)
-        args.payload_schema_id = args.payload_schema_id or envelope.get("payload_schema_id") or payload.get("schema_id")
-        args.head = args.head or envelope.get("generated_from_head") or payload.get("generated_from_head")
-        args.source_set_sha256 = args.source_set_sha256 or envelope.get("source_set_sha256") or payload.get("source_set_sha256")
-        if not args.payload_schema_id or not args.head or not args.source_set_sha256:
-            p.error("--verify payload/envelope must carry schema_id, generated_from_head, and source_set_sha256")
+        expected_payload_schema_id = verification_expectation(
+            args.payload_schema_id,
+            payload.get("schema_id"),
+            envelope.get("payload_schema_id"),
+            "payload_schema_id",
+        )
+        expected_head = verification_expectation(
+            args.head,
+            payload.get("generated_from_head") or payload.get("compiled_from_head"),
+            envelope.get("generated_from_head"),
+            "head",
+        )
+        expected_source_set_sha256 = verification_expectation(
+            args.source_set_sha256,
+            payload.get("source_set_sha256"),
+            envelope.get("source_set_sha256"),
+            "source_set_sha256",
+        )
         expected_payload_sha = sha256_bytes(canonical_bytes(payload))
         if envelope["payload_sha256"] != expected_payload_sha:
             raise SystemExit("payload_digest_mismatch")
         body = {k: v for k, v in envelope.items() if k != "envelope_sha256"}
         if envelope["envelope_sha256"] != sha256_bytes(canonical_bytes(body)):
             raise SystemExit("envelope_digest_mismatch")
-        if envelope["payload_schema_id"] != args.payload_schema_id:
+        if envelope["payload_schema_id"] != expected_payload_schema_id:
             raise SystemExit("envelope_payload_schema_mismatch")
-        if envelope["generated_from_head"] != args.head:
+        if envelope["generated_from_head"] != expected_head:
             raise SystemExit("envelope_head_mismatch")
-        if envelope["source_set_sha256"] != args.source_set_sha256:
+        if envelope["source_set_sha256"] != expected_source_set_sha256:
             raise SystemExit("envelope_source_set_mismatch")
         if envelope["payload_path"] != normalized_payload_path:
             raise SystemExit("envelope_payload_path_mismatch")

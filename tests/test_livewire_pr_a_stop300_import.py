@@ -78,8 +78,8 @@ def test_stop300_cleanroom_receipt_preserves_official_block_and_counterfactual_s
     assert counterfactual["counterfactual_scope"] == "REPAIRED_COURT_ONLY_NOT_OFFICIAL_VERDICT"
     assert counterfactual["official_primary_status_remains"] == "BLOCK_UNSAFE_STOP"
     if bundle["merged_main_head"] is not None:
-        receipt_ids = json.dumps(bundle, sort_keys=True)
-        assert "_branch_derived" not in receipt_ids
+        serialized_bundle = json.dumps(bundle, sort_keys=True)
+        assert "_branch_derived" not in serialized_bundle
 
 
 def test_heavy_stop300_evidence_is_pointer_only_not_vendored():
@@ -349,6 +349,63 @@ def test_envelope_verify_rejects_non_normalized_payload_path(tmp_path):
     )
     assert result.returncode != 0
     assert "envelope_payload_path_mismatch" in result.stderr or "envelope_payload_path_mismatch" in result.stdout
+
+
+def test_envelope_verify_rejects_stale_self_consistent_envelope_metadata(tmp_path):
+    repo_root = tmp_path / "repo"
+    payload_dir = repo_root / "reports"
+    payload_dir.mkdir(parents=True)
+    payload_obj = {
+        "schema_id": "x",
+        "generated_from_head": "a" * 40,
+        "source_set_sha256": "b" * 64,
+    }
+    payload = payload_dir / "payload.json"
+    payload.write_text(json.dumps(payload_obj), encoding="utf-8")
+    env = repo_root / "reports/payload.envelope.json"
+    tool = load_envelope_tool()
+    stale_envelope = tool.build_envelope(
+        payload_obj,
+        payload_schema_id="x",
+        payload_path="reports/payload.json",
+        generated_from_head="c" * 40,
+        source_set_sha256="d" * 64,
+        build_execution_id="test",
+    )
+    env.write_text(json.dumps(stale_envelope), encoding="utf-8")
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/canonical_payload_envelope.py"),
+            "--payload",
+            "reports/payload.json",
+            "--envelope",
+            str(env),
+            "--repo-root",
+            str(repo_root),
+            "--verify",
+        ],
+        cwd=repo_root,
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode != 0
+    assert "envelope_head_mismatch" in result.stderr or "envelope_head_mismatch" in result.stdout
+
+
+def test_metadata_path_rejects_windows_drive_relative_paths(tmp_path):
+    envelope = load_envelope_tool()
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    hostile_paths = [
+        "C:relative\\path",
+        "C:relative/path",
+        "D:foo",
+        "\\rooted\\not-native-absolute",
+    ]
+    for candidate in hostile_paths:
+        with pytest.raises(SystemExit):
+            envelope.resolve_repo_metadata_path(repo_root, candidate)
 
 
 def test_canonical_envelope_verify_defaults_are_paired_and_repo_root_resolved(tmp_path):
