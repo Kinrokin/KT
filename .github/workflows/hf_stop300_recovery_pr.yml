@@ -1,0 +1,49 @@
+name: HF STOP300 recovery PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'huggingface_hub>=0.34,<1'
+      - name: Pull private STOP300 run from HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          test -n "$HF_TOKEN"
+          python - <<'PY'
+          import os, pathlib, shutil, zipfile
+          from huggingface_hub import HfApi, hf_hub_download
+          repo='Kinrokin/ktstop300-v4-1-results'
+          prefix='runs/ktstop300_v4_1/aa12b0e4c927d5451ba36032806ba1017eb3bf23/8ff159f76e22767bca73c16e512d7b97643fe101b056211ab708b5e078100c0a/825ec52a2599a3c24a3ffa8de5b94ba1dd6b134dc74dbbcea2b7e2eab64492a0/'
+          token=os.environ['HF_TOKEN']
+          root=pathlib.Path('hf_recovery')
+          files=[f for f in HfApi(token=token).list_repo_files(repo_id=repo,repo_type='dataset') if f.startswith(prefix)]
+          if not files: raise SystemExit('NO_MATCHING_HF_FILES')
+          for name in files:
+              src=pathlib.Path(hf_hub_download(repo_id=repo,repo_type='dataset',filename=name,token=token))
+              dst=root/name
+              dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copy2(src,dst)
+          with zipfile.ZipFile('KT_STOP300_HF_RECOVERY_COMPLETE.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(root.rglob('*')):
+                  if p.is_file(): z.write(p,p.relative_to(root))
+          print('HF_FILES_DOWNLOADED',len(files))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kt-stop300-hf-recovery-complete
+          path: KT_STOP300_HF_RECOVERY_COMPLETE.zip
+          if-no-files-found: error
+          retention-days: 30
