@@ -1,0 +1,33 @@
+{
+  "schema_id": "kt.agent_skills_database.v1",
+  "authority": "CODEX_SKILL_DISCOVERY_CONTEXT",
+  "claim_ceiling_status": "PRESERVED",
+  "created_for": "KT_CORE_LIVEWIRE_AND_REPO_SIDE_WORK",
+  "skills": [
+    {
+      "name": "kt-authority-cutline",
+      "path": ".agents/skills/kt-authority-cutline/SKILL.md",
+      "purpose": "Establish controlling live repo, claim, handoff, and next-lawful-move state before work proceeds.",
+      "primary_failure_class": "stale authority and ghost chasing"
+    },
+    {
+      "name": "kt-repo-review-microfix",
+      "path": ".agents/skills/kt-repo-review-microfix/SKILL.md",
+      "purpose": "Turn PR review/CI/semantic defects into the smallest lawful repair with hostile tests.",
+      "primary_failure_class": "review recursion and broad-packet drift"
+    },
+    {
+      "name": "kt-proof-runtime-vertical",
+      "path": ".agents/skills/kt-proof-runtime-vertical/SKILL.md",
+      "purpose": "Prove one bounded runtime path is actually called, gated, evidenced, consumed, and rollback-able.",
+      "primary_failure_class": "fake integration / code-exists-but-not-wired"
+    }
+  ],
+  "default_chain": [
+    "kt-authority-cutline",
+    "kt-repo-review-microfix when dirty",
+    "kt-proof-runtime-vertical for PR-B runtime verticalization",
+    "kt-authority-cutline after merge or handoff"
+  ],
+  "global_law": "Any packet whose stated repo state conflicts with live GitHub truth is archive-only."
+}
