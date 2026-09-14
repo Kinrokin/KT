@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
 
-ALLOWED_EXECUTION_MODES = {"DRY_RUN", "SHADOW", "LIVE", "ADVERSARIAL"}
+ALLOWED_EXECUTION_MODES = {"DRY_RUN", "SHADOW", "LIVE", "ADVERSARIAL", "OFFLINE_PROOF"}
 ALLOWED_STATUSES = {"ACTIVE", "DEPRECATED", "REVOKED"}
 LEGACY_PROVIDER_MAP = {
     "openai": "council.openai.live_hashed.v1",
@@ -105,6 +105,24 @@ def resolve_live_adapter(*, adapter_id: str, request_type: str, provider_id: str
         raise AdapterAbiError(f"request_type not allowlisted for adapter (fail-closed): {request_type!r}")
     if provider_id and provider_id != manifest.provider_id:
         raise AdapterAbiError("provider_id does not match adapter manifest binding (fail-closed)")
+    return manifest
+
+
+def resolve_semantic_candidate_adapter(*, adapter_id: str, request_type: str, provider_id: str = "") -> AdapterManifest:
+    manifest = load_adapter_manifest(adapter_id=adapter_id)
+    if manifest.execution_mode != "OFFLINE_PROOF":
+        raise AdapterAbiError("semantic candidate is not OFFLINE_PROOF-only (fail-closed)")
+    if request_type not in manifest.request_type_allowlist:
+        raise AdapterAbiError(f"request_type not allowlisted for adapter (fail-closed): {request_type!r}")
+    if provider_id and provider_id != manifest.provider_id:
+        raise AdapterAbiError("provider_id does not match adapter manifest binding (fail-closed)")
+    if manifest.adapter_kind != "SEMANTIC_PROVIDER_OFFLINE_PROOF":
+        raise AdapterAbiError("adapter_kind is not SEMANTIC_PROVIDER_OFFLINE_PROOF (fail-closed)")
+    if manifest.io_schema_ref != "provider.typed_message.v1+council.admitted_meaning.v1":
+        raise AdapterAbiError("semantic adapter io_schema_ref mismatch (fail-closed)")
+    attempts = manifest.retry_policy.get("max_attempts")
+    if attempts != 1:
+        raise AdapterAbiError("semantic adapter must bind exactly one attempt (fail-closed)")
     return manifest
 
 

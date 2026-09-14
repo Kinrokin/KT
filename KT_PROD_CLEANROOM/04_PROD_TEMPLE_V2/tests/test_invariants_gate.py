@@ -16,10 +16,12 @@ def _add_src_to_syspath() -> None:
 _add_src_to_syspath()
 
 from core.invariants_gate import (  # noqa: E402
+    CANONICAL_TRAINING_MARKER_EXEMPTIONS,
     CONSTITUTION_VERSION_HASH,
     ConstitutionalCrisisError,
     ContractViolationError,
     InvariantsGate,
+    compute_constitution_version_hash,
 )
 from schemas.runtime_context_schema import (  # noqa: E402
     RUNTIME_CONTEXT_SCHEMA_ID,
@@ -70,6 +72,41 @@ class TestInvariantsGate(unittest.TestCase):
                 InvariantsGate.assert_runtime_invariants(_valid_context())
         finally:
             sys.modules.pop(injected, None)
+
+    def test_canonical_curriculum_runtime_module_is_allowed(self) -> None:
+        __import__("curriculum.curriculum_ingest")
+        InvariantsGate.assert_runtime_invariants(_valid_context())
+
+    def test_curriculum_tests_namespace_is_not_exempt(self) -> None:
+        injected = "curriculum.tests.fake_runtime_bleed"
+        module = types.ModuleType(injected)
+        module.__file__ = str(Path(__file__).resolve().parents[1] / "src" / "curriculum" / "tests" / "fake.py")
+        sys.modules[injected] = module
+        try:
+            with self.assertRaises(ConstitutionalCrisisError):
+                InvariantsGate.assert_runtime_invariants(_valid_context())
+        finally:
+            sys.modules.pop(injected, None)
+
+    def test_canonical_curriculum_path_does_not_exempt_other_training_markers(self) -> None:
+        injected = "curriculum.dataset_trainer"
+        module = types.ModuleType(injected)
+        module.__file__ = str(Path(__file__).resolve().parents[1] / "src" / "curriculum" / "dataset_trainer.py")
+        sys.modules[injected] = module
+        try:
+            with self.assertRaises(ConstitutionalCrisisError):
+                InvariantsGate.assert_runtime_invariants(_valid_context())
+        finally:
+            sys.modules.pop(injected, None)
+
+    def test_constitution_hash_covers_curriculum_exemption_rule(self) -> None:
+        before = compute_constitution_version_hash()
+        original = CANONICAL_TRAINING_MARKER_EXEMPTIONS["curriculum"]
+        CANONICAL_TRAINING_MARKER_EXEMPTIONS["curriculum"] = original + " mutated"
+        try:
+            self.assertNotEqual(before, compute_constitution_version_hash())
+        finally:
+            CANONICAL_TRAINING_MARKER_EXEMPTIONS["curriculum"] = original
 
     def test_happy_path_passes(self) -> None:
         InvariantsGate.assert_runtime_invariants(_valid_context(input_text=""))

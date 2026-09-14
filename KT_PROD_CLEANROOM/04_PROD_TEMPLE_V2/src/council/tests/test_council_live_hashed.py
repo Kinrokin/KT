@@ -15,7 +15,7 @@ def test_missing_env_gates():
         execute_council_request(payload)
 
 
-def test_provider_not_allowlisted():
+def test_provider_not_allowlisted(tmp_path: Path):
     os.environ["KT_PROVIDERS_ENABLED"] = "1"
     os.environ["KT_EXECUTION_LANE"] = "LIVE_HASHED"
     payload = {
@@ -24,7 +24,7 @@ def test_provider_not_allowlisted():
         "provider_id": "not_allowed",
         "model": "m",
         "prompt": "p",
-        "export_root": ".pytest_wave2a/not_allowlisted",
+        "export_root": str(tmp_path / "not_allowlisted"),
     }
     out = execute_council_request(payload)
     assert out["status"] == "FAIL_CLOSED"

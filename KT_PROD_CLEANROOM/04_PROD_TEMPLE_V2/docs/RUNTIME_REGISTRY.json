@@ -165,6 +165,36 @@
       {
         "schema_id": "kt.runtime.adapter_entry.v1",
         "schema_version_hash": "b7fa345edb1a31fc9f7977b3a06e87bbaddecaefd90e9f98a2e616a499a214eb",
+        "adapter_id": "council.openai.live_semantic.v1",
+        "version": "1.0.0",
+        "base_model": "gpt-4.1-mini",
+        "artifact_path": "exports/adapters/council_openai_live_semantic/v1/adapter_manifest.json",
+        "artifact_hash": "6d87bdd3ad02064dc8978b194436e8063242cda530a89c342d0f9ed05f7cb76f",
+        "capabilities": [
+          "offline_semantic_proof",
+          "live_semantic_candidate",
+          "provider.openai",
+          "request.analysis",
+          "one_attempt",
+          "typed_message",
+          "strict_admission"
+        ],
+        "constraints": [
+          "fail_closed",
+          "no_retry",
+          "no_fallback",
+          "bounded_content",
+          "detached_raw_response_replay",
+          "prb_only",
+          "live_not_authorized_by_offline_microfix"
+        ],
+        "training_receipt_ref": "NOT_APPLICABLE_PRB_RUNTIME_ADAPTER",
+        "evaluation_receipt_ref": "PENDING_PRB_OFFLINE_NON_VACUITY",
+        "status": "ACTIVE"
+      },
+      {
+        "schema_id": "kt.runtime.adapter_entry.v1",
+        "schema_version_hash": "b7fa345edb1a31fc9f7977b3a06e87bbaddecaefd90e9f98a2e616a499a214eb",
         "adapter_id": "council.openrouter.live_hashed.v1",
         "version": "1.0.0",
         "base_model": "openai/gpt-4.1-mini",
