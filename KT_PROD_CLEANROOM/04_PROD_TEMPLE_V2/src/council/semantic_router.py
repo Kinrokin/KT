@@ -157,6 +157,8 @@ def _verify_compound_result(
         raise SemanticVerticalError("provider prompt hash cross-link mismatch (fail-closed)")
     if rec.get("usage") != msg["usage"]:
         raise SemanticVerticalError("usage cross-link mismatch (fail-closed)")
+    if msg["usage"]["completion_tokens"] > request["max_output_tokens"]:
+        raise SemanticVerticalError("provider completion tokens exceed request cap (fail-closed)")
     attestation = rec.get("provider_attestation")
     if not isinstance(attestation, dict) or attestation.get("response_id_hash") != "sha256:" + msg["provider_response_id_hash"]:
         raise SemanticVerticalError("provider response id attestation mismatch (fail-closed)")
