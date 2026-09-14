@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
+import os
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -13,6 +17,7 @@ def _add_plus_to_syspath() -> None:
 
 _add_plus_to_syspath()
 
+from eval_plus_runner import main as eval_plus_main  # noqa: E402
 from eval_plus_schemas import (  # noqa: E402
     DriftMetricVectorSchema,
     ExtendedBenchmarkResultSchema,
@@ -69,6 +74,59 @@ class TestEvalHarnessPlus(unittest.TestCase):
         )
         self.assertEqual(res.status, "PASS")
         self.assertEqual(len(res.result_hash), 64)
+
+
+class TestExternalEpochInput(unittest.TestCase):
+    def test_external_epoch_preserves_metrics_and_write_once_reuse(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "external growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-EXTERNAL_RUN1"
+            record_path = epoch_dir / "CRU-TEST" / "run_record.json"
+            record_path.parent.mkdir(parents=True)
+            run_id = "a" * 64
+            record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}),
+                encoding="utf-8",
+            )
+            run_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            run_dir.mkdir(parents=True)
+            (run_dir / "replay_report.json").write_text('{"status":"PASS"}', encoding="utf-8")
+            (run_dir / "governance_report.json").write_text('{"types":["FIXTURE"]}', encoding="utf-8")
+            out = root / "results" / "eval.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with patch.object(sys, "argv", argv):
+                    self.assertEqual(eval_plus_main(), 0)
+                before = out.read_bytes()
+                result = json.loads(before)
+                self.assertEqual(result["paradox"]["axes"]["pass_rate"], 1.0)
+                self.assertEqual(result["paradox"]["axes"]["replay_consistency"], 1.0)
+                with patch.object(sys, "argv", argv):
+                    with self.assertRaisesRegex(SystemExit, "refuse_overwrite"):
+                        eval_plus_main()
+                with patch.object(sys, "argv", argv + ["--allow-existing"]):
+                    self.assertEqual(eval_plus_main(), 0)
+                self.assertEqual(out.read_bytes(), before)
+                record_path.write_text(json.dumps({"run_id": run_id, "outcome": "FAIL"}), encoding="utf-8")
+                with patch.object(sys, "argv", argv + ["--allow-existing"]):
+                    with self.assertRaisesRegex(SystemExit, "existing_output_hash_mismatch"):
+                        eval_plus_main()
+                self.assertEqual(out.read_bytes(), before)
+
+    def test_external_epoch_escape_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            outside = growth_root / "epochs" / ".." / ".." / "outside"
+            outside.resolve().mkdir(parents=True)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(outside), "--epoch-id", "EPOCH-OUTSIDE", "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "epoch_dir_not_under_root"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
 
 
 if __name__ == "__main__":

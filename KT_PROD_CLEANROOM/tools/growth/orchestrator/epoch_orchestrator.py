@@ -864,7 +864,7 @@ def preflight_epoch(
             return 2
         crucible_specs[cid] = _read_crucible(crucible_path)
 
-    base_root = artifacts_root if artifacts_root is not None else (repo_root / "tools" / "growth" / "artifacts" / "epochs")
+    base_root = artifacts_root if artifacts_root is not None else (_growth_artifacts_root() / "epochs")
 
     blocks: List[str] = []
     warns: List[str] = []
@@ -1487,7 +1487,7 @@ def run_epoch(
     if salvage:
         salvage_status = {"status": "FAIL", "error": "not-run"}
         try:
-            salvage_base = salvage_out_root if salvage_out_root is not None else (_repo_root() / "tools" / "growth" / "artifacts" / "salvage")
+            salvage_base = salvage_out_root if salvage_out_root is not None else (_growth_artifacts_root() / "salvage")
             salvage_out = salvage_base / plan.epoch_id
             cmd = [
                 str(Path(sys.executable).resolve()),
@@ -1535,8 +1535,8 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--salvage-out-root",
-        default="KT_PROD_CLEANROOM/tools/growth/artifacts/salvage",
-        help="Base directory for salvage outputs (default: tools/growth/artifacts/salvage)",
+        default=None,
+        help="Base directory for salvage outputs (default: growth artifacts root / salvage)",
     )
     p.add_argument(
         "--no-auto-bump",
@@ -1611,7 +1611,7 @@ def main() -> int:
         resume=args.resume,
         mode=args.mode,
         env=None,
-        salvage_out_root=Path(args.salvage_out_root),
+        salvage_out_root=Path(args.salvage_out_root) if args.salvage_out_root is not None else None,
         auto_bump=not args.no_auto_bump,
         quiet=args.summary_only,
     )

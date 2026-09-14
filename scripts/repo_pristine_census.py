@@ -767,8 +767,22 @@ def write_registry_schema() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="Exit non-zero if hard blockers are present.")
+    parser.add_argument("--check", action="store_true", help="Read-only validation of tracked outputs and the existing authority registry; never regenerate evidence.")
     args = parser.parse_args(argv)
+
+    if args.check:
+        # Validate the evidence as received, before any mkdir or writer call.
+        if __package__:
+            from .check_no_bloat import check as check_no_bloat
+            from .check_artifact_authority_registry import check as check_registry
+        else:
+            from check_no_bloat import check as check_no_bloat
+            from check_artifact_authority_registry import check as check_registry
+
+        errors = check_no_bloat(ROOT) + check_registry(ROOT)
+        print(json.dumps({"status": "FAIL" if errors else "PASS", "mode": "read_only",
+                          "errors": errors}, indent=2, sort_keys=True))
+        return 1 if errors else 0
 
     for directory in [REPORTS, REGISTRY, GOVERNANCE, RULES, MEMORY, PACKETS / "current", REPORTS / "current"]:
         directory.mkdir(parents=True, exist_ok=True)
@@ -916,8 +930,6 @@ def main(argv: list[str] | None = None) -> int:
         },
     )
 
-    if args.check and census["blockers"]:
-        raise SystemExit(json.dumps(census["blockers"], indent=2))
     print(json.dumps({"status": "PASS" if not census["blockers"] else "BLOCKED", "current_head": head, "tracked_file_count": census["tracked_file_count"], "packet_sha256": packet_sha}, indent=2, sort_keys=True))
     return 0
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, Mapping, Tuple
 
@@ -96,7 +97,12 @@ def main() -> int:
 
     epoch_dir = Path(args.epoch_dir).resolve()
     out_path = Path(args.out).resolve()
-    allowed_epochs_root = Path("KT_PROD_CLEANROOM/tools/growth/artifacts/epochs").resolve()
+    cleanroom_root = Path(__file__).resolve().parents[3]
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    artifacts_root = Path(override) if override else cleanroom_root / "tools" / "growth" / "artifacts"
+    if not artifacts_root.is_absolute():
+        artifacts_root = cleanroom_root / artifacts_root
+    allowed_epochs_root = (artifacts_root / "epochs").resolve()
     _ensure_under_root(path=epoch_dir, root=allowed_epochs_root, label="epoch_dir")
 
     outcomes, replay_verified, replay_total, gov_types, kernel_identity = _load_epoch_metrics(epoch_dir)

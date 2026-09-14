@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import sys
@@ -21,7 +23,7 @@ def _add_growth_to_syspath() -> None:
 _add_growth_to_syspath()
 
 from epoch_manifest import compute_epoch_hash  # noqa: E402
-from epoch_orchestrator import _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, run_epoch  # noqa: E402
+from epoch_orchestrator import _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, preflight_epoch, run_epoch  # noqa: E402
 from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError  # noqa: E402
 from checkpoint_store import append_checkpoint, completed_crucible_ids, CheckpointRecord  # noqa: E402
 from crucible_loader import load_crucible  # noqa: E402
@@ -329,7 +331,28 @@ class TestKernelTargetRouting(unittest.TestCase):
 
 
 class TestArtifactsRootOverride(unittest.TestCase):
-    def test_env_override_routes_c019_runs_under_override_root(self) -> None:
+    def test_preflight_uses_external_collision_history_and_explicit_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            crucible_path = root / "c.json"
+            _minimal_crucible(crucible_path, kernel_targets=["KERNEL_GOVERNANCE_BASELINE"])
+            plan = _minimal_plan(crucible_path, kernel_target="KERNEL_GOVERNANCE_BASELINE", epoch_profile="GOVERNANCE")
+            plan["epoch_id"] = "EPOCH-EXTERNAL-PREFLIGHT_RUN1"
+            plan_path = root / "epoch.json"
+            plan_path.write_text(json.dumps(plan), encoding="utf-8")
+            artifacts_root = root / "external growth"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(artifacts_root)}):
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=None, auto_bump=False), 0)
+                occupied = artifacts_root / "epochs" / plan["epoch_id"]
+                occupied.mkdir(parents=True)
+                sentinel = occupied / "epoch_manifest.json"
+                sentinel.write_text("{}", encoding="utf-8")
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=None, auto_bump=False), 2)
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=root / "explicit epochs", auto_bump=False), 0)
+                self.assertEqual(sentinel.read_text(encoding="utf-8"), "{}")
+                self.assertEqual(set(artifacts_root.rglob("*")), {artifacts_root / "epochs", occupied, sentinel})
+
+    def test_env_override_routes_c019_epochs_and_salvage_under_override_root(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             td_path = Path(td)
             crucible_path = td_path / "c.json"
@@ -348,6 +371,7 @@ class TestArtifactsRootOverride(unittest.TestCase):
             )
 
             override_root = td_path / "growth_artifacts"
+            previous_override = os.environ.get("KT_GROWTH_ARTIFACTS_ROOT")
             os.environ["KT_GROWTH_ARTIFACTS_ROOT"] = override_root.as_posix()
             try:
                 loaded = load_crucible(crucible_path)
@@ -424,13 +448,28 @@ class TestArtifactsRootOverride(unittest.TestCase):
                     script = f"import json; print(json.dumps([{{'run_id':'{expected_run_id}','outcome':'PASS'}}]))"
                     return [sys.executable, "-c", script], td_path
 
-                summary = run_epoch(plan_path, resume=False, runner_cmd_override=runner_override, artifacts_root=td_path / "epochs")
+                summary = run_epoch(plan_path, resume=False, runner_cmd_override=runner_override, salvage=True)
+                epoch_root = override_root / "epochs" / summary["epoch_id"]
+                self.assertTrue((epoch_root / "epoch_manifest.json").is_file())
+                salvage_status = json.loads((epoch_root / "salvage_status.json").read_text(encoding="utf-8"))
+                self.assertEqual(salvage_status["status"], "OK", salvage_status)
+                salvage_root = override_root / "salvage" / summary["epoch_id"]
+                self.assertEqual(Path(salvage_status["out"]).resolve(), salvage_root.resolve())
+                manifest = json.loads((salvage_root / "salvage_manifest.json").read_text(encoding="utf-8"))
+                for output in manifest["outputs"].values():
+                    output_path = Path(output["path"]).resolve()
+                    output_path.relative_to(salvage_root.resolve())
+                    self.assertTrue(output_path.is_file())
+                    self.assertEqual(hashlib.sha256(output_path.read_bytes()).hexdigest(), output["sha256"])
                 self.assertEqual(summary["epoch_id"], "EPOCH-TEST-01")
                 self.assertTrue(
                     (override_root / "c019_runs" / "KERNEL_GOVERNANCE_BASELINE" / expected_run_id / "crucible_coverage.json").exists()
                 )
             finally:
-                os.environ.pop("KT_GROWTH_ARTIFACTS_ROOT", None)
+                if previous_override is None:
+                    os.environ.pop("KT_GROWTH_ARTIFACTS_ROOT", None)
+                else:
+                    os.environ["KT_GROWTH_ARTIFACTS_ROOT"] = previous_override
 
 
 if __name__ == "__main__":

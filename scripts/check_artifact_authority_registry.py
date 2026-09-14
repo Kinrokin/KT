@@ -1,27 +1,203 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import math
+import re
+import stat
 import subprocess
+import unicodedata
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+REGISTRY_PATH = "registry/artifact_authority_registry.json"
+HISTORICAL_STATES = {"ARCHIVE", "STALE", "DUPLICATE", "SUPERSEDED", "RETIRED"}
+
+
+def _no_constant(value):
+    raise ValueError(f"non-finite JSON value: {value}")
+
+
+def load_json(path: Path):
+    def finite_float(value):
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError("non-finite JSON number")
+        return number
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_keys,
+                      parse_constant=_no_constant, parse_float=finite_float)
+
+
+def current_packet_errors(artifacts: list[dict]) -> list[str]:
+    """The existing packet selection is global. Classification grants no permission."""
+    selected = [r for r in artifacts if isinstance(r, dict)
+                and r.get("primary_class") == "CANONICAL_PACKET_CURRENT"]
+    errors = []
+    if len(selected) > 1:
+        errors.append("overlapping global current execution packets")
+    for row in selected:
+        if row.get("authority_scope", "GLOBAL") != "GLOBAL":
+            errors.append(f"{row.get('path')}: undeclared packet authority scope")
+        if (row.get("authority_state") != "LIVE_CURRENT_HEAD_VALIDATED"
+                or row.get("validation_status") != "PASS"
+                or row.get("controls_execution") is not True
+                or row.get("current_authority") is not True):
+            errors.append(f"{row.get('path')}: current packet lacks validated current binding")
+    return errors
+
+
+def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
+    contract = load_json(root / "governance/repo_layout_contract.json")
+    manifest = load_json(root / "packets/current/manifest.json")
+    if not isinstance(contract, dict) or not isinstance(manifest, dict):
+        return ["current packet contract and manifest must be objects"]
+    if "current_packet" not in contract or not isinstance(manifest.get("packets"), list):
+        return ["current packet contract or manifest missing selection field"]
+    current = [r for r in artifacts if isinstance(r, dict)
+               and r.get("primary_class") == "CANONICAL_PACKET_CURRENT"]
+    selected = contract["current_packet"]
+    if selected is None:
+        return [] if not current and manifest["packets"] == [] else ["no-packet selection conflicts with registry or manifest"]
+    if not isinstance(selected, str) or len(current) != 1 or current[0]["path"] != selected:
+        return ["current packet selection does not match registry"]
+    rows = manifest["packets"]
+    if len(rows) != 1 or not isinstance(rows[0], dict):
+        return ["current packet manifest must have one selected record"]
+    record = rows[0]
+    if (record.get("path") != selected or record.get("current_authority") is not True
+            or record.get("sha256") != current[0].get("current_file_sha256")):
+        return ["current packet manifest binding mismatch"]
+    return []
+
+
+def unique_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _fields(value: object, schema: dict, location: str) -> list[str]:
+    """Check the flat field constraints used by the retained v3 schema."""
+    if not isinstance(value, dict):
+        return [f"{location}: expected object"]
+    errors = [f"{location}: missing required field {key}" for key in schema["required"] if key not in value]
+    types = {"string": str, "boolean": bool, "integer": int, "array": list, "object": dict, "null": type(None)}
+    for key, rule in schema["properties"].items():
+        if key not in value:
+            continue
+        field = value[key]
+        if "type" in rule:
+            allowed = rule["type"] if isinstance(rule["type"], list) else [rule["type"]]
+            if type(field) not in tuple(types[name] for name in allowed):
+                errors.append(f"{location}.{key}: invalid type")
+        if "enum" in rule and field not in rule["enum"]:
+            errors.append(f"{location}.{key}: value outside declared enum")
+        if "const" in rule and field != rule["const"]:
+            errors.append(f"{location}.{key}: unexpected value")
+    return errors
+
+
+def check(root: Path = ROOT) -> list[str]:
+    try:
+        registry = load_json(root / REGISTRY_PATH)
+        schema = load_json(root / "registry/artifact_authority_registry.schema.json")
+        if schema.get("$id") != "kt.artifact_authority_registry.schema.v3":
+            return ["unsupported authority registry schema"]
+        errors = _fields(registry, schema, "registry")
+        if not isinstance(registry, dict) or not isinstance(registry.get("artifacts"), list):
+            return errors
+        artifacts = registry["artifacts"]
+        if registry.get("digest_semantics") != {
+                "sha256": "HISTORICAL_REGISTRATION_BYTES",
+                "current_file_sha256": "CURRENT_REPOSITORY_BYTES",
+                "self_excluded_path": REGISTRY_PATH}:
+            errors.append("registry must explicitly distinguish historical and current file digests")
+        errors.extend(current_packet_errors(artifacts))
+        errors.extend(packet_selection_errors(root, artifacts))
+        row_schema = schema["properties"]["artifacts"]["items"]
+        if "artifact_count" in registry and (type(registry["artifact_count"]) is not int or registry["artifact_count"] != len(artifacts)):
+            errors.append("registry.artifact_count does not match artifacts")
+        paths: set[str] = set()
+        seen_paths: set[str] = set()
+        path_aliases: set[str] = set()
+        seen_ids: set[str] = set()
+        for number, artifact in enumerate(artifacts):
+            label = f"artifacts[{number}]"
+            if isinstance(artifact, dict) and isinstance(artifact.get("path"), str):
+                label += f" ({artifact['path']})"
+            errors.extend(_fields(artifact, row_schema, label))
+            if not isinstance(artifact, dict):
+                continue
+            if "current_authority" in artifact and type(artifact["current_authority"]) is not bool:
+                errors.append(f"{label}.current_authority: invalid type")
+            path = artifact.get("path")
+            identity = artifact.get("artifact_id")
+            if isinstance(path, str):
+                if not path or path.startswith("/") or "\\" in path or any(part in (".", "..", "") for part in path.split("/")) or ":" in path:
+                    errors.append(f"{label}: path must be repository-relative")
+                    continue
+                if any(part.endswith((".", " ")) for part in path.split("/")):
+                    errors.append(f"{label}: nonportable trailing dot or space in path")
+                    continue
+                if path in seen_paths:
+                    errors.append(f"{label}: duplicate artifact path; explicit reconciliation required")
+                alias = unicodedata.normalize("NFKC", path).casefold()
+                if alias in path_aliases and path not in seen_paths:
+                    errors.append(f"{label}: duplicate normalized artifact path")
+                path_aliases.add(alias)
+                seen_paths.add(path)
+                paths.add(path)
+                candidate = root / path
+                try:
+                    for part in [candidate, *candidate.parents]:
+                        if part == root:
+                            break
+                        mode = part.lstat()
+                        if stat.S_ISLNK(mode.st_mode) or getattr(mode, "st_file_attributes", 0) & 0x400:
+                            raise ValueError("link/reparse path forbidden")
+                    if not candidate.is_file():
+                        raise ValueError("registered current file missing or not regular")
+                    binding = artifact.get("current_file_sha256")
+                    if path == REGISTRY_PATH:
+                        if "current_file_sha256" not in artifact or binding is not None:
+                            raise ValueError("registry self digest must be explicitly excluded")
+                    elif not isinstance(binding, str) or re.fullmatch(r"[0-9a-f]{64}", binding) is None:
+                        raise ValueError("current file digest missing or malformed")
+                    elif hashlib.sha256(candidate.read_bytes()).hexdigest() != binding:
+                        raise ValueError("stale current file digest")
+                except (OSError, ValueError) as exc:
+                    errors.append(f"{label}: {exc}")
+            if isinstance(identity, str):
+                if identity in seen_ids:
+                    errors.append(f"{label}: duplicate artifact_id")
+                seen_ids.add(identity)
+            if artifact.get("primary_class") == "UNKNOWN_REVIEW_REQUIRED":
+                errors.append(f"{label}: unknown artifact review required")
+            historical = (artifact.get("primary_class") in {"ARCHIVE_HISTORY", "GENERATED_OUTPUT"}
+                          or artifact.get("authority_state") in HISTORICAL_STATES)
+            if historical and (artifact.get("controls_execution") is True
+                               or artifact.get("current_authority") is True):
+                errors.append(f"{label}: historical/generated artifact cannot control current execution")
+            if historical and artifact.get("claim_authority") not in {"NONE", "INTERNAL_SHADOW"}:
+                errors.append(f"{label}: historical/generated artifact cannot elevate current claims")
+        tracked = subprocess.check_output(
+            ["git", "--no-optional-locks", "-c", "core.fsmonitor=false", "ls-files", "-z"], cwd=root
+        ).decode("utf-8").split("\0")
+        errors.extend(f"registry missing tracked file: {path}" for path in sorted(set(tracked) - paths - {""}))
+        return errors
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, subprocess.CalledProcessError) as exc:
+        return [f"cannot validate authority registry: {type(exc).__name__}: {exc}"]
 
 
 def main() -> int:
-    registry = json.loads((ROOT / "registry/artifact_authority_registry.json").read_text(encoding="utf-8"))
-    tracked = subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True).splitlines()
-    paths = {artifact["path"] for artifact in registry["artifacts"]}
-    missing = sorted(set(tracked) - paths)
-    unknowns = [artifact["path"] for artifact in registry["artifacts"] if artifact["primary_class"] == "UNKNOWN_REVIEW_REQUIRED"]
-    if registry["schema_id"] != "kt.artifact_authority_registry.v3":
-        raise SystemExit("unexpected registry schema_id")
-    if missing:
-        raise SystemExit(f"registry missing tracked files: {missing[:20]}")
-    if unknowns:
-        raise SystemExit(f"unknown artifact review required: {unknowns[:20]}")
-    print(json.dumps({"schema_id": "kt.artifact_authority_registry_check.v1", "status": "PASS", "tracked_file_count": len(tracked)}, indent=2))
-    return 0
+    errors = check(ROOT)
+    print(json.dumps({"schema_id": "kt.artifact_authority_registry_check.v1",
+                      "status": "FAIL" if errors else "PASS", "errors": errors}, indent=2))
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":

@@ -3,6 +3,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": true,
   "properties": {
+    "artifact_count": {
+      "type": "integer"
+    },
     "artifacts": {
       "items": {
         "additionalProperties": true,
@@ -37,6 +40,16 @@
           "controls_execution": {
             "type": "boolean"
           },
+          "current_authority": {
+            "type": "boolean"
+          },
+          "current_file_sha256": {
+            "description": "Exact current materialized file bytes; null only for the registry itself. Never grants execution.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "path": {
             "type": "string"
           },
@@ -61,6 +74,7 @@
             "type": "string"
           },
           "sha256": {
+            "description": "Preserved historical registration digest, not a current-file validation result.",
             "type": [
               "string",
               "null"
@@ -85,7 +99,9 @@
           "validation_status",
           "controls_execution",
           "claim_authority",
-          "sha256"
+          "sha256",
+          "current_file_sha256",
+          "current_authority"
         ],
         "type": "object"
       },
@@ -93,6 +109,9 @@
     },
     "current_head": {
       "type": "string"
+    },
+    "digest_semantics": {
+      "type": "object"
     },
     "generated_utc": {
       "type": "string"
@@ -108,7 +127,9 @@
     "schema_id",
     "current_head",
     "generated_utc",
-    "artifacts"
+    "artifacts",
+    "artifact_count",
+    "digest_semantics"
   ],
   "type": "object"
 }
