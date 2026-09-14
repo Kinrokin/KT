@@ -10,7 +10,7 @@ from governance.events import (
     assert_governance_organ_id,
     compute_envelope_hash,
 )
-from memory.state_vault import StateVault, StateVaultCorruptionError, StateVaultWriteError
+from memory.state_vault import AppendResult, StateVault, StateVaultCorruptionError, StateVaultWriteError
 
 
 @dataclass(frozen=True)
@@ -28,7 +28,7 @@ def log_governance_event(
     inputs_envelope: Dict[str, Any],
     outputs_envelope: Dict[str, Any],
     crisis_mode: Optional[str] = None,
-) -> None:
+) -> AppendResult:
     try:
         assert_event_type_allowed(event_type)
         assert_governance_organ_id(GOVERNANCE_ORGAN_ID)
@@ -38,7 +38,7 @@ def log_governance_event(
         raise GovernanceLogError(str(exc))
 
     try:
-        vault.append(
+        return vault.append(
             event_type=event_type,
             organ_id=GOVERNANCE_ORGAN_ID,
             inputs_hash=inputs_hash,
@@ -48,4 +48,3 @@ def log_governance_event(
     except (StateVaultWriteError, StateVaultCorruptionError) as exc:
         # Fail-closed: inability to persist governance is a Constitutional Crisis.
         raise GovernanceLogError(str(exc))
-

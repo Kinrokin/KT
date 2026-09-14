@@ -25,6 +25,12 @@ MAX_CONTEXT_BYTES = RUNTIME_CONTEXT_MAX_CONTEXT_BYTES
 MAX_PREFIX_SCAN_BYTES = 256 * 1024
 
 TRAINING_MARKERS = ("curriculum", "epoch", "dataset", "benchmarks", "trainer", "finetune")
+CANONICAL_TRAINING_MARKER_EXEMPTIONS = {
+    "curriculum": (
+        "ignore only the literal curriculum marker for modules physically below src/curriculum; "
+        "tests namespaces/paths and every other training marker remain forbidden"
+    )
+}
 
 PROVIDER_MODULE_BANS = (
     "openai",
@@ -80,6 +86,7 @@ def compute_constitution_version_hash() -> str:
         },
         "runtime_walls": {
             "training_markers": list(TRAINING_MARKERS),
+            "canonical_training_marker_exemptions": CANONICAL_TRAINING_MARKER_EXEMPTIONS,
             "provider_module_bans": list(PROVIDER_MODULE_BANS),
         },
     }
@@ -188,10 +195,28 @@ class InvariantsGate:
             if not name:
                 continue
             lowered = name.lower()
-            if any(marker in lowered for marker in TRAINING_MARKERS):
+            # `curriculum` is a registry-authorized canonical runtime organ. Exempt only
+            # that literal marker for verified source files; dataset/trainer/etc. remain
+            # forbidden even when an attacker places them below the curriculum package.
+            canonical_curriculum_module = False
+            if name == "curriculum" or name.startswith("curriculum."):
+                file = getattr(mod, "__file__", None)
+                if isinstance(file, str):
+                    try:
+                        relative = Path(file).resolve().relative_to((_src_root() / "curriculum").resolve())
+                        if "tests" not in relative.parts and not name.startswith("curriculum.tests"):
+                            canonical_curriculum_module = True
+                    except Exception:
+                        pass
+            active_name_markers = tuple(
+                marker
+                for marker in TRAINING_MARKERS
+                if not (canonical_curriculum_module and marker == "curriculum")
+            )
+            if any(marker in lowered for marker in active_name_markers):
                 raise ConstitutionalCrisisError(f"Training/runtime bleed detected (module loaded): {name}")
             file = getattr(mod, "__file__", None)
-            if isinstance(file, str) and any(marker in file.lower() for marker in TRAINING_MARKERS):
+            if isinstance(file, str) and any(marker in file.lower() for marker in active_name_markers):
                 raise ConstitutionalCrisisError(f"Training/runtime bleed detected (module file): {file}")
 
     @staticmethod

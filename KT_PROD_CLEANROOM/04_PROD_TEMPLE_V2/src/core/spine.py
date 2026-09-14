@@ -4,6 +4,7 @@ import hashlib
 import json
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict
 
 from core.import_truth_guard import ImportTruthGuard
@@ -26,6 +27,26 @@ def _canonical_json(obj: Any) -> str:
 
 def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _strict_json_loads(value: str) -> Any:
+    def reject_duplicates(pairs: list[tuple[str, object]]) -> Dict[str, object]:
+        result: Dict[str, object] = {}
+        for key, item in pairs:
+            if key in result:
+                raise SpineError("Duplicate runtime-envelope JSON key forbidden (fail-closed)")
+            result[key] = item
+        return result
+
+    def reject_constant(constant: str) -> object:
+        raise SpineError(f"Non-finite runtime-envelope JSON constant {constant} forbidden (fail-closed)")
+
+    try:
+        return json.loads(value, object_pairs_hook=reject_duplicates, parse_constant=reject_constant)
+    except SpineError:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        raise SpineError("Runtime-envelope JSON parse failed (fail-closed)") from exc
 
 
 def _runtime_registry_hash(registry: Any) -> str:
@@ -108,6 +129,7 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     from cognition.cognitive_engine import CognitiveEngine  # noqa: E402
     from cognition.cognitive_schemas import CognitivePlanSchema, CognitiveRequestSchema  # noqa: E402
     from council.council_router import CouncilRouter  # noqa: E402
+    from council.semantic_router import SemanticCouncilRouter  # noqa: E402
     from council.council_schemas import (  # noqa: E402
         CouncilPlanSchema,
         CouncilRequestSchema,
@@ -119,7 +141,15 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     from governance.event_logger import log_governance_event  # noqa: E402
     from governance.events import build_inputs_envelope, build_outputs_envelope  # noqa: E402
     from memory.replay import validate_state_vault_chain  # noqa: E402
+    from memory.semantic_effect import consume_and_apply_with_rollback  # noqa: E402
     from memory.state_vault import StateVault  # noqa: E402
+    from core.semantic_probe import (  # noqa: E402
+        PROBE_CONTRACT_HASH,
+        SemanticProbeRecorder,
+        write_semantic_result_evidence,
+        write_terminal_evidence,
+        write_semantic_transcript,
+    )
     from core.routing_receipts import (  # noqa: E402
         build_adapter_invocation,
         build_routing_record,
@@ -131,6 +161,7 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     from paradox.paradox_engine import ParadoxEngine  # noqa: E402
     from paradox.paradox_schemas import ParadoxTriggerSchema  # noqa: E402
     from schemas.base_schema import SchemaValidationError  # noqa: E402
+    from schemas.semantic_vertical_schemas import SemanticCouncilRequestSchema  # noqa: E402
     from thermodynamics.budget_engine import BudgetEngine  # noqa: E402
     from thermodynamics.budget_schemas import BudgetConsumptionSchema, BudgetRequestSchema  # noqa: E402
     from temporal.temporal_engine import TemporalEngine  # noqa: E402
@@ -157,10 +188,7 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     input_text = context.get("envelope", {}).get("input")
     candidate_obj: Any = None
     if isinstance(input_text, str) and input_text.strip().startswith("{"):
-        try:
-            candidate_obj = json.loads(input_text)
-        except Exception:
-            candidate_obj = None
+        candidate_obj = _strict_json_loads(input_text)
 
     registry_hash = _runtime_registry_hash(registry)
 
@@ -380,7 +408,269 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     council_summary: Dict[str, Any] = {"status": "SKIPPED"}
-    if isinstance(candidate_obj, dict) and candidate_obj.get("schema_id") == CouncilRequestSchema.SCHEMA_ID:
+    if isinstance(candidate_obj, dict) and candidate_obj.get("schema_id") == SemanticCouncilRequestSchema.SCHEMA_ID:
+        try:
+            semantic_request = SemanticCouncilRequestSchema.from_dict(candidate_obj)
+        except SchemaValidationError as exc:
+            raise SpineError(f"Semantic Council request invalid (fail-closed): {exc}")
+        req_obj = semantic_request.to_dict()
+        if req_obj["runtime_registry_hash"] != registry_hash:
+            raise SpineError("Semantic Council request runtime_registry_hash mismatch (fail-closed)")
+        from core.semantic_probe import require_canonical_entry_attestation  # noqa: E402
+
+        entry_attestation_hash, execution_id = require_canonical_entry_attestation(context)
+        occurrence_hash = _sha256_text(
+            _canonical_json(
+                {
+                    "schema_id": "kt.prb.semantic_occurrence.v1",
+                    "entry_attestation_hash": entry_attestation_hash,
+                    "context_hash": ctx_hash,
+                    "semantic_request_id": req_obj["request_id"],
+                    "execution_id": execution_id,
+                }
+            )
+        )
+        _budget_precheck(
+            add_tokens=int(req_obj["max_output_tokens"]),
+            add_steps=1,
+            add_branches=1,
+            policy_label="council.semantic",
+        )
+        artifact_root_raw = context.get("artifact_root")
+        if not isinstance(artifact_root_raw, str) or not artifact_root_raw:
+            raise SpineError("Semantic Council artifact_root required (fail-closed)")
+        semantic_artifact_root = Path(artifact_root_raw)
+        probe = SemanticProbeRecorder(
+            artifact_root=semantic_artifact_root,
+            request_id=req_obj["request_id"],
+            execution_id=execution_id,
+            enabled=req_obj["probe_enabled"],
+        )
+        semantic_run_root = probe.run_artifact_root
+        probe.observe("entry.invoke", organ_root="kt", identity_hash=entry_attestation_hash)
+        probe.observe("spine.semantic_dispatch", organ_root="core", identity_hash=occurrence_hash)
+        probe.observe(
+            "versioning.constitution_binding",
+            organ_root="versioning",
+            identity_hash=str(context["constitution_version_hash"]),
+        )
+        probe.observe("thermodynamics.precheck", organ_root="thermodynamics", identity_hash=alloc["allocation_hash"])
+
+        semantic_plan = SemanticCouncilRouter.plan(request=semantic_request, runtime_registry=registry)
+        probe.observe("council.route", organ_root="council", identity_hash=semantic_plan.plan_hash)
+        routing_record = build_routing_record(
+            runtime_registry_hash=registry_hash,
+            spine_run_hash=occurrence_hash,
+            task_context_hash=task_context_hash,
+            task_context_ref=task_context_ref,
+            request_hash=req_obj["request_id"],
+            plan_hash=semantic_plan.plan_hash,
+            status="OK",
+            mode=req_obj["mode"],
+            vault_path=vault.path,
+            candidates=[
+                {
+                    "adapter_id": req_obj["adapter_id"],
+                    "adapter_version": semantic_plan.manifest.version,
+                    "capabilities": ["offline_semantic_proof", "one_attempt", "strict_admission"],
+                    "estimated_risk": "MEDIUM",
+                }
+            ],
+            chosen_adapter={
+                "adapter_id": req_obj["adapter_id"],
+                "adapter_version": semantic_plan.manifest.version,
+            },
+            router_reason="council.semantic.v1",
+            router_confidence=1.0,
+            governor_verdict={
+                "policy": "PRB_SEMANTIC_OFFLINE_PREFLIGHT",
+                "verdict": "ALLOW",
+                "risk_score": 0.5,
+                "verdict_hash": semantic_plan.plan_hash,
+            },
+        )
+        routing_record_hash = write_routing_record(
+            vault=vault,
+            routing=routing_record,
+            outputs_hash=semantic_plan.plan_hash,
+        )
+        semantic_execution = SemanticCouncilRouter.execute(
+            context=context,
+            request=semantic_request,
+            runtime_registry=registry,
+            plan=semantic_plan,
+            execution_id=execution_id,
+        )
+        receipt_obj = semantic_execution.receipt.to_dict()
+        message_obj = semantic_execution.message.to_dict()
+        admitted_obj = semantic_execution.admitted.to_dict()
+        probe.observe("provider.transport_receipt_observed", organ_root="council", identity_hash=receipt_obj["receipt_hash"])
+        probe.observe("provider.typed_message_observed", organ_root="schemas", identity_hash=message_obj["message_hash"])
+        probe.observe("council.admission_observed", organ_root="council", identity_hash=admitted_obj["meaning_hash"])
+        transcript_hash = write_semantic_transcript(
+            artifact_root=semantic_run_root,
+            execution_id=execution_id,
+            occurrence_hash=occurrence_hash,
+            request=req_obj,
+            receipt=receipt_obj,
+            message=message_obj,
+            admitted=admitted_obj,
+            raw_response=semantic_execution.raw_response,
+        )
+        probe.observe("evidence.prepared", organ_root="versioning", identity_hash=transcript_hash)
+        effect = consume_and_apply_with_rollback(
+            artifact_root=semantic_run_root,
+            admitted=semantic_execution.admitted,
+            semantic_request_id=req_obj["request_id"],
+            execution_id=execution_id,
+        ).to_dict()
+        probe.observe("memory.consumer_decision_observed", organ_root="memory", identity_hash=admitted_obj["decision_hash"])
+        probe.observe("memory.semantic_effect_receipt_observed", organ_root="memory", identity_hash=effect["receipt_hash"])
+        probe.observe("memory.rollback_receipt_observed", organ_root="memory", identity_hash=effect["rollback_receipt_hash"])
+        result_hash = write_semantic_result_evidence(
+            artifact_root=semantic_run_root,
+            request_id=req_obj["request_id"],
+            execution_id=execution_id,
+            occurrence_hash=occurrence_hash,
+            plan_hash=semantic_plan.plan_hash,
+            transcript_hash=transcript_hash,
+            raw_response_hash=message_obj["raw_response_hash"],
+            message_hash=message_obj["message_hash"],
+            meaning_hash=admitted_obj["meaning_hash"],
+            decision_hash=admitted_obj["decision_hash"],
+            effect=effect,
+        )
+
+        invocation = build_adapter_invocation(
+            routing_record_hash=routing_record_hash,
+            task_context_hash=task_context_hash,
+            input_hash=occurrence_hash,
+            output_hash=message_obj["message_hash"],
+            status="OK",
+            vault_path=vault.path,
+            adapter_id=req_obj["adapter_id"],
+            adapter_version=semantic_plan.manifest.version,
+            governor_verdict_hash=semantic_plan.plan_hash,
+            evaluator_verdict="PASS",
+            duration_ms=int(receipt_obj["timing"]["latency_ms"]),
+            token_usage={
+                "prompt": int(message_obj["usage"]["prompt_tokens"]),
+                "completion": int(message_obj["usage"]["completion_tokens"]),
+                "total": int(message_obj["usage"]["total_tokens"]),
+            },
+        )
+        invocation_id = write_adapter_invocation(
+            vault=vault,
+            invocation=invocation,
+            outputs_hash=admitted_obj["meaning_hash"],
+        )
+        inputs = build_inputs_envelope(
+            policy_id="p.v2.council.semantic.admission",
+            policy_version_hash=admitted_obj["parser_hash"],
+            subject_hash=req_obj["subject_hash"],
+            context_hash=admitted_obj["message_hash"],
+            rule_id="r.v2.council.semantic.admission.v1",
+        )
+        # ALLOW means the bounded chain was valid. Model PASS/FAIL never controls governance authority.
+        outputs = build_outputs_envelope(decision="ALLOW", obligations_hash=result_hash)
+        governance_append = log_governance_event(
+            vault=vault,
+            event_type="GOV_POLICY_APPLY",
+            inputs_envelope=inputs,
+            outputs_envelope=outputs,
+        )
+        probe.observe(
+            "governance.policy_receipt_observed",
+            organ_root="governance",
+            identity_hash=governance_append.head_hash,
+        )
+        primary_bindings = {
+            "entry_attestation_hash": entry_attestation_hash,
+            "context_hash": ctx_hash,
+            "occurrence_hash": occurrence_hash,
+            "semantic_request_id": req_obj["request_id"],
+            "execution_id": execution_id,
+            "subject_hash": req_obj["subject_hash"],
+            "runtime_registry_hash": registry_hash,
+            "constitution_version_hash": str(context["constitution_version_hash"]),
+            "allocation_hash": alloc["allocation_hash"],
+            "plan_hash": semantic_plan.plan_hash,
+            "manifest_hash": semantic_execution.manifest_hash,
+            "prompt_hash": semantic_plan.prompt_hash,
+            "routing_record_hash": routing_record_hash,
+            "raw_response_hash": message_obj["raw_response_hash"],
+            "provider_receipt_hash": receipt_obj["receipt_hash"],
+            "message_hash": message_obj["message_hash"],
+            "meaning_hash": admitted_obj["meaning_hash"],
+            "decision_hash": admitted_obj["decision_hash"],
+            "transcript_hash": transcript_hash,
+            "effect_id": effect["effect_id"],
+            "effect_receipt_hash": effect["receipt_hash"],
+            "rollback_receipt_hash": effect["rollback_receipt_hash"],
+            "effect_post_state_hash": effect["post_state_hash"],
+            "effect_restored_state_hash": effect["restored_state_hash"],
+            "effect_journal_hash": effect["journal_hash"],
+            "result_hash": result_hash,
+            "adapter_invocation_id": invocation_id,
+            "governance_event_hash": governance_append.head_hash,
+        }
+        terminal_evidence_hash = write_terminal_evidence(
+            artifact_root=semantic_run_root,
+            request_id=req_obj["request_id"],
+            execution_id=execution_id,
+            occurrence_hash=occurrence_hash,
+            primary_bindings=primary_bindings,
+            routing_record=routing_record.record,
+            adapter_invocation=invocation.record,
+            governance_record=governance_append.record,
+        )
+        probe.observe("evidence.finalized", organ_root="versioning", identity_hash=terminal_evidence_hash)
+        run_receipt = probe.finalize(
+            runtime_roots=registry.runtime_import_roots,
+            mode=req_obj["mode"],
+            provider_calls_total=semantic_execution.provider_calls_total,
+            artifact_bindings={**primary_bindings, "terminal_evidence_hash": terminal_evidence_hash},
+        )
+        council_summary = {
+            "status": "OK",
+            "vertical": "SEMANTIC",
+            "mode": req_obj["mode"],
+            "request_id": req_obj["request_id"],
+            "execution_id": execution_id,
+            "occurrence_hash": occurrence_hash,
+            "plan_hash": semantic_plan.plan_hash,
+            "adapter_id": req_obj["adapter_id"],
+            "manifest_hash": semantic_execution.manifest_hash,
+            "provider_id": req_obj["provider_id"],
+            "model": req_obj["model"],
+            "provider_calls_total": semantic_execution.provider_calls_total,
+            "raw_response_hash": message_obj["raw_response_hash"],
+            "message_hash": message_obj["message_hash"],
+            "admission_hash": admitted_obj["meaning_hash"],
+            "decision": admitted_obj["decision"],
+            "reason_code": admitted_obj["reason_code"],
+            "decision_hash": admitted_obj["decision_hash"],
+            "effect_id": effect["effect_id"],
+            "effect_status": effect["effect_status"],
+            "semantic_effects_applied": effect["semantic_effects_applied"],
+            "pre_state_hash": effect["pre_state_hash"],
+            "post_state_hash": effect["post_state_hash"],
+            "restored_state_hash": effect["restored_state_hash"],
+            "rollback_status": effect["rollback_status"],
+            "transcript_hash": transcript_hash,
+            "result_hash": result_hash,
+            "terminal_evidence_hash": terminal_evidence_hash,
+            "run_receipt_hash": run_receipt["run_receipt_hash"],
+            "probe_ledger_head": run_receipt.get("ledger_head"),
+            "coverage_hash": run_receipt.get("coverage_hash"),
+            "proof_status": run_receipt["proof_status"],
+            "probe_contract_hash": PROBE_CONTRACT_HASH,
+            "routing_record_hash": routing_record_hash,
+            "invocation_ids": [invocation_id],
+            "claim_ceiling": run_receipt["claim_ceiling"],
+        }
+
+    elif isinstance(candidate_obj, dict) and candidate_obj.get("schema_id") == CouncilRequestSchema.SCHEMA_ID:
         try:
             req = CouncilRequestSchema.from_dict(candidate_obj)
         except SchemaValidationError as exc:
@@ -653,7 +943,6 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
 
 
     from governance.verdict import emit_governance_verdict  # noqa: E402
-    from pathlib import Path
     artifact_root_value = context.get("artifact_root")
     if artifact_root_value is None:
         artifact_root = vault_path.parent

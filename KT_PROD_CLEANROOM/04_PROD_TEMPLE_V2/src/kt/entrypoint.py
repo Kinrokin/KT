@@ -43,11 +43,17 @@ def invoke(context: Dict[str, Any]) -> Dict[str, Any]:
     if not callable(spine_fn):
         return {"status": "FAIL", "error": "Canonical Spine target is not callable (fail-closed)", "where": "spine_fn"}
 
+    token = None
     try:
+        from core.semantic_probe import _begin_canonical_entry_scope, _end_canonical_entry_scope  # noqa: E402
+
+        token = _begin_canonical_entry_scope(context)
         result = spine_fn(context)
     except Exception as exc:
         return {"status": "FAIL", "error": str(exc), "where": "spine_fn(context)"}
+    finally:
+        if token is not None:
+            _end_canonical_entry_scope(token)
     if result is None:
         return {"status": "FAIL", "error": "spine_fn(context) returned None", "where": "spine_fn(context)"}
     return result
-

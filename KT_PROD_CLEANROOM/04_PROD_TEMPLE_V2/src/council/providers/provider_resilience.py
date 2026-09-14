@@ -7,6 +7,7 @@ from typing import Dict, Tuple
 
 LANE_REQUEST = "REQUEST"
 LANE_LIVE_HASHED = "LIVE_HASHED"
+LANE_LIVE_SEMANTIC = "LIVE_SEMANTIC"
 
 
 @dataclass(frozen=True)
@@ -53,6 +54,17 @@ _DEFAULT_POLICIES: Dict[str, ProviderResiliencePolicy] = {
         rate_limit_window_ms=60_000,
         rate_limit_max_calls=20,
         process_quota_max_calls=120,
+    ),
+    LANE_LIVE_SEMANTIC: ProviderResiliencePolicy(
+        max_attempts=1,
+        initial_backoff_ms=0,
+        backoff_multiplier=1.0,
+        max_backoff_ms=0,
+        circuit_failure_threshold=1,
+        circuit_reset_ms=30_000,
+        rate_limit_window_ms=60_000,
+        rate_limit_max_calls=2,
+        process_quota_max_calls=2,
     ),
 }
 

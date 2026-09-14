@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from time import time
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Tuple
 
 from council.providers.dry_run_provider import DryRunProvider
 from council.providers.live_provider_openai import OpenAIProvider
@@ -24,6 +25,7 @@ from council.providers.provider_resilience import (
 from council.providers.provider_schemas import ProviderRequestSchema, ProviderResponseSchema, make_disabled_response, make_fail_closed_response
 from council.providers.provider_schemas import ProviderCallReceipt
 from schemas.telemetry_runtime import emit_runtime_telemetry
+from schemas.semantic_vertical_schemas import TypedProviderMessageSchema
 
 
 def _live_receipt_fail_reason(receipt: ProviderCallReceipt) -> str:
@@ -366,3 +368,69 @@ class ProviderRegistry:
                     )
                     raise RuntimeError(f"{last_error} (fail-closed)")
         raise RuntimeError(f"LIVE_HASHED provider not implemented (fail-closed): {provider_id!r}")
+
+    def invoke_live_semantic(
+        self,
+        *,
+        provider_id: str,
+        model: str,
+        prompt: str,
+        max_output_tokens: int,
+        timeout_ms: int,
+        temperature: float,
+        kt_node_id: str,
+        trace_id: str,
+        offline_fixture_path: Path | None = None,
+    ) -> Tuple[ProviderCallReceipt, TypedProviderMessageSchema, bytes]:
+        started_ms = int(time() * 1000)
+        if provider_id != "openai":
+            raise RuntimeError("LIVE_SEMANTIC provider not implemented (fail-closed)")
+        if not trace_id:
+            raise RuntimeError("semantic trace_id required (fail-closed)")
+        if offline_fixture_path is None:
+            raise RuntimeError("LIVE_SEMANTIC_NOT_AUTHORIZED_BY_OFFLINE_MICROFIX (fail-closed)")
+
+        from council.providers.live_provider_openai_hashed import LiveHashedOpenAIProvider
+
+        provider = LiveHashedOpenAIProvider()
+        try:
+            receipt, message, raw_response = provider.invoke_semantic(
+                model=model,
+                prompt=prompt,
+                max_output_tokens=max_output_tokens,
+                timeout_ms=timeout_ms,
+                temperature=temperature,
+                kt_node_id=kt_node_id,
+                trace_id=trace_id,
+                offline_fixture_path=offline_fixture_path,
+            )
+        except Exception as exc:
+            emit_runtime_telemetry(
+                surface_id="council.providers.provider_registry.invoke_live_semantic",
+                zone="CANONICAL",
+                event_type="provider.invoke_live_semantic",
+                start_ts=started_ms,
+                end_ts=int(time() * 1000),
+                result_status="FAIL_CLOSED",
+                provider_id=provider_id,
+                policy_applied="prb.semantic.offline_transport_fixture.fail_closed",
+                failure_artifact_ref=classify_exception(exc),
+                receipt_ref="provider.call_receipt",
+                trace_id=trace_id,
+                request_id=trace_id,
+            )
+            raise
+        emit_runtime_telemetry(
+            surface_id="council.providers.provider_registry.invoke_live_semantic",
+            zone="CANONICAL",
+            event_type="provider.invoke_live_semantic",
+            start_ts=started_ms,
+            end_ts=int(time() * 1000),
+            result_status="OK",
+            provider_id=provider_id,
+            policy_applied="prb.semantic.offline_transport_fixture",
+            receipt_ref="provider.call_receipt",
+            trace_id=trace_id,
+            request_id=trace_id,
+        )
+        return receipt, message, raw_response

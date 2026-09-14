@@ -21,12 +21,18 @@ def test_wave2a_active_adapter_manifests_load_expected_ids() -> None:
     manifests = load_active_adapter_manifests()
     assert sorted(manifests) == [
         "council.openai.live_hashed.v1",
+        "council.openai.live_semantic.v1",
         "council.openrouter.live_hashed.v1",
     ]
     for manifest in manifests.values():
-        assert manifest.execution_mode == "LIVE"
         assert manifest.status == "ACTIVE"
-        assert manifest.request_type_allowlist == ("analysis", "healthcheck")
+        if manifest.adapter_kind == "SEMANTIC_PROVIDER_OFFLINE_PROOF":
+            assert manifest.execution_mode == "OFFLINE_PROOF"
+            assert manifest.request_type_allowlist == ("analysis",)
+            assert manifest.retry_policy["max_attempts"] == 1
+        else:
+            assert manifest.execution_mode == "LIVE"
+            assert manifest.request_type_allowlist == ("analysis", "healthcheck")
         assert manifest.manifest_path.is_relative_to(adapter_export_root())
 
 

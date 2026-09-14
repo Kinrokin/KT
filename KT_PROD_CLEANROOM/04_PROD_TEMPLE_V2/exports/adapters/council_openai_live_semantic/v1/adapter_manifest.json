@@ -1,0 +1,41 @@
+{
+  "adapter_id": "council.openai.live_semantic.v1",
+  "adapter_kind": "SEMANTIC_PROVIDER_OFFLINE_PROOF",
+  "budget_profile": "prb.semantic.timeout_20000.max_output_512.one_attempt",
+  "challenge_hooks": [
+    "analysis"
+  ],
+  "circuit_breaker_policy": {
+    "cooldown_ms": 30000,
+    "threshold": 1
+  },
+  "execution_mode": "OFFLINE_PROOF",
+  "io_schema_ref": "provider.typed_message.v1+council.admitted_meaning.v1",
+  "policy_profile": "prb.semantic.offline_only.strict_json.fail_closed",
+  "provider_id": "openai",
+  "provenance_requirements": [
+    "provider_call_receipt",
+    "typed_provider_message",
+    "admitted_meaning",
+    "semantic_effect_receipt",
+    "rollback_receipt",
+    "probe_ledger"
+  ],
+  "rate_limit_profile": {
+    "max_calls_per_window": 0,
+    "quota_cap": 0,
+    "window_ms": 60000
+  },
+  "replayability_class": "PRB_DETACHED_RAW_RESPONSE_REPLAY",
+  "request_type_allowlist": [
+    "analysis"
+  ],
+  "retry_policy": {
+    "backoff_multiplier": 1.0,
+    "base_delay_ms": 0,
+    "max_attempts": 1
+  },
+  "status": "ACTIVE",
+  "timeout_ms": 20000,
+  "version": "1.0.0"
+}
