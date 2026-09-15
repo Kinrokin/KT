@@ -46,6 +46,78 @@
       "status": "RATIFIED_ROUTER_BASELINE"
     }
   ],
+  "legacy_runtime_role_crosswalk": {
+    "authority": "HISTORICAL_STATIC_ROUTER_BASELINE_TO_PREP_TARGET_TAXONOMY_ONLY",
+    "canonical_target_registry_ref": "adaptive/cognitive_lobe_registry.json",
+    "entries": [
+      {
+        "canonical_target_ids": [
+          "audit_reasoning_lobe"
+        ],
+        "legacy_lobe_id": "lobe.auditor.v1",
+        "legacy_runtime_role_id": "auditor",
+        "mapping_kind": "HISTORICAL_SEMANTIC_COMPATIBILITY_ONLY",
+        "promotion_authority": false,
+        "static_router_policy_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "target_mount_authority": false
+      },
+      {
+        "canonical_target_ids": [
+          "regulated_domain_lobe"
+        ],
+        "legacy_lobe_id": "lobe.censor.v1",
+        "legacy_runtime_role_id": "censor",
+        "mapping_kind": "HISTORICAL_SAFETY_ENFORCER_COMPATIBILITY_ONLY",
+        "promotion_authority": false,
+        "static_router_policy_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "target_mount_authority": false
+      },
+      {
+        "canonical_target_ids": [
+          "cross_domain_patterncraft_lobe"
+        ],
+        "legacy_lobe_id": "lobe.muse.v1",
+        "legacy_runtime_role_id": "muse",
+        "mapping_kind": "HISTORICAL_SEMANTIC_COMPATIBILITY_ONLY",
+        "promotion_authority": false,
+        "static_router_policy_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "target_mount_authority": false
+      },
+      {
+        "canonical_target_ids": [
+          "formal_proof_reasoning_lobe"
+        ],
+        "legacy_lobe_id": "lobe.quant.v1",
+        "legacy_runtime_role_id": "quant",
+        "mapping_kind": "HISTORICAL_SEMANTIC_COMPATIBILITY_ONLY",
+        "promotion_authority": false,
+        "static_router_policy_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "target_mount_authority": false
+      },
+      {
+        "canonical_target_ids": [
+          "strategic_synthesis_lobe"
+        ],
+        "legacy_lobe_id": "lobe.strategist.v1",
+        "legacy_runtime_role_id": "strategist",
+        "mapping_kind": "HISTORICAL_SEMANTIC_COMPATIBILITY_ONLY",
+        "promotion_authority": false,
+        "static_router_policy_ref": "KT_PROD_CLEANROOM/governance/router_policy_registry.json",
+        "target_mount_authority": false
+      }
+    ],
+    "runtime_substitution_allowed": false,
+    "unrepresented_canonical_target_ids": [
+      "contradiction_paradox_lobe",
+      "temporal_chronology_lobe",
+      "grounded_evidence_lobe",
+      "commercial_operator_lobe",
+      "execution_tool_lobe",
+      "context_memory_compression_lobe",
+      "learning_delta_lobe",
+      "adversarial_red_assault_lobe"
+    ]
+  },
   "generated_utc": "2026-03-10T13:29:07Z",
   "registry_id": "LOBE_ROLE_REGISTRY_V1_20260310",
   "schema_id": "kt.governance.lobe_role_registry.v1",

@@ -11,7 +11,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator import author_lobe_gate_court_taxonomy_reconciliation as taxonomy
-from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 PROGRAM_ID = "VERIFY_KT_13_LOBE_TRANCHE_READINESS"
@@ -23,7 +23,6 @@ CONFIG_PATH = "training/kt_13_lobe_7b_tranche_config.json"
 RUNBOOK_PATH = "training/kaggle_13_lobe_7b_tranche_runbook.md"
 RECEIPT_PATH = "KT_PROD_CLEANROOM/reports/kt_13_lobe_tranche_readiness_inspection_receipt.json"
 REGISTRY_PATH = "registry/artifact_authority_registry.json"
-DELTA_PATH = "registry/artifact_authority_registry_13_lobe_tranche_readiness_delta_receipt.json"
 
 CANONICAL_LOBES = [lobe_id for lobe_id, _, _ in taxonomy.CANONICAL_LOBES]
 CANONICAL_LOBE_SET = set(CANONICAL_LOBES)
@@ -77,6 +76,7 @@ HISTORICAL_COMPAT_LABELS = {
     "lobe.muse.v1",
     "lobe.quant.v1",
     "lobe.auditor.v1",
+    "lobe.censor.v1",
     "lobe.scout.v1",
     "lobe.strategist.v1",
 }
@@ -125,11 +125,6 @@ def _read(root: Path, raw: str) -> dict[str, Any]:
     if not path.is_file():
         raise RuntimeError(f"Missing required artifact: {raw}")
     return load_json(path)
-
-
-def _file_hash(root: Path, raw: str) -> str | None:
-    path = root / raw
-    return file_sha256(path) if path.is_file() else None
 
 
 def _tranche_config(current_head: str) -> dict[str, Any]:
@@ -398,43 +393,6 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     }
 
 
-def _registry_entry(root: Path, artifact_id: str, raw: str, role: str, *, controls_execution: bool) -> dict[str, Any]:
-    return {
-        "artifact_id": artifact_id,
-        "path": raw,
-        "role": role,
-        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-        "validation_status": "PASS",
-        "controls_execution": controls_execution,
-        "claim_authority": "INTERNAL_SHADOW",
-        "sha256": _file_hash(root, raw),
-        "supersedes": [],
-        "superseded_by": None,
-        "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
-    }
-
-
-def _update_registry(root: Path, current_head: str) -> dict[str, Any]:
-    registry = _read(root, REGISTRY_PATH)
-    artifact_ids = {
-        "KT_13_LOBE_7B_TRANCHE_CONFIG",
-        "KT_13_LOBE_7B_TRANCHE_RUNBOOK",
-        "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT",
-    }
-    artifacts = [item for item in registry.get("artifacts", []) if item.get("artifact_id") not in artifact_ids]
-    artifacts.extend(
-        [
-            _registry_entry(root, "KT_13_LOBE_7B_TRANCHE_CONFIG", CONFIG_PATH, "thirteen_lobe_tranche_config", controls_execution=True),
-            _registry_entry(root, "KT_13_LOBE_7B_TRANCHE_RUNBOOK", RUNBOOK_PATH, "thirteen_lobe_tranche_runbook", controls_execution=False),
-            _registry_entry(root, "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT", RECEIPT_PATH, "thirteen_lobe_tranche_readiness_receipt", controls_execution=True),
-        ]
-    )
-    registry["current_head"] = current_head
-    registry["generated_utc"] = utc_now_iso_z()
-    registry["artifacts"] = artifacts
-    return registry
-
-
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
     root = output_root or repo_root()
     current_head = _git_head(root)
@@ -453,34 +411,12 @@ def run(*, output_root: Path | None = None) -> dict[str, Any]:
     if write_json_stable(root / RECEIPT_PATH, receipt):
         changed.append(RECEIPT_PATH)
 
-    registry = _update_registry(root, current_head)
-    if write_json_stable(root / REGISTRY_PATH, registry):
-        changed.append(REGISTRY_PATH)
-
-    delta = {
-        "schema_id": "kt.artifact_authority_registry.13_lobe_tranche_readiness_delta_receipt.v1",
-        "artifact_id": "KT_ARTIFACT_AUTHORITY_REGISTRY_13_LOBE_TRANCHE_READINESS_DELTA_RECEIPT",
-        "generated_utc": utc_now_iso_z(),
-        "current_head": current_head,
-        "artifacts_added": [CONFIG_PATH, RUNBOOK_PATH, RECEIPT_PATH],
-        "artifacts_modified": [REGISTRY_PATH, DELTA_PATH],
-        "artifacts_superseded": [],
-        "old_labels_reclassified": sorted(REQUIRED_MAPPING_TARGETS),
-        "historical_lobe_labels_preserved_as_compat_records": True,
-        "future_kaggle_training_restricted_to_13_lobe_ids": receipt["future_kaggle_training_restricted_to_13_lobe_ids"],
-        "prior_gate_scaffold_adapters_preserved_as_advisors": True,
-        "claim_ceiling_unchanged": True,
-        "production_commercial_external_superiority_authority_added": False,
-        "duplicate_controlling_artifacts": [],
-    }
-    if write_json_stable(root / DELTA_PATH, delta):
-        changed.append(DELTA_PATH)
-
     return {
         "current_head": current_head,
         "outcome": receipt["outcome"],
         "next_lawful_move": receipt["next_lawful_move"],
         "changed_outputs": changed,
+        "global_authority_registry_mutated": False,
         "blockers": receipt["blockers"],
         "claim_ceiling": "unchanged",
     }

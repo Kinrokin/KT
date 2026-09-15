@@ -14,7 +14,7 @@ def _copy_inputs(tmp_path: Path) -> None:
     root = author.repo_root()
     required = [
         "registry/artifact_authority_registry.json",
-        "KT_PROD_CLEANROOM/reports/kt_7b_q_lora_smoke_repair_next_lawful_move.json",
+        "registry/artifact_authority_registry_delta_receipt.json",
     ]
     for raw in required:
         source = root / raw
@@ -82,7 +82,39 @@ def test_old_training_labels_map_to_new_taxonomy(tmp_path: Path) -> None:
     assert by_label["adapter_forge"]["taxonomy_class"] == "TRAINING_FACTORY"
     assert by_label["context_efficiency_lobe"]["corrected_target"] == "context_memory_compression_lobe"
     assert by_label["lobe.auditor.v1"]["taxonomy_class"] == "HISTORICAL_COMPAT_ALIAS"
+    assert by_label["lobe.censor.v1"]["corrected_target"] == "regulated_domain_lobe"
+    assert by_label["lobe.censor.v1"]["taxonomy_class"] == "HISTORICAL_COMPAT_ALIAS"
     assert by_label["lobe.strategist.v1"]["canonical_lobe"] is False
+
+
+def test_legacy_runtime_roles_have_explicit_non_substitutive_crosswalk() -> None:
+    root = author.repo_root()
+    role_registry = _load(root / "KT_PROD_CLEANROOM/governance/lobe_role_registry.json")
+    target_registry = _load(root / "adaptive/cognitive_lobe_registry.json")
+    crosswalk = role_registry["legacy_runtime_role_crosswalk"]
+    entries = crosswalk["entries"]
+
+    assert crosswalk["authority"] == "HISTORICAL_STATIC_ROUTER_BASELINE_TO_PREP_TARGET_TAXONOMY_ONLY"
+    assert crosswalk["runtime_substitution_allowed"] is False
+    assert {entry["legacy_lobe_id"] for entry in entries} == {
+        entry["lobe_id"] for entry in role_registry["entries"]
+    }
+    assert [entry["legacy_runtime_role_id"] for entry in entries] == [
+        "auditor",
+        "censor",
+        "muse",
+        "quant",
+        "strategist",
+    ]
+    assert all(entry["target_mount_authority"] is False for entry in entries)
+    assert all(entry["promotion_authority"] is False for entry in entries)
+
+    canonical_target_ids = {entry["lobe_id"] for entry in target_registry["lobes"]}
+    mapped_target_ids = {
+        target_id for entry in entries for target_id in entry["canonical_target_ids"]
+    }
+    assert mapped_target_ids <= canonical_target_ids
+    assert set(crosswalk["unrepresented_canonical_target_ids"]) == canonical_target_ids - mapped_target_ids
 
 
 def test_prior_gate_scaffold_adapters_are_advisors_not_lobes(tmp_path: Path) -> None:
@@ -180,18 +212,20 @@ def test_gate_advisor_interface_blocks_pass_fail_authority(tmp_path: Path) -> No
     assert props["pass_fail_authority"]["const"] == "CODE_OWNED_SCHEMA_BOUND_RECEIPT_BOUND_FAIL_CLOSED_ONLY"
 
 
-def test_reconciliation_updates_registry_without_claim_expansion(tmp_path: Path) -> None:
+def test_reconciliation_preserves_global_authority_registry_without_claim_expansion(tmp_path: Path) -> None:
     _copy_inputs(tmp_path)
-    author.run(output_root=tmp_path)
+    registry_path = tmp_path / "registry/artifact_authority_registry.json"
+    delta_path = tmp_path / "registry/artifact_authority_registry_delta_receipt.json"
+    registry_before = registry_path.read_bytes()
+    delta_before = delta_path.read_bytes()
+    summary = author.run(output_root=tmp_path)
 
-    registry = _load(tmp_path / author.OUTPUTS["registry"])
-    delta = _load(tmp_path / author.OUTPUTS["registry_delta"])
-    artifact_ids = {artifact["artifact_id"] for artifact in registry["artifacts"]}
+    mapping = _load(tmp_path / author.OUTPUTS["mapping"])
+    receipt = _load(tmp_path / author.OUTPUTS["reconciliation_receipt"])
 
-    assert "KT_COGNITIVE_LOBE_REGISTRY" in artifact_ids
-    assert "KT_GATE_COURT_VALIDATOR_REGISTRY" in artifact_ids
-    assert "KT_LOBE_GATE_MAPPING" in artifact_ids
-    assert "KT_13_LOBE_SUPERLANE_NEXT_LAWFUL_MOVE" in artifact_ids
-    assert delta["claim_ceiling_unchanged"] is True
-    assert delta["production_commercial_external_superiority_authority_added"] is False
-    assert "claim_boundary" in delta["old_labels_reclassified"]
+    assert registry_path.read_bytes() == registry_before
+    assert delta_path.read_bytes() == delta_before
+    assert summary["global_authority_registry_mutated"] is False
+    assert any(item["source_label"] == "claim_boundary" for item in mapping["mappings"])
+    assert receipt["commercial_claim_authorized"] is False
+    assert receipt["external_audit_accepted"] is False
