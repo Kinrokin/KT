@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.dependency_inventory_emit import DEFAULT_REPORT_ROOT_REL, build_dependency_reports
+from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
 from tools.operator.titanium_common import make_run_dir, repo_root, write_failure_artifacts, write_json_worm
 
 
@@ -54,19 +54,27 @@ def build_dependency_inventory_validation_report(*, root: Path, report_root: Pat
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Validate dependency inventory, environment manifest, and SBOM preview.")
-    ap.add_argument("--report-root", default=DEFAULT_REPORT_ROOT_REL)
-    ap.add_argument("--run-root", default="")
+    ap.add_argument(
+        "--report-root",
+        required=True,
+        help="absolute external evidence root emitted for this current-head validation",
+    )
+    ap.add_argument(
+        "--run-root",
+        required=True,
+        help="absolute external validation-output root; repository paths are rejected",
+    )
     return ap.parse_args(argv)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
-    run_dir = make_run_dir(cmd_name="dependency-inventory-validate", requested_run_root=str(args.run_root))
+    root = repo_root()
+    run_dir: Optional[Path] = None
     try:
-        root = repo_root()
-        report_root = Path(str(args.report_root)).expanduser()
-        if not report_root.is_absolute():
-            report_root = (root / report_root).resolve()
+        report_root = resolve_external_report_root(root=root, report_root=args.report_root)
+        run_root = resolve_external_report_root(root=root, report_root=args.run_root)
+        run_dir = make_run_dir(cmd_name="dependency-inventory-validate", requested_run_root=str(run_root))
         report = build_dependency_inventory_validation_report(root=root, report_root=report_root)
         write_json_worm(run_dir / "reports" / "dependency_inventory_validation_receipt.json", report, label="dependency_inventory_validation_receipt.json")
         if report["status"] != "PASS":
@@ -83,6 +91,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print(json.dumps(report, sort_keys=True, ensure_ascii=True))
         return 0
     except Exception as exc:  # noqa: BLE001
+        if run_dir is None:
+            print(json.dumps({"failure": str(exc), "status": "FAIL"}, sort_keys=True, ensure_ascii=True))
+            return 2
         return write_failure_artifacts(
             run_dir=run_dir,
             program_id="program.dependency.inventory.validate",

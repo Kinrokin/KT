@@ -29,6 +29,31 @@ def _git_head(root: Path) -> str:
         return "NON_GIT_WORKTREE"
 
 
+def _is_within(candidate: Path, root: Path) -> bool:
+    try:
+        candidate.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
+
+
+def resolve_external_report_root(*, root: Path, report_root: str | Path) -> Path:
+    """Return one explicit output root that cannot be inside the checkout."""
+    raw = str(report_root).strip()
+    if not raw:
+        raise ValueError("DEPENDENCY_REPORT_ROOT_REQUIRED")
+    candidate = Path(raw).expanduser()
+    if not candidate.is_absolute():
+        candidate = (root / candidate).resolve()
+    else:
+        candidate = candidate.resolve()
+    if _is_within(candidate, root):
+        raise ValueError(f"DEPENDENCY_REPORT_ROOT_MUST_BE_EXTERNAL: {candidate}")
+    if candidate.exists() and candidate.is_symlink():
+        raise ValueError(f"DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN: {candidate}")
+    return candidate
+
+
 def _iter_python_files(root: Path, scan_roots: Iterable[str]) -> Iterable[Path]:
     for rel in scan_roots:
         base = (root / rel).resolve()
@@ -181,23 +206,33 @@ def build_dependency_reports(*, root: Path, scan_roots: Sequence[str] = DEFAULT_
     return {"inventory": inventory, "environment": environment, "sbom": sbom}
 
 
+def emit_dependency_reports(*, root: Path, report_root: str | Path) -> Dict[str, Dict[str, Any]]:
+    """Emit one fresh dependency-evidence set into a new external root only."""
+    destination = resolve_external_report_root(root=root, report_root=report_root)
+    if destination.exists():
+        raise FileExistsError(f"DEPENDENCY_REPORT_ROOT_ALREADY_EXISTS: {destination}")
+    destination.mkdir(parents=True, exist_ok=False)
+    reports = build_dependency_reports(root=root)
+    write_json_stable(destination / "dependency_inventory.json", reports["inventory"])
+    write_json_stable(destination / "python_environment_manifest.json", reports["environment"])
+    write_json_stable(destination / "sbom_cyclonedx.json", reports["sbom"])
+    return reports
+
+
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Emit deterministic dependency inventory and baseline SBOM preview.")
-    ap.add_argument("--report-root", default=DEFAULT_REPORT_ROOT_REL)
+    ap.add_argument(
+        "--report-root",
+        required=True,
+        help="new absolute external evidence root; repository paths are rejected",
+    )
     return ap.parse_args(argv)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     root = repo_root()
-    report_root = Path(str(args.report_root)).expanduser()
-    if not report_root.is_absolute():
-        report_root = (root / report_root).resolve()
-    report_root.mkdir(parents=True, exist_ok=True)
-    reports = build_dependency_reports(root=root)
-    write_json_stable(report_root / "dependency_inventory.json", reports["inventory"])
-    write_json_stable(report_root / "python_environment_manifest.json", reports["environment"])
-    write_json_stable(report_root / "sbom_cyclonedx.json", reports["sbom"])
+    reports = emit_dependency_reports(root=root, report_root=args.report_root)
     print(json.dumps({"head_sha": reports["inventory"]["pinned_head_sha"], "status": "PASS"}, sort_keys=True, ensure_ascii=True))
     return 0
 
