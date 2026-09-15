@@ -31,6 +31,18 @@ def _artifact_epochs_root() -> Path:
     return _growth_artifacts_root() / "epochs"
 
 
+def _artifact_state_root() -> Path:
+    return _growth_artifacts_root() / "state"
+
+
+def _plan_suggestions_ledger_path() -> Path:
+    return _artifact_state_root() / "plan_suggestions.jsonl"
+
+
+def _autonomous_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "autonomous_escalation_log.json"
+
+
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
     """Execute a single epoch plan via orchestrator (canonical API)."""
     return run_epoch_from_plan(
@@ -69,7 +81,8 @@ def run_plan_suggester() -> Dict[str, any]:
         "--epochs-dir",
         str(_artifact_epochs_root()),
         "--write-epoch",
-        "--append-log",
+        "--ledger-out",
+        str(_plan_suggestions_ledger_path()),
     ]
     subprocess.run(cmd, env=env, check=True)
     plan = latest_epoch_root() / "plan_suggestion.json"
@@ -101,8 +114,8 @@ def parse_args():
     parser.add_argument(
         "--policy-log",
         type=Path,
-        default=ROOT / "tools" / "growth" / "state" / "lane_policy_comparison.jsonl",
-        help="Path to append policy-vs-heuristic audit rows (JSONL).",
+        default=None,
+        help="Optional policy audit path (defaults under KT_GROWTH_ARTIFACTS_ROOT/state).",
     )
     return parser.parse_args()
 
@@ -170,6 +183,7 @@ def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
 
 def main() -> None:
     args = parse_args()
+    policy_log = args.policy_log or (_artifact_state_root() / "lane_policy_comparison.jsonl")
     os.environ["KT_LIVE"] = "0"
     os.environ["KT_LIVE_PROOF"] = ""
 
@@ -247,7 +261,7 @@ def main() -> None:
                 record["policy_distribution"] = policy_result.get("probs")
                 record["policy_used"] = policy_result.get("policy_used")
                 _append_jsonl(
-                    args.policy_log,
+                    policy_log,
                     {
                         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                         "iteration": idx,
@@ -314,8 +328,10 @@ def main() -> None:
     summary["lane_counts"] = dict(lane_counter)
     print("\n=== AUTONOMOUS ESCALATION SUMMARY ===")
     print(json.dumps(summary, indent=2))
-    Path("autonomous_escalation_log.json").write_text(json.dumps(records, indent=2))
-    print("Details saved to autonomous_escalation_log.json")
+    detail_path = _autonomous_log_path()
+    detail_path.parent.mkdir(parents=True, exist_ok=True)
+    detail_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
+    print(f"Details saved to {detail_path}")
 
 
 def _consecutive_bad_coverage(records):

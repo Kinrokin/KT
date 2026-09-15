@@ -47,12 +47,37 @@ def current_packet_errors(artifacts: list[dict]) -> list[str]:
     return errors
 
 
+def _markdown_field(text: str, label: str) -> tuple[bool, str | None]:
+    matches = re.findall(
+        rf"(?mi)^[ \t]*(?:[-*][ \t]+)?{re.escape(label)}:[ \t]*(.*?)[ \t]*$",
+        text,
+    )
+    if len(matches) != 1:
+        return False, None
+    value = matches[0].strip()
+    if len(value) >= 2 and value.startswith("`") and value.endswith("`"):
+        value = value[1:-1].strip()
+    if value.casefold() in {"none", "none."}:
+        return True, None
+    return bool(value), value
+
+
+def _markdown_fields_match(text: str, expected: dict[str, str | None]) -> bool:
+    for label, expected_value in expected.items():
+        present, actual = _markdown_field(text, label)
+        if not present or actual != expected_value:
+            return False
+    return True
+
+
 def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
     contract = load_json(root / "governance/repo_layout_contract.json")
     manifest = load_json(root / "packets/current/manifest.json")
     memory_index = load_json(root / "memory/ARTIFACT_INDEX.json")
     current_truth = load_json(root / "reports/current/current_truth_receipt.json")
     current_context = (root / "memory/CURRENT_CONTEXT.md").read_text(encoding="utf-8")
+    next_lawful_move = (root / "memory/NEXT_LAWFUL_MOVE.md").read_text(encoding="utf-8")
+    active_cutline = (root / "memory/ACTIVE_CUTLINE.md").read_text(encoding="utf-8")
     if not isinstance(contract, dict) or not isinstance(manifest, dict):
         return ["current packet contract and manifest must be objects"]
     if "current_packet" not in contract or not isinstance(manifest.get("packets"), list):
@@ -75,9 +100,25 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
             and current_truth.get("current_packet_sha256") is None
             and current_truth.get("next_lawful_move") is None
             and current_truth.get("selection_state") == "NO_CURRENT_EXECUTION_PACKET"
-            and "Current packet: none." in current_context
-            and "packets/ktbud100_v1.zip" not in current_context
-            and "RUN_KT_BUDGET_MONITOR_GSM8K_100" not in current_context
+            and _markdown_fields_match(current_context, {
+                "Current packet": None,
+                "Current packet SHA256": None,
+                "Next lawful move": None,
+            })
+            and _markdown_fields_match(next_lawful_move, {
+                "Current packet": None,
+                "Current packet SHA256": None,
+                "Next lawful move": None,
+            })
+            and _markdown_fields_match(active_cutline, {
+                "Current packet": None,
+                "Current packet SHA256": None,
+                "Active execution lane": None,
+            })
+            and re.search(
+                r"\b(?:RUN_[A-Z0-9_]+|BUD[0-9][A-Z0-9_]*)\b",
+                "\n".join((current_context, next_lawful_move, active_cutline)),
+            ) is None
         )
         return [] if no_packet else ["current truth surfaces conflict with no-current-packet selection"]
     if not isinstance(selected, str) or len(current) != 1 or current[0]["path"] != selected:
@@ -86,9 +127,41 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
     if len(rows) != 1 or not isinstance(rows[0], dict):
         return ["current packet manifest must have one selected record"]
     record = rows[0]
+    digest = current[0].get("current_file_sha256")
     if (record.get("path") != selected or record.get("current_authority") is not True
-            or record.get("sha256") != current[0].get("current_file_sha256")):
+            or record.get("sha256") != digest):
         return ["current packet manifest binding mismatch"]
+    next_move = current_truth.get("next_lawful_move") if isinstance(current_truth, dict) else None
+    mirrors_match = (
+        isinstance(digest, str)
+        and isinstance(memory_index, dict)
+        and memory_index.get("current_packet") == selected
+        and memory_index.get("current_packet_sha256") == digest
+        and memory_index.get("selection_state") == "CURRENT_EXECUTION_PACKET"
+        and isinstance(current_truth, dict)
+        and current_truth.get("current_packet") == selected
+        and current_truth.get("current_packet_sha256") == digest
+        and current_truth.get("selection_state") == "CURRENT_EXECUTION_PACKET"
+        and isinstance(next_move, str)
+        and bool(next_move.strip())
+        and _markdown_fields_match(current_context, {
+            "Current packet": selected,
+            "Current packet SHA256": digest,
+            "Next lawful move": next_move,
+        })
+        and _markdown_fields_match(next_lawful_move, {
+            "Current packet": selected,
+            "Current packet SHA256": digest,
+            "Next lawful move": next_move,
+        })
+        and _markdown_fields_match(active_cutline, {
+            "Current packet": selected,
+            "Current packet SHA256": digest,
+            "Active execution lane": next_move,
+        })
+    )
+    if not mirrors_match:
+        return ["current packet truth-surface binding mismatch"]
     return []
 
 
@@ -198,6 +271,12 @@ def check(root: Path = ROOT) -> list[str]:
                 seen_ids.add(identity)
             if artifact.get("primary_class") == "UNKNOWN_REVIEW_REQUIRED":
                 errors.append(f"{label}: unknown artifact review required")
+            if (artifact.get("controls_execution") is True
+                    and (artifact.get("authority_state") != "LIVE_CURRENT_HEAD_VALIDATED"
+                         or artifact.get("validation_status") != "PASS")):
+                errors.append(
+                    f"{label}: execution control requires LIVE_CURRENT_HEAD_VALIDATED with PASS"
+                )
             historical = (artifact.get("primary_class") in {"ARCHIVE_HISTORY", "GENERATED_OUTPUT"}
                           or artifact.get("authority_state") in HISTORICAL_STATES)
             if historical and (artifact.get("controls_execution") is True

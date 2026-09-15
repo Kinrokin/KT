@@ -4,6 +4,10 @@ Current posture: repository authority selects no current execution packet.
 
 Current packet: none.
 
+Current packet SHA256: none.
+
+Next lawful move: none.
+
 No repository memory surface grants a next execution step. Previously selected
 budget packets remain historical evidence.
 

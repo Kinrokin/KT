@@ -341,6 +341,92 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 self.assertEqual(run_epoch_escalation._artifact_epochs_root(), expected)
                 self.assertEqual(run_autonomous_escalation._artifact_epochs_root(), expected)
 
+    def test_escalation_consumers_route_all_mutable_outputs_external(self) -> None:
+        from tools.growth import run_autonomous_escalation, run_epoch_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                self.assertEqual(run_autonomous_escalation._artifact_state_root(), override_root / "state")
+                self.assertEqual(
+                    run_autonomous_escalation._plan_suggestions_ledger_path(),
+                    override_root / "state" / "plan_suggestions.jsonl",
+                )
+                self.assertEqual(
+                    run_autonomous_escalation._autonomous_log_path(),
+                    override_root / "logs" / "autonomous_escalation_log.json",
+                )
+                self.assertEqual(
+                    run_epoch_escalation._epoch_escalation_log_path(),
+                    override_root / "logs" / "epoch_escalation_log.json",
+                )
+
+    def test_plan_suggester_uses_explicit_external_ledger(self) -> None:
+        from tools.growth import run_autonomous_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            epoch_root = override_root / "epochs" / "EPOCH-SUGGESTED-RUN1"
+            observed = {}
+
+            def fake_run(command, *, env, check):
+                observed["command"] = list(command)
+                observed["env"] = dict(env)
+                observed["check"] = check
+                epoch_root.mkdir(parents=True)
+                (epoch_root / "plan_suggestion.json").write_text(
+                    json.dumps({"status": "PASS"}), encoding="utf-8"
+                )
+
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}), patch.object(
+                run_autonomous_escalation.subprocess, "run", side_effect=fake_run
+            ):
+                result = run_autonomous_escalation.run_plan_suggester()
+
+            command = observed["command"]
+            self.assertEqual(result, {"status": "PASS"})
+            self.assertTrue(observed["check"])
+            self.assertNotIn("--append-log", command)
+            self.assertEqual(
+                command[command.index("--ledger-out") + 1],
+                str(override_root / "state" / "plan_suggestions.jsonl"),
+            )
+            self.assertEqual(
+                command[command.index("--epochs-dir") + 1],
+                str(override_root / "epochs"),
+            )
+
+    def test_growth_state_updates_preserve_repository_state_files(self) -> None:
+        from tools.growth.state import cce_state, oce_state, rwrp_state
+
+        modules = (cce_state, oce_state, rwrp_state)
+        source_before = {
+            module._STATE_PATH: module._STATE_PATH.read_bytes() if module._STATE_PATH.exists() else None
+            for module in modules
+        }
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                cce_state.update_state(executed_lane="COVERAGE_HOP_RECOVERY", epoch_id="EPOCH-EXTERNAL-STATE")
+                oce_state.update_state(executed_lane="COVERAGE_HOP_RECOVERY", epoch_id="EPOCH-EXTERNAL-STATE")
+                rwrp_state.update_state(
+                    executed_lane="COVERAGE_HOP_RECOVERY",
+                    epoch_id="EPOCH-EXTERNAL-STATE",
+                    regret_global=0.25,
+                )
+                for module in modules:
+                    state_path = module._state_path()
+                    self.assertEqual(state_path.parent, override_root / "state")
+                    self.assertTrue(state_path.is_file())
+                    payload = json.loads(state_path.read_text(encoding="utf-8"))
+                    self.assertEqual(payload["updated_at_epoch_id"], "EPOCH-EXTERNAL-STATE")
+
+        for path, original in source_before.items():
+            if original is None:
+                self.assertFalse(path.exists())
+            else:
+                self.assertEqual(path.read_bytes(), original)
+
     def test_preflight_uses_external_collision_history_and_explicit_root(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

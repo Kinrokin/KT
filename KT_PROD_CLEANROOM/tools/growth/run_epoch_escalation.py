@@ -22,6 +22,10 @@ def _artifact_epochs_root() -> Path:
     return _growth_artifacts_root() / "epochs"
 
 
+def _epoch_escalation_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "epoch_escalation_log.json"
+
+
 def find_latest_epoch() -> Path:
     epochs_root = _artifact_epochs_root()
     if not epochs_root.is_dir():
@@ -107,8 +111,9 @@ def main():
     }
     print("\n=== SUMMARY ===")
     print(json.dumps(summary, indent=2))
-    detail_path = Path("epoch_escalation_log.json")
-    detail_path.write_text(json.dumps(records, indent=2))
+    detail_path = _epoch_escalation_log_path()
+    detail_path.parent.mkdir(parents=True, exist_ok=True)
+    detail_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
     print(f"Details saved to {detail_path}")
 
 

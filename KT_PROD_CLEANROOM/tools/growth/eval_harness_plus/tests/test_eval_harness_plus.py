@@ -151,6 +151,146 @@ class TestExternalEpochInput(unittest.TestCase):
                         eval_plus_main()
             self.assertFalse(out.exists())
 
+    def test_nested_epoch_directory_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "nested" / "EPOCH-NESTED_RUN1"
+            epoch_dir.mkdir(parents=True)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "epoch_dir_not_direct_child"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_missing_run_id_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-MISSING_ID_RUN1"
+            record_path = epoch_dir / "CRU-TEST" / "run_record.json"
+            record_path.parent.mkdir(parents=True)
+            record_path.write_text(json.dumps({"outcome": "TIMEOUT"}), encoding="utf-8")
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+            )
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_or_missing_run_id_path_component"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_missing_replay_report_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-MISSING_REPLAY_RUN1"
+            run_id = "a" * 64
+            record_path = epoch_dir / "CRU-TEST" / "run_record.json"
+            record_path.parent.mkdir(parents=True)
+            record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+            )
+            (growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id).mkdir(parents=True)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "replay_report_missing"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_manifest_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-LINKED_MANIFEST_RUN1"
+            epoch_dir.mkdir(parents=True)
+            outside = root / "outside-manifest.json"
+            outside.write_text(json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8")
+            (epoch_dir / "epoch_manifest.json").symlink_to(outside)
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8"
+            )
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "epoch_manifest_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_run_record_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-LINKED_RECORD_RUN1"
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+            )
+            outside = root / "outside-record.json"
+            outside.write_text(json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8")
+            (epoch_dir / "run_record.json").symlink_to(outside)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "run_record_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_replay_report_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-LINKED_REPLAY_RUN1"
+            run_id = "a" * 64
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+            )
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
+            )
+            c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            c019_dir.mkdir(parents=True)
+            outside = root / "outside-replay.json"
+            outside.write_text('{"status":"PASS"}', encoding="utf-8")
+            (c019_dir / "replay_report.json").symlink_to(outside)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "replay_report_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_governance_report_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-LINKED-GOVERNANCE-RUN1"
+            run_id = "a" * 64
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+            )
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
+            )
+            c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            c019_dir.mkdir(parents=True)
+            (c019_dir / "replay_report.json").write_text('{"status":"PASS"}', encoding="utf-8")
+            outside = root / "outside-governance.json"
+            outside.write_text('{"types":[]}', encoding="utf-8")
+            (c019_dir / "governance_report.json").symlink_to(outside)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "governance_report_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
     def _assert_untrusted_c019_path_component_rejected(
         self, *, kernel_target: str, run_id: str, expected: str
     ) -> None:
@@ -182,7 +322,7 @@ class TestExternalEpochInput(unittest.TestCase):
         self._assert_untrusted_c019_path_component_rejected(
             kernel_target="V2_SOVEREIGN",
             run_id="../" * 20 + "evil",
-            expected="invalid_run_id_path_component",
+            expected="invalid_or_missing_run_id_path_component",
         )
 
 

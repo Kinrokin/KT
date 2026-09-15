@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import List, Optional
@@ -29,6 +30,16 @@ class CCEState:
 _STATE_PATH = Path(__file__).resolve().parent / "cce_state.json"
 
 
+def _state_path() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _STATE_PATH
+    root = Path(override)
+    if not root.is_absolute():
+        root = Path(__file__).resolve().parents[3] / root
+    return root.resolve() / "state" / "cce_state.json"
+
+
 def _default_state() -> CCEState:
     return CCEState(
         schema="CCE_STATE_V1",
@@ -43,10 +54,11 @@ def _default_state() -> CCEState:
 
 
 def load_state() -> CCEState:
-    if not _STATE_PATH.exists():
+    path = _state_path()
+    if not path.exists():
         return _default_state()
     try:
-        payload = json.loads(_STATE_PATH.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
         raise RuntimeError(f"CCE state invalid JSON (fail-closed): {exc}") from exc
     if not isinstance(payload, dict) or payload.get("schema") != "CCE_STATE_V1":
@@ -64,8 +76,9 @@ def load_state() -> CCEState:
 
 
 def save_state(state: CCEState) -> None:
-    _STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    _STATE_PATH.write_text(json.dumps(state.to_dict(), indent=2, sort_keys=True), encoding="utf-8")
+    path = _state_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state.to_dict(), indent=2, sort_keys=True), encoding="utf-8")
 
 
 def update_state(*, executed_lane: str, epoch_id: str) -> CCEState:

@@ -47,7 +47,19 @@ def checkout(tmp_path):
                {"current_packet": None, "current_packet_sha256": None, "next_lawful_move": None,
                 "selection_state": "NO_CURRENT_EXECUTION_PACKET"})
     (tmp_path / "memory" / "CURRENT_CONTEXT.md").write_text(
-        "# Current Context\n\nCurrent packet: none.\n", encoding="utf-8"
+        "# Current Context\n\nCurrent packet: none.\n\n"
+        "Current packet SHA256: none.\n\nNext lawful move: none.\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "NEXT_LAWFUL_MOVE.md").write_text(
+        "# Next Lawful Move\n\nCurrent packet: none.\n\n"
+        "Current packet SHA256: none.\n\nNext lawful move: none.\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "ACTIVE_CUTLINE.md").write_text(
+        "# Active Cutline\n\nCurrent packet: none.\n\n"
+        "Current packet SHA256: none.\n\nActive execution lane: none.\n",
+        encoding="utf-8",
     )
     write_json(tmp_path, "registry/artifact_authority_registry.schema.json",
                json.loads((ROOT / "registry/artifact_authority_registry.schema.json").read_text(encoding="utf-8")))
@@ -146,13 +158,40 @@ def test_global_packet_selection_does_not_create_permission(checkout):
     assert authority.current_packet_errors([{**packet, "authority_state": "STALE"}])
 
 
+@pytest.mark.parametrize("state,status", [
+    ("LIVE_CURRENT_HEAD_PREP_ONLY", "PASS"),
+    ("BLOCKED", "PASS"),
+    ("MISSING", "PASS"),
+    ("GENERATED_PENDING_VALIDATION", "PENDING"),
+    ("LIVE_CURRENT_HEAD_VALIDATED", "FAIL"),
+    ("LIVE_CURRENT_HEAD_VALIDATED", "PENDING"),
+])
+def test_execution_control_requires_validated_live_pass(checkout, state, status):
+    change_registry(checkout, lambda r: r["artifacts"][0].update(
+        authority_state=state,
+        validation_status=status,
+        controls_execution=True,
+    ))
+    assert any(
+        "execution control requires LIVE_CURRENT_HEAD_VALIDATED with PASS" in error
+        for error in authority.check(checkout)
+    )
+
+
 def test_stale_manifest_cannot_resurrect_a_packet(checkout):
     write_json(checkout, "packets/current/manifest.json", {"packets": [
         {"path": "packets/ktbud100_v1.zip", "current_authority": True, "sha256": "0" * 64}]})
     assert any("no-packet selection conflicts" in e for e in authority.check(checkout))
 
 
-@pytest.mark.parametrize("surface", ["memory_index", "current_truth", "current_context"])
+@pytest.mark.parametrize("surface", [
+    "memory_index",
+    "current_truth",
+    "current_context",
+    "next_lawful_move",
+    "active_cutline",
+    "mixed_current_context",
+])
 def test_stale_current_truth_surface_cannot_resurrect_a_packet(checkout, surface):
     if surface == "memory_index":
         write_json(checkout, "memory/ARTIFACT_INDEX.json",
@@ -163,11 +202,108 @@ def test_stale_current_truth_surface_cannot_resurrect_a_packet(checkout, surface
                    {"current_packet": "packets/ktbud100_v1.zip", "current_packet_sha256": "0" * 64,
                     "next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
                     "selection_state": "CURRENT_EXECUTION_PACKET"})
+    elif surface == "current_context":
+        (checkout / "memory" / "CURRENT_CONTEXT.md").write_text(
+            "Current packet: packets/other.zip\n\nCurrent packet SHA256: none.\n\n"
+            "Next lawful move: none.\n",
+            encoding="utf-8",
+        )
+    elif surface == "next_lawful_move":
+        (checkout / "memory" / "NEXT_LAWFUL_MOVE.md").write_text(
+            "Current packet: none.\n\nCurrent packet SHA256: none.\n\n"
+            "Next lawful move: RUN_UNAUTHORIZED_PACKET\n",
+            encoding="utf-8",
+        )
+    elif surface == "active_cutline":
+        (checkout / "memory" / "ACTIVE_CUTLINE.md").write_text(
+            "Current packet: none.\n\nCurrent packet SHA256: none.\n\n"
+            "Active execution lane: RUN_UNAUTHORIZED_PACKET\n",
+            encoding="utf-8",
+        )
     else:
         (checkout / "memory" / "CURRENT_CONTEXT.md").write_text(
-            "Current packet: packets/ktbud100_v1.zip\n", encoding="utf-8"
+            "Current packet: none.\nCurrent packet: packets/other.zip\n\n"
+            "Current packet SHA256: none.\n\nNext lawful move: none.\n",
+            encoding="utf-8",
         )
     assert any("current truth" in error for error in authority.check(checkout))
+
+
+def select_current_packet(checkout):
+    packet_path = "packets/current/example.zip"
+    packet = checkout / packet_path
+    packet.parent.mkdir(parents=True, exist_ok=True)
+    packet.write_bytes(b"selected packet\n")
+    subprocess.run(["git", "add", packet_path], cwd=checkout, check=True)
+    digest = hashlib.sha256(packet.read_bytes()).hexdigest()
+    write_json(checkout, "governance/repo_layout_contract.json",
+               {"current_packet": packet_path, "current_packet_state": "CURRENT_EXECUTION_PACKET"})
+    write_json(checkout, "packets/current/manifest.json",
+               {"packets": [{"path": packet_path, "current_authority": True, "sha256": digest}]})
+    write_json(checkout, "memory/ARTIFACT_INDEX.json",
+               {"current_packet": packet_path, "current_packet_sha256": digest,
+                "selection_state": "CURRENT_EXECUTION_PACKET"})
+    write_json(checkout, "reports/current/current_truth_receipt.json",
+               {"current_packet": packet_path, "current_packet_sha256": digest,
+                "next_lawful_move": "RUN_SELECTED_PACKET",
+                "selection_state": "CURRENT_EXECUTION_PACKET"})
+    (checkout / "memory" / "CURRENT_CONTEXT.md").write_text(
+        f"Current packet: {packet_path}\n\nCurrent packet SHA256: {digest}\n\n"
+        "Next lawful move: RUN_SELECTED_PACKET\n",
+        encoding="utf-8",
+    )
+    (checkout / "memory" / "NEXT_LAWFUL_MOVE.md").write_text(
+        f"Current packet: {packet_path}\n\nCurrent packet SHA256: {digest}\n\n"
+        "Next lawful move: RUN_SELECTED_PACKET\n",
+        encoding="utf-8",
+    )
+    (checkout / "memory" / "ACTIVE_CUTLINE.md").write_text(
+        f"Current packet: {packet_path}\n\nCurrent packet SHA256: {digest}\n\n"
+        "Active execution lane: RUN_SELECTED_PACKET\n",
+        encoding="utf-8",
+    )
+    change_registry(checkout, lambda r: (
+        r["artifacts"].append({
+            **row(packet_path, "selected-packet"),
+            "primary_class": "CANONICAL_PACKET_CURRENT",
+            "authority_state": "LIVE_CURRENT_HEAD_VALIDATED",
+            "validation_status": "PASS",
+            "controls_execution": True,
+            "current_authority": True,
+            "current_file_sha256": digest,
+        }),
+        r.update(artifact_count=2),
+    ))
+    return packet_path, digest
+
+
+def test_selected_packet_binds_every_current_truth_surface(checkout):
+    select_current_packet(checkout)
+    assert authority.check(checkout) == []
+
+
+@pytest.mark.parametrize("surface", [
+    "memory_index", "current_truth", "current_context", "next_lawful_move", "active_cutline",
+])
+def test_selected_packet_rejects_stale_truth_mirror(checkout, surface):
+    _, digest = select_current_packet(checkout)
+    if surface == "memory_index":
+        value = json.loads((checkout / "memory/ARTIFACT_INDEX.json").read_text(encoding="utf-8"))
+        value["current_packet_sha256"] = "0" * 64
+        write_json(checkout, "memory/ARTIFACT_INDEX.json", value)
+    elif surface == "current_truth":
+        value = json.loads((checkout / "reports/current/current_truth_receipt.json").read_text(encoding="utf-8"))
+        value["current_packet"] = "packets/current/stale.zip"
+        write_json(checkout, "reports/current/current_truth_receipt.json", value)
+    else:
+        names = {
+            "current_context": "CURRENT_CONTEXT.md",
+            "next_lawful_move": "NEXT_LAWFUL_MOVE.md",
+            "active_cutline": "ACTIVE_CUTLINE.md",
+        }
+        path = checkout / "memory" / names[surface]
+        path.write_text(path.read_text(encoding="utf-8").replace(digest, "0" * 64), encoding="utf-8")
+    assert "current packet truth-surface binding mismatch" in authority.check(checkout)
 
 
 def test_duplicate_report_keys_cannot_hide_a_blocker(checkout):
