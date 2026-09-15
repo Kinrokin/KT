@@ -151,28 +151,39 @@ class TestExternalEpochInput(unittest.TestCase):
                         eval_plus_main()
             self.assertFalse(out.exists())
 
-    def test_untrusted_c019_path_components_are_rejected_before_output(self) -> None:
-        cases = [
-            ("../outside", "a" * 64, "invalid_kernel_target_path_component"),
-            ("V2_SOVEREIGN", "../" * 20 + "evil", "invalid_run_id_path_component"),
-        ]
-        for kernel_target, run_id, expected in cases:
-            with self.subTest(expected=expected), tempfile.TemporaryDirectory() as td:
-                root = Path(td)
-                growth_root = root / "growth"
-                epoch_dir = growth_root / "epochs" / "EPOCH-UNTRUSTED_RUN1"
-                record_path = epoch_dir / "CRU-TEST" / "run_record.json"
-                record_path.parent.mkdir(parents=True)
-                record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
-                (epoch_dir / "epoch_manifest.json").write_text(
-                    json.dumps({"kernel_identity": {"kernel_target": kernel_target}}), encoding="utf-8"
-                )
-                out = root / "must-not-exist.json"
-                argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
-                with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
-                    with self.assertRaisesRegex(ValueError, expected):
-                        eval_plus_main()
-                self.assertFalse(out.exists())
+    def _assert_untrusted_c019_path_component_rejected(
+        self, *, kernel_target: str, run_id: str, expected: str
+    ) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-UNTRUSTED_RUN1"
+            record_path = epoch_dir / "CRU-TEST" / "run_record.json"
+            record_path.parent.mkdir(parents=True)
+            record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": kernel_target}}), encoding="utf-8"
+            )
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, expected):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_untrusted_kernel_target_is_rejected_before_output(self) -> None:
+        self._assert_untrusted_c019_path_component_rejected(
+            kernel_target="../outside",
+            run_id="a" * 64,
+            expected="invalid_kernel_target_path_component",
+        )
+
+    def test_untrusted_run_id_is_rejected_before_output(self) -> None:
+        self._assert_untrusted_c019_path_component_rejected(
+            kernel_target="V2_SOVEREIGN",
+            run_id="../" * 20 + "evil",
+            expected="invalid_run_id_path_component",
+        )
 
 
 if __name__ == "__main__":
