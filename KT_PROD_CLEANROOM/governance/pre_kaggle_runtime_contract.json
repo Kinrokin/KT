@@ -1,0 +1,42 @@
+{
+  "schema_id": "kt.pre_kaggle_runtime_contract.v1",
+  "artifact_id": "KT_PRE_KAGGLE_RUNTIME_CONTRACT",
+  "status": "ACTIVE_STATIC_CONTROL_PLANE_ONLY",
+  "purpose": "Validate future experiment inputs, boundaries, and preservation behavior before a separately authorized execution lane exists.",
+  "identity_planes": {
+    "source": ["repo_head", "source_tree_sha256"],
+    "artifact": ["adapter_manifest_sha256", "adapter_identity"],
+    "environment": ["environment_lock_sha256", "toolchain_id"],
+    "measurement": ["measurement_manifest_sha256", "benchmark_selection_status"]
+  },
+  "required_invariants": [
+    "No identity plane may supply another plane's fields.",
+    "A packet selection names one exact file, one digest, one external manifest, and matching requested, subject, current, and reachable source heads for a current experiment.",
+    "Nested input discovery uses one exact stage root and one exact inventory; broad glob selection and unexpected candidates fail closed.",
+    "An adapter identity includes its exact folder, config, model bytes, base model revision, PEFT type, and target modules.",
+    "Transport metadata keeps secret values out of records, makes fallback policy explicit, and keeps cache roots outside source.",
+    "QLoRA requires an explicit four-bit setting, an available bitsandbytes CUDA backend, four-bit modules, compatible runtime libraries, process isolation, lifecycle cleanup, telemetry, and an admitted envelope.",
+    "The output root must be external to the source tree and separates ephemeral heavy, model cache, adapter cache, run scratch, durable heavy, and assessment return zones.",
+    "Supervision, measurement, scorecard, and claim records preserve provenance, scorer-only expected-answer handling, arithmetic reconciliation, and evidence-tier ceilings.",
+    "A failed simulated arm preserves completed measured rows as assessment-only evidence without a performance claim."
+  ],
+  "execution_ceiling": {
+    "simulation_only": true,
+    "model_inference_invoked": false,
+    "training_invoked": false,
+    "kaggle_execution_authorized": false,
+    "paid_compute_authorized": false,
+    "hf_upload_authorized": false,
+    "final_benchmark_selection_authorized": false
+  },
+  "out_of_scope": [
+    "Kaggle notebook or one-cell runner execution",
+    "model loading or inference",
+    "adapter training",
+    "paid compute",
+    "provider or model calls",
+    "Hugging Face upload",
+    "final benchmark selection",
+    "production promotion or performance claims"
+  ]
+}
