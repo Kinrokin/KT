@@ -784,6 +784,13 @@ def main(argv: list[str] | None = None) -> int:
                           "errors": errors}, indent=2, sort_keys=True))
         return 1 if errors else 0
 
+    print(json.dumps({
+        "status": "BLOCKED_LEGACY_WRITE_PATH_DISABLED",
+        "mode": "no_write",
+        "next_action": "Use --check. Historical census generation requires a separately reviewed migration.",
+    }, indent=2, sort_keys=True))
+    return 2
+
     for directory in [REPORTS, REGISTRY, GOVERNANCE, RULES, MEMORY, PACKETS / "current", REPORTS / "current"]:
         directory.mkdir(parents=True, exist_ok=True)
 

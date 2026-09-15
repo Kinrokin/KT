@@ -18,14 +18,17 @@ if str(_ORCH_DIR) not in sys.path:
     sys.path.insert(0, str(_ORCH_DIR))
 
 ROOT = Path("KT_PROD_CLEANROOM")
-ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 from tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
-from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.orchestrator.epoch_orchestrator import _growth_artifacts_root, run_epoch_from_plan
 from tools.growth.state.cce_state import update_state as update_cce_state
 from tools.growth.state.oce_state import update_state as update_oce_state
 from tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 SESSION_TAG = int(time.time() * 1000)
+
+
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
 
 
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
@@ -34,14 +37,18 @@ def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
         plan_path=plan_path,
         resume=False,
         mode="salvage",
-        salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
         auto_bump=True,
         quiet=quiet,
     )
 
 
 def latest_epoch_root() -> Path:
-    roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epochs_root = _artifact_epochs_root()
+    if not epochs_root.is_dir():
+        raise RuntimeError("no epoch directories found")
+    roots = [p for p in epochs_root.iterdir() if p.is_dir()]
+    if not roots:
+        raise RuntimeError("no epoch directories found")
     return max(roots, key=lambda p: p.stat().st_mtime)
 
 
@@ -60,7 +67,7 @@ def run_plan_suggester() -> Dict[str, any]:
         "-m",
         "tools.growth.state.plan_suggester",
         "--epochs-dir",
-        str(ARTIFACT_EPOCHS),
+        str(_artifact_epochs_root()),
         "--write-epoch",
         "--append-log",
     ]
@@ -194,7 +201,7 @@ def main() -> None:
     except Exception as exc:
         print(f"[baseline] could not write bootstrap plan_suggestion.json: {exc}", file=sys.stderr)
     # Ensure at least two epochs exist so plan_suggester can run.
-    epoch_roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epoch_roots = [p for p in _artifact_epochs_root().iterdir() if p.is_dir()]
     if len(epoch_roots) < 2:
         print("=== Seeding second baseline coverage for history ===")
         second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")

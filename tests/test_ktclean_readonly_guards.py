@@ -40,6 +40,15 @@ def checkout(tmp_path):
     write_json(tmp_path, "reports/repo_path_length_risk_index_v1.json", {"blocker_count": 0})
     write_json(tmp_path, "governance/repo_layout_contract.json", {"current_packet": None})
     write_json(tmp_path, "packets/current/manifest.json", {"packets": []})
+    write_json(tmp_path, "memory/ARTIFACT_INDEX.json",
+               {"current_packet": None, "current_packet_sha256": None,
+                "selection_state": "NO_CURRENT_EXECUTION_PACKET"})
+    write_json(tmp_path, "reports/current/current_truth_receipt.json",
+               {"current_packet": None, "current_packet_sha256": None, "next_lawful_move": None,
+                "selection_state": "NO_CURRENT_EXECUTION_PACKET"})
+    (tmp_path / "memory" / "CURRENT_CONTEXT.md").write_text(
+        "# Current Context\n\nCurrent packet: none.\n", encoding="utf-8"
+    )
     write_json(tmp_path, "registry/artifact_authority_registry.schema.json",
                json.loads((ROOT / "registry/artifact_authority_registry.schema.json").read_text(encoding="utf-8")))
     write_json(tmp_path, "registry/artifact_authority_registry.json",
@@ -143,6 +152,24 @@ def test_stale_manifest_cannot_resurrect_a_packet(checkout):
     assert any("no-packet selection conflicts" in e for e in authority.check(checkout))
 
 
+@pytest.mark.parametrize("surface", ["memory_index", "current_truth", "current_context"])
+def test_stale_current_truth_surface_cannot_resurrect_a_packet(checkout, surface):
+    if surface == "memory_index":
+        write_json(checkout, "memory/ARTIFACT_INDEX.json",
+                   {"current_packet": "packets/ktbud100_v1.zip", "current_packet_sha256": "0" * 64,
+                    "selection_state": "CURRENT_EXECUTION_PACKET"})
+    elif surface == "current_truth":
+        write_json(checkout, "reports/current/current_truth_receipt.json",
+                   {"current_packet": "packets/ktbud100_v1.zip", "current_packet_sha256": "0" * 64,
+                    "next_lawful_move": "RUN_KT_BUDGET_MONITOR_GSM8K_100",
+                    "selection_state": "CURRENT_EXECUTION_PACKET"})
+    else:
+        (checkout / "memory" / "CURRENT_CONTEXT.md").write_text(
+            "Current packet: packets/ktbud100_v1.zip\n", encoding="utf-8"
+        )
+    assert any("current truth" in error for error in authority.check(checkout))
+
+
 def test_duplicate_report_keys_cannot_hide_a_blocker(checkout):
     (checkout / "reports/repo_path_length_risk_index_v1.json").write_text(
         '{"blocker_count": 1, "blocker_count": 0}', encoding="utf-8")
@@ -191,6 +218,11 @@ def test_census_check_preserves_all_existing_bytes_and_paths(checkout, module_mo
 
     before = snapshot()
     argv = ["-m", "scripts.repo_pristine_census"] if module_mode else ["scripts/repo_pristine_census.py"]
+    legacy = subprocess.run([sys.executable, "-B", *argv], cwd=checkout,
+                            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}, capture_output=True, text=True)
+    assert legacy.returncode == 2, legacy.stderr + legacy.stdout
+    assert json.loads(legacy.stdout)["status"] == "BLOCKED_LEGACY_WRITE_PATH_DISABLED"
+    assert snapshot() == before
     result = subprocess.run([sys.executable, "-B", *argv, "--check"], cwd=checkout,
                             env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr + result.stdout

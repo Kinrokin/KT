@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any, Dict, Mapping, Tuple
 
@@ -34,6 +35,8 @@ def _require_json_object(path: Path) -> Dict[str, Any]:
 
 def _load_epoch_metrics(epoch_dir: Path) -> Tuple[Dict[str, int], int, int, Dict[str, int], Dict[str, str]]:
     # Epoch dir is expected to contain per-crucible run_record.json files and (optionally) governance_report.json.
+    if not epoch_dir.is_dir():
+        raise ValueError("epoch_dir_missing_or_not_directory (fail-closed)")
     outcomes: Dict[str, int] = {}
     replay_verified = 0
     replay_total = 0
@@ -42,16 +45,19 @@ def _load_epoch_metrics(epoch_dir: Path) -> Tuple[Dict[str, int], int, int, Dict
 
     # Kernel identity is bound by epoch manifest if present.
     manifest_path = epoch_dir / "epoch_manifest.json"
-    if manifest_path.exists():
-        em = _require_json_object(manifest_path)
-        kid = em.get("kernel_identity")
-        if isinstance(kid, dict) and "kernel_target" in kid:
-            kernel_identity["kernel_target"] = str(kid.get("kernel_target"))
-            kernel_identity["kernel_build_id"] = str(kid.get("kernel_build_id", "unknown"))
+    if not manifest_path.is_file():
+        raise ValueError("epoch_manifest_missing (fail-closed)")
+    em = _require_json_object(manifest_path)
+    kid = em.get("kernel_identity")
+    if isinstance(kid, dict) and "kernel_target" in kid:
+        kernel_identity["kernel_target"] = str(kid.get("kernel_target"))
+        kernel_identity["kernel_build_id"] = str(kid.get("kernel_build_id", "unknown"))
 
     artifacts_root = epoch_dir.parent.parent  # .../tools/growth/artifacts
 
     run_records = sorted(epoch_dir.rglob("run_record.json"))
+    if not run_records:
+        raise ValueError("epoch_run_records_missing (fail-closed)")
     if len(run_records) > MAX_RUN_RECORDS:
         raise ValueError("too_many_run_records (fail-closed)")
 
@@ -62,9 +68,16 @@ def _load_epoch_metrics(epoch_dir: Path) -> Tuple[Dict[str, int], int, int, Dict
 
         # Augment from C019 run directory when run_id is present.
         run_id = rr.get("run_id")
-        if isinstance(run_id, str) and len(run_id) == 64:
+        if run_id is not None:
+            if not isinstance(run_id, str) or re.fullmatch(r"[0-9a-f]{64}", run_id) is None:
+                raise ValueError("invalid_run_id_path_component (fail-closed)")
             kernel_target = kernel_identity.get("kernel_target", "unknown")
-            c019_dir = artifacts_root / "c019_runs" / kernel_target / run_id
+            if (kernel_target in {".", ".."}
+                    or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", kernel_target) is None):
+                raise ValueError("invalid_kernel_target_path_component (fail-closed)")
+            c019_root = (artifacts_root / "c019_runs").resolve()
+            c019_dir = (c019_root / kernel_target / run_id).resolve()
+            _ensure_under_root(path=c019_dir, root=c019_root, label="c019_dir")
             if c019_dir.exists():
                 rp = c019_dir / "replay_report.json"
                 if rp.exists():

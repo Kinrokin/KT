@@ -331,6 +331,16 @@ class TestKernelTargetRouting(unittest.TestCase):
 
 
 class TestArtifactsRootOverride(unittest.TestCase):
+    def test_escalation_consumers_share_external_epochs_root(self) -> None:
+        from tools.growth import run_autonomous_escalation, run_epoch_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = Path(td) / "external growth"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                expected = (override_root / "epochs").resolve()
+                self.assertEqual(run_epoch_escalation._artifact_epochs_root(), expected)
+                self.assertEqual(run_autonomous_escalation._artifact_epochs_root(), expected)
+
     def test_preflight_uses_external_collision_history_and_explicit_root(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

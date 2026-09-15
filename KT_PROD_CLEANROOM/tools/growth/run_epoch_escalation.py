@@ -4,13 +4,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path("KT_PROD_CLEANROOM")
-ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.orchestrator.epoch_orchestrator import _growth_artifacts_root, run_epoch_from_plan
 
 PLAN_FILES = {
     "next": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_NEXT_AUTO.json",
@@ -19,8 +18,15 @@ PLAN_FILES = {
 }
 
 
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
+
+
 def find_latest_epoch() -> Path:
-    dirs = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epochs_root = _artifact_epochs_root()
+    if not epochs_root.is_dir():
+        raise RuntimeError("no epoch directories found")
+    dirs = [p for p in epochs_root.iterdir() if p.is_dir()]
     if not dirs:
         raise RuntimeError("no epoch directories found")
     return max(dirs, key=lambda p: p.stat().st_mtime)

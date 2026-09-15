@@ -50,6 +50,9 @@ def current_packet_errors(artifacts: list[dict]) -> list[str]:
 def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
     contract = load_json(root / "governance/repo_layout_contract.json")
     manifest = load_json(root / "packets/current/manifest.json")
+    memory_index = load_json(root / "memory/ARTIFACT_INDEX.json")
+    current_truth = load_json(root / "reports/current/current_truth_receipt.json")
+    current_context = (root / "memory/CURRENT_CONTEXT.md").read_text(encoding="utf-8")
     if not isinstance(contract, dict) or not isinstance(manifest, dict):
         return ["current packet contract and manifest must be objects"]
     if "current_packet" not in contract or not isinstance(manifest.get("packets"), list):
@@ -58,7 +61,25 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
                and r.get("primary_class") == "CANONICAL_PACKET_CURRENT"]
     selected = contract["current_packet"]
     if selected is None:
-        return [] if not current and manifest["packets"] == [] else ["no-packet selection conflicts with registry or manifest"]
+        if current or manifest["packets"] != []:
+            return ["no-packet selection conflicts with registry or manifest"]
+        no_packet = (
+            contract.get("current_packet_state") in {None, "NO_CURRENT_EXECUTION_PACKET"}
+            and manifest.get("selection_state") in {None, "NO_CURRENT_EXECUTION_PACKET"}
+            and isinstance(memory_index, dict)
+            and memory_index.get("current_packet") is None
+            and memory_index.get("current_packet_sha256") is None
+            and memory_index.get("selection_state") == "NO_CURRENT_EXECUTION_PACKET"
+            and isinstance(current_truth, dict)
+            and current_truth.get("current_packet") is None
+            and current_truth.get("current_packet_sha256") is None
+            and current_truth.get("next_lawful_move") is None
+            and current_truth.get("selection_state") == "NO_CURRENT_EXECUTION_PACKET"
+            and "Current packet: none." in current_context
+            and "packets/ktbud100_v1.zip" not in current_context
+            and "RUN_KT_BUDGET_MONITOR_GSM8K_100" not in current_context
+        )
+        return [] if no_packet else ["current truth surfaces conflict with no-current-packet selection"]
     if not isinstance(selected, str) or len(current) != 1 or current[0]["path"] != selected:
         return ["current packet selection does not match registry"]
     rows = manifest["packets"]
