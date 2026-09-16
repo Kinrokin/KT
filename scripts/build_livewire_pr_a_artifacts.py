@@ -7,16 +7,24 @@ heads separate instead of laundering branch evidence as merged-main truth.
 """
 from __future__ import annotations
 
+import importlib.util
+from pathlib import Path
+
 try:
     from scripts.artifact_authority_registry_writer import bind_current_file_digests
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    _writer_path = Path(__file__).resolve().with_name("artifact_authority_registry_writer.py")
+    _writer_spec = importlib.util.spec_from_file_location("_kt_artifact_authority_registry_writer", _writer_path)
+    if _writer_spec is None or _writer_spec.loader is None:
+        raise ImportError(f"cannot load artifact authority registry writer from {_writer_path}")
+    _writer_module = importlib.util.module_from_spec(_writer_spec)
+    _writer_spec.loader.exec_module(_writer_module)
+    bind_current_file_digests = _writer_module.bind_current_file_digests
 
 import argparse
 import hashlib
 import json
 import subprocess
-from pathlib import Path
 from typing import Any
 
 
