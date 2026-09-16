@@ -708,7 +708,7 @@ def register_artifacts(paths: list[Path]) -> None:
             "primary_class": cls,
             "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
             "validation_status": "PASS",
-            "controls_execution": cls in {"CANONICAL_SOURCE", "CANONICAL_TEST", "CANONICAL_GOVERNANCE", "CANONICAL_PACKET_CURRENT"},
+            "controls_execution": False,
             "claim_authority": "CURRENT_HEAD" if cls in {"CANONICAL_GOVERNANCE", "CANONICAL_RECEIPT_CURRENT"} else "INTERNAL_SHADOW",
             "current_authority": True,
             "sha256": artifact_sha,

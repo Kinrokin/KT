@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, rebind_authority_registry_file
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import bind_current_file_digests, rebind_authority_registry_file
 
 import hashlib
 import json
@@ -672,7 +672,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
                     "artifact_id": path.stem.upper().replace(".", "_").replace("-", "_"),
                     "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ACQUISITION_ONLY",
                     "claim_authority": "INTERNAL_SHADOW",
-                    "controls_execution": path.as_posix().startswith("packets/"),
+                    "controls_execution": False,
                     "notes": "V17.7.3 evidence-acquisition artifact; no runtime authority, no policy optimization, no training, no promotion, no claim expansion.",
                     "path": path.relative_to(root).as_posix(),
                     "role": "v17_7_3_evidence_acquisition",
@@ -927,4 +927,5 @@ def build_all() -> dict[str, Any]:
     summary = read_json(summary_path)
     summary["registry_delta_path"] = delta_path.relative_to(root).as_posix()
     write_json(summary_path, summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary

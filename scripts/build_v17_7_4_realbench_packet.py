@@ -326,6 +326,7 @@ def build() -> dict[str, Any]:
         blockers=[],
     )
     write_json(repo / "reports" / "v17_7_4_realbench_builder_summary.json", summary)
+    rebind_authority_registry_file(repo / "registry/artifact_authority_registry.json")
     print(json.dumps(summary, indent=2, sort_keys=True))
     return summary
 

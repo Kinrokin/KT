@@ -6,6 +6,7 @@ import math
 import os
 import re
 import stat
+import unicodedata
 from pathlib import Path
 from typing import Any, MutableMapping
 
@@ -103,9 +104,10 @@ def _validate_registry_contract(root: Path, registry: MutableMapping[str, Any]) 
         path = row.get("path")
         identity = row.get("artifact_id")
         if isinstance(path, str):
-            if path in seen_paths:
+            normalized = unicodedata.normalize("NFKC", path).casefold()
+            if normalized in seen_paths:
                 errors.append(f"{location}: duplicate artifact path")
-            seen_paths.add(path)
+            seen_paths.add(normalized)
         if isinstance(identity, str):
             if identity in seen_ids:
                 errors.append(f"{location}: duplicate artifact_id")
@@ -160,6 +162,70 @@ def _repository_path(root: Path, relative: object) -> Path:
     return candidate
 
 
+def existing_artifact_ids_for_paths(registry: MutableMapping[str, Any], paths: list[str]) -> list[str]:
+    """Require one admitted canonical row per generated path without changing its authority."""
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, list):
+        raise ValueError("authority registry artifacts must be a list")
+    by_path: dict[str, list[dict]] = {}
+    for row in artifacts:
+        if not isinstance(row, dict) or not isinstance(row.get("path"), str):
+            raise ValueError("authority registry contains an invalid artifact row")
+        key = unicodedata.normalize("NFKC", row["path"]).casefold()
+        by_path.setdefault(key, []).append(row)
+    identities = []
+    for path in paths:
+        if not isinstance(path, str):
+            raise ValueError("generated artifact path must be a string")
+        matches = by_path.get(unicodedata.normalize("NFKC", path).casefold(), [])
+        if len(matches) != 1 or matches[0]["path"] != path:
+            raise ValueError(f"generated artifact requires one exact canonical registration: {path}")
+        identities.append(matches[0]["artifact_id"])
+    if len(set(paths)) != len(paths):
+        raise ValueError("generated artifacts contain duplicate paths")
+    return identities
+
+
+def _normalize_explicit_nonexecuting_rows(registry: MutableMapping[str, Any]) -> None:
+    """Convert legacy rows only when their own metadata explicitly forbids authority."""
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, list):
+        return
+    allowed_markers = ("PREP", "SHADOW", "DIAGNOSTIC", "REPLAY", "BLOCKED", "EVIDENCE", "LAB")
+    required = {"primary_class", "authority_state", "validation_status", "claim_authority",
+                "controls_execution", "sha256", "current_authority"}
+    for index, row in enumerate(artifacts):
+        if not isinstance(row, dict) or required.issubset(row):
+            continue
+        legacy_key = row.get("authority") or row.get("status")
+        role_key = row.get("role")
+        legacy_state = legacy_key
+        if legacy_state is None and isinstance(role_key, str) and role_key.startswith("v17_7_3_"):
+            legacy_state = row.get("authority_state")
+        explicit_nonexec = (
+            isinstance(legacy_state, str)
+            and any(marker in legacy_state.upper() for marker in allowed_markers)
+            and row.get("controls_execution") is not True
+            and row.get("runtime_authority") is not True
+            and row.get("promotion_authority") is not True
+            and row.get("claim_expansion") is not True
+        )
+        if not explicit_nonexec:
+            continue
+        row.pop("authority", None)
+        row.pop("status", None)
+        row["role"] = row.get("role") or "generated_output"
+        row["primary_class"] = "GENERATED_OUTPUT"
+        row["authority_state"] = "GENERATED_PENDING_VALIDATION"
+        row["validation_status"] = row.get("validation_status") or "PASS"
+        row["controls_execution"] = False
+        row["claim_authority"] = "NONE"
+        row["sha256"] = row.get("sha256")
+        row["current_authority"] = False
+        row.setdefault("supersedes", [])
+        row.setdefault("superseded_by", None)
+
+
 def bind_current_file_digests(
     registry_path: Path,
     registry: MutableMapping[str, Any],
@@ -171,6 +237,7 @@ def bind_current_file_digests(
     artifacts = registry.get("artifacts")
     if not isinstance(artifacts, list):
         raise ValueError("authority registry artifacts must be a list")
+    _normalize_explicit_nonexecuting_rows(registry)
 
     root = registry_path.parent.parent
     for index, row in enumerate(artifacts):

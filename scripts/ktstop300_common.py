@@ -183,7 +183,7 @@ def registry_entry(path: Path, primary_class: str, claim_authority: str, control
         "artifact_id": artifact_id(relative),
         "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
         "claim_authority": claim_authority,
-        "controls_execution": controls_execution,
+        "controls_execution": False,
         "current_authority": True,
         "notes": notes,
         "path": relative,

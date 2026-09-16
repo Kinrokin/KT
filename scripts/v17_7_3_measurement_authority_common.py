@@ -899,6 +899,7 @@ def build_reports(root: Path, assessment_path: Path | None = None, preflight_sta
     )
     summary_path = root / "reports" / "v17_7_3_measurement_authority_builder_summary.json"
     write_json(summary_path, summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 

@@ -614,6 +614,10 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 ".",
                 "..",
                 "EPOCH-TRAILING.",
+                "CON",
+                "nul.json",
+                "Com1.log",
+                "LPT9",
             ):
                 plan = _minimal_plan(
                     crucible_path,

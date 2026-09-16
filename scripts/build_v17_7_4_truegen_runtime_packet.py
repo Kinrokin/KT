@@ -517,6 +517,7 @@ def build(preflight_status: str | None = None) -> dict[str, Any]:
         next_lawful_move=NEXT_LAWFUL_MOVE,
     )
     write_json(repo / "reports" / "v17_7_4_truegen_execfix_builder_summary.json", summary)
+    rebind_authority_registry_file(repo / "registry/artifact_authority_registry.json")
     return summary
 
 

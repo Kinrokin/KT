@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 
@@ -912,37 +914,9 @@ def generate_packet(root: Path, head: str) -> str:
 def update_registry(root: Path, head: str, packet_sha: str) -> None:
     registry_path = root / "registry/artifact_authority_registry.json"
     registry = read_json(registry_path)
-    artifacts = registry.setdefault("artifacts", [])
-    by_id = {row.get("artifact_id"): row for row in artifacts if isinstance(row, dict)}
-    additions = [
-        {
-            "artifact_id": "KT_V14_V13_SCORE_RECONCILIATION_RECEIPT",
-            "path": "reports/v13_score_reconciliation_receipt.json",
-            "role": "v13_measured_score_reconciliation",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": file_sha256(root / "reports/v13_score_reconciliation_receipt.json"),
-            "notes": "V13 measured internal result binding; no promotion, superiority, or commercial authority.",
-        },
-        {
-            "artifact_id": "KTG3FULL_V14_ATLAS_PACKET",
-            "path": PACKET_ZIP.as_posix(),
-            "role": "future_process_isolated_ood_specialist_admission_packet",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": packet_sha,
-            "notes": "Runtime packet prepared; no runtime evidence earned until measured assessment passes.",
-        },
-    ]
-    for item in additions:
-        if item["artifact_id"] in by_id:
-            by_id[item["artifact_id"]].update(item)
-        else:
-            artifacts.append(item)
+    identities = existing_artifact_ids_for_paths(
+        registry, ["reports/v13_score_reconciliation_receipt.json", PACKET_ZIP.as_posix()]
+    )
     registry["current_head"] = head
     registry["generated_utc"] = utc_now()
     bind_current_file_digests(registry_path, registry)
@@ -951,7 +925,7 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
         "schema_id": "kt.artifact_authority_registry_v14_delta_receipt.v1",
         "created_utc": utc_now(),
         "current_head": head,
-        "artifacts_added_or_updated": [item["artifact_id"] for item in additions],
+        "artifacts_added_or_updated": identities,
         "claim_ceiling_unchanged": True,
         "production_commercial_external_superiority_authority_added": False,
         **CLAIM_CEILING,
@@ -1052,6 +1026,7 @@ def run_v14_superlane(root: Path | None = None, audit_clean: bool | None = None)
         **CLAIM_CEILING,
     }
     write_json(root / "reports/v14_superlane_receipt.json", receipt)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return receipt
 
 

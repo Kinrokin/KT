@@ -1207,7 +1207,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "primary_class": cls,
             "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
             "validation_status": "PASS",
-            "controls_execution": cls in {"CANONICAL_SOURCE", "CANONICAL_SCHEMA", "CANONICAL_TEST", "CANONICAL_GOVERNANCE", "CANONICAL_PACKET_CURRENT"},
+            "controls_execution": False,
             "claim_authority": claim_authority(cls),
             "current_authority": True,
             "sha256": artifact_sha,

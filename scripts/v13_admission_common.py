@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 
@@ -923,37 +925,9 @@ subprocess.run(["python", str(runner)], check=True)
 def update_registry(root: Path, head: str, packet_sha: str) -> None:
     registry_path = root / "registry/artifact_authority_registry.json"
     registry = read_json(registry_path)
-    artifacts = registry.setdefault("artifacts", [])
-    by_id = {row.get("artifact_id"): row for row in artifacts if isinstance(row, dict)}
-    additions = [
-        {
-            "artifact_id": "KT_V13_SPECIALIST_ROUTE_DERIVATION_RECEIPT",
-            "path": "reports/v12_specialist_route_derivation_receipt.json",
-            "role": "v12_specialist_route_derivation_replay",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": file_sha256(root / "reports/v12_specialist_route_derivation_receipt.json"),
-            "notes": "Candidate route-rule derivation; not learned-router superiority or adapter promotion.",
-        },
-        {
-            "artifact_id": "KTG3FULL_V13_CANONICAL_SPECIALIST_ROUTED_PACKET",
-            "path": PACKET_ZIP.as_posix(),
-            "role": "future_canonical_specialist_routed_compute_packet",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": packet_sha,
-            "notes": "Future runtime packet with no-scaffold gate; no runtime evidence earned until Kaggle assessment passes.",
-        },
-    ]
-    for item in additions:
-        if item["artifact_id"] in by_id:
-            by_id[item["artifact_id"]].update(item)
-        else:
-            artifacts.append(item)
+    identities = existing_artifact_ids_for_paths(
+        registry, ["reports/v12_specialist_route_derivation_receipt.json", PACKET_ZIP.as_posix()]
+    )
     registry["current_head"] = head
     registry["generated_utc"] = utc_now()
     bind_current_file_digests(registry_path, registry)
@@ -962,7 +936,7 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
         "schema_id": "kt.artifact_authority_registry_v13_admission_delta_receipt.v1",
         "created_utc": utc_now(),
         "current_head": head,
-        "artifacts_added_or_updated": [item["artifact_id"] for item in additions],
+        "artifacts_added_or_updated": identities,
         "claim_ceiling_unchanged": True,
         "production_commercial_external_superiority_authority_added": False,
         **CLAIM_CEILING,
@@ -1028,6 +1002,7 @@ def run_v13_superlane(root: Path | None = None, audit_clean: bool | None = None)
         **CLAIM_CEILING,
     }
     write_json(root / "reports/v13_superlane_receipt.json", receipt)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return receipt
 
 

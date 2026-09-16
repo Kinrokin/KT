@@ -119,6 +119,7 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
                 "Current packet SHA256": None,
                 "Active execution lane": None,
             })
+            and len(decision_log_rows) == 1
             and all(
                 row.get("primary_class") == "ARCHIVE_HISTORY"
                 and row.get("authority_state") in HISTORICAL_STATES

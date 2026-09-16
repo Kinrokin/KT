@@ -16,6 +16,7 @@ from scripts import check_no_bloat as bloat
 from scripts.artifact_authority_registry_writer import (
     DIGEST_SEMANTICS,
     bind_current_file_digests,
+    existing_artifact_ids_for_paths,
     rebind_authority_registry_file,
 )
 
@@ -41,7 +42,9 @@ def row(path, identity):
 def checkout(tmp_path):
     subprocess.run(["git", "init", "--quiet", str(tmp_path)], check=True)
     (tmp_path / "source.py").write_bytes(b"pass\n")
-    subprocess.run(["git", "add", "source.py"], cwd=tmp_path, check=True)
+    (tmp_path / "memory").mkdir()
+    (tmp_path / "memory" / "DECISION_LOG.jsonl").write_bytes(b"{}\n")
+    subprocess.run(["git", "add", "source.py", "memory/DECISION_LOG.jsonl"], cwd=tmp_path, check=True)
     write_json(tmp_path, "reports/repo_pristine_census_v1.json", {"duplicate_current_authority_status": "PASS"})
     write_json(tmp_path, "reports/repo_path_length_risk_index_v1.json", {"blocker_count": 0})
     write_json(tmp_path, "governance/repo_layout_contract.json", {"current_packet": None})
@@ -71,11 +74,15 @@ def checkout(tmp_path):
                json.loads((ROOT / "registry/artifact_authority_registry.schema.json").read_text(encoding="utf-8")))
     write_json(tmp_path, "registry/artifact_authority_registry.json",
                {"schema_id": "kt.artifact_authority_registry.v3", "current_head": "fixture",
-                "generated_utc": "fixture", "artifact_count": 1,
+                "generated_utc": "fixture", "artifact_count": 2,
                 "digest_semantics": {"sha256": "HISTORICAL_REGISTRATION_BYTES",
                                      "current_file_sha256": "CURRENT_REPOSITORY_BYTES",
                                      "self_excluded_path": "registry/artifact_authority_registry.json"},
-                "artifacts": [row("source.py", "one")]})
+                "artifacts": [row("source.py", "one"),
+                              {**row("memory/DECISION_LOG.jsonl", "historical_decision_log"),
+                               "role": "archive_history", "primary_class": "ARCHIVE_HISTORY",
+                               "authority_state": "ARCHIVE",
+                               "current_file_sha256": hashlib.sha256(b"{}\n").hexdigest()}]})
     return tmp_path
 
 
@@ -89,7 +96,7 @@ def change_registry(root, mutate):
 def test_valid_registry_and_shared_source_roles(checkout):
     (checkout / "other.py").write_bytes(b"pass\n")
     subprocess.run(["git", "add", "other.py"], cwd=checkout, check=True)
-    change_registry(checkout, lambda r: (r["artifacts"].append(row("other.py", "two")), r.update(artifact_count=2)))
+    change_registry(checkout, lambda r: (r["artifacts"].append(row("other.py", "two")), r.update(artifact_count=3)))
     assert authority.check(checkout) == []
     assert bloat.check(checkout) == []
 
@@ -122,7 +129,7 @@ def test_registered_regular_file_must_also_be_tracked(checkout):
     untracked_row = row("untracked.py", "untracked")
     change_registry(checkout, lambda r: (
         r["artifacts"].append(untracked_row),
-        r.update(artifact_count=2),
+        r.update(artifact_count=3),
     ))
     errors = authority.check(checkout)
     assert "registry contains untracked file: untracked.py" in errors
@@ -139,7 +146,7 @@ def test_registry_writer_binds_current_bytes_without_rewriting_historical_identi
 
     assert registry["artifacts"][0]["sha256"] == historical
     assert registry["artifacts"][0]["current_file_sha256"] == hashlib.sha256(b"pass\n").hexdigest()
-    assert registry["artifact_count"] == 1
+    assert registry["artifact_count"] == 2
     assert registry["digest_semantics"] == DIGEST_SEMANTICS
 
 
@@ -170,6 +177,42 @@ def test_registry_writer_rejects_duplicate_paths_before_persistence(checkout):
         bind_current_file_digests(registry_path, registry)
 
     assert registry_path.read_bytes() == original
+
+
+@pytest.mark.parametrize("alias", ["SOURCE.py", "ｓｏｕｒｃｅ.py"])
+def test_registry_writer_rejects_normalized_path_alias_before_persistence(checkout, alias):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    original = registry_path.read_bytes()
+    (checkout / alias).write_bytes(b"pass\n")
+    registry = json.loads(original)
+    registry["artifacts"].append(row(alias, "alias"))
+
+    with pytest.raises(ValueError, match="duplicate artifact path"):
+        bind_current_file_digests(registry_path, registry)
+
+    assert registry_path.read_bytes() == original
+
+
+def test_generated_artifacts_reuse_only_exact_admitted_paths(checkout):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    original = registry_path.read_bytes()
+    registry = json.loads(original)
+    assert existing_artifact_ids_for_paths(registry, ["source.py"]) == ["one"]
+    for path in ("SOURCE.py", "missing.json"):
+        with pytest.raises(ValueError, match="one exact canonical registration"):
+            existing_artifact_ids_for_paths(registry, [path])
+    with pytest.raises(ValueError, match="duplicate paths"):
+        existing_artifact_ids_for_paths(registry, ["source.py", "source.py"])
+    assert registry_path.read_bytes() == original
+
+
+def test_no_current_packet_requires_archived_decision_log_registration(checkout):
+    assert authority.check(checkout) == []
+    change_registry(checkout, lambda r: (
+        r.update(artifacts=[entry for entry in r["artifacts"]
+                            if entry["path"] != "memory/DECISION_LOG.jsonl"], artifact_count=1),
+    ))
+    assert "current truth surfaces conflict with no-current-packet selection" in authority.check(checkout)
 
 
 def test_final_rebind_refreshes_a_registered_output_written_after_initial_binding(checkout):
@@ -228,7 +271,7 @@ def test_accountability_writer_preserves_existing_packet_archive_authority(check
 
     result = json.loads(registry_path.read_text(encoding="utf-8"))
     by_path = {item["path"]: item for item in result["artifacts"]}
-    assert len(by_path) == len(result["artifacts"]) == 4
+    assert len(by_path) == len(result["artifacts"]) == 5
     assert by_path["packets/ktg3full_v12.zip"]["artifact_id"] == "historical_packet"
     assert by_path["packets/ktg3full_v12.zip"]["primary_class"] == "ARCHIVE_HISTORY"
     assert by_path["packets/ktg3full_v12.zip"]["authority_state"] == "ARCHIVE"
@@ -280,6 +323,8 @@ def test_registered_output_writers_rebind_after_their_final_output_write():
         "v17_1_canary_repair_common.py",
         "v17_5_multirescuer_common.py",
         "v17_6_oracle_autopsy_common.py",
+        "v17_7_3_evidence_acquisition_common.py",
+        "v17_7_3_measured_arm_build_common.py",
         "v17_7_3_measurement_authority_common.py",
         "v17_canary_coalition_common.py",
         "build_v17_7_4_real_arm_config_packet.py",
@@ -303,6 +348,33 @@ def test_registered_output_writers_rebind_after_their_final_output_write():
         if not bind_lines or not final_lines or max(final_lines) <= max(bind_lines):
             defects.append(name)
     assert defects == []
+
+
+@pytest.mark.parametrize("name,function_name", [
+    ("v13_admission_common.py", "run_v13_superlane"),
+    ("v141_truth_common.py", "generate_all"),
+    ("v14_omni_common.py", "run_v14_superlane"),
+    ("v17_1_canary_repair_common.py", "build_all_outputs"),
+    ("v17_5_multirescuer_common.py", "build_all_outputs"),
+    ("v17_6_oracle_autopsy_common.py", "build_all_outputs"),
+    ("v17_7_3_evidence_acquisition_common.py", "build_all"),
+    ("v17_7_3_measured_arm_build_common.py", "build_all"),
+    ("v17_7_3_measurement_authority_common.py", "build_reports"),
+    ("build_v17_7_4_real_arm_config_packet.py", "build"),
+    ("build_v17_7_4_realbench_packet.py", "build"),
+    ("build_v17_7_4_truegen_runtime_packet.py", "build"),
+])
+def test_outer_builder_rebinds_after_its_final_registered_write(name, function_name):
+    source = (ROOT / "scripts" / name).read_text(encoding="utf-8-sig")
+    functions = [node for node in ast.parse(source).body
+                 if isinstance(node, ast.FunctionDef) and node.name == function_name]
+    assert len(functions) == 1
+    calls = [node for node in ast.walk(functions[0]) if isinstance(node, ast.Call)]
+    writes = [node.lineno for node in calls if isinstance(node.func, ast.Name)
+              and node.func.id == "write_json"]
+    rebinds = [node.lineno for node in calls if isinstance(node.func, ast.Name)
+               and node.func.id == "rebind_authority_registry_file"]
+    assert writes and rebinds and max(rebinds) > max(writes)
 
 
 def test_historical_digest_does_not_substitute_for_current_bytes(checkout):
@@ -387,17 +459,9 @@ def test_no_current_packet_requires_archived_decision_log_authority(checkout):
         encoding="utf-8",
     )
     subprocess.run(["git", "add", "memory/DECISION_LOG.jsonl"], cwd=checkout, check=True)
-    decision_row = {
-        **row("memory/DECISION_LOG.jsonl", "decision-log"),
-        "primary_class": "ARCHIVE_HISTORY",
-        "role": "archive_history",
-        "authority_state": "ARCHIVE",
-        "validation_status": "PASS",
-        "current_file_sha256": hashlib.sha256(decision_path.read_bytes()).hexdigest(),
-    }
-    change_registry(checkout, lambda r: (
-        r["artifacts"].append(decision_row),
-        r.update(artifact_count=2),
+    change_registry(checkout, lambda r: r["artifacts"][1].update(
+        validation_status="PASS",
+        current_file_sha256=hashlib.sha256(decision_path.read_bytes()).hexdigest(),
     ))
     assert authority.check(checkout) == []
 
@@ -501,7 +565,7 @@ def select_current_packet(checkout):
             "current_authority": True,
             "current_file_sha256": digest,
         }),
-        r.update(artifact_count=2),
+        r.update(artifact_count=3),
     ))
     return packet_path, digest
 

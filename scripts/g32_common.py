@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 
@@ -925,44 +927,11 @@ raise SystemExit(subprocess.call([sys.executable, str(runner)]))
 def update_registry(root: Path, head: str, packet_sha: str) -> None:
     registry_path = root / "registry/artifact_authority_registry.json"
     registry = read_json(registry_path)
-    artifacts = registry.setdefault("artifacts", [])
-    by_id = {row.get("artifact_id"): row for row in artifacts if isinstance(row, dict)}
-    additions = [
-        {
-            "artifact_id": "KT_G32_SIGNAL_DENSITY_RECEIPT",
-            "path": "reports/g32_superlane_receipt.json",
-            "role": "g32_signal_density_superlane_receipt",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "sha256": file_sha256(root / "reports/g32_superlane_receipt.json"),
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "superseded_by": None,
-            "supersedes": [],
-            "notes": "Repo-side G3.2 law/gate receipt; no commercial, external, S-tier, 7B, router, multi-lobe, or production authority.",
-        },
-        {
-            "artifact_id": "KTG3_V3_SIGNAL_DENSITY_PACKET",
-            "path": PACKET_ZIP,
-            "role": "g32_future_compute_packet",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "sha256": packet_sha,
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "superseded_by": None,
-            "supersedes": [],
-            "notes": "Compute packet scaffold; runtime evidence not earned until Kaggle/assessment run.",
-        },
-    ]
-    for item in additions:
-        if item["artifact_id"] in by_id:
-            existing = by_id[item["artifact_id"]]
-            existing.pop("authority", None)
-            existing.pop("claim_ceiling_effect", None)
-            existing.update(item)
-        else:
-            artifacts.append(item)
+    # Generated outputs already have canonical path registrations. Never replace
+    # their archive/current classification with a packet-builder proposal.
+    identities = existing_artifact_ids_for_paths(
+        registry, ["reports/g32_superlane_receipt.json", PACKET_ZIP]
+    )
     registry["current_head"] = head
     registry["generated_utc"] = utc_now()
     bind_current_file_digests(registry_path, registry)
@@ -971,7 +940,7 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
         "schema_id": "kt.artifact_authority_registry_g32_signal_density_delta_receipt.v1",
         "created_utc": utc_now(),
         "current_head": head,
-        "artifacts_added_or_updated": [row["artifact_id"] for row in additions],
+        "artifacts_added_or_updated": identities,
         "claim_ceiling_unchanged": True,
         "production_commercial_external_superiority_authority_added": False,
         **CLAIM_CEILING,

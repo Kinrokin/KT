@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 
@@ -982,41 +984,12 @@ def validate_functional_implementation_data(root: Path) -> dict[str, Any]:
 
 def update_registry(root: Path) -> None:
     registry_path = root / "registry/artifact_authority_registry.json"
-    registry = read_json(registry_path) if registry_path.exists() else {"artifacts": []}
-    artifacts = registry.setdefault("artifacts", [])
-    existing = {entry.get("artifact_id") or entry.get("path"): entry for entry in artifacts if isinstance(entry, dict)}
-    new_entries = [
-        {
-            "artifact_id": "v16_shadow_route_policy",
-            "path": "admission/v16_shadow_route_policy.json",
-            "authority": "LIVE_CURRENT_HEAD_SHADOW_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-        {
-            "artifact_id": "v16_shadow_replay_scorecard",
-            "path": "reports/v16_shadow_replay_scorecard.json",
-            "authority": "LIVE_CURRENT_HEAD_RECEIPTED_SHADOW_EVIDENCE",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-        {
-            "artifact_id": "v16_capability_habitat_topology",
-            "path": "admission/v16_capability_habitat_topology.json",
-            "authority": "LIVE_CURRENT_HEAD_SHADOW_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-    ]
-    for entry in new_entries:
-        key = entry["artifact_id"]
-        if key in existing:
-            existing[key].update(entry)
-        else:
-            artifacts.append(entry)
+    registry = read_json(registry_path)
+    identities = existing_artifact_ids_for_paths(registry, [
+        "admission/v16_shadow_route_policy.json",
+        "reports/v16_shadow_replay_scorecard.json",
+        "admission/v16_capability_habitat_topology.json",
+    ])
     registry["updated_by"] = PROGRAM_ID
     registry["updated_utc"] = utc_now()
     registry["claim_ceiling_preserved"] = True
@@ -1029,7 +1002,7 @@ def update_registry(root: Path) -> None:
             "program_id": PROGRAM_ID,
             "created_utc": utc_now(),
             "current_head": current_head(),
-            "artifacts_added_or_updated": new_entries,
+            "artifacts_added_or_updated": identities,
             "claim_ceiling_preserved": True,
             "runtime_authority_added": False,
             "promotion_authority_added": False,

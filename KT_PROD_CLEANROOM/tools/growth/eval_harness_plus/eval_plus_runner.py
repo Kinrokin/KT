@@ -209,6 +209,39 @@ def _load_epoch_metrics(
     return outcomes, replay_verified, replay_total, governance_types, kernel_identity
 
 
+def _exclusive_write_output(*, path: Path, serialized: str) -> None:
+    """Create an output exactly once without following a raced parent link."""
+    parent = path.parent
+    parent.mkdir(parents=True, exist_ok=True)
+    _reject_link_or_reparse_components(path=parent, label="output_parent")
+
+    # POSIX: open the already-validated parent as a directory descriptor and
+    # create the leaf relative to that descriptor with O_NOFOLLOW/O_EXCL.
+    if os.name != "nt" and hasattr(os, "O_DIRECTORY") and hasattr(os, "O_NOFOLLOW"):
+        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            leaf_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
+            descriptor = os.open(path.name, leaf_flags, 0o600, dir_fd=parent_fd)
+            try:
+                with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as stream:
+                    stream.write(serialized)
+            except Exception:
+                try:
+                    os.close(descriptor)
+                except OSError:
+                    pass
+                raise
+        finally:
+            os.close(parent_fd)
+        return
+
+    # Windows/Python builds without dir_fd support: revalidate the complete
+    # parent chain immediately before the exclusive path open.
+    _reject_link_or_reparse_components(path=parent, label="output_parent")
+    with path.open("x", encoding="utf-8", newline="") as stream:
+        stream.write(serialized)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="C023+ Eval Harness Plus (tooling-only; no kernel invocation)")
     ap.add_argument("--epoch-dir", required=True, help="Path to an epoch artifacts directory")
@@ -284,10 +317,8 @@ def main() -> int:
     serialized = json.dumps(
         computed, sort_keys=True, separators=(",", ":"), ensure_ascii=True
     ) + "\n"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        with out_path.open("x", encoding="utf-8") as stream:
-            stream.write(serialized)
+        _exclusive_write_output(path=out_path, serialized=serialized)
         return 0
     except FileExistsError:
         if not args.allow_existing:

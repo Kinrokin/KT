@@ -374,6 +374,7 @@ def build() -> dict[str, Any]:
             blockers=[],
         ),
     )
+    rebind_authority_registry_file(repo / "registry/artifact_authority_registry.json")
     print(json.dumps(summary, indent=2, sort_keys=True))
     return summary
 

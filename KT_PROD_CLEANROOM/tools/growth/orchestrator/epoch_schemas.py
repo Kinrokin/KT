@@ -53,7 +53,12 @@ def _require_str(value: Any, *, name: str, min_len: int = 1, max_len: int = 256)
 
 def _require_safe_path_component(value: Any, *, name: str, max_len: int) -> str:
     value = _require_str(value, name=name, min_len=1, max_len=max_len)
-    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) is None or value.endswith((".", " ")):
+    device_basename = value.split(".", 1)[0].upper()
+    reserved_device = device_basename in {"CON", "PRN", "AUX", "NUL"} or bool(
+        re.fullmatch(r"(?:COM|LPT)[1-9]", device_basename)
+    )
+    if (re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) is None
+            or value.endswith((".", " ")) or reserved_device):
         raise EpochSchemaError(f"{name} must be one portable direct path component (fail-closed)")
     return value
 

@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        existing_artifact_ids_for_paths,
         rebind_authority_registry_file,
     )
 
@@ -587,36 +589,9 @@ def write_v15_packet(root: Path) -> tuple[str, str]:
 def update_registry(root: Path, packet_sha: str) -> dict:
     path = root / "registry/artifact_authority_registry.json"
     registry = read_json(path)
-    artifacts = registry.setdefault("artifacts", [])
-    by_id = {item.get("artifact_id"): item for item in artifacts}
-    entries = [
-        {
-            "artifact_id": "KT_V14_1_TRUTH_REPAIR_RECEIPT",
-            "path": "reports/v14_truth_integrity_audit_receipt.json",
-            "role": "v14_1_truth_integrity_repair",
-            "sha256": sha256(root / "reports/v14_truth_integrity_audit_receipt.json"),
-        },
-        {
-            "artifact_id": "KTG3FULL_V15_TRUTH_ROUTE_PACKET",
-            "path": V15_PACKET_PATH.as_posix(),
-            "role": "future_truth_route_runtime_packet",
-            "sha256": packet_sha,
-        },
-    ]
-    for entry in entries:
-        entry.update(
-            {
-                "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-                "claim_authority": "NONE",
-                "controls_execution": False,
-                "notes": "V14.1 truth repair / V15 packet prep only; no promotion, superiority, external, commercial, 7B, or production authority.",
-                "validation_status": "PASS",
-            }
-        )
-        if entry["artifact_id"] in by_id:
-            by_id[entry["artifact_id"]].update(entry)
-        else:
-            artifacts.append(entry)
+    identities = existing_artifact_ids_for_paths(
+        registry, ["reports/v14_truth_integrity_audit_receipt.json", V15_PACKET_PATH.as_posix()]
+    )
     registry["current_head"] = current_head(root)
     registry["generated_utc"] = utc_now()
     bind_current_file_digests(path, registry)
@@ -625,7 +600,7 @@ def update_registry(root: Path, packet_sha: str) -> dict:
         "schema_id": "kt.artifact_authority_registry_v14_1_delta_receipt.v1",
         "created_utc": utc_now(),
         "current_head": current_head(root),
-        "artifacts_added_or_updated": [entry["artifact_id"] for entry in entries],
+        "artifacts_added_or_updated": identities,
         "claim_ceiling_preserved": True,
         "no_promotion_authority_added": True,
     }
@@ -727,4 +702,5 @@ def generate_all(root: Path | None = None) -> dict:
         "blockers": [],
     }
     write_json(root / "reports/v14_1_truth_repair_superlane_receipt.json", receipt)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return receipt
