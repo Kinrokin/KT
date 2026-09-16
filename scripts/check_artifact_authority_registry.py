@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import re
 import stat
 import subprocess
@@ -212,6 +213,57 @@ def _fields(value: object, schema: dict, location: str) -> list[str]:
     return errors
 
 
+def _sha256_registered_file(root: Path, relative: str) -> str:
+    'Hash a registered file through a descriptor-anchored walk.'
+    parts = relative.split("/")
+    if os.name != "nt" and hasattr(os, "O_DIRECTORY") and hasattr(os, "O_NOFOLLOW"):
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        fd = os.open(root.resolve(), flags)
+        try:
+            for part in parts[:-1]:
+                next_fd = os.open(part, flags, dir_fd=fd)
+                os.close(fd)
+                fd = next_fd
+            leaf = os.open(
+                parts[-1],
+                os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0),
+                dir_fd=fd,
+            )
+            try:
+                before = os.fstat(leaf)
+                if not stat.S_ISREG(before.st_mode):
+                    raise ValueError("registered current file missing or not regular")
+                digest = hashlib.sha256()
+                while True:
+                    chunk = os.read(leaf, 1024 * 1024)
+                    if not chunk:
+                        break
+                    digest.update(chunk)
+                after = os.fstat(leaf)
+                if any(
+                    getattr(before, field) != getattr(after, field)
+                    for field in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+                ):
+                    raise ValueError("registered file changed during read")
+                return digest.hexdigest()
+            finally:
+                os.close(leaf)
+        finally:
+            os.close(fd)
+    candidate = root / relative
+    fd = os.open(candidate, os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        digest = hashlib.sha256()
+        while True:
+            chunk = os.read(fd, 1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+        return digest.hexdigest()
+    finally:
+        os.close(fd)
+
+
 def check(root: Path = ROOT) -> list[str]:
     try:
         registry = load_json(root / REGISTRY_PATH)
@@ -278,7 +330,7 @@ def check(root: Path = ROOT) -> list[str]:
                             raise ValueError("registry self digest must be explicitly excluded")
                     elif not isinstance(binding, str) or re.fullmatch(r"[0-9a-f]{64}", binding) is None:
                         raise ValueError("current file digest missing or malformed")
-                    elif hashlib.sha256(candidate.read_bytes()).hexdigest() != binding:
+                    elif _sha256_registered_file(root, path) != binding:
                         raise ValueError("stale current file digest")
                 except (OSError, ValueError) as exc:
                     errors.append(f"{label}: {exc}")

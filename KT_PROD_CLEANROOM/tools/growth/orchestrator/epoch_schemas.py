@@ -210,7 +210,11 @@ class EpochPlan:
         crucible_order_list = _require_list(payload.get("crucible_order"), name="crucible_order")
         crucible_order: List[str] = []
         for idx, item in enumerate(crucible_order_list):
-            crucible_order.append(_require_str(item, name=f"crucible_order[{idx}]", min_len=1, max_len=80))
+            crucible_order.append(
+                _require_safe_path_component(
+                    item, name=f"crucible_order[{idx}]", max_len=80
+                )
+            )
         if len(set(crucible_order)) != len(crucible_order):
             raise EpochSchemaError("crucible_order contains duplicates (fail-closed)")
 

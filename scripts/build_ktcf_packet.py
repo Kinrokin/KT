@@ -1179,7 +1179,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
         if rel.startswith("schemas/"):
             return "CANONICAL_SCHEMA"
         if rel.startswith("packets/"):
-            return "CANONICAL_PACKET_CURRENT"
+            return "GENERATED_OUTPUT"
         if rel.startswith("docs/") or rel.startswith("configs/"):
             return "CANONICAL_GOVERNANCE"
         if rel.startswith("reports/") or rel.startswith("registry/"):
@@ -1209,7 +1209,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "validation_status": "PASS",
             "controls_execution": False,
             "claim_authority": claim_authority(cls),
-            "current_authority": True,
+            "current_authority": cls not in {"GENERATED_OUTPUT", "LAB_PROVISIONAL"},
             "sha256": artifact_sha,
             "size_bytes": artifact_size,
             "source_lane": lane,

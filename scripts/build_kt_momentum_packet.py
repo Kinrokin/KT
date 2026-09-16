@@ -687,7 +687,7 @@ def register_artifacts(paths: list[Path]) -> None:
         if rel.startswith("tests/"):
             return "CANONICAL_TEST"
         if rel.startswith("packets/"):
-            return "CANONICAL_PACKET_CURRENT"
+            return "GENERATED_OUTPUT"
         if rel.startswith("docs/"):
             return "CANONICAL_GOVERNANCE"
         if rel.startswith("evidence/"):
@@ -710,7 +710,7 @@ def register_artifacts(paths: list[Path]) -> None:
             "validation_status": "PASS",
             "controls_execution": False,
             "claim_authority": "CURRENT_HEAD" if cls in {"CANONICAL_GOVERNANCE", "CANONICAL_RECEIPT_CURRENT"} else "INTERNAL_SHADOW",
-            "current_authority": True,
+            "current_authority": cls not in {"GENERATED_OUTPUT", "LAB_PROVISIONAL"},
             "sha256": artifact_sha,
             "size_bytes": artifact_size,
             "source_lane": ACTIVE_TRANCHE,

@@ -3,11 +3,13 @@ from __future__ import annotations
 try:
     from scripts.artifact_authority_registry_writer import (
         bind_current_file_digests,
+        merge_registry_entries,
         rebind_authority_registry_file,
     )
 except ModuleNotFoundError:
     from artifact_authority_registry_writer import (
         bind_current_file_digests,
+        merge_registry_entries,
         rebind_authority_registry_file,
     )
 
@@ -586,6 +588,17 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
             "path": rel,
             "role": "measurement_authority_adjudication",
             "status": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "primary_class": "GENERATED_OUTPUT",
+            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "validation_status": "PASS",
+            "claim_authority": "NONE",
+            "controls_execution": False,
+            "current_authority": False,
+            "current_file_sha256": None,
+            "sha256": sha256_file(path),
+            "size_bytes": path.stat().st_size,
+            "supersedes": [],
+            "superseded_by": None,
             "claim_ceiling_preserved": True,
             "runtime_authority": False,
             "promotion_authority": False,
@@ -593,9 +606,8 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
             "learned_router_superiority_claim": False,
             "v18_runtime_authority": False,
         }
-        existing[rel] = entry
         added.append(entry)
-    registry["artifacts"] = list(existing.values())
+    merge_registry_entries(registry, added)
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True

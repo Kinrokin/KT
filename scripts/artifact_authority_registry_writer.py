@@ -178,6 +178,58 @@ def _repository_path(root: Path, relative: object) -> Path:
     return candidate
 
 
+def _sha256_repository_file(root: Path, relative: str) -> str:
+    'Hash a registered file through an O_NOFOLLOW descriptor walk.'
+    parts = relative.split("/")
+    if os.name != "nt" and hasattr(os, "O_DIRECTORY") and hasattr(os, "O_NOFOLLOW"):
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        fd = os.open(root.resolve(), flags)
+        try:
+            for part in parts[:-1]:
+                next_fd = os.open(part, flags, dir_fd=fd)
+                os.close(fd)
+                fd = next_fd
+            leaf = os.open(
+                parts[-1],
+                os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0),
+                dir_fd=fd,
+            )
+            try:
+                before = os.fstat(leaf)
+                if not stat.S_ISREG(before.st_mode):
+                    raise ValueError(f"registry artifact is not a regular file: {relative!r}")
+                digest = hashlib.sha256()
+                while True:
+                    chunk = os.read(leaf, 1024 * 1024)
+                    if not chunk:
+                        break
+                    digest.update(chunk)
+                after = os.fstat(leaf)
+                if any(
+                    getattr(before, field) != getattr(after, field)
+                    for field in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+                ):
+                    raise ValueError(f"registry artifact changed during read: {relative!r}")
+                return digest.hexdigest()
+            finally:
+                os.close(leaf)
+        finally:
+            os.close(fd)
+    candidate = _repository_path(root, relative)
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(candidate, flags)
+    try:
+        digest = hashlib.sha256()
+        while True:
+            chunk = os.read(fd, 1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+        return digest.hexdigest()
+    finally:
+        os.close(fd)
+
+
 def existing_artifact_ids_for_paths(registry: MutableMapping[str, Any], paths: list[str]) -> list[str]:
     """Require one admitted canonical row per generated path without changing its authority."""
     artifacts = registry.get("artifacts")
@@ -297,7 +349,7 @@ def bind_current_file_digests(
             row["current_file_sha256"] = None
             continue
         current = _repository_path(root, relative)
-        row["current_file_sha256"] = hashlib.sha256(current.read_bytes()).hexdigest()
+        row["current_file_sha256"] = _sha256_repository_file(root, relative)
 
     registry["artifact_count"] = len(artifacts)
     registry["digest_semantics"] = dict(DIGEST_SEMANTICS)

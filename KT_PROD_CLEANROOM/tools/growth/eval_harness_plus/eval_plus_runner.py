@@ -18,6 +18,9 @@ from eval_plus_schemas import (
 
 MAX_JSON_BYTES = 512_000
 MAX_RUN_RECORDS = 25_000
+_RESERVED_DEVICE_BASENAMES = {"CON", "PRN", "AUX", "NUL"} | {
+    f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+}
 
 
 def _unique_json_keys(pairs):
@@ -187,6 +190,7 @@ def _load_epoch_metrics(
             raise ValueError("invalid_or_missing_run_id_path_component (fail-closed)")
         kernel_target = kernel_identity.get("kernel_target", "unknown")
         if (kernel_target in {".", ".."} or kernel_target.endswith((".", " "))
+                or kernel_target.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES
                 or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", kernel_target) is None):
             raise ValueError("invalid_kernel_target_path_component (fail-closed)")
         c019_root_input = artifacts_root / "c019_runs"
@@ -216,37 +220,31 @@ def _load_epoch_metrics(
 
 
 def _exclusive_write_output(*, path: Path, serialized: str) -> None:
-    """Create an output exactly once without following a raced parent link."""
-    parent = path.parent
-    parent.mkdir(parents=True, exist_ok=True)
-    _reject_link_or_reparse_components(path=parent, label="output_parent")
-
-    # POSIX: open the already-validated parent as a directory descriptor and
-    # create the leaf relative to that descriptor with O_NOFOLLOW/O_EXCL.
-    if os.name != "nt" and hasattr(os, "O_DIRECTORY") and hasattr(os, "O_NOFOLLOW"):
-        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        try:
-            leaf_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
-            descriptor = os.open(path.name, leaf_flags, 0o600, dir_fd=parent_fd)
+    'Create an output exactly once using a descriptor-anchored parent walk.'
+    absolute = Path(os.path.abspath(path))
+    _reject_nonportable_path_components(path=absolute, label="output")
+    parent = absolute.parent
+    if os.name == "nt" or not all(hasattr(os, flag) for flag in ("O_DIRECTORY", "O_NOFOLLOW")):
+        raise ValueError("secure_output_creation_unavailable (fail-closed)")
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+    current_fd = os.open(absolute.anchor or os.sep, flags)
+    try:
+        for part in parent.parts[1:]:
+            if part in {".", ".."}:
+                raise ValueError("output_parent_component_forbidden (fail-closed)")
             try:
-                with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as stream:
-                    stream.write(serialized)
-            except Exception:
-                try:
-                    os.close(descriptor)
-                except OSError:
-                    pass
-                raise
-        finally:
-            os.close(parent_fd)
-        return
-
-    # Windows/Python builds without dir_fd support: revalidate the complete
-    # parent chain immediately before the exclusive path open.
-    _reject_link_or_reparse_components(path=parent, label="output_parent")
-    with path.open("x", encoding="utf-8", newline="") as stream:
-        stream.write(serialized)
-
+                os.mkdir(part, 0o700, dir_fd=current_fd)
+            except FileExistsError:
+                pass
+            next_fd = os.open(part, flags, dir_fd=current_fd)
+            os.close(current_fd)
+            current_fd = next_fd
+        leaf_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        descriptor = os.open(absolute.name, leaf_flags, 0o600, dir_fd=current_fd)
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as stream:
+            stream.write(serialized)
+    finally:
+        os.close(current_fd)
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="C023+ Eval Harness Plus (tooling-only; no kernel invocation)")
@@ -290,6 +288,7 @@ def main() -> int:
     epoch_id = args.epoch_id
     if (not isinstance(epoch_id, str) or epoch_id in {".", ".."}
             or epoch_id.endswith((".", " "))
+            or epoch_id.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES
             or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", epoch_id) is None):
         raise ValueError("invalid_epoch_id_label (fail-closed)")
     if epoch_id != epoch_dir.name:

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests, rebind_authority_registry_file
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests, rebind_authority_registry_file
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
 
 import hashlib
 import json
@@ -673,6 +673,11 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
                     "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ACQUISITION_ONLY",
                     "claim_authority": "INTERNAL_SHADOW",
                     "controls_execution": False,
+                    "current_authority": False,
+                    "current_file_sha256": None,
+                    "primary_class": "GENERATED_OUTPUT",
+                    "supersedes": [],
+                    "superseded_by": None,
                     "notes": "V17.7.3 evidence-acquisition artifact; no runtime authority, no policy optimization, no training, no promotion, no claim expansion.",
                     "path": path.relative_to(root).as_posix(),
                     "role": "v17_7_3_evidence_acquisition",
@@ -696,10 +701,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
     write_json(delta_path, delta)
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
-    by_path = {artifact["path"]: artifact for artifact in registry.get("artifacts", [])}
-    for artifact in artifacts:
-        by_path[artifact["path"]] = artifact
-    registry["artifacts"] = list(by_path.values())
+    merge_registry_entries(registry, artifacts)
     bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path
