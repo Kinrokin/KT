@@ -294,58 +294,74 @@ class TestExternalEpochInput(unittest.TestCase):
                     eval_plus_main()
             self.assertFalse(out.exists())
 
-    def test_duplicate_json_keys_are_rejected_before_output(self) -> None:
-        for source in ("manifest", "run_record", "replay_report"):
-            with self.subTest(source=source), tempfile.TemporaryDirectory() as td:
-                root = Path(td)
-                growth_root = root / "growth"
-                epoch_dir = growth_root / "epochs" / "EPOCH-DUPLICATE-JSON-RUN1"
-                run_id = "a" * 64
-                epoch_dir.mkdir(parents=True)
-                manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_build_id":"fixture"}}'
-                record = f'{{"run_id":"{run_id}","outcome":"PASS"}}'
-                replay = '{"status":"PASS"}'
-                if source == "manifest":
-                    manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_target":"OTHER","kernel_build_id":"fixture"}}'
-                elif source == "run_record":
-                    record = f'{{"run_id":"{run_id}","run_id":"{"b" * 64}","outcome":"PASS"}}'
-                else:
-                    replay = '{"status":"FAIL","status":"PASS"}'
-                (epoch_dir / "epoch_manifest.json").write_text(manifest, encoding="utf-8")
-                (epoch_dir / "run_record.json").write_text(record, encoding="utf-8")
-                c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
-                c019_dir.mkdir(parents=True)
-                (c019_dir / "replay_report.json").write_text(replay, encoding="utf-8")
-                out = root / "must-not-exist.json"
-                argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
-                with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
-                    with self.assertRaisesRegex(ValueError, "duplicate_json_key"):
-                        eval_plus_main()
-                self.assertFalse(out.exists())
+    def _assert_duplicate_json_key_rejected(self, source: str) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-DUPLICATE-JSON-RUN1"
+            run_id = "a" * 64
+            epoch_dir.mkdir(parents=True)
+            manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_build_id":"fixture"}}'
+            record = f'{{"run_id":"{run_id}","outcome":"PASS"}}'
+            replay = '{"status":"PASS"}'
+            if source == "manifest":
+                manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_target":"OTHER","kernel_build_id":"fixture"}}'
+            elif source == "run_record":
+                duplicate_id = "b" * 64
+                record = f'{{"run_id":"{run_id}","run_id":"{duplicate_id}","outcome":"PASS"}}'
+            elif source == "replay_report":
+                replay = '{"status":"FAIL","status":"PASS"}'
+            else:
+                raise AssertionError(f"unexpected source: {source}")
+            (epoch_dir / "epoch_manifest.json").write_text(manifest, encoding="utf-8")
+            (epoch_dir / "run_record.json").write_text(record, encoding="utf-8")
+            c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            c019_dir.mkdir(parents=True)
+            (c019_dir / "replay_report.json").write_text(replay, encoding="utf-8")
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "duplicate_json_key"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
 
-    def test_non_string_kernel_identity_is_rejected_before_output(self) -> None:
-        identities = (
-            {"kernel_target": 123, "kernel_build_id": "fixture"},
-            {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": None},
+    def test_duplicate_manifest_key_is_rejected_before_output(self) -> None:
+        self._assert_duplicate_json_key_rejected("manifest")
+
+    def test_duplicate_run_record_key_is_rejected_before_output(self) -> None:
+        self._assert_duplicate_json_key_rejected("run_record")
+
+    def test_duplicate_replay_report_key_is_rejected_before_output(self) -> None:
+        self._assert_duplicate_json_key_rejected("replay_report")
+
+    def _assert_invalid_kernel_identity_rejected(self, identity: object) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-BAD-IDENTITY-RUN1"
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": identity}), encoding="utf-8"
+            )
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8"
+            )
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_or_missing_kernel_identity_fields"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_non_string_kernel_target_is_rejected_before_output(self) -> None:
+        self._assert_invalid_kernel_identity_rejected(
+            {"kernel_target": 123, "kernel_build_id": "fixture"}
         )
-        for identity in identities:
-            with self.subTest(identity=identity), tempfile.TemporaryDirectory() as td:
-                root = Path(td)
-                growth_root = root / "growth"
-                epoch_dir = growth_root / "epochs" / "EPOCH-BAD-IDENTITY-RUN1"
-                epoch_dir.mkdir(parents=True)
-                (epoch_dir / "epoch_manifest.json").write_text(
-                    json.dumps({"kernel_identity": identity}), encoding="utf-8"
-                )
-                (epoch_dir / "run_record.json").write_text(
-                    json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8"
-                )
-                out = root / "must-not-exist.json"
-                argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
-                with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
-                    with self.assertRaisesRegex(ValueError, "invalid_or_missing_kernel_identity_fields"):
-                        eval_plus_main()
-                self.assertFalse(out.exists())
+
+    def test_non_string_kernel_build_id_is_rejected_before_output(self) -> None:
+        self._assert_invalid_kernel_identity_rejected(
+            {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": None}
+        )
 
     def test_dangling_output_symlink_is_rejected_before_input_read(self) -> None:
         with tempfile.TemporaryDirectory() as td:
