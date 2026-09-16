@@ -88,6 +88,11 @@ def _growth_artifacts_root() -> Path:
     return p.resolve()
 
 
+def _default_salvage_root(epoch_base_root: Path) -> Path:
+    """Keep default salvage beside the epoch root selected for this run."""
+    return epoch_base_root.parent / "salvage"
+
+
 def _load_plan(path: Path) -> EpochPlan:
     raw = path.read_text(encoding="utf-8")
     if path.suffix.lower() in {".yaml", ".yml"}:
@@ -1488,7 +1493,7 @@ def run_epoch(
     if salvage:
         salvage_status = {"status": "FAIL", "error": "not-run"}
         try:
-            salvage_base = salvage_out_root if salvage_out_root is not None else (_growth_artifacts_root() / "salvage")
+            salvage_base = salvage_out_root if salvage_out_root is not None else _default_salvage_root(base_root)
             salvage_out = salvage_base / plan.epoch_id
             cmd = [
                 str(Path(sys.executable).resolve()),

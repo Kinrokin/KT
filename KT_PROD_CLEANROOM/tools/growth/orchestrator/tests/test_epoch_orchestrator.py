@@ -23,7 +23,7 @@ def _add_growth_to_syspath() -> None:
 _add_growth_to_syspath()
 
 from epoch_manifest import compute_epoch_hash  # noqa: E402
-from epoch_orchestrator import _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, preflight_epoch, run_epoch  # noqa: E402
+from epoch_orchestrator import _default_salvage_root, _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, preflight_epoch, run_epoch  # noqa: E402
 from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError  # noqa: E402
 from checkpoint_store import append_checkpoint, completed_crucible_ids, CheckpointRecord  # noqa: E402
 from crucible_loader import load_crucible  # noqa: E402
@@ -331,6 +331,66 @@ class TestKernelTargetRouting(unittest.TestCase):
 
 
 class TestArtifactsRootOverride(unittest.TestCase):
+    def test_explicit_epoch_root_selects_sibling_salvage_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            epoch_root = Path(td) / "explicit" / "epochs"
+            self.assertEqual(_default_salvage_root(epoch_root), Path(td) / "explicit" / "salvage")
+
+    def test_autonomous_analyzer_rejects_log_epoch_escape(self) -> None:
+        from tools.growth import analyze_autonomous_run
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            outside = growth_root / "outside"
+            outside.mkdir(parents=True)
+            (outside / "epoch_summary.json").write_text('{"runs": []}', encoding="utf-8")
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_epoch_path_component"):
+                    analyze_autonomous_run.duration_stats(
+                        [{"epoch": "../outside", "plan_run": "coverage"}]
+                    )
+
+    def test_autonomous_analyzer_rejects_log_run_id_escape(self) -> None:
+        from tools.growth import analyze_autonomous_run
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            epoch = growth_root / "epochs" / "EPOCH-SAFE"
+            epoch.mkdir(parents=True)
+            (epoch / "epoch_summary.json").write_text(
+                json.dumps({"runs": [{"run_id": "../../outside"}]}),
+                encoding="utf-8",
+            )
+            (growth_root / "c019_runs" / "KERNEL").mkdir(parents=True)
+            outside = growth_root / "outside"
+            outside.mkdir()
+            (outside / "runner_record.json").write_text(
+                json.dumps({"duration_ms": 999}), encoding="utf-8"
+            )
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_run_id_path_component"):
+                    analyze_autonomous_run.duration_stats(
+                        [{"epoch": "EPOCH-SAFE", "plan_run": "coverage"}]
+                    )
+
+    def test_escalation_analyzer_rejects_log_epoch_escape(self) -> None:
+        from tools.growth import analyze_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            log_path = growth_root / "logs" / "epoch_escalation_log.json"
+            log_path.parent.mkdir(parents=True)
+            log_path.write_text(
+                json.dumps([{"epoch": "../outside", "plan": "next", "bad": False}]),
+                encoding="utf-8",
+            )
+            outside = growth_root / "outside"
+            outside.mkdir()
+            (outside / "epoch_summary.json").write_text("{}", encoding="utf-8")
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_epoch_path_component"):
+                    analyze_escalation.run()
+
     def test_relative_override_has_one_cleanroom_base(self) -> None:
         from epoch_orchestrator import _growth_artifacts_root
         from tools.growth import analyze_autonomous_run, analyze_escalation, e2e_gate

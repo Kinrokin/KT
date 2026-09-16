@@ -1,11 +1,14 @@
 import json
 import os
+import re
 import statistics
 from collections import Counter, defaultdict
 from math import isfinite
 from pathlib import Path
 
 _CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+_SAFE_COMPONENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+_RUN_ID = re.compile(r"[0-9a-f]{64}")
 
 
 def _growth_artifacts_root() -> Path:
@@ -32,6 +35,32 @@ def _c019_runs_root() -> Path:
 
 def _analysis_path() -> Path:
     return _growth_artifacts_root() / "reports" / "autonomous_analysis.json"
+
+
+def _safe_child(root: Path, value: object, *, label: str) -> Path:
+    if (
+        not isinstance(value, str)
+        or _SAFE_COMPONENT.fullmatch(value) is None
+        or value.endswith((".", " "))
+    ):
+        raise ValueError(f"unsafe_{label}_path_component")
+    resolved_root = root.resolve()
+    candidate = (resolved_root / value).resolve()
+    try:
+        candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"unsafe_{label}_path_containment") from exc
+    return candidate
+
+
+def _safe_evidence_path(root: Path, path: Path, *, label: str) -> Path:
+    resolved_root = root.resolve()
+    candidate = path.resolve()
+    try:
+        candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"unsafe_{label}_path_containment") from exc
+    return candidate
 
 
 def load_records():
@@ -85,12 +114,19 @@ def entropy_curve(records):
 
 
 def find_runner_record(run_id: str) -> Path | None:
+    if not isinstance(run_id, str) or _RUN_ID.fullmatch(run_id) is None:
+        raise ValueError("unsafe_run_id_path_component")
     c019_runs = _c019_runs_root()
     if not c019_runs.is_dir():
         return None
+    resolved_root = c019_runs.resolve()
     for kernel_dir in c019_runs.iterdir():
-        candidate = kernel_dir / run_id / "runner_record.json"
-        if candidate.exists():
+        candidate = _safe_evidence_path(
+            resolved_root,
+            kernel_dir / run_id / "runner_record.json",
+            label="runner_record",
+        )
+        if candidate.is_file():
             return candidate
     return None
 
@@ -99,9 +135,14 @@ def duration_stats(records):
     durations_by_plan = defaultdict(list)
     epochs = _artifact_epochs_root()
     for rec in records:
-        epoch_dir = epochs / rec["epoch"]
+        epoch_dir = _safe_child(epochs, rec["epoch"], label="epoch")
+        summary_path = _safe_evidence_path(
+            epochs,
+            epoch_dir / "epoch_summary.json",
+            label="epoch_summary",
+        )
         try:
-            summary = json.loads((epoch_dir / "epoch_summary.json").read_text())
+            summary = json.loads(summary_path.read_text())
         except Exception:
             continue
         total = 0
