@@ -1262,9 +1262,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
         "notes": "KTCF repo-side packet forge delta receipt; no runtime, training, promotion, selector deployment, adapter mutation, production prompt mutation, or production math-mode authority.",
     }
     by_path = {artifact["path"]: artifact for artifact in artifacts}
-    if rel in by_path:
-        by_path[rel].update(delta_entry)
-    else:
+    if rel not in by_path:
         artifacts.append(delta_entry)
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp

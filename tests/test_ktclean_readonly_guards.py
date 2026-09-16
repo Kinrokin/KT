@@ -115,6 +115,17 @@ def test_reserved_windows_device_names_fail_closed_across_path_guards(tmp_path, 
         _repository_path(tmp_path, value)
 
 
+def test_registry_checker_rejects_reserved_windows_device_names(checkout):
+    device_alias = checkout / "CON.txt"
+    device_alias.write_bytes(b"pass\n")
+    subprocess.run(["git", "add", "CON.txt"], cwd=checkout, check=True)
+    digest = hashlib.sha256(b"pass\n").hexdigest()
+    change_registry(checkout, lambda r: (
+        r["artifacts"][0].update(path="CON.txt", current_file_sha256=digest, sha256=digest),
+    ))
+    assert any("reserved device name" in error for error in authority.check(checkout))
+
+
 def test_registry_merge_preserves_existing_identity_and_authority():
     original = {
         "artifact_id": "CANONICAL_ID",

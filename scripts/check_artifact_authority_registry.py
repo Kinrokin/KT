@@ -14,6 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = "registry/artifact_authority_registry.json"
 HISTORICAL_STATES = {"ARCHIVE", "STALE", "DUPLICATE", "SUPERSEDED", "RETIRED"}
+_RESERVED_DEVICE_BASENAMES = {"CON", "PRN", "AUX", "NUL"} | {
+    f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+}
 
 
 def _no_constant(value):
@@ -305,6 +308,9 @@ def check(root: Path = ROOT) -> list[str]:
                     continue
                 if any(part.endswith((".", " ")) for part in path.split("/")):
                     errors.append(f"{label}: nonportable trailing dot or space in path")
+                    continue
+                if any(part.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES for part in path.split("/")):
+                    errors.append(f"{label}: nonportable reserved device name in path")
                     continue
                 if path in seen_paths:
                     errors.append(f"{label}: duplicate artifact path; explicit reconciliation required")

@@ -670,7 +670,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
             artifacts.append(
                 {
                     "artifact_id": path.stem.upper().replace(".", "_").replace("-", "_"),
-                    "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ACQUISITION_ONLY",
+                    "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
                     "claim_authority": "INTERNAL_SHADOW",
                     "controls_execution": False,
                     "current_authority": False,

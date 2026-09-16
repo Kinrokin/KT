@@ -762,9 +762,7 @@ def register_artifacts(paths: list[Path]) -> None:
         "notes": "KTCF momentum artifact authority delta receipt.",
     }
     by_path = {artifact["path"]: artifact for artifact in artifacts}
-    if rel in by_path:
-        by_path[rel].update(delta_entry)
-    else:
+    if rel not in by_path:
         artifacts.append(delta_entry)
     timestamp = utc_now()
     registry["generated_utc"] = timestamp

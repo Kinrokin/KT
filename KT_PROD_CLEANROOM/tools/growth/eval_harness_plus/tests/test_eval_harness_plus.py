@@ -223,7 +223,7 @@ class TestExternalEpochInput(unittest.TestCase):
             def open_then_swap(path, flags, *args, **kwargs):
                 nonlocal swapped
                 descriptor = real_open(path, flags, *args, **kwargs)
-                if Path(path) == target and not swapped:
+                if (Path(path) == target or path == target.name) and not swapped:
                     target.unlink()
                     try:
                         target.symlink_to(outside)

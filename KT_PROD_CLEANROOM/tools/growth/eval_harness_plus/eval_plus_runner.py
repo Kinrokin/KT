@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import json
 import os
 import re
@@ -92,22 +93,52 @@ def _require_regular_file(*, path: Path, root: Path, label: str) -> None:
         raise ValueError(f"{label}_unavailable:{exc.__class__.__name__} (fail-closed)")
 
 
+def _open_anchored_regular_file(*, path: Path, root: Path, label: str) -> int:
+    """Open a regular file through an O_NOFOLLOW directory-descriptor walk."""
+    _ensure_under_root(path=path, root=root, label=label)
+    if os.name == "nt" or not all(hasattr(os, flag) for flag in ("O_DIRECTORY", "O_NOFOLLOW")):
+        raise ValueError(f"{label}_secure_read_unavailable (fail-closed)")
+    relative = path.relative_to(root)
+    if not relative.parts:
+        raise ValueError(f"{label}_not_regular_file (fail-closed)")
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+    directory_fd = os.open(root.resolve(), directory_flags)
+    try:
+        try:
+            for component in relative.parts[:-1]:
+                next_fd = os.open(component, directory_flags, dir_fd=directory_fd)
+                os.close(directory_fd)
+                directory_fd = next_fd
+            descriptor = os.open(
+                relative.parts[-1],
+                os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0),
+                dir_fd=directory_fd,
+            )
+        except OSError as exc:
+            if exc.errno in {errno.ELOOP, errno.ENOTDIR}:
+                raise ValueError(f"{label}_link_or_reparse_forbidden (fail-closed)") from exc
+            raise
+    finally:
+        os.close(directory_fd)
+    opened = os.fstat(descriptor)
+    if not stat.S_ISREG(opened.st_mode):
+        os.close(descriptor)
+        raise ValueError(f"{label}_not_regular_file (fail-closed)")
+    return descriptor
+
+
 def _require_json_object(path: Path, *, root: Path, label: str) -> Dict[str, Any]:
     descriptor = -1
     try:
-        _require_regular_file(path=path, root=root, label=label)
-        flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_CLOEXEC", 0)
-        flags |= getattr(os, "O_NOFOLLOW", 0)
-        descriptor = os.open(path, flags)
+        descriptor = _open_anchored_regular_file(path=path, root=root, label=label)
         opened = os.fstat(descriptor)
-        if not stat.S_ISREG(opened.st_mode):
-            raise ValueError(f"{label}_not_regular_file (fail-closed)")
         if opened.st_size > MAX_JSON_BYTES:
             raise ValueError("json_too_large (fail-closed)")
 
-        # Retain and read the descriptor that was validated. Rechecking the
-        # path catches a component swap between the first lstat walk and open;
-        # matching identity ensures the path still names this descriptor.
+        # Retain and read the descriptor opened relative to the trusted root.
+        # No pathname is consulted after the anchored open, so ancestor swaps
+        # cannot redirect the bytes being verified. The identity recheck also
+        # turns a post-open replacement into an explicit fail-closed result.
         _require_regular_file(path=path, root=root, label=label)
         current = path.lstat()
         if (current.st_dev, current.st_ino) != (opened.st_dev, opened.st_ino):
