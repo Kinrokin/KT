@@ -342,7 +342,13 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 self.assertEqual(run_autonomous_escalation._artifact_epochs_root(), expected)
 
     def test_escalation_consumers_route_all_mutable_outputs_external(self) -> None:
-        from tools.growth import run_autonomous_escalation, run_epoch_escalation
+        from tools.growth import (
+            analyze_autonomous_run,
+            analyze_escalation,
+            run_autonomous_escalation,
+            run_epoch_escalation,
+        )
+        from tools.growth.state import analyze_policy_shadow
 
         with tempfile.TemporaryDirectory() as td:
             override_root = (Path(td) / "external growth").resolve()
@@ -359,6 +365,16 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 self.assertEqual(
                     run_epoch_escalation._epoch_escalation_log_path(),
                     override_root / "logs" / "epoch_escalation_log.json",
+                )
+                self.assertEqual(analyze_autonomous_run._autonomous_log_path(), override_root / "logs" / "autonomous_escalation_log.json")
+                self.assertEqual(analyze_autonomous_run._artifact_epochs_root(), override_root / "epochs")
+                self.assertEqual(analyze_autonomous_run._c019_runs_root(), override_root / "c019_runs")
+                self.assertEqual(analyze_autonomous_run._analysis_path(), override_root / "reports" / "autonomous_analysis.json")
+                self.assertEqual(analyze_escalation._artifact_epochs_root(), override_root / "epochs")
+                self.assertEqual(analyze_escalation._epoch_escalation_log_path(), override_root / "logs" / "epoch_escalation_log.json")
+                self.assertEqual(
+                    analyze_policy_shadow._default_policy_log_path(),
+                    override_root / "state" / "lane_policy_comparison.jsonl",
                 )
 
     def test_plan_suggester_uses_explicit_external_ledger(self) -> None:

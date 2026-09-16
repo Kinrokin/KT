@@ -15,6 +15,15 @@ MAX_JSON_BYTES = 512_000
 MAX_RUN_RECORDS = 25_000
 
 
+def _unique_json_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate_json_key:{key} (fail-closed)")
+        result[key] = value
+    return result
+
+
 def _ensure_under_root(*, path: Path, root: Path, label: str) -> None:
     try:
         path.relative_to(root)
@@ -45,7 +54,10 @@ def _require_json_object(path: Path, *, root: Path, label: str) -> Dict[str, Any
         _require_regular_file(path=path, root=root, label=label)
         if path.stat().st_size > MAX_JSON_BYTES:
             raise ValueError("json_too_large (fail-closed)")
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_json_keys,
+        )
     except ValueError as exc:
         if "(fail-closed)" in str(exc):
             raise
@@ -75,9 +87,15 @@ def _load_epoch_metrics(
         raise ValueError("epoch_manifest_missing (fail-closed)")
     em = _require_json_object(manifest_path, root=epoch_dir, label="epoch_manifest")
     kid = em.get("kernel_identity")
-    if isinstance(kid, dict) and "kernel_target" in kid:
-        kernel_identity["kernel_target"] = str(kid.get("kernel_target"))
-        kernel_identity["kernel_build_id"] = str(kid.get("kernel_build_id", "unknown"))
+    if not isinstance(kid, dict):
+        raise ValueError("invalid_or_missing_kernel_identity (fail-closed)")
+    kernel_target = kid.get("kernel_target")
+    kernel_build_id = kid.get("kernel_build_id")
+    if (not isinstance(kernel_target, str) or not kernel_target.strip()
+            or not isinstance(kernel_build_id, str) or not kernel_build_id.strip()):
+        raise ValueError("invalid_or_missing_kernel_identity_fields (fail-closed)")
+    kernel_identity["kernel_target"] = kernel_target
+    kernel_identity["kernel_build_id"] = kernel_build_id
 
     run_records = sorted(epoch_dir.rglob("run_record.json"))
     if not run_records:
@@ -133,7 +151,16 @@ def main() -> int:
     args = ap.parse_args()
 
     epoch_input = Path(os.path.abspath(args.epoch_dir))
-    out_path = Path(args.out).resolve()
+    out_input = Path(os.path.abspath(args.out))
+    current = Path(out_input.anchor)
+    for part in out_input.parts[1:]:
+        current = current / part
+        if not os.path.lexists(current):
+            break
+        mode = current.lstat()
+        if stat.S_ISLNK(mode.st_mode) or getattr(mode, "st_file_attributes", 0) & 0x400:
+            raise ValueError("output_link_or_reparse_forbidden (fail-closed)")
+    out_path = out_input.resolve()
     cleanroom_root = Path(__file__).resolve().parents[3]
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
     artifacts_root = Path(override) if override else cleanroom_root / "tools" / "growth" / "artifacts"

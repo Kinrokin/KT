@@ -126,6 +126,9 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
     rows = manifest["packets"]
     if len(rows) != 1 or not isinstance(rows[0], dict):
         return ["current packet manifest must have one selected record"]
+    if (contract.get("current_packet_state") not in {None, "CURRENT_EXECUTION_PACKET"}
+            or manifest.get("selection_state") not in {None, "CURRENT_EXECUTION_PACKET"}):
+        return ["current packet selection-state mismatch"]
     record = rows[0]
     digest = current[0].get("current_file_sha256")
     if (record.get("path") != selected or record.get("current_authority") is not True

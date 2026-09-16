@@ -144,7 +144,7 @@ class TestExternalEpochInput(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, "epoch_manifest_missing"):
                         eval_plus_main()
                 (epoch_dir / "epoch_manifest.json").write_text(
-                    json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                    json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
                 )
                 with patch.object(sys, "argv", argv):
                     with self.assertRaisesRegex(ValueError, "epoch_run_records_missing"):
@@ -173,7 +173,7 @@ class TestExternalEpochInput(unittest.TestCase):
             record_path.parent.mkdir(parents=True)
             record_path.write_text(json.dumps({"outcome": "TIMEOUT"}), encoding="utf-8")
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )
             out = root / "must-not-exist.json"
             argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
@@ -192,7 +192,7 @@ class TestExternalEpochInput(unittest.TestCase):
             record_path.parent.mkdir(parents=True)
             record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )
             (growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id).mkdir(parents=True)
             out = root / "must-not-exist.json"
@@ -209,7 +209,10 @@ class TestExternalEpochInput(unittest.TestCase):
             epoch_dir = growth_root / "epochs" / "EPOCH-LINKED_MANIFEST_RUN1"
             epoch_dir.mkdir(parents=True)
             outside = root / "outside-manifest.json"
-            outside.write_text(json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8")
+            outside.write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}),
+                encoding="utf-8",
+            )
             (epoch_dir / "epoch_manifest.json").symlink_to(outside)
             (epoch_dir / "run_record.json").write_text(
                 json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8"
@@ -228,7 +231,7 @@ class TestExternalEpochInput(unittest.TestCase):
             epoch_dir = growth_root / "epochs" / "EPOCH-LINKED_RECORD_RUN1"
             epoch_dir.mkdir(parents=True)
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )
             outside = root / "outside-record.json"
             outside.write_text(json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8")
@@ -248,7 +251,7 @@ class TestExternalEpochInput(unittest.TestCase):
             run_id = "a" * 64
             epoch_dir.mkdir(parents=True)
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )
             (epoch_dir / "run_record.json").write_text(
                 json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
@@ -273,7 +276,7 @@ class TestExternalEpochInput(unittest.TestCase):
             run_id = "a" * 64
             epoch_dir.mkdir(parents=True)
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN"}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )
             (epoch_dir / "run_record.json").write_text(
                 json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
@@ -291,6 +294,77 @@ class TestExternalEpochInput(unittest.TestCase):
                     eval_plus_main()
             self.assertFalse(out.exists())
 
+    def test_duplicate_json_keys_are_rejected_before_output(self) -> None:
+        for source in ("manifest", "run_record", "replay_report"):
+            with self.subTest(source=source), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                growth_root = root / "growth"
+                epoch_dir = growth_root / "epochs" / "EPOCH-DUPLICATE-JSON-RUN1"
+                run_id = "a" * 64
+                epoch_dir.mkdir(parents=True)
+                manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_build_id":"fixture"}}'
+                record = f'{{"run_id":"{run_id}","outcome":"PASS"}}'
+                replay = '{"status":"PASS"}'
+                if source == "manifest":
+                    manifest = '{"kernel_identity":{"kernel_target":"V2_SOVEREIGN","kernel_target":"OTHER","kernel_build_id":"fixture"}}'
+                elif source == "run_record":
+                    record = f'{{"run_id":"{run_id}","run_id":"{"b" * 64}","outcome":"PASS"}}'
+                else:
+                    replay = '{"status":"FAIL","status":"PASS"}'
+                (epoch_dir / "epoch_manifest.json").write_text(manifest, encoding="utf-8")
+                (epoch_dir / "run_record.json").write_text(record, encoding="utf-8")
+                c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+                c019_dir.mkdir(parents=True)
+                (c019_dir / "replay_report.json").write_text(replay, encoding="utf-8")
+                out = root / "must-not-exist.json"
+                argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+                with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                    with self.assertRaisesRegex(ValueError, "duplicate_json_key"):
+                        eval_plus_main()
+                self.assertFalse(out.exists())
+
+    def test_non_string_kernel_identity_is_rejected_before_output(self) -> None:
+        identities = (
+            {"kernel_target": 123, "kernel_build_id": "fixture"},
+            {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": None},
+        )
+        for identity in identities:
+            with self.subTest(identity=identity), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                growth_root = root / "growth"
+                epoch_dir = growth_root / "epochs" / "EPOCH-BAD-IDENTITY-RUN1"
+                epoch_dir.mkdir(parents=True)
+                (epoch_dir / "epoch_manifest.json").write_text(
+                    json.dumps({"kernel_identity": identity}), encoding="utf-8"
+                )
+                (epoch_dir / "run_record.json").write_text(
+                    json.dumps({"run_id": "a" * 64, "outcome": "PASS"}), encoding="utf-8"
+                )
+                out = root / "must-not-exist.json"
+                argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+                with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                    with self.assertRaisesRegex(ValueError, "invalid_or_missing_kernel_identity_fields"):
+                        eval_plus_main()
+                self.assertFalse(out.exists())
+
+    def test_dangling_output_symlink_is_rejected_before_input_read(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-OUTPUT-LINK-RUN1"
+            out = root / "linked-output.json"
+            target = root / "outside" / "created-through-link.json"
+            try:
+                out.symlink_to(target)
+            except OSError as exc:
+                self.skipTest(f"symlink unavailable: {exc}")
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "output_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertTrue(out.is_symlink())
+            self.assertFalse(target.exists())
+
     def _assert_untrusted_c019_path_component_rejected(
         self, *, kernel_target: str, run_id: str, expected: str
     ) -> None:
@@ -302,7 +376,8 @@ class TestExternalEpochInput(unittest.TestCase):
             record_path.parent.mkdir(parents=True)
             record_path.write_text(json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8")
             (epoch_dir / "epoch_manifest.json").write_text(
-                json.dumps({"kernel_identity": {"kernel_target": kernel_target}}), encoding="utf-8"
+                json.dumps({"kernel_identity": {"kernel_target": kernel_target, "kernel_build_id": "fixture"}}),
+                encoding="utf-8",
             )
             out = root / "must-not-exist.json"
             argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]

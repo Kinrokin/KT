@@ -282,6 +282,21 @@ def test_selected_packet_binds_every_current_truth_surface(checkout):
     assert authority.check(checkout) == []
 
 
+@pytest.mark.parametrize("surface", ["contract", "manifest"])
+def test_selected_packet_rejects_no_current_selection_state(checkout, surface):
+    select_current_packet(checkout)
+    if surface == "contract":
+        path = checkout / "governance/repo_layout_contract.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["current_packet_state"] = "NO_CURRENT_EXECUTION_PACKET"
+    else:
+        path = checkout / "packets/current/manifest.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["selection_state"] = "NO_CURRENT_EXECUTION_PACKET"
+    path.write_text(json.dumps(value), encoding="utf-8")
+    assert "current packet selection-state mismatch" in authority.check(checkout)
+
+
 @pytest.mark.parametrize("surface", [
     "memory_index", "current_truth", "current_context", "next_lawful_move", "active_cutline",
 ])

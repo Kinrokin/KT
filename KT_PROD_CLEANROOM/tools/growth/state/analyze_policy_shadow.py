@@ -1,9 +1,27 @@
 import argparse
 import json
 import math
+import os
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    root = Path(override)
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _default_policy_log_path() -> Path:
+    return _growth_artifacts_root() / "state" / "lane_policy_comparison.jsonl"
 
 
 def _parse_args() -> argparse.Namespace:
@@ -11,7 +29,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--policy-log",
         type=Path,
-        default=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
+        default=_default_policy_log_path(),
         help="Path to lane policy comparison JSONL.",
     )
     p.add_argument(
