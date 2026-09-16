@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import hashlib
 import json
 import math
@@ -1222,6 +1227,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp
     registry["updated_utc"] = registry_timestamp
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     write_json(
         delta_path,
@@ -1264,6 +1270,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp
     registry["updated_utc"] = registry_timestamp
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 

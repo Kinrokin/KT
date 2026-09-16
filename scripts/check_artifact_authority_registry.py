@@ -303,7 +303,9 @@ def check(root: Path = ROOT) -> list[str]:
         tracked = subprocess.check_output(
             ["git", "--no-optional-locks", "-c", "core.fsmonitor=false", "ls-files", "-z"], cwd=root
         ).decode("utf-8").split("\0")
-        errors.extend(f"registry missing tracked file: {path}" for path in sorted(set(tracked) - paths - {""}))
+        tracked_paths = set(tracked) - {""}
+        errors.extend(f"registry missing tracked file: {path}" for path in sorted(tracked_paths - paths))
+        errors.extend(f"registry contains untracked file: {path}" for path in sorted(paths - tracked_paths))
         return errors
     except (OSError, ValueError, KeyError, TypeError, AttributeError, subprocess.CalledProcessError) as exc:
         return [f"cannot validate authority registry: {type(exc).__name__}: {exc}"]

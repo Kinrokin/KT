@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import re
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
@@ -47,6 +48,13 @@ def _require_str(value: Any, *, name: str, min_len: int = 1, max_len: int = 256)
         raise EpochSchemaError(f"{name} must be a string (fail-closed)")
     if not (min_len <= len(value) <= max_len):
         raise EpochSchemaError(f"{name} length out of bounds (fail-closed)")
+    return value
+
+
+def _require_safe_path_component(value: Any, *, name: str, max_len: int) -> str:
+    value = _require_str(value, name=name, min_len=1, max_len=max_len)
+    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) is None or value.endswith((".", " ")):
+        raise EpochSchemaError(f"{name} must be one portable direct path component (fail-closed)")
     return value
 
 
@@ -191,7 +199,7 @@ class EpochPlan:
             },
             name="epoch_plan",
         )
-        epoch_id = _require_str(payload.get("epoch_id"), name="epoch_id", min_len=1, max_len=80)
+        epoch_id = _require_safe_path_component(payload.get("epoch_id"), name="epoch_id", max_len=80)
         epoch_profile = _require_str(payload.get("epoch_profile", "COVERAGE"), name="epoch_profile", min_len=1, max_len=64)
         kernel_identity = KernelIdentity.from_dict(_require_dict(payload.get("kernel_identity"), name="kernel_identity"))
         crucible_order_list = _require_list(payload.get("crucible_order"), name="crucible_order")

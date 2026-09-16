@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import importlib.util
 import json
 import shutil
@@ -446,6 +451,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
         "notes": "Registry delta for measured-arm repair; claim ceiling unchanged.",
     }
     registry["artifacts"] = list(by_path.values())
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path
 

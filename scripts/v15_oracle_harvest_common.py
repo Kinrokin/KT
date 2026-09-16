@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import json
 import subprocess
 from collections import Counter
@@ -604,6 +609,7 @@ def write_all(root: Path | None = None) -> dict:
             artifacts.append(entry)
         registry["current_head"] = head
         registry["generated_utc"] = created
+        bind_current_file_digests(registry_path, registry)
         write_json(registry_path, registry)
     write_json(
         root / "registry/artifact_authority_registry_v15_oracle_harvest_delta_receipt.json",

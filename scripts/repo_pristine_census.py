@@ -301,6 +301,7 @@ def build_registry(files: list[str], head: str, generated_utc: str) -> dict[str,
                 "current_authority": primary_class.startswith("CANONICAL_"),
                 "claim_authority": claim_authority(primary_class),
                 "sha256": sha,
+                "current_file_sha256": sha,
                 "size_bytes": file_size(path),
                 "supersedes": [],
                 "superseded_by": None,
@@ -314,6 +315,12 @@ def build_registry(files: list[str], head: str, generated_utc: str) -> dict[str,
         "generated_utc": generated_utc,
         "claim_ceiling_preserved": True,
         "classification_classes": PRIMARY_CLASSES,
+        "artifact_count": len(artifacts),
+        "digest_semantics": {
+            "sha256": "HISTORICAL_REGISTRATION_BYTES",
+            "current_file_sha256": "CURRENT_REPOSITORY_BYTES",
+            "self_excluded_path": "registry/artifact_authority_registry.json",
+        },
         "artifacts": sorted(artifacts, key=lambda item: item["path"]),
     }
 
@@ -710,12 +717,14 @@ def write_registry_schema() -> None:
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$id": "kt.artifact_authority_registry.schema.v3",
             "type": "object",
-            "required": ["schema_id", "current_head", "generated_utc", "artifacts"],
+            "required": ["schema_id", "current_head", "generated_utc", "artifacts", "artifact_count", "digest_semantics"],
             "properties": {
                 "schema_id": {"const": "kt.artifact_authority_registry.v3"},
                 "current_head": {"type": "string"},
                 "generated_utc": {"type": "string"},
                 "registry_profile": {"type": "string"},
+                "artifact_count": {"type": "integer"},
+                "digest_semantics": {"type": "object"},
                 "artifacts": {
                     "type": "array",
                     "items": {
@@ -730,6 +739,8 @@ def write_registry_schema() -> None:
                             "controls_execution",
                             "claim_authority",
                             "sha256",
+                            "current_file_sha256",
+                            "current_authority",
                         ],
                         "properties": {
                             "artifact_id": {"type": "string"},
@@ -755,6 +766,8 @@ def write_registry_schema() -> None:
                             "controls_execution": {"type": "boolean"},
                             "claim_authority": {"enum": ["NONE", "INTERNAL_SHADOW", "CURRENT_HEAD", "EXTERNAL", "COMMERCIAL"]},
                             "sha256": {"type": ["string", "null"]},
+                            "current_file_sha256": {"type": ["string", "null"]},
+                            "current_authority": {"type": "boolean"},
                         },
                         "additionalProperties": True,
                     },
@@ -864,7 +877,13 @@ def main(argv: list[str] | None = None) -> int:
     write_json(REPORTS / "repo_path_length_risk_index_v1.json", path_risks)
     write_json(REPORTS / "repo_stale_head_reference_index_v1.json", stale_refs)
     write_json(REPORTS / "repo_unregistered_controlling_artifact_index_v1.json", unregistered)
-    write_json(REGISTRY / "artifact_authority_registry.json", registry)
+    try:
+        from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    except ModuleNotFoundError:
+        from artifact_authority_registry_writer import bind_current_file_digests
+    registry_path = REGISTRY / "artifact_authority_registry.json"
+    bind_current_file_digests(registry_path, registry)
+    write_json(registry_path, registry)
     unknowns = [artifact for artifact in registry["artifacts"] if artifact["primary_class"] == "UNKNOWN_REVIEW_REQUIRED"]
     write_json(
         REPORTS / "artifact_authority_registry_receipt.json",

@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import hashlib
 import json
 import math
@@ -867,4 +872,6 @@ def write_registry_delta(receipts: dict[Path, dict[str, Any]]) -> None:
     for entry in artifacts:
         existing[entry["artifact_id"]] = {**entry, "role": "v17_7_1_mhm_evidence_constitution", "supersedes": [], "superseded_by": None}
     registry["artifacts"] = list(existing.values())
-    write_json(root / "registry" / "artifact_authority_registry.json", registry)
+    registry_path = root / "registry" / "artifact_authority_registry.json"
+    bind_current_file_digests(registry_path, registry)
+    write_json(registry_path, registry)

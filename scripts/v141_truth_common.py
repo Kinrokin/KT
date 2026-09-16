@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import hashlib
 import json
 import subprocess
@@ -608,6 +613,7 @@ def update_registry(root: Path, packet_sha: str) -> dict:
             artifacts.append(entry)
     registry["current_head"] = current_head(root)
     registry["generated_utc"] = utc_now()
+    bind_current_file_digests(path, registry)
     write_json(path, registry)
     delta = {
         "schema_id": "kt.artifact_authority_registry_v14_1_delta_receipt.v1",

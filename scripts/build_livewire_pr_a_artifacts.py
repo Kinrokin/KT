@@ -7,6 +7,11 @@ heads separate instead of laundering branch evidence as merged-main truth.
 """
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import argparse
 import hashlib
 import json
@@ -659,6 +664,7 @@ def build(args: argparse.Namespace) -> None:
     })
     registry["current_head"] = build_subject_head
     registry["generated_utc"] = CREATED_UTC
+    bind_current_file_digests(registry_path, registry)
     write(registry_path, registry)
 
     print(json.dumps({

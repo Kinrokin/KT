@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import os
@@ -12,6 +13,7 @@ import pytest
 
 from scripts import check_artifact_authority_registry as authority
 from scripts import check_no_bloat as bloat
+from scripts.artifact_authority_registry_writer import DIGEST_SEMANTICS, bind_current_file_digests
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,6 +84,7 @@ def change_registry(root, mutate):
 
 def test_valid_registry_and_shared_source_roles(checkout):
     (checkout / "other.py").write_bytes(b"pass\n")
+    subprocess.run(["git", "add", "other.py"], cwd=checkout, check=True)
     change_registry(checkout, lambda r: (r["artifacts"].append(row("other.py", "two")), r.update(artifact_count=2)))
     assert authority.check(checkout) == []
     assert bloat.check(checkout) == []
@@ -107,6 +110,62 @@ def test_new_tracked_file_requires_registration(checkout):
     (checkout / "new.py").write_text("pass\n", encoding="utf-8")
     subprocess.run(["git", "add", "new.py"], cwd=checkout, check=True)
     assert "registry missing tracked file: new.py" in authority.check(checkout)
+
+
+def test_registered_regular_file_must_also_be_tracked(checkout):
+    untracked = checkout / "untracked.py"
+    untracked.write_bytes(b"pass\n")
+    untracked_row = row("untracked.py", "untracked")
+    change_registry(checkout, lambda r: (
+        r["artifacts"].append(untracked_row),
+        r.update(artifact_count=2),
+    ))
+    errors = authority.check(checkout)
+    assert "registry contains untracked file: untracked.py" in errors
+
+
+def test_registry_writer_binds_current_bytes_without_rewriting_historical_identity(checkout):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    historical = "0" * 64
+    registry["artifacts"][0]["sha256"] = historical
+    registry["artifacts"][0].pop("current_file_sha256")
+
+    bind_current_file_digests(registry_path, registry)
+
+    assert registry["artifacts"][0]["sha256"] == historical
+    assert registry["artifacts"][0]["current_file_sha256"] == hashlib.sha256(b"pass\n").hexdigest()
+    assert registry["artifact_count"] == 1
+    assert registry["digest_semantics"] == DIGEST_SEMANTICS
+
+
+def test_every_main_registry_writer_invokes_current_digest_binding():
+    write_patterns = (
+        "write_json(registry_path, registry)",
+        "write(registry_path, registry)",
+        'write_json(root / "registry" / "artifact_authority_registry.json", registry)',
+        'write_json(REGISTRY / "artifact_authority_registry.json", registry)',
+        "write_json(path, registry)",
+        "registry_path: registry",
+    )
+    writers = []
+    missing = []
+    for script in sorted((ROOT / "scripts").glob("*.py")):
+        source = script.read_text(encoding="utf-8-sig")
+        if "artifact_authority_registry.json" not in source:
+            continue
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            segment = ast.get_source_segment(source, node) or ""
+            if not any(pattern in segment for pattern in write_patterns):
+                continue
+            writers.append(f"{script.name}:{node.name}")
+            if "bind_current_file_digests" not in segment:
+                missing.append(f"{script.name}:{node.name}")
+    assert len(writers) >= 28, writers
+    assert missing == []
 
 
 def test_historical_digest_does_not_substitute_for_current_bytes(checkout):

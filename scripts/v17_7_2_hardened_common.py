@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import hashlib
 import json
 import math
@@ -1173,6 +1178,7 @@ def write_registry_delta(root: Path, paths: list[Path], outcome: str) -> None:
     registry["updated_utc"] = utc_now()
     registry["current_head"] = current_head()
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 

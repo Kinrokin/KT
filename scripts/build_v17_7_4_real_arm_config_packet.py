@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests
+
 import hashlib
 import json
 import subprocess
@@ -256,6 +261,7 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return write_json(
         repo / "registry" / "artifact_authority_registry_v17_7_4_real_arm_config_delta_receipt.json",
