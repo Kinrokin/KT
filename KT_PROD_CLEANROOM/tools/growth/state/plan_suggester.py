@@ -49,6 +49,10 @@ def _growth_artifacts_root() -> Path:
 def _default_policy_log_path() -> Path:
     return _growth_artifacts_root() / "state" / "lane_policy_comparison.jsonl"
 
+
+def _default_suggestions_log_path() -> Path:
+    return _growth_artifacts_root() / "state" / "plan_suggestions.jsonl"
+
 @dataclass(frozen=True)
 class EpochSignals:
     root: Path
@@ -608,7 +612,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--append-log",
         action="store_true",
-        help="Append suggestion to default log path (tools/growth/state/plan_suggestions.jsonl).",
+        help="Append suggestion to the growth-artifacts state/plan_suggestions.jsonl log.",
     )
     p.add_argument("--write-epoch", action="store_true", help="Write plan_suggestion.json into the latest epoch root.")
     p.add_argument(
@@ -930,7 +934,7 @@ def main() -> int:
     if args.ledger_out:
         ledger_path = Path(args.ledger_out)
     elif args.append_log:
-        ledger_path = Path(__file__).resolve().parent / "plan_suggestions.jsonl"
+        ledger_path = _default_suggestions_log_path()
 
     if ledger_path is not None:
         _append_jsonl(ledger_path, payload)

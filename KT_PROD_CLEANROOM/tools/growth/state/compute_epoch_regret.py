@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -21,6 +22,19 @@ class RegretComputeError(RuntimeError):
 LANE_COVERAGE = "coverage_lane"
 LANE_REANCHOR = "reanchor_lane"
 LANE_STABILIZE = "stabilize_lane"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    root = Path(override) if override else _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _default_epochs_dir() -> Path:
+    return _growth_artifacts_root() / "epochs"
 
 
 @dataclass(frozen=True)
@@ -205,7 +219,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--epochs-dir",
         type=Path,
-        default=Path("KT_PROD_CLEANROOM/tools/growth/artifacts/epochs"),
+        default=_default_epochs_dir(),
         help="Epoch artifacts root.",
     )
     p.add_argument(

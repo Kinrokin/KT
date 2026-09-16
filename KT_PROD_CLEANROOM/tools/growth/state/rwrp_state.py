@@ -38,15 +38,14 @@ class RWRPState:
 
 
 _STATE_PATH = Path(__file__).resolve().parent / "rwrp_state.json"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
 
 
 def _state_path() -> Path:
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
-    if not override:
-        return _STATE_PATH
-    root = Path(override)
+    root = Path(override) if override else _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
     if not root.is_absolute():
-        root = Path(__file__).resolve().parents[3] / root
+        root = _CLEANROOM_ROOT / root
     return root.resolve() / "state" / "rwrp_state.json"
 
 

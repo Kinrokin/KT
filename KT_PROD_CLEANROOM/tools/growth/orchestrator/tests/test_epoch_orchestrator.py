@@ -387,6 +387,44 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 self.assertEqual(plan_suggester._default_policy_log_path(), expected)
                 self.assertEqual(analyze_policy_shadow._default_policy_log_path(), expected)
 
+    def test_cce_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import cce_state
+
+        expected = cce_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "cce_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(cce_state._state_path(), expected)
+            self.assertNotEqual(cce_state._state_path(), cce_state._STATE_PATH)
+
+    def test_oce_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import oce_state
+
+        expected = oce_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "oce_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(oce_state._state_path(), expected)
+            self.assertNotEqual(oce_state._state_path(), oce_state._STATE_PATH)
+
+    def test_rwrp_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import rwrp_state
+
+        expected = rwrp_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "rwrp_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(rwrp_state._state_path(), expected)
+            self.assertNotEqual(rwrp_state._state_path(), rwrp_state._STATE_PATH)
+
+    def test_plan_suggester_append_default_uses_growth_artifacts_state(self) -> None:
+        from tools.growth.state import plan_suggester
+
+        expected = plan_suggester._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "plan_suggestions.jsonl"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(plan_suggester._default_suggestions_log_path(), expected)
+
+    def test_epoch_regret_default_uses_growth_artifacts_epochs(self) -> None:
+        from tools.growth.state import compute_epoch_regret
+
+        expected = compute_epoch_regret._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "epochs"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(compute_epoch_regret._default_epochs_dir(), expected)
+
     def test_plan_suggester_uses_explicit_external_ledger(self) -> None:
         from tools.growth import run_autonomous_escalation
 
