@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 
 import hashlib
 import json
@@ -1218,10 +1218,9 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "updated_utc": utc_now(),
             "notes": "KTCF repo-side packet forge; no Kaggle, training, promotion, selector deployment, budget deployment, adapter mutation, production prompt mutation, or production math-mode authority.",
         }
-        if rel in by_path:
-            by_path[rel].update(entry)
-        else:
+        if rel not in by_path:
             artifacts.append(entry)
+            by_path[rel] = entry
         additions.append(entry)
     registry["current_head"] = git_output("rev-parse", "HEAD")
     registry_timestamp = utc_now()

@@ -37,8 +37,14 @@ def _ensure_under_root(*, path: Path, root: Path, label: str) -> None:
 
 
 def _reject_nonportable_path_components(*, path: Path, label: str) -> None:
-    if any(part not in {".", ".."} and part.endswith((".", " ")) for part in path.parts):
-        raise ValueError(f"{label}_nonportable_path_component (fail-closed)")
+    reserved = {"CON", "PRN", "AUX", "NUL"} | {
+        f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+    }
+    for part in path.parts:
+        if part in {".", ".."}:
+            continue
+        if part.endswith((".", " ")) or part.split(".", 1)[0].upper() in reserved:
+            raise ValueError(f"{label}_nonportable_path_component (fail-closed)")
 
 
 def _reject_parent_components(*, path: Path, label: str) -> None:
@@ -257,6 +263,7 @@ def main() -> int:
     out_argument = Path(args.out)
     _reject_nonportable_path_components(path=epoch_argument, label="epoch_dir")
     _reject_parent_components(path=epoch_argument, label="epoch_dir")
+    _reject_nonportable_path_components(path=out_argument, label="output")
     _reject_link_or_reparse_components(path=out_argument, label="output")
     epoch_input = Path(os.path.abspath(epoch_argument))
     out_input = Path(os.path.abspath(out_argument))

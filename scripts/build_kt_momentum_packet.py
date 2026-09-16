@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 
 import hashlib
 import json
@@ -719,10 +719,9 @@ def register_artifacts(paths: list[Path]) -> None:
             "updated_utc": utc_now(),
             "notes": "KTCF momentum packet forge; no training, promotion, selector deployment, adapter mutation, production prompt mutation, production math-mode, commercial, frontier, or S-tier authority.",
         }
-        if rel in by_path:
-            by_path[rel].update(entry)
-        else:
+        if rel not in by_path:
             artifacts.append(entry)
+            by_path[rel] = entry
         additions.append(entry)
 
     timestamp = utc_now()

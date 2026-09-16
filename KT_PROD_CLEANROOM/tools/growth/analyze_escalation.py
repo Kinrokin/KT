@@ -7,6 +7,12 @@ from pathlib import Path
 
 _CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
 _SAFE_COMPONENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+_RESERVED_DEVICE_BASENAMES = {"CON", "PRN", "AUX", "NUL"} | {
+    f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+}
+
+def _is_reserved_device_name(value: str) -> bool:
+    return value.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES
 
 
 def _growth_artifacts_root() -> Path:
@@ -32,6 +38,7 @@ def _safe_epoch_dir(epochs_root: Path, value: object) -> Path:
         not isinstance(value, str)
         or _SAFE_COMPONENT.fullmatch(value) is None
         or value.endswith((".", " "))
+        or _is_reserved_device_name(value)
     ):
         raise ValueError("unsafe_epoch_path_component")
     resolved_root = epochs_root.resolve()

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
 
 import hashlib
 import json
@@ -726,10 +726,7 @@ def update_registry(paths: list[tuple[Path, str, str, bool, str]]) -> None:
     entries.append(delta_entry)
     delta["entries_added_or_updated"] = entries
     write_json(delta_path, delta)
-    by_path = {artifact["path"]: artifact for artifact in registry["artifacts"]}
-    for entry in entries:
-        by_path[entry["path"]] = entry
-    registry["artifacts"] = list(by_path.values())
+    merge_registry_entries(registry, entries)
     registry["artifact_count"] = len(registry["artifacts"])
     registry["current_head"] = git_output("rev-parse", "HEAD")
     registry["updated_utc"] = utc_now()

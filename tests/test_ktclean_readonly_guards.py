@@ -9,15 +9,22 @@ import shutil
 import subprocess
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus"))
+
 import pytest
 
 from scripts import check_artifact_authority_registry as authority
 from scripts import check_no_bloat as bloat
+from KT_PROD_CLEANROOM.tools.growth import analyze_autonomous_run, analyze_escalation
+from KT_PROD_CLEANROOM.tools.growth.eval_harness_plus import eval_plus_runner
 from scripts.artifact_authority_registry_writer import (
     DIGEST_SEMANTICS,
     bind_current_file_digests,
     existing_artifact_ids_for_paths,
+    merge_registry_entries,
     rebind_authority_registry_file,
+    _normalize_explicit_nonexecuting_rows,
+    _repository_path,
 )
 
 
@@ -91,6 +98,59 @@ def change_registry(root, mutate):
     value = json.loads((root / name).read_text(encoding="utf-8"))
     mutate(value)
     write_json(root, name, value)
+
+
+
+@pytest.mark.parametrize("value", ["CON", "con.txt", "LPT9.log"])
+def test_reserved_windows_device_names_fail_closed_across_path_guards(tmp_path, value):
+    with pytest.raises(ValueError, match="unsafe_epoch_path_component"):
+        analyze_autonomous_run._safe_child(tmp_path, value, label="epoch")
+    with pytest.raises(ValueError, match="unsafe_epoch_path_component"):
+        analyze_escalation._safe_epoch_dir(tmp_path, value)
+    with pytest.raises(ValueError, match="nonportable_path_component"):
+        eval_plus_runner._reject_nonportable_path_components(
+            path=Path("safe") / value, label="output"
+        )
+    with pytest.raises(ValueError, match="portable direct path"):
+        _repository_path(tmp_path, value)
+
+
+def test_registry_merge_preserves_existing_identity_and_authority():
+    original = {
+        "artifact_id": "CANONICAL_ID",
+        "path": "source.py",
+        "primary_class": "CANONICAL_SOURCE",
+        "authority_state": "LIVE_CURRENT_HEAD_VALIDATED",
+        "current_authority": True,
+        "claim_authority": "INTERNAL_SHADOW",
+        "sha256": "historical",
+    }
+    registry = {"artifacts": [original.copy()]}
+    replacement = {
+        **original,
+        "artifact_id": "SYNTHETIC_ID",
+        "primary_class": "GENERATED_OUTPUT",
+        "authority_state": "ARCHIVE",
+        "current_authority": False,
+        "sha256": "replacement",
+    }
+    merge_registry_entries(registry, [replacement])
+    assert registry["artifacts"] == [original]
+
+
+def test_legacy_nonexecuting_normalizer_rejects_current_authority_conflict():
+    registry = {
+        "artifacts": [{
+            "artifact_id": "legacy",
+            "path": "source.py",
+            "authority": "PREP",
+            "controls_execution": False,
+            "current_authority": True,
+        }]
+    }
+    _normalize_explicit_nonexecuting_rows(registry)
+    assert registry["artifacts"][0]["current_authority"] is True
+    assert "primary_class" not in registry["artifacts"][0]
 
 
 def test_valid_registry_and_shared_source_roles(checkout):

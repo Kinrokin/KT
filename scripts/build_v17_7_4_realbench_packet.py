@@ -249,10 +249,9 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
             sha256=sha256_file(path),
             notes="Real benchmark gauge prep artifact; no promotion, V18, commercial, or superiority authority.",
         )
-        if rel in existing:
-            existing[rel].update(payload)
-        else:
+        if rel not in existing:
             artifacts.append(payload)
+            existing[rel] = payload
         changed.append(rel)
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID

@@ -597,6 +597,15 @@ def write_all(root: Path | None = None) -> dict:
     )
 
     registry_path = root / "registry/artifact_authority_registry.json"
+    receipt_path = root / "reports/v15_oracle_harvest_superlane_receipt.json"
+    if registry_path.exists() and not receipt_path.exists():
+        write_json(
+            receipt_path,
+            {
+                "schema_id": "kt.v15_oracle_harvest_superlane_receipt.v1",
+                "status": "PENDING_WRITE_BEFORE_REGISTRY_BIND",
+            },
+        )
     if registry_path.exists():
         registry = read_json(registry_path)
         receipt_id = existing_artifact_ids_for_paths(

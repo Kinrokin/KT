@@ -18,6 +18,17 @@ DIGEST_SEMANTICS = {
     "self_excluded_path": REGISTRY_RELATIVE_PATH,
 }
 HISTORICAL_STATES = {"ARCHIVE", "STALE", "DUPLICATE", "SUPERSEDED", "RETIRED"}
+_RESERVED_DEVICE_BASENAMES = {"CON", "PRN", "AUX", "NUL"} | {
+    f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+}
+_PRIMARY_CLASS_ALIASES = {
+    "GENERATED_RUNTIME_PACKET": "GENERATED_OUTPUT",
+    "CANONICAL_RUNBOOK": "CANONICAL_GOVERNANCE",
+    "EVIDENCE_ARCHIVE": "ARCHIVE_HISTORY",
+    "EVIDENCE_SUMMARY": "ARCHIVE_HISTORY",
+    "EVIDENCE_LEDGER": "ARCHIVE_HISTORY",
+    "CANONICAL_FIXTURE": "ARCHIVE_HISTORY",
+}
 
 
 def _unique_json_keys(pairs):
@@ -146,7 +157,12 @@ def _repository_path(root: Path, relative: object) -> Path:
     if relative.startswith("/") or "\\" in relative or ":" in relative:
         raise ValueError(f"registry artifact path is not repository-relative: {relative!r}")
     parts = relative.split("/")
-    if any(part in {"", ".", ".."} or part.endswith((".", " ")) for part in parts):
+    if any(
+        part in {"", ".", ".."}
+        or part.endswith((".", " "))
+        or part.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES
+        for part in parts
+    ):
         raise ValueError(f"registry artifact path is not a portable direct path: {relative!r}")
 
     root = root.resolve()
@@ -210,7 +226,7 @@ def _normalize_explicit_nonexecuting_rows(registry: MutableMapping[str, Any]) ->
             and row.get("promotion_authority") is not True
             and row.get("claim_expansion") is not True
         )
-        if not explicit_nonexec:
+        if not explicit_nonexec or row.get("current_authority") is True:
             continue
         row.pop("authority", None)
         row.pop("status", None)
@@ -224,6 +240,38 @@ def _normalize_explicit_nonexecuting_rows(registry: MutableMapping[str, Any]) ->
         row["current_authority"] = False
         row.setdefault("supersedes", [])
         row.setdefault("superseded_by", None)
+
+
+def merge_registry_entries(registry: MutableMapping[str, Any], entries: list[dict[str, Any]]) -> None:
+    """Append only genuinely new paths; preserve admitted identity and authority rows."""
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, list):
+        raise ValueError("authority registry artifacts must be a list")
+    by_path = {
+        row["path"]: row for row in artifacts
+        if isinstance(row, dict) and isinstance(row.get("path"), str)
+    }
+    for entry in entries:
+        path = entry.get("path") if isinstance(entry, dict) else None
+        if not isinstance(path, str):
+            raise ValueError("registry entry path must be a string")
+        if path in by_path:
+            continue
+        artifacts.append(entry)
+        by_path[path] = entry
+
+
+def _normalize_primary_class_alias(row: dict[str, Any]) -> None:
+    primary_class = row.get("primary_class")
+    mapped = _PRIMARY_CLASS_ALIASES.get(primary_class)
+    if mapped is None:
+        return
+    row["primary_class"] = mapped
+    if mapped == "ARCHIVE_HISTORY":
+        row["authority_state"] = "ARCHIVE"
+        row["current_authority"] = False
+        row["controls_execution"] = False
+        row["claim_authority"] = "NONE"
 
 
 def bind_current_file_digests(
@@ -243,6 +291,7 @@ def bind_current_file_digests(
     for index, row in enumerate(artifacts):
         if not isinstance(row, dict):
             raise ValueError(f"authority registry artifact {index} must be an object")
+        _normalize_primary_class_alias(row)
         relative = row.get("path")
         if relative == REGISTRY_RELATIVE_PATH:
             row["current_file_sha256"] = None
