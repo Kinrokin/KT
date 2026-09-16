@@ -76,7 +76,8 @@ def _growth_artifacts_root() -> Path:
     Default: KT_PROD_CLEANROOM/tools/growth/artifacts
 
     Seal / gate override: set KT_GROWTH_ARTIFACTS_ROOT to an absolute path or a
-    cleanroom-relative path (resolved relative to _repo_root()).
+    cleanroom-relative path (resolved relative to KT_PROD_CLEANROOM; the
+    historical _repo_root() helper names that cleanroom root).
     """
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
     if not override:

@@ -56,7 +56,7 @@ def _epoch_artifacts_root() -> Path:
     if override:
         base = Path(override)
         if not base.is_absolute():
-            base = _repo_root() / base
+            base = _cleanroom_root() / base
         return base.resolve() / "epochs"
     return _cleanroom_root() / "tools" / "growth" / "artifacts" / "epochs"
 
@@ -66,7 +66,7 @@ def _salvage_root() -> Path:
     if override:
         base = Path(override)
         if not base.is_absolute():
-            base = _repo_root() / base
+            base = _cleanroom_root() / base
         return base.resolve() / "salvage"
     return _cleanroom_root() / "tools" / "growth" / "artifacts" / "salvage"
 

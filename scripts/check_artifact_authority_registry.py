@@ -84,6 +84,10 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
         return ["current packet contract or manifest missing selection field"]
     current = [r for r in artifacts if isinstance(r, dict)
                and r.get("primary_class") == "CANONICAL_PACKET_CURRENT"]
+    decision_log_rows = [
+        r for r in artifacts
+        if isinstance(r, dict) and r.get("path") == "memory/DECISION_LOG.jsonl"
+    ]
     selected = contract["current_packet"]
     if selected is None:
         if current or manifest["packets"] != []:
@@ -115,6 +119,14 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
                 "Current packet SHA256": None,
                 "Active execution lane": None,
             })
+            and all(
+                row.get("primary_class") == "ARCHIVE_HISTORY"
+                and row.get("authority_state") in HISTORICAL_STATES
+                and row.get("claim_authority") == "NONE"
+                and row.get("controls_execution") is False
+                and row.get("current_authority") is False
+                for row in decision_log_rows
+            )
             and re.search(
                 r"\b(?:RUN_[A-Z0-9_]+|BUD[0-9][A-Z0-9_]*)\b",
                 "\n".join((current_context, next_lawful_move, active_cutline)),

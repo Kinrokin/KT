@@ -1,8 +1,10 @@
 """
 Compute advisory-only regret metrics per epoch (offline, fail-closed).
 
-Writes KT_PROD_CLEANROOM/tools/growth/artifacts/epochs/<epoch_id>/epoch_regret.json
-based solely on real evidence (micro_steps + epoch_summary). No stubs, no routing/gov changes.
+Writes <KT_GROWTH_ARTIFACTS_ROOT>/epochs/<epoch_id>/epoch_regret.json. When the
+override is unset, the shared fallback is
+KT_PROD_CLEANROOM/tools/growth/artifacts/epochs. The result is based solely on
+real evidence (micro_steps + epoch_summary). No stubs, no routing/gov changes.
 """
 from __future__ import annotations
 

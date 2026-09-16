@@ -184,6 +184,38 @@ def test_stale_manifest_cannot_resurrect_a_packet(checkout):
     assert any("no-packet selection conflicts" in e for e in authority.check(checkout))
 
 
+def test_no_current_packet_requires_archived_decision_log_authority(checkout):
+    decision_path = checkout / "memory" / "DECISION_LOG.jsonl"
+    decision_path.write_text(
+        '{"next_lawful_move":"RUN_KT_BUDGET_MONITOR_GSM8K_100"}\n',
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "add", "memory/DECISION_LOG.jsonl"], cwd=checkout, check=True)
+    decision_row = {
+        **row("memory/DECISION_LOG.jsonl", "decision-log"),
+        "primary_class": "ARCHIVE_HISTORY",
+        "role": "archive_history",
+        "authority_state": "ARCHIVE",
+        "validation_status": "PASS",
+        "current_file_sha256": hashlib.sha256(decision_path.read_bytes()).hexdigest(),
+    }
+    change_registry(checkout, lambda r: (
+        r["artifacts"].append(decision_row),
+        r.update(artifact_count=2),
+    ))
+    assert authority.check(checkout) == []
+
+    change_registry(checkout, lambda r: r["artifacts"][1].update(
+        primary_class="CANONICAL_GOVERNANCE",
+        role="canonical_governance",
+        authority_state="LIVE_CURRENT_HEAD_VALIDATED",
+        claim_authority="CURRENT_HEAD",
+        controls_execution=True,
+        current_authority=True,
+    ))
+    assert any("current truth surfaces conflict" in error for error in authority.check(checkout))
+
+
 @pytest.mark.parametrize("surface", [
     "memory_index",
     "current_truth",

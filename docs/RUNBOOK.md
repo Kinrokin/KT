@@ -27,8 +27,10 @@ programs have their own output contracts; this variable is not a global override
 for every KT tool.
 
 Preserve prior runs. Epochs use their existing collision/resume rules; do not
-delete evidence to make a command pass. Use absolute paths for the override
-because older tools differ in how they interpret relative values.
+delete evidence to make a command pass. Use absolute paths for the override.
+Supported growth entrypoints resolve a relative value against
+`KT_PROD_CLEANROOM`, but that compatibility behavior places output in the source
+checkout and is not the documented external-work-area flow.
 
 ## 2) One crucible run
 

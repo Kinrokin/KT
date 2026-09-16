@@ -331,6 +331,33 @@ class TestKernelTargetRouting(unittest.TestCase):
 
 
 class TestArtifactsRootOverride(unittest.TestCase):
+    def test_relative_override_has_one_cleanroom_base(self) -> None:
+        from epoch_orchestrator import _growth_artifacts_root
+        from tools.growth import analyze_autonomous_run, analyze_escalation, e2e_gate
+        from tools.growth.state import (
+            analyze_policy_shadow,
+            cce_state,
+            compute_epoch_regret,
+            oce_state,
+            plan_suggester,
+            rwrp_state,
+        )
+
+        relative = Path("relative-growth-root")
+        expected = (_repo_root() / relative).resolve()
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(relative)}):
+            self.assertEqual(_growth_artifacts_root(), expected)
+            self.assertEqual(e2e_gate._epoch_artifacts_root(), expected / "epochs")
+            self.assertEqual(e2e_gate._salvage_root(), expected / "salvage")
+            self.assertEqual(analyze_autonomous_run._growth_artifacts_root(), expected)
+            self.assertEqual(analyze_escalation._growth_artifacts_root(), expected)
+            self.assertEqual(analyze_policy_shadow._growth_artifacts_root(), expected)
+            self.assertEqual(compute_epoch_regret._growth_artifacts_root(), expected)
+            self.assertEqual(plan_suggester._growth_artifacts_root(), expected)
+            self.assertEqual(cce_state._state_path().parents[1], expected)
+            self.assertEqual(oce_state._state_path().parents[1], expected)
+            self.assertEqual(rwrp_state._state_path().parents[1], expected)
+
     def test_escalation_consumers_share_external_epochs_root(self) -> None:
         from tools.growth import run_autonomous_escalation, run_epoch_escalation
 

@@ -31,8 +31,19 @@ def _ensure_under_root(*, path: Path, root: Path, label: str) -> None:
         raise ValueError(f"{label}_not_under_root (fail-closed)")
 
 
+def _reject_nonportable_path_components(*, path: Path, label: str) -> None:
+    if any(part not in {".", ".."} and part.endswith((".", " ")) for part in path.parts):
+        raise ValueError(f"{label}_nonportable_path_component (fail-closed)")
+
+
+def _reject_parent_components(*, path: Path, label: str) -> None:
+    if any(part == ".." for part in path.parts):
+        raise ValueError(f"{label}_parent_component_forbidden (fail-closed)")
+
+
 def _reject_link_or_reparse_components(*, path: Path, label: str) -> None:
     """Reject every existing linked component before a trusted root is resolved."""
+    _reject_parent_components(path=path, label=label)
     absolute = Path(os.path.abspath(path))
     current = Path(absolute.anchor)
     try:
@@ -170,16 +181,13 @@ def main() -> int:
     ap.add_argument("--allow-existing", action="store_true", help="If output exists, validate it matches computed result and exit 0")
     args = ap.parse_args()
 
-    epoch_input = Path(os.path.abspath(args.epoch_dir))
-    out_input = Path(os.path.abspath(args.out))
-    current = Path(out_input.anchor)
-    for part in out_input.parts[1:]:
-        current = current / part
-        if not os.path.lexists(current):
-            break
-        mode = current.lstat()
-        if stat.S_ISLNK(mode.st_mode) or getattr(mode, "st_file_attributes", 0) & 0x400:
-            raise ValueError("output_link_or_reparse_forbidden (fail-closed)")
+    epoch_argument = Path(args.epoch_dir)
+    out_argument = Path(args.out)
+    _reject_nonportable_path_components(path=epoch_argument, label="epoch_dir")
+    _reject_parent_components(path=epoch_argument, label="epoch_dir")
+    _reject_link_or_reparse_components(path=out_argument, label="output")
+    epoch_input = Path(os.path.abspath(epoch_argument))
+    out_input = Path(os.path.abspath(out_argument))
     out_path = out_input.resolve()
     cleanroom_root = Path(__file__).resolve().parents[3]
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
@@ -223,19 +231,26 @@ def main() -> int:
         golden_zone=golden,
     )
 
-    # Fail-closed: never overwrite an existing output file.
-    if out_path.exists():
+    # Fail-closed: atomically claim a new output path. Exclusive creation keeps
+    # concurrent evaluators from both observing an absent path and overwriting
+    # one another.
+    computed = result.to_dict()
+    serialized = json.dumps(
+        computed, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+    ) + "\n"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with out_path.open("x", encoding="utf-8") as stream:
+            stream.write(serialized)
+        return 0
+    except FileExistsError:
         if not args.allow_existing:
             raise SystemExit("refuse_overwrite (fail-closed)")
         existing = _require_json_object(out_path, root=out_path.parent, label="existing_output")
         ExtendedBenchmarkResultSchema.validate(existing)
-        computed = result.to_dict()
         if existing.get("result_hash") != computed.get("result_hash"):
             raise SystemExit("existing_output_hash_mismatch (fail-closed)")
         return 0
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(result.to_dict(), sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n", encoding="utf-8")
-    return 0
 
 
 if __name__ == "__main__":
