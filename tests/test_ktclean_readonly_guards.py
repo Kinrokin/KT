@@ -239,7 +239,8 @@ def select_current_packet(checkout):
     write_json(checkout, "governance/repo_layout_contract.json",
                {"current_packet": packet_path, "current_packet_state": "CURRENT_EXECUTION_PACKET"})
     write_json(checkout, "packets/current/manifest.json",
-               {"packets": [{"path": packet_path, "current_authority": True, "sha256": digest}]})
+               {"packets": [{"path": packet_path, "current_authority": True, "sha256": digest,
+                              "next_lawful_move": "RUN_SELECTED_PACKET"}]})
     write_json(checkout, "memory/ARTIFACT_INDEX.json",
                {"current_packet": packet_path, "current_packet_sha256": digest,
                 "selection_state": "CURRENT_EXECUTION_PACKET"})
@@ -280,6 +281,15 @@ def select_current_packet(checkout):
 def test_selected_packet_binds_every_current_truth_surface(checkout):
     select_current_packet(checkout)
     assert authority.check(checkout) == []
+
+
+def test_selected_packet_rejects_stale_manifest_move(checkout):
+    select_current_packet(checkout)
+    path = checkout / "packets/current/manifest.json"
+    value = json.loads(path.read_text(encoding="utf-8"))
+    value["packets"][0]["next_lawful_move"] = "RUN_STALE_PACKET"
+    path.write_text(json.dumps(value), encoding="utf-8")
+    assert "current packet manifest binding mismatch" in authority.check(checkout)
 
 
 @pytest.mark.parametrize("surface", ["contract", "manifest"])

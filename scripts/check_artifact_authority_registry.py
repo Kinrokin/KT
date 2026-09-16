@@ -131,10 +131,11 @@ def packet_selection_errors(root: Path, artifacts: list[dict]) -> list[str]:
         return ["current packet selection-state mismatch"]
     record = rows[0]
     digest = current[0].get("current_file_sha256")
-    if (record.get("path") != selected or record.get("current_authority") is not True
-            or record.get("sha256") != digest):
-        return ["current packet manifest binding mismatch"]
     next_move = current_truth.get("next_lawful_move") if isinstance(current_truth, dict) else None
+    if (record.get("path") != selected or record.get("current_authority") is not True
+            or record.get("sha256") != digest or record.get("next_lawful_move") != next_move
+            or not isinstance(next_move, str) or not next_move.strip()):
+        return ["current packet manifest binding mismatch"]
     mirrors_match = (
         isinstance(digest, str)
         and isinstance(memory_index, dict)

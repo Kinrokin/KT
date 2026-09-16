@@ -377,6 +377,16 @@ class TestArtifactsRootOverride(unittest.TestCase):
                     override_root / "state" / "lane_policy_comparison.jsonl",
                 )
 
+    def test_plan_suggester_and_analyzer_share_external_policy_log(self) -> None:
+        from tools.growth.state import analyze_policy_shadow, plan_suggester
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            expected = override_root / "state" / "lane_policy_comparison.jsonl"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                self.assertEqual(plan_suggester._default_policy_log_path(), expected)
+                self.assertEqual(analyze_policy_shadow._default_policy_log_path(), expected)
+
     def test_plan_suggester_uses_explicit_external_ledger(self) -> None:
         from tools.growth import run_autonomous_escalation
 

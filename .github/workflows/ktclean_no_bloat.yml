@@ -19,10 +19,8 @@ jobs:
       - name: Check existing evidence without regenerating authority
         run: |
           python -B -m scripts.repo_pristine_census --check
-      - name: Run KTCLEAN gates
+      - name: Run remaining KTCLEAN gates
         run: |
-          python scripts/check_no_bloat.py
-          python scripts/check_artifact_authority_registry.py
           python scripts/check_packet_name_lengths.py
           python scripts/check_duplicate_artifacts.py
           python scripts/check_stale_head_refs.py

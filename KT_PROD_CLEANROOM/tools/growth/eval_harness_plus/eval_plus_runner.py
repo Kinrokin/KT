@@ -31,6 +31,24 @@ def _ensure_under_root(*, path: Path, root: Path, label: str) -> None:
         raise ValueError(f"{label}_not_under_root (fail-closed)")
 
 
+def _reject_link_or_reparse_components(*, path: Path, label: str) -> None:
+    """Reject every existing linked component before a trusted root is resolved."""
+    absolute = Path(os.path.abspath(path))
+    current = Path(absolute.anchor)
+    try:
+        for part in absolute.parts[1:]:
+            current = current / part
+            if not os.path.lexists(current):
+                break
+            mode = current.lstat()
+            if stat.S_ISLNK(mode.st_mode) or getattr(mode, "st_file_attributes", 0) & 0x400:
+                raise ValueError(f"{label}_link_or_reparse_forbidden (fail-closed)")
+    except ValueError:
+        raise
+    except OSError as exc:
+        raise ValueError(f"{label}_unavailable:{exc.__class__.__name__} (fail-closed)")
+
+
 def _require_regular_file(*, path: Path, root: Path, label: str) -> None:
     """Reject links/reparse points before reading a JSON input below root."""
     _ensure_under_root(path=path, root=root, label=label)
@@ -112,10 +130,12 @@ def _load_epoch_metrics(
         if not isinstance(run_id, str) or re.fullmatch(r"[0-9a-f]{64}", run_id) is None:
             raise ValueError("invalid_or_missing_run_id_path_component (fail-closed)")
         kernel_target = kernel_identity.get("kernel_target", "unknown")
-        if (kernel_target in {".", ".."}
+        if (kernel_target in {".", ".."} or kernel_target.endswith((".", " "))
                 or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", kernel_target) is None):
             raise ValueError("invalid_kernel_target_path_component (fail-closed)")
-        c019_root = (artifacts_root / "c019_runs").resolve()
+        c019_root_input = artifacts_root / "c019_runs"
+        _reject_link_or_reparse_components(path=c019_root_input, label="c019_root")
+        c019_root = c019_root_input.resolve()
         c019_dir = c019_root / kernel_target / run_id
         _ensure_under_root(path=c019_dir, root=c019_root, label="c019_dir")
         if not c019_dir.is_dir():
@@ -128,7 +148,7 @@ def _load_epoch_metrics(
         if str(replay_obj.get("status", "")).upper() == "PASS":
             replay_verified += 1
         gp = c019_dir / "governance_report.json"
-        if gp.exists():
+        if os.path.lexists(gp):
             gov_obj = _require_json_object(gp, root=c019_root, label="governance_report")
             types = gov_obj.get("types") or []
             if isinstance(types, list):
@@ -163,11 +183,14 @@ def main() -> int:
     out_path = out_input.resolve()
     cleanroom_root = Path(__file__).resolve().parents[3]
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
-    artifacts_root = Path(override) if override else cleanroom_root / "tools" / "growth" / "artifacts"
-    if not artifacts_root.is_absolute():
-        artifacts_root = cleanroom_root / artifacts_root
-    artifacts_root = artifacts_root.resolve()
-    allowed_epochs_root = (artifacts_root / "epochs").resolve()
+    artifacts_root_input = Path(override) if override else cleanroom_root / "tools" / "growth" / "artifacts"
+    if not artifacts_root_input.is_absolute():
+        artifacts_root_input = cleanroom_root / artifacts_root_input
+    _reject_link_or_reparse_components(path=artifacts_root_input, label="artifacts_root")
+    artifacts_root = artifacts_root_input.resolve()
+    epochs_root_input = artifacts_root / "epochs"
+    _reject_link_or_reparse_components(path=epochs_root_input, label="epochs_root")
+    allowed_epochs_root = epochs_root_input.resolve()
     _ensure_under_root(path=epoch_input, root=allowed_epochs_root, label="epoch_dir")
     if epoch_input.parent != allowed_epochs_root:
         raise ValueError("epoch_dir_not_direct_child (fail-closed)")

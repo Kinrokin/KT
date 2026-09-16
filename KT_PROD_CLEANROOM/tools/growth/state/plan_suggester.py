@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import dataclass
 from datetime import datetime
@@ -32,6 +33,21 @@ TriBool = Optional[bool]
 
 DEFAULT_HISTORY = 50
 POLICY_B_REGISTRY_PATH = Path(__file__).resolve().parent / "policy_b_variable_registry.json"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    root = Path(override)
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _default_policy_log_path() -> Path:
+    return _growth_artifacts_root() / "state" / "lane_policy_comparison.jsonl"
 
 @dataclass(frozen=True)
 class EpochSignals:
@@ -604,8 +620,8 @@ def _parse_args() -> argparse.Namespace:
         "--policy-log",
         type=Path,
         nargs="?",
-        const=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
-        default=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
+        const=_default_policy_log_path(),
+        default=_default_policy_log_path(),
         help="Path to append policy comparison logs.",
     )
     return p.parse_args()

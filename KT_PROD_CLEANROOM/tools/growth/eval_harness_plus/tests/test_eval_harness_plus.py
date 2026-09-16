@@ -294,6 +294,70 @@ class TestExternalEpochInput(unittest.TestCase):
                     eval_plus_main()
             self.assertFalse(out.exists())
 
+    def test_dangling_governance_report_symlink_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-DANGLING-GOVERNANCE-RUN1"
+            run_id = "a" * 64
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
+            )
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
+            )
+            c019_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            c019_dir.mkdir(parents=True)
+            (c019_dir / "replay_report.json").write_text('{"status":"PASS"}', encoding="utf-8")
+            (c019_dir / "governance_report.json").symlink_to(root / "missing-governance.json")
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "governance_report_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_epochs_root_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            growth_root.mkdir()
+            outside_epochs = root / "outside-epochs"
+            epoch_dir = outside_epochs / "EPOCH-LINKED-EPOCHS-RUN1"
+            epoch_dir.mkdir(parents=True)
+            (growth_root / "epochs").symlink_to(outside_epochs, target_is_directory=True)
+            out = root / "must-not-exist.json"
+            linked_epoch = growth_root / "epochs" / epoch_dir.name
+            argv = ["eval_plus_runner", "--epoch-dir", str(linked_epoch), "--epoch-id", linked_epoch.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "epochs_root_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_symlinked_c019_root_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root = root / "growth"
+            epoch_dir = growth_root / "epochs" / "EPOCH-LINKED-C019-RUN1"
+            run_id = "a" * 64
+            epoch_dir.mkdir(parents=True)
+            (epoch_dir / "epoch_manifest.json").write_text(
+                json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
+            )
+            (epoch_dir / "run_record.json").write_text(
+                json.dumps({"run_id": run_id, "outcome": "PASS"}), encoding="utf-8"
+            )
+            outside_c019 = root / "outside-c019"
+            outside_c019.mkdir()
+            (growth_root / "c019_runs").symlink_to(outside_c019, target_is_directory=True)
+            out = root / "must-not-exist.json"
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "c019_root_link_or_reparse_forbidden"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
     def _assert_duplicate_json_key_rejected(self, source: str) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -405,6 +469,20 @@ class TestExternalEpochInput(unittest.TestCase):
     def test_untrusted_kernel_target_is_rejected_before_output(self) -> None:
         self._assert_untrusted_c019_path_component_rejected(
             kernel_target="../outside",
+            run_id="a" * 64,
+            expected="invalid_kernel_target_path_component",
+        )
+
+    def test_trailing_dot_kernel_target_is_rejected_before_output(self) -> None:
+        self._assert_untrusted_c019_path_component_rejected(
+            kernel_target="V2_SOVEREIGN.",
+            run_id="a" * 64,
+            expected="invalid_kernel_target_path_component",
+        )
+
+    def test_trailing_space_kernel_target_is_rejected_before_output(self) -> None:
+        self._assert_untrusted_c019_path_component_rejected(
+            kernel_target="V2_SOVEREIGN ",
             run_id="a" * 64,
             expected="invalid_kernel_target_path_component",
         )
