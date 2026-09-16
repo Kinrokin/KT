@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import hashlib
 import json
@@ -854,6 +860,7 @@ def update_registry(packet_sha: str) -> None:
             "status": "PASS",
         },
     )
+    rebind_authority_registry_file(registry_path)
 
 
 def build_all_outputs() -> dict[str, Any]:

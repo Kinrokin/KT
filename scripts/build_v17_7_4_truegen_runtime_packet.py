@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import argparse
 import hashlib
@@ -446,7 +452,12 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
         new_packet_sha256=packet_sha,
         no_claim_ceiling_expansion=True,
     )
-    return write_json(repo / "registry" / "artifact_authority_registry_v17_7_4_truegen_execfix_delta_receipt.json", delta)
+    delta_path = write_json(
+        repo / "registry" / "artifact_authority_registry_v17_7_4_truegen_execfix_delta_receipt.json",
+        delta,
+    )
+    rebind_authority_registry_file(registry_path)
+    return delta_path
 
 
 def build(preflight_status: str | None = None) -> dict[str, Any]:

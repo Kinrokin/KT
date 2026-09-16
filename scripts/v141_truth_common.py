@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import hashlib
 import json
@@ -624,6 +630,7 @@ def update_registry(root: Path, packet_sha: str) -> dict:
         "no_promotion_authority_added": True,
     }
     write_json(root / "registry/artifact_authority_registry_v14_1_delta_receipt.json", delta)
+    rebind_authority_registry_file(path)
     return delta
 
 

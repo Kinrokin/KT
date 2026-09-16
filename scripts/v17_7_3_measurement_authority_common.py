@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import argparse
 import hashlib
@@ -608,6 +614,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
     )
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_measurement_authority_delta_receipt.json"
     write_json(delta_path, delta)
+    rebind_authority_registry_file(registry_path)
     return delta_path
 
 

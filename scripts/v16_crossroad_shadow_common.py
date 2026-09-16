@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import argparse
 import ast
@@ -1029,6 +1035,7 @@ def update_registry(root: Path) -> None:
             "promotion_authority_added": False,
         },
     )
+    rebind_authority_registry_file(registry_path)
 
 
 def main() -> int:

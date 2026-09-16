@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import hashlib
 import json
@@ -1293,6 +1299,7 @@ def build_all_outputs() -> dict[str, Any]:
         "blockers": [],
     }
     write_json(root / "reports/v17_builder_summary.json", summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 

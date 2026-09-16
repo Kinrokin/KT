@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import json
 import shutil
@@ -962,6 +968,7 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
         **CLAIM_CEILING,
     }
     write_json(root / "registry/artifact_authority_registry_v13_admission_delta_receipt.json", delta)
+    rebind_authority_registry_file(registry_path)
 
 
 def run_v13_superlane(root: Path | None = None, audit_clean: bool | None = None) -> dict[str, Any]:

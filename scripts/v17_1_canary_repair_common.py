@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import dataclasses
 import hashlib
@@ -597,6 +603,7 @@ def update_registry(packet_sha: str) -> None:
         root / "registry/artifact_authority_registry_v17_1_delta_receipt.json",
         {"schema_id": "kt.artifact_authority_registry_v17_1_delta_receipt.v1", "program_id": PROGRAM_ID, "artifacts_added_or_updated": additions, "claim_ceiling_preserved": True, "runtime_authority_added": False, "promotion_authority_added": False, "status": "PASS"},
     )
+    rebind_authority_registry_file(registry_path)
 
 
 if __name__ == "__main__":

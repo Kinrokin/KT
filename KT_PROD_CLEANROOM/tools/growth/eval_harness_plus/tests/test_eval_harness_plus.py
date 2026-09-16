@@ -18,7 +18,7 @@ def _add_plus_to_syspath() -> None:
 
 _add_plus_to_syspath()
 
-from eval_plus_runner import main as eval_plus_main  # noqa: E402
+from eval_plus_runner import _require_json_object, main as eval_plus_main  # noqa: E402
 from eval_plus_schemas import (  # noqa: E402
     DriftMetricVectorSchema,
     ExtendedBenchmarkResultSchema,
@@ -78,6 +78,27 @@ class TestEvalHarnessPlus(unittest.TestCase):
 
 
 class TestExternalEpochInput(unittest.TestCase):
+    def _write_epoch_fixture(
+        self, root: Path, *, epoch_name: str, run_record: dict
+    ) -> tuple[Path, Path, Path]:
+        growth_root = root / "growth"
+        epoch_dir = growth_root / "epochs" / epoch_name
+        record_path = epoch_dir / "CRU-TEST" / "run_record.json"
+        record_path.parent.mkdir(parents=True)
+        record_path.write_text(json.dumps(run_record), encoding="utf-8")
+        (epoch_dir / "epoch_manifest.json").write_text(
+            json.dumps(
+                {"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}
+            ),
+            encoding="utf-8",
+        )
+        run_id = run_record.get("run_id")
+        if isinstance(run_id, str) and len(run_id) == 64:
+            run_dir = growth_root / "c019_runs" / "V2_SOVEREIGN" / run_id
+            run_dir.mkdir(parents=True)
+            (run_dir / "replay_report.json").write_text('{"status":"PASS"}', encoding="utf-8")
+        return growth_root, epoch_dir, root / "must-not-exist.json"
+
     def test_external_epoch_preserves_metrics_and_write_once_reuse(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
@@ -128,6 +149,96 @@ class TestExternalEpochInput(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "epoch_dir_parent_component_forbidden"):
                     eval_plus_main()
             self.assertFalse(out.exists())
+
+    def test_missing_run_outcome_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root, epoch_dir, out = self._write_epoch_fixture(
+                root, epoch_name="EPOCH-MISSING-OUTCOME", run_record={"run_id": "a" * 64}
+            )
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_or_missing_run_outcome"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_non_string_run_outcome_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root, epoch_dir, out = self._write_epoch_fixture(
+                root, epoch_name="EPOCH-NONSTRING-OUTCOME", run_record={"run_id": "a" * 64, "outcome": 1}
+            )
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_or_missing_run_outcome"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_unknown_run_outcome_is_rejected_before_output(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root, epoch_dir, out = self._write_epoch_fixture(
+                root, epoch_name="EPOCH-UNKNOWN-OUTCOME", run_record={"run_id": "a" * 64, "outcome": "TIMEOUT"}
+            )
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", epoch_dir.name, "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_or_missing_run_outcome"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_epoch_id_must_match_validated_directory_name(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root, epoch_dir, out = self._write_epoch_fixture(
+                root, epoch_name="EPOCH-A", run_record={"run_id": "a" * 64, "outcome": "PASS"}
+            )
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", "EPOCH-B", "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "epoch_id_directory_mismatch"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_unsafe_epoch_id_label_is_rejected_before_input_read(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            growth_root, epoch_dir, out = self._write_epoch_fixture(
+                root, epoch_name="EPOCH-SAFE", run_record={"run_id": "a" * 64, "outcome": "PASS"}
+            )
+            argv = ["eval_plus_runner", "--epoch-dir", str(epoch_dir), "--epoch-id", "../EPOCH-SAFE", "--out", str(out)]
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}), patch.object(sys, "argv", argv):
+                with self.assertRaisesRegex(ValueError, "invalid_epoch_id_label"):
+                    eval_plus_main()
+            self.assertFalse(out.exists())
+
+    def test_json_reader_rejects_path_swap_after_descriptor_open(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            target = root / "evidence.json"
+            outside = root.parent / f"{root.name}-outside.json"
+            target.write_text('{"source":"inside"}', encoding="utf-8")
+            outside.write_text('{"source":"outside"}', encoding="utf-8")
+            real_open = os.open
+            swapped = False
+
+            def open_then_swap(path, flags, *args, **kwargs):
+                nonlocal swapped
+                descriptor = real_open(path, flags, *args, **kwargs)
+                if Path(path) == target and not swapped:
+                    target.unlink()
+                    try:
+                        target.symlink_to(outside)
+                    except OSError as exc:
+                        os.close(descriptor)
+                        raise unittest.SkipTest(f"symlink unavailable: {exc}")
+                    swapped = True
+                return descriptor
+
+            try:
+                with patch("eval_plus_runner.os.open", side_effect=open_then_swap):
+                    with self.assertRaisesRegex(ValueError, "link_or_reparse_forbidden|path_changed_during_open"):
+                        _require_json_object(target, root=root, label="race_input")
+            finally:
+                outside.unlink(missing_ok=True)
 
     def test_parent_component_is_rejected_before_link_resolution(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -257,7 +368,7 @@ class TestExternalEpochInput(unittest.TestCase):
             epoch_dir = growth_root / "epochs" / "EPOCH-MISSING_ID_RUN1"
             record_path = epoch_dir / "CRU-TEST" / "run_record.json"
             record_path.parent.mkdir(parents=True)
-            record_path.write_text(json.dumps({"outcome": "TIMEOUT"}), encoding="utf-8")
+            record_path.write_text(json.dumps({"outcome": "PASS"}), encoding="utf-8")
             (epoch_dir / "epoch_manifest.json").write_text(
                 json.dumps({"kernel_identity": {"kernel_target": "V2_SOVEREIGN", "kernel_build_id": "fixture"}}), encoding="utf-8"
             )

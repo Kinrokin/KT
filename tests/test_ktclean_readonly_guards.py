@@ -13,7 +13,11 @@ import pytest
 
 from scripts import check_artifact_authority_registry as authority
 from scripts import check_no_bloat as bloat
-from scripts.artifact_authority_registry_writer import DIGEST_SEMANTICS, bind_current_file_digests
+from scripts.artifact_authority_registry_writer import (
+    DIGEST_SEMANTICS,
+    bind_current_file_digests,
+    rebind_authority_registry_file,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -139,6 +143,53 @@ def test_registry_writer_binds_current_bytes_without_rewriting_historical_identi
     assert registry["digest_semantics"] == DIGEST_SEMANTICS
 
 
+@pytest.mark.parametrize("mutate, expected", [
+    (lambda value: value["artifacts"][0].pop("primary_class"), "missing required field primary_class"),
+    (lambda value: value["artifacts"][0].update(authority_state="INVENTED"), "outside declared enum"),
+    (lambda value: value["artifacts"][0].update(controls_execution=True), "execution control requires"),
+])
+def test_registry_writer_rejects_invalid_v3_rows_before_persistence(checkout, mutate, expected):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    original = registry_path.read_bytes()
+    registry = json.loads(original)
+    mutate(registry)
+
+    with pytest.raises(ValueError, match=expected):
+        bind_current_file_digests(registry_path, registry)
+
+    assert registry_path.read_bytes() == original
+
+
+def test_registry_writer_rejects_duplicate_paths_before_persistence(checkout):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    original = registry_path.read_bytes()
+    registry = json.loads(original)
+    registry["artifacts"].append({**row("source.py", "two")})
+
+    with pytest.raises(ValueError, match="duplicate artifact path"):
+        bind_current_file_digests(registry_path, registry)
+
+    assert registry_path.read_bytes() == original
+
+
+def test_final_rebind_refreshes_a_registered_output_written_after_initial_binding(checkout):
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    receipt = checkout / "receipt.json"
+    receipt.write_bytes(b'{"phase":1}\n')
+    subprocess.run(["git", "add", "receipt.json"], cwd=checkout, check=True)
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["artifacts"].append(row("receipt.json", "receipt"))
+    bind_current_file_digests(registry_path, registry)
+    write_json(checkout, "registry/artifact_authority_registry.json", registry)
+    assert authority.check(checkout) == []
+
+    receipt.write_bytes(b'{"phase":2}\n')
+    assert any("stale current file digest" in error for error in authority.check(checkout))
+    rebind_authority_registry_file(registry_path)
+
+    assert authority.check(checkout) == []
+
+
 def test_every_main_registry_writer_invokes_current_digest_binding():
     write_patterns = (
         "write_json(registry_path, registry)",
@@ -166,6 +217,43 @@ def test_every_main_registry_writer_invokes_current_digest_binding():
                 missing.append(f"{script.name}:{node.name}")
     assert len(writers) >= 28, writers
     assert missing == []
+
+
+def test_registered_output_writers_rebind_after_their_final_output_write():
+    finalizing_writers = {
+        "accountability_common.py",
+        "g32_common.py",
+        "v13_admission_common.py",
+        "v141_truth_common.py",
+        "v14_omni_common.py",
+        "v15_oracle_harvest_common.py",
+        "v16_crossroad_shadow_common.py",
+        "v17_1_canary_repair_common.py",
+        "v17_5_multirescuer_common.py",
+        "v17_6_oracle_autopsy_common.py",
+        "v17_7_3_measurement_authority_common.py",
+        "v17_canary_coalition_common.py",
+        "build_v17_7_4_real_arm_config_packet.py",
+        "build_v17_7_4_realbench_packet.py",
+        "build_v17_7_4_truegen_runtime_packet.py",
+    }
+    defects = []
+    for name in sorted(finalizing_writers):
+        source = (ROOT / "scripts" / name).read_text(encoding="utf-8-sig")
+        tree = ast.parse(source)
+        bind_lines = []
+        final_lines = []
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            function = node.func
+            if isinstance(function, ast.Name) and function.id == "bind_current_file_digests":
+                bind_lines.append(node.lineno)
+            if isinstance(function, ast.Name) and function.id == "rebind_authority_registry_file":
+                final_lines.append(node.lineno)
+        if not bind_lines or not final_lines or max(final_lines) <= max(bind_lines):
+            defects.append(name)
+    assert defects == []
 
 
 def test_historical_digest_does_not_substitute_for_current_bytes(checkout):

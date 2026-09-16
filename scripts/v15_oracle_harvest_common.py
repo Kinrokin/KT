@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import json
 import subprocess
@@ -647,4 +653,6 @@ def write_all(root: Path | None = None) -> dict:
         "blockers": [],
     }
     write_json(root / "reports/v15_oracle_harvest_superlane_receipt.json", superlane)
+    if registry_path.exists():
+        rebind_authority_registry_file(registry_path)
     return superlane

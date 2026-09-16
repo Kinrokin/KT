@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import math
+import os
+import re
 import stat
 from pathlib import Path
 from typing import Any, MutableMapping
@@ -12,6 +16,126 @@ DIGEST_SEMANTICS = {
     "current_file_sha256": "CURRENT_REPOSITORY_BYTES",
     "self_excluded_path": REGISTRY_RELATIVE_PATH,
 }
+HISTORICAL_STATES = {"ARCHIVE", "STALE", "DUPLICATE", "SUPERSEDED", "RETIRED"}
+
+
+def _unique_json_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _no_constant(value):
+    raise ValueError(f"non-finite JSON value: {value}")
+
+
+def _load_json(path: Path) -> Any:
+    def finite_float(value):
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError("non-finite JSON number")
+        return number
+
+    return json.loads(
+        path.read_text(encoding="utf-8"),
+        object_pairs_hook=_unique_json_keys,
+        parse_constant=_no_constant,
+        parse_float=finite_float,
+    )
+
+
+def _field_errors(value: object, schema: dict, location: str) -> list[str]:
+    if not isinstance(value, dict):
+        return [f"{location}: expected object"]
+    errors = [
+        f"{location}: missing required field {key}"
+        for key in schema["required"]
+        if key not in value
+    ]
+    types = {
+        "string": str,
+        "boolean": bool,
+        "integer": int,
+        "array": list,
+        "object": dict,
+        "null": type(None),
+    }
+    for key, rule in schema["properties"].items():
+        if key not in value:
+            continue
+        field = value[key]
+        if "type" in rule:
+            allowed = rule["type"] if isinstance(rule["type"], list) else [rule["type"]]
+            if type(field) not in tuple(types[name] for name in allowed):
+                errors.append(f"{location}.{key}: invalid type")
+        if "enum" in rule and field not in rule["enum"]:
+            errors.append(f"{location}.{key}: value outside declared enum")
+        if "const" in rule and field != rule["const"]:
+            errors.append(f"{location}.{key}: unexpected value")
+    return errors
+
+
+def _validate_registry_contract(root: Path, registry: MutableMapping[str, Any]) -> None:
+    schema = _load_json(root / "registry" / "artifact_authority_registry.schema.json")
+    if not isinstance(schema, dict) or schema.get("$id") != "kt.artifact_authority_registry.schema.v3":
+        raise ValueError("unsupported authority registry schema")
+    errors = _field_errors(registry, schema, "registry")
+    artifacts = registry.get("artifacts")
+    if not isinstance(artifacts, list):
+        errors.append("registry.artifacts: expected array")
+        artifacts = []
+    if registry.get("artifact_count") != len(artifacts):
+        errors.append("registry.artifact_count does not match artifacts")
+    if registry.get("digest_semantics") != DIGEST_SEMANTICS:
+        errors.append("registry digest semantics mismatch")
+
+    row_schema = schema["properties"]["artifacts"]["items"]
+    seen_paths: set[str] = set()
+    seen_ids: set[str] = set()
+    for index, row in enumerate(artifacts):
+        location = f"artifacts[{index}]"
+        errors.extend(_field_errors(row, row_schema, location))
+        if not isinstance(row, dict):
+            continue
+        path = row.get("path")
+        identity = row.get("artifact_id")
+        if isinstance(path, str):
+            if path in seen_paths:
+                errors.append(f"{location}: duplicate artifact path")
+            seen_paths.add(path)
+        if isinstance(identity, str):
+            if identity in seen_ids:
+                errors.append(f"{location}: duplicate artifact_id")
+            seen_ids.add(identity)
+        current_digest = row.get("current_file_sha256")
+        if path == REGISTRY_RELATIVE_PATH:
+            if current_digest is not None:
+                errors.append(f"{location}: registry self digest must be null")
+        elif not isinstance(current_digest, str) or re.fullmatch(r"[0-9a-f]{64}", current_digest) is None:
+            errors.append(f"{location}: current file digest missing or malformed")
+        if row.get("primary_class") == "UNKNOWN_REVIEW_REQUIRED":
+            errors.append(f"{location}: unknown artifact review required")
+        if (
+            row.get("controls_execution") is True
+            and (
+                row.get("authority_state") != "LIVE_CURRENT_HEAD_VALIDATED"
+                or row.get("validation_status") != "PASS"
+            )
+        ):
+            errors.append(f"{location}: execution control requires validated live PASS")
+        historical = (
+            row.get("primary_class") in {"ARCHIVE_HISTORY", "GENERATED_OUTPUT"}
+            or row.get("authority_state") in HISTORICAL_STATES
+        )
+        if historical and (
+            row.get("controls_execution") is True or row.get("current_authority") is True
+        ):
+            errors.append(f"{location}: historical or generated row cannot be current")
+    if errors:
+        raise ValueError("authority registry v3 validation failed: " + " | ".join(errors))
 
 
 def _repository_path(root: Path, relative: object) -> Path:
@@ -61,3 +185,25 @@ def bind_current_file_digests(
 
     registry["artifact_count"] = len(artifacts)
     registry["digest_semantics"] = dict(DIGEST_SEMANTICS)
+    _validate_registry_contract(root, registry)
+
+
+def rebind_authority_registry_file(registry_path: Path) -> None:
+    """Refresh final output digests and atomically persist one valid v3 registry."""
+    registry_path = Path(registry_path)
+    registry = _load_json(registry_path)
+    if not isinstance(registry, dict):
+        raise ValueError("authority registry must be an object")
+    bind_current_file_digests(registry_path, registry)
+    temporary = registry_path.with_name(f".{registry_path.name}.{os.getpid()}.tmp")
+    if temporary.exists():
+        raise FileExistsError(f"refusing to replace existing registry temporary: {temporary}")
+    try:
+        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(registry, stream, indent=2, sort_keys=True, ensure_ascii=False)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, registry_path)
+    finally:
+        temporary.unlink(missing_ok=True)

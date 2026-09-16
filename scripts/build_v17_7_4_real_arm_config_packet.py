@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 try:
-    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 except ModuleNotFoundError:
-    from artifact_authority_registry_writer import bind_current_file_digests
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
 
 import hashlib
 import json
@@ -263,7 +269,7 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
     registry["claim_ceiling_preserved"] = True
     bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
-    return write_json(
+    delta_path = write_json(
         repo / "registry" / "artifact_authority_registry_v17_7_4_real_arm_config_delta_receipt.json",
         authority(
         schema_id="kt.v17_7_4.compression_frontier_artifact_authority_delta_receipt.v1",
@@ -277,6 +283,8 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
             no_promotion_authority_added=True,
         ),
     )
+    rebind_authority_registry_file(registry_path)
+    return delta_path
 
 
 def build() -> dict[str, Any]:

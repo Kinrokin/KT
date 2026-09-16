@@ -8,7 +8,12 @@ import stat
 from pathlib import Path
 from typing import Any, Dict, Mapping, Tuple
 
-from eval_plus_schemas import ExtendedBenchmarkResultSchema, GoldenZoneSchema, compute_paradox_vector
+from eval_plus_schemas import (
+    ALLOWED_OUTCOMES,
+    ExtendedBenchmarkResultSchema,
+    GoldenZoneSchema,
+    compute_paradox_vector,
+)
 
 
 MAX_JSON_BYTES = 512_000
@@ -79,12 +84,41 @@ def _require_regular_file(*, path: Path, root: Path, label: str) -> None:
 
 
 def _require_json_object(path: Path, *, root: Path, label: str) -> Dict[str, Any]:
+    descriptor = -1
     try:
         _require_regular_file(path=path, root=root, label=label)
-        if path.stat().st_size > MAX_JSON_BYTES:
+        flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_CLOEXEC", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(path, flags)
+        opened = os.fstat(descriptor)
+        if not stat.S_ISREG(opened.st_mode):
+            raise ValueError(f"{label}_not_regular_file (fail-closed)")
+        if opened.st_size > MAX_JSON_BYTES:
             raise ValueError("json_too_large (fail-closed)")
+
+        # Retain and read the descriptor that was validated. Rechecking the
+        # path catches a component swap between the first lstat walk and open;
+        # matching identity ensures the path still names this descriptor.
+        _require_regular_file(path=path, root=root, label=label)
+        current = path.lstat()
+        if (current.st_dev, current.st_ino) != (opened.st_dev, opened.st_ino):
+            raise ValueError(f"{label}_path_changed_during_open (fail-closed)")
+        payload = bytearray()
+        while len(payload) <= MAX_JSON_BYTES:
+            chunk = os.read(descriptor, min(64 * 1024, MAX_JSON_BYTES + 1 - len(payload)))
+            if not chunk:
+                break
+            payload.extend(chunk)
+        if len(payload) > MAX_JSON_BYTES:
+            raise ValueError("json_too_large (fail-closed)")
+        after = os.fstat(descriptor)
+        if any(
+            getattr(after, field) != getattr(opened, field)
+            for field in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+        ):
+            raise ValueError(f"{label}_changed_during_read (fail-closed)")
         data = json.loads(
-            path.read_text(encoding="utf-8"),
+            bytes(payload).decode("utf-8"),
             object_pairs_hook=_unique_json_keys,
         )
     except ValueError as exc:
@@ -93,6 +127,9 @@ def _require_json_object(path: Path, *, root: Path, label: str) -> Dict[str, Any
         raise ValueError(f"read_json_fail:{path.as_posix()}:ValueError") from exc
     except Exception as exc:
         raise ValueError(f"read_json_fail:{path.as_posix()}:{exc.__class__.__name__}")
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
     if not isinstance(data, dict):
         raise ValueError(f"json_not_object:{path.as_posix()}")
     return dict(data)
@@ -134,7 +171,9 @@ def _load_epoch_metrics(
 
     for run_record in run_records:
         rr = _require_json_object(run_record, root=epoch_dir, label="run_record")
-        outcome = str(rr.get("outcome", "ERROR"))
+        outcome = rr.get("outcome")
+        if not isinstance(outcome, str) or outcome not in ALLOWED_OUTCOMES:
+            raise ValueError("invalid_or_missing_run_outcome (fail-closed)")
         outcomes[outcome] = outcomes.get(outcome, 0) + 1
 
         run_id = rr.get("run_id")
@@ -208,6 +247,13 @@ def main() -> int:
             raise ValueError("epoch_dir_link_or_reparse_forbidden (fail-closed)")
     epoch_dir = epoch_input.resolve()
     _ensure_under_root(path=epoch_dir, root=allowed_epochs_root, label="epoch_dir")
+    epoch_id = args.epoch_id
+    if (not isinstance(epoch_id, str) or epoch_id in {".", ".."}
+            or epoch_id.endswith((".", " "))
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", epoch_id) is None):
+        raise ValueError("invalid_epoch_id_label (fail-closed)")
+    if epoch_id != epoch_dir.name:
+        raise ValueError("epoch_id_directory_mismatch (fail-closed)")
 
     outcomes, replay_verified, replay_total, gov_types, kernel_identity = _load_epoch_metrics(
         epoch_dir, artifacts_root=artifacts_root
@@ -224,7 +270,7 @@ def main() -> int:
 
     # Drift is optional; not computed unless a baseline is provided (future extension).
     result = ExtendedBenchmarkResultSchema.from_parts(
-        epoch_id=str(args.epoch_id),
+        epoch_id=epoch_id,
         kernel_identity=kernel_identity,
         paradox=paradox,
         drift=None,
