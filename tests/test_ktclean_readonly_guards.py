@@ -190,6 +190,55 @@ def test_final_rebind_refreshes_a_registered_output_written_after_initial_bindin
     assert authority.check(checkout) == []
 
 
+def test_accountability_writer_preserves_existing_packet_archive_authority(checkout):
+    from scripts.accountability_common import update_registry
+
+    receipt = checkout / "accountability" / "accountability_kernel_receipt.json"
+    receipt.parent.mkdir(parents=True)
+    receipt.write_bytes(b'{"status":"PASS"}\n')
+    packet = checkout / "packets" / "ktg3full_v12.zip"
+    packet.parent.mkdir(parents=True, exist_ok=True)
+    packet.write_bytes(b"historical packet fixture\n")
+    delta = checkout / "registry" / "artifact_authority_registry_accountability_kernel_delta_receipt.json"
+    delta.write_bytes(b'{"phase":0}\n')
+    subprocess.run(
+        ["git", "add", "accountability/accountability_kernel_receipt.json",
+         "packets/ktg3full_v12.zip",
+         "registry/artifact_authority_registry_accountability_kernel_delta_receipt.json"],
+        cwd=checkout, check=True,
+    )
+    registry_path = checkout / "registry" / "artifact_authority_registry.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registered = [
+        {**row("accountability/accountability_kernel_receipt.json", "canonical_receipt"),
+         "authority_state": "LIVE_CURRENT_HEAD_VALIDATED", "validation_status": "PASS",
+         "current_authority": True, "controls_execution": True,
+         "claim_authority": "INTERNAL_SHADOW", "sha256": "1" * 64},
+        {**row("packets/ktg3full_v12.zip", "historical_packet"),
+         "primary_class": "ARCHIVE_HISTORY", "authority_state": "ARCHIVE",
+         "role": "archive_history", "sha256": "2" * 64},
+        {**row("registry/artifact_authority_registry_accountability_kernel_delta_receipt.json", "delta"),
+         "sha256": "3" * 64},
+    ]
+    registry["artifacts"].extend(registered)
+    bind_current_file_digests(registry_path, registry)
+    write_json(checkout, "registry/artifact_authority_registry.json", registry)
+
+    update_registry(checkout, "fixture-head", hashlib.sha256(packet.read_bytes()).hexdigest())
+
+    result = json.loads(registry_path.read_text(encoding="utf-8"))
+    by_path = {item["path"]: item for item in result["artifacts"]}
+    assert len(by_path) == len(result["artifacts"]) == 4
+    assert by_path["packets/ktg3full_v12.zip"]["artifact_id"] == "historical_packet"
+    assert by_path["packets/ktg3full_v12.zip"]["primary_class"] == "ARCHIVE_HISTORY"
+    assert by_path["packets/ktg3full_v12.zip"]["authority_state"] == "ARCHIVE"
+    assert by_path["packets/ktg3full_v12.zip"]["controls_execution"] is False
+    assert by_path["packets/ktg3full_v12.zip"]["sha256"] == "2" * 64
+    assert by_path["accountability/accountability_kernel_receipt.json"]["sha256"] == "1" * 64
+    assert by_path["registry/artifact_authority_registry_accountability_kernel_delta_receipt.json"]["current_file_sha256"] == hashlib.sha256(delta.read_bytes()).hexdigest()
+    assert authority.check(checkout) == []
+
+
 def test_every_main_registry_writer_invokes_current_digest_binding():
     write_patterns = (
         "write_json(registry_path, registry)",
