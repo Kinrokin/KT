@@ -18,14 +18,29 @@ if str(_ORCH_DIR) not in sys.path:
     sys.path.insert(0, str(_ORCH_DIR))
 
 ROOT = Path("KT_PROD_CLEANROOM")
-ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 from tools.growth.state.lane_to_epoch import resolve_epoch_spec, lane_for_plan
-from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.orchestrator.epoch_orchestrator import _growth_artifacts_root, run_epoch_from_plan
 from tools.growth.state.cce_state import update_state as update_cce_state
 from tools.growth.state.oce_state import update_state as update_oce_state
 from tools.growth.state.rwrp_state import update_state as update_rwrp_state
 
 SESSION_TAG = int(time.time() * 1000)
+
+
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
+
+
+def _artifact_state_root() -> Path:
+    return _growth_artifacts_root() / "state"
+
+
+def _plan_suggestions_ledger_path() -> Path:
+    return _artifact_state_root() / "plan_suggestions.jsonl"
+
+
+def _autonomous_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "autonomous_escalation_log.json"
 
 
 def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
@@ -34,14 +49,18 @@ def run_plan(plan_path: Path, *, quiet: bool = False) -> Dict[str, any]:
         plan_path=plan_path,
         resume=False,
         mode="salvage",
-        salvage_out_root=ROOT / "tools" / "growth" / "artifacts" / "salvage",
         auto_bump=True,
         quiet=quiet,
     )
 
 
 def latest_epoch_root() -> Path:
-    roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epochs_root = _artifact_epochs_root()
+    if not epochs_root.is_dir():
+        raise RuntimeError("no epoch directories found")
+    roots = [p for p in epochs_root.iterdir() if p.is_dir()]
+    if not roots:
+        raise RuntimeError("no epoch directories found")
     return max(roots, key=lambda p: p.stat().st_mtime)
 
 
@@ -60,9 +79,10 @@ def run_plan_suggester() -> Dict[str, any]:
         "-m",
         "tools.growth.state.plan_suggester",
         "--epochs-dir",
-        str(ARTIFACT_EPOCHS),
+        str(_artifact_epochs_root()),
         "--write-epoch",
-        "--append-log",
+        "--ledger-out",
+        str(_plan_suggestions_ledger_path()),
     ]
     subprocess.run(cmd, env=env, check=True)
     plan = latest_epoch_root() / "plan_suggestion.json"
@@ -94,8 +114,8 @@ def parse_args():
     parser.add_argument(
         "--policy-log",
         type=Path,
-        default=ROOT / "tools" / "growth" / "state" / "lane_policy_comparison.jsonl",
-        help="Path to append policy-vs-heuristic audit rows (JSONL).",
+        default=None,
+        help="Optional policy audit path (defaults under KT_GROWTH_ARTIFACTS_ROOT/state).",
     )
     return parser.parse_args()
 
@@ -163,6 +183,7 @@ def _prepare_runtime_plan(base_plan: Path, suffix: str) -> Path:
 
 def main() -> None:
     args = parse_args()
+    policy_log = args.policy_log or (_artifact_state_root() / "lane_policy_comparison.jsonl")
     os.environ["KT_LIVE"] = "0"
     os.environ["KT_LIVE_PROOF"] = ""
 
@@ -194,7 +215,7 @@ def main() -> None:
     except Exception as exc:
         print(f"[baseline] could not write bootstrap plan_suggestion.json: {exc}", file=sys.stderr)
     # Ensure at least two epochs exist so plan_suggester can run.
-    epoch_roots = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epoch_roots = [p for p in _artifact_epochs_root().iterdir() if p.is_dir()]
     if len(epoch_roots) < 2:
         print("=== Seeding second baseline coverage for history ===")
         second_plan = resolve_epoch_spec("COVERAGE_HOP_RECOVERY")
@@ -240,7 +261,7 @@ def main() -> None:
                 record["policy_distribution"] = policy_result.get("probs")
                 record["policy_used"] = policy_result.get("policy_used")
                 _append_jsonl(
-                    args.policy_log,
+                    policy_log,
                     {
                         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                         "iteration": idx,
@@ -307,8 +328,10 @@ def main() -> None:
     summary["lane_counts"] = dict(lane_counter)
     print("\n=== AUTONOMOUS ESCALATION SUMMARY ===")
     print(json.dumps(summary, indent=2))
-    Path("autonomous_escalation_log.json").write_text(json.dumps(records, indent=2))
-    print("Details saved to autonomous_escalation_log.json")
+    detail_path = _autonomous_log_path()
+    detail_path.parent.mkdir(parents=True, exist_ok=True)
+    detail_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
+    print(f"Details saved to {detail_path}")
 
 
 def _consecutive_bad_coverage(records):

@@ -9,15 +9,16 @@ on:
 jobs:
   ktclean-no-bloat:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Run repo pristine census
+      - name: Check existing evidence without regenerating authority
         run: |
-          python scripts/repo_pristine_census.py
-          python scripts/repo_pristine_census.py
+          python -B -m scripts.repo_pristine_census --check
       - name: Run KTCLEAN gates
         run: |
           python scripts/check_no_bloat.py
@@ -30,6 +31,7 @@ jobs:
       - name: Run focused KTCLEAN tests
         run: |
           python -m pytest -q \
+            tests/test_ktclean_readonly_guards.py \
             tests/test_no_unregistered_controlling_artifacts.py \
             tests/test_no_duplicate_current_authority.py \
             tests/test_packet_name_length_policy.py \

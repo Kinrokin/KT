@@ -1,11 +1,28 @@
 import json
 import math
+import os
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path("KT_PROD_CLEANROOM")
-EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
-LOG_PATH = Path("epoch_escalation_log.json")
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    root = Path(override)
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
+
+
+def _epoch_escalation_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "epoch_escalation_log.json"
 
 
 def entropy(domains):
@@ -30,10 +47,11 @@ def micro_stats(epoch_dir):
 
 
 def run():
-    records = json.loads(LOG_PATH.read_text())
+    epochs = _artifact_epochs_root()
+    records = json.loads(_epoch_escalation_log_path().read_text())
     stats = {"next": [], "reanchor": [], "stabilize": []}
     for rec in records:
-        epoch_dir = EPOCHS / rec["epoch"]
+        epoch_dir = epochs / rec["epoch"]
         summary = json.loads((epoch_dir / "epoch_summary.json").read_text())
         fail_closed = summary.get("crucibles_failed_closed", 0) > 0
         ent, uniq = micro_stats(epoch_dir)
@@ -63,7 +81,7 @@ def run():
         steps = 0
         for future in records[idx + 1 :]:
             steps += 1
-            ent, _ = micro_stats(EPOCHS / future["epoch"])
+            ent, _ = micro_stats(epochs / future["epoch"])
             if ent > 0:
                 entropy_recovery.append(steps)
                 break
