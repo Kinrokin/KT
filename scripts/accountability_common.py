@@ -964,6 +964,7 @@ def run_superlane(root: Path | None = None, audit_clean: bool | None = None) -> 
         **CLAIM_CEILING,
     }
     write_json(root / "reports/accountability_superlane_receipt.json", receipt)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return receipt
 
 
