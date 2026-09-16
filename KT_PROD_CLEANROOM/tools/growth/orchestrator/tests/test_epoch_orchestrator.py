@@ -615,17 +615,16 @@ class TestArtifactsRootOverride(unittest.TestCase):
                 "..",
                 "EPOCH-TRAILING.",
             ):
-                with self.subTest(epoch_id=epoch_id):
-                    plan = _minimal_plan(
-                        crucible_path,
-                        kernel_target="KERNEL_GOVERNANCE_BASELINE",
-                        epoch_profile="GOVERNANCE",
-                    )
-                    plan["epoch_id"] = epoch_id
-                    plan_path.write_text(json.dumps(plan), encoding="utf-8")
-                    with self.assertRaisesRegex(EpochSchemaError, "portable direct path component"):
-                        preflight_epoch(plan_path, resume=False, artifacts_root=artifacts_root, auto_bump=False)
-                    self.assertFalse(artifacts_root.exists())
+                plan = _minimal_plan(
+                    crucible_path,
+                    kernel_target="KERNEL_GOVERNANCE_BASELINE",
+                    epoch_profile="GOVERNANCE",
+                )
+                plan["epoch_id"] = epoch_id
+                plan_path.write_text(json.dumps(plan), encoding="utf-8")
+                with self.assertRaisesRegex(EpochSchemaError, "portable direct path component"):
+                    preflight_epoch(plan_path, resume=False, artifacts_root=artifacts_root, auto_bump=False)
+                self.assertFalse(artifacts_root.exists(), epoch_id)
 
     def test_env_override_routes_c019_epochs_and_salvage_under_override_root(self) -> None:
         with tempfile.TemporaryDirectory() as td:
