@@ -604,6 +604,8 @@ def validate_output_allocation(
     if not output_root.is_absolute():
         _fail("OUTPUT_ROOT_INVALID", output_text)
     _reject_symlink_path(output_root, "OUTPUT_ROOT_SYMLINK_FORBIDDEN")
+    if output_root.exists() and not output_root.is_dir():
+        _fail("OUTPUT_ROOT_INVALID", output_text)
     if _is_within(output_root, source):
         _fail("OUTPUT_ROOT_IN_SOURCE_TREE", str(output_root))
     subtrees = allocation.get("subtrees")
