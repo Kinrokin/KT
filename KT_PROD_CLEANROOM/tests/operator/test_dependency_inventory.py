@@ -51,6 +51,22 @@ def _seed_reconciliation_source(tmp_path: Path) -> tuple[Path, str]:
     root = tmp_path / "source"
     _write(root / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src" / "sample.py", "import json\n")
     _seed_historical_dependency_reports(root)
+    reports = root / "KT_PROD_CLEANROOM" / "reports"
+    artifacts = []
+    for path in sorted(reports.glob("*.json")):
+        relative = path.relative_to(root).as_posix()
+        digest = _sha256(path)
+        artifacts.append({
+            "artifact_id": relative.replace("/", "_").replace(".", "_").upper(),
+            "path": relative,
+            "authority_state": "ARCHIVE",
+            "primary_class": "ARCHIVE_HISTORY",
+            "role": "historical_dependency_evidence",
+            "current_authority": False,
+            "controls_execution": False,
+            "sha256": digest,
+        })
+    _write(root / "registry" / "artifact_authority_registry.json", json.dumps({"artifacts": artifacts}, sort_keys=True) + "\n")
     return root, _init_git(root)
 
 
@@ -126,6 +142,17 @@ def test_dependency_reconciliation_emits_current_external_evidence_without_touch
         "dependency_inventory_reconciliation_receipt.json",
     ):
         assert (evidence_root / name).is_file()
+
+
+
+
+def test_reconcile_requires_authority_registry_for_historical_reports(tmp_path: Path) -> None:
+    root, _ = _seed_reconciliation_source(tmp_path)
+    (root / "registry" / "artifact_authority_registry.json").unlink()
+    subprocess.run(("git", "add", "-A"), cwd=root, check=True, capture_output=True)
+    subprocess.run(("git", "-c", "user.name=KT Test", "-c", "user.email=kt-test@example.invalid", "commit", "-m", "remove authority registry"), cwd=root, check=True, capture_output=True)
+    with pytest.raises(RuntimeError, match="HISTORICAL_AUTHORITY_REGISTRY_INVALID"):
+        reconcile_dependency_evidence(root=root, report_root=tmp_path / "current")
 
 
 def test_dependency_reconciliation_rejects_repository_output_root(tmp_path: Path) -> None:

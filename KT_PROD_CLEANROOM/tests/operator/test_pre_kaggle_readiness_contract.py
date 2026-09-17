@@ -366,6 +366,13 @@ def test_qlora_requires_four_bit_and_an_available_cuda_backend(
     _expect(expected, contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
 
 
+def test_assessment_paths_reject_cross_platform_traversal_and_heavy_aliases(tmp_path: Path) -> None:
+    for value in ("safe\\..\\heavy.bin", "C:\\weights.bin", "ephemeral_heavy\\weights.bin"):
+        plan, source_root = _plan(tmp_path)
+        plan["output"]["assessment_includes"] = [value]
+        _expect("ASSESSMENT_PATH_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
 def test_output_root_inside_source_and_heavy_assessment_content_are_rejected(tmp_path: Path) -> None:
     plan, source_root = _plan(tmp_path)
     plan["output"]["output_root"] = str(source_root / "generated")

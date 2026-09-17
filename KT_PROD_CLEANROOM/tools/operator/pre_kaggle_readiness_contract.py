@@ -662,9 +662,7 @@ def validate_output_allocation(
         "durable_heavy",
     }
     for item in assessment_includes:
-        relative = Path(item)
-        if relative.is_absolute() or ".." in relative.parts or not relative.parts:
-            _fail("ASSESSMENT_PATH_INVALID", item)
+        relative = _relative_path(item, "ASSESSMENT_PATH_INVALID", "assessment_includes")
         if relative.parts[0] in forbidden_roots:
             _fail("ASSESSMENT_INCLUDES_HEAVY_OUTPUT", item)
     return {

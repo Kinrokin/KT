@@ -42,11 +42,9 @@ def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
         probe = parent
     report_root = raw_root.resolve()
     registry_path = root / "registry/artifact_authority_registry.json"
-    registry = None
-    if registry_path.exists() or registry_path.is_symlink():
-        if registry_path.is_symlink() or not registry_path.is_file():
-            raise RuntimeError(f"HISTORICAL_AUTHORITY_REGISTRY_INVALID: {registry_path}")
-        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    if registry_path.is_symlink() or not registry_path.is_file():
+        raise RuntimeError(f"HISTORICAL_AUTHORITY_REGISTRY_INVALID: {registry_path}")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
     result: Dict[str, Dict[str, str]] = {}
     for filename in HISTORICAL_FILENAMES:
         path = report_root / filename
