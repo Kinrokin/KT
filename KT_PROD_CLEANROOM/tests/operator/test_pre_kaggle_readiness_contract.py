@@ -709,3 +709,17 @@ def test_output_allocation_requires_assessment_contents(tmp_path: Path) -> None:
     plan["output"]["assessment_includes"] = []
     _expect("ASSESSMENT_CONTENTS_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
 
+
+
+def test_adapter_rejects_config_model_filename_collision(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["adapter"]["adapter_model_filename"] = plan["adapter"]["adapter_config_filename"]
+    _expect("ADAPTER_CONFIG_MODEL_NAME_COLLISION", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_scorecard_rejects_measurement_sample_id_mismatch(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["scorecard"]["rows"][0]["sample_id"] = "different-sample"
+    plan["scorecard"]["rows"][0]["decision_sample_id"] = "different-sample"
+    plan["scorecard"]["rows"][0]["prediction_sample_id"] = "different-sample"
+    _expect("SCORECARD_MEASUREMENT_ID_MISMATCH", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)

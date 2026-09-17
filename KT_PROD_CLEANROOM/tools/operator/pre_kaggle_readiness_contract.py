@@ -332,6 +332,8 @@ def validate_adapter_identity(adapter_root: Path, expected: Mapping[str, Any]) -
     model_name = _single_component(
         expected.get("adapter_model_filename"), "ADAPTER_MODEL_NAME_INVALID", "adapter_model_filename"
     )
+    if config_name == model_name:
+        _fail("ADAPTER_CONFIG_MODEL_NAME_COLLISION", config_name)
     adapter_dir = adapter_root / directory
     if adapter_dir.is_symlink() or not adapter_dir.is_dir():
         _fail("ADAPTER_DIRECTORY_MISSING", str(adapter_dir))
@@ -849,12 +851,14 @@ def evaluate_static_preflight(
     supervision = validate_supervision_contract(
         _mapping(plan.get("supervision"), "SUPERVISION_PLAN_INVALID", "supervision")
     )
-    measurement = validate_measurement_contract(
-        _mapping(plan.get("measurement"), "MEASUREMENT_PLAN_INVALID", "measurement")
-    )
-    scorecard = validate_scorecard_reconciliation(
-        _mapping(plan.get("scorecard"), "SCORECARD_PLAN_INVALID", "scorecard")
-    )
+    measurement_plan = _mapping(plan.get("measurement"), "MEASUREMENT_PLAN_INVALID", "measurement")
+    scorecard_plan = _mapping(plan.get("scorecard"), "SCORECARD_PLAN_INVALID", "scorecard")
+    measurement = validate_measurement_contract(measurement_plan)
+    scorecard = validate_scorecard_reconciliation(scorecard_plan)
+    measurement_ids = {str(row.get("sample_id")) for row in measurement_plan.get("rows", []) if isinstance(row, dict)}
+    scorecard_ids = {str(row.get("sample_id")) for row in scorecard_plan.get("rows", []) if isinstance(row, dict)}
+    if measurement_ids != scorecard_ids:
+        _fail("SCORECARD_MEASUREMENT_ID_MISMATCH", "sample_id")
     claim_ceiling = validate_claim_ceiling(
         _mapping(plan.get("claim_ceiling"), "CLAIM_CEILING_INVALID", "claim_ceiling")
     )

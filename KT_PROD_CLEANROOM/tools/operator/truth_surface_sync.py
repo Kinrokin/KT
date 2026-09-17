@@ -936,11 +936,30 @@ def _sync_secondary_surfaces(
             ),
         )
     reports_root = root / DEFAULT_REPORT_ROOT_REL
+    # Historical dependency bytes are immutable and must never traverse symlinked
+    # directories or files while being read or published.
+    try:
+        report_parts = reports_root.relative_to(root).parts
+    except ValueError:
+        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_ROOT_INVALID: {reports_root}")
+    cursor = root
+    for part in report_parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {cursor}")
+    historical_names = (
+        "dependency_inventory.json",
+        "python_environment_manifest.json",
+        "sbom_cyclonedx.json",
+        "dependency_inventory_validation_receipt.json",
+    )
+    historical_paths = [reports_root / name for name in historical_names]
+    for historical_path in historical_paths:
+        if historical_path.is_symlink() or (historical_path.exists() and not historical_path.is_file()):
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {historical_path}")
     # Preserve an existing historical dependency receipt; create one only when
     # a fixture has no historical receipt yet, without overwriting retained bytes.
     dependency_receipt = reports_root / "dependency_inventory_validation_receipt.json"
-    if dependency_receipt.is_symlink() or (dependency_receipt.exists() and not dependency_receipt.is_file()):
-        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {dependency_receipt}")
     if not dependency_receipt.exists():
         _write_json(dependency_receipt, build_dependency_inventory_validation_report(root=root, report_root=reports_root))
     _write_json(

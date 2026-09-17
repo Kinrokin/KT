@@ -216,13 +216,13 @@ def _public_verifier_manifest_payload(*, root: Path, live_head: str, report_root
             _report_ref(report_root_rel, "kt_platform_governance_final_decision_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
-            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
         "publication_evidence_refs": list(claims.get("publication_evidence_refs", [])),
-        "integrity_supporting_artifacts": [
+        "historical_dependency_artifacts": [
             _report_ref(report_root_rel, "dependency_inventory.json"),
             _report_ref(report_root_rel, "python_environment_manifest.json"),
             _report_ref(report_root_rel, "sbom_cyclonedx.json"),
+            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
     }
 

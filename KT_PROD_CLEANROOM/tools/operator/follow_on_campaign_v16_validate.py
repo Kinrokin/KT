@@ -370,7 +370,16 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     Historical checked-in reports are immutable; this legacy campaign helper
     must never rewrite them while refreshing current-head evidence.
     """
-    raw_report_root = root.parent / ".kt_dependency_evidence" / subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    status = subprocess.run(
+        ("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"),
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if status.stdout.strip():
+        raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_DIRTY")
+    head = subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    raw_report_root = root.parent / ".kt_dependency_evidence" / head
     report_root = resolve_external_report_root(root=root, report_root=raw_report_root)
     if report_root.exists() or report_root.is_symlink():
         raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_ALREADY_EXISTS: {report_root}")
