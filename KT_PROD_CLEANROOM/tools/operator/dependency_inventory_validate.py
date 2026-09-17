@@ -35,6 +35,7 @@ def build_dependency_inventory_validation_report(*, root: Path, report_root: Pat
         or not declared_scan_roots
         or any(type(item) is not str or item not in DEFAULT_SCAN_ROOTS for item in declared_scan_roots)
         or len(set(declared_scan_roots)) != len(declared_scan_roots)
+        or set(declared_scan_roots) != set(DEFAULT_SCAN_ROOTS)
     ):
         raise RuntimeError("DEPENDENCY_SCAN_ROOTS_INVALID")
     expected = build_dependency_reports(root=root, scan_roots=tuple(declared_scan_roots))

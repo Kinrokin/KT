@@ -77,7 +77,7 @@ def test_dependency_inventory_classifies_modules(tmp_path: Path) -> None:
 
 def test_dependency_inventory_validation_matches_generated_files(tmp_path: Path) -> None:
     _write(tmp_path / "KT_PROD_CLEANROOM" / "04_PROD_TEMPLE_V2" / "src" / "sample.py", "import json\n")
-    reports = build_dependency_reports(root=tmp_path, scan_roots=("KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src",))
+    reports = build_dependency_reports(root=tmp_path)
     report_root = tmp_path / "KT_PROD_CLEANROOM" / "reports"
     report_root.mkdir(parents=True, exist_ok=True)
     for name, payload in (
@@ -89,6 +89,20 @@ def test_dependency_inventory_validation_matches_generated_files(tmp_path: Path)
 
     report = build_dependency_inventory_validation_report(root=tmp_path, report_root=report_root)
     assert report["status"] == "PASS"
+
+
+
+
+def test_dependency_emission_rejects_ignored_python_under_scan_root(tmp_path: Path) -> None:
+    root, _ = _seed_reconciliation_source(tmp_path)
+    ignored = root / "KT_PROD_CLEANROOM" / "tools" / "operator" / "ignored_extra.py"
+    _write(ignored, "import json\n")
+    _write(root / ".gitignore", "KT_PROD_CLEANROOM/tools/operator/ignored_extra.py\n")
+    subprocess.run(("git", "add", ".gitignore"), cwd=root, check=True, capture_output=True)
+    subprocess.run(("git", "-c", "user.name=KT Test", "-c", "user.email=kt-test@example.invalid", "commit", "-m", "ignore extra source"), cwd=root, check=True, capture_output=True)
+    from tools.operator.dependency_inventory_emit import emit_dependency_reports
+    with pytest.raises(RuntimeError, match="DEPENDENCY_SOURCE_SCAN_ROOT_UNTRACKED_OR_IGNORED"):
+        emit_dependency_reports(root=root, report_root=tmp_path / "external")
 
 
 def test_dependency_reconciliation_emits_current_external_evidence_without_touching_history(tmp_path: Path) -> None:
