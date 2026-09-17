@@ -125,6 +125,14 @@ def sha256_file(path: Path) -> str:
 
 
 def _is_within(candidate: Path, root: Path) -> bool:
+    probe = Path(candidate)
+    while True:
+        if probe.is_symlink():
+            return False
+        parent = probe.parent
+        if parent == probe:
+            break
+        probe = parent
     try:
         candidate.resolve().relative_to(root.resolve())
     except ValueError:

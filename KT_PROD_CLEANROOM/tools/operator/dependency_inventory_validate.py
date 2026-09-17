@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
-from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
+from tools.operator.dependency_inventory_emit import DEFAULT_SCAN_ROOTS, build_dependency_reports, resolve_external_report_root
 from tools.operator.titanium_common import make_run_dir, repo_root, write_failure_artifacts, write_json_worm
 
 
@@ -29,8 +29,15 @@ def build_dependency_inventory_validation_report(*, root: Path, report_root: Pat
     actual_inventory = _load_json(report_root / "dependency_inventory.json")
     actual_environment = _load_json(report_root / "python_environment_manifest.json")
     actual_sbom = _load_json(report_root / "sbom_cyclonedx.json")
-    scan_roots = tuple(str(item) for item in actual_inventory.get("scan_roots", []) if str(item).strip())
-    expected = build_dependency_reports(root=root, scan_roots=scan_roots) if scan_roots else build_dependency_reports(root=root)
+    declared_scan_roots = actual_inventory.get("scan_roots")
+    if (
+        not isinstance(declared_scan_roots, list)
+        or not declared_scan_roots
+        or any(type(item) is not str or item not in DEFAULT_SCAN_ROOTS for item in declared_scan_roots)
+        or len(set(declared_scan_roots)) != len(declared_scan_roots)
+    ):
+        raise RuntimeError("DEPENDENCY_SCAN_ROOTS_INVALID")
+    expected = build_dependency_reports(root=root, scan_roots=tuple(declared_scan_roots))
 
     checks = []
     failures = []

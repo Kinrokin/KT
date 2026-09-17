@@ -91,6 +91,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
+    _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "PASS"})
     _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(
@@ -216,6 +217,7 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
         {"status": "ACTIVE"},
     )
     _write_dependency_reports(tmp_path)
+    _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "PASS"})
     _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(

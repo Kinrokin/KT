@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Sequence
 
 from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
-from tools.operator.dependency_inventory_reconcile import reconcile_dependency_evidence
+from tools.operator.dependency_inventory_reconcile import CURRENT_EVIDENCE_STATUS, reconcile_dependency_evidence
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -1550,8 +1550,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             environment_head_ok = str(dependency_bundle["environment"].get("pinned_head_sha", "")).strip() == head
             sbom_head_ok = str(dependency_bundle["sbom"].get("metadata", {}).get("component", {}).get("version", "")).strip() == head
             direct_imports_ok = not direct_third_party_imports
+            reconciliation_ok = dependency_bundle.get("reconciliation", {}).get("status") == CURRENT_EVIDENCE_STATUS
             f03_checks["dependency_airlock_valid"] = all(
-                [dependency_validation_ok, inventory_head_ok, environment_head_ok, sbom_head_ok, direct_imports_ok]
+                [dependency_validation_ok, inventory_head_ok, environment_head_ok, sbom_head_ok, direct_imports_ok, reconciliation_ok]
             )
 
             forbidden_drift_ok = bool(determinism_policy.get("forbidden_drift", []))
