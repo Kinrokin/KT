@@ -44,9 +44,17 @@ def resolve_external_report_root(*, root: Path, report_root: str | Path) -> Path
         raise ValueError("DEPENDENCY_REPORT_ROOT_REQUIRED")
     candidate = Path(raw).expanduser()
     if not candidate.is_absolute():
-        candidate = (root / candidate).resolve()
-    else:
-        candidate = candidate.resolve()
+        candidate = root / candidate
+    # Reject caller-controlled symlink components before resolving for containment.
+    probe = candidate
+    while True:
+        if probe.exists() and probe.is_symlink():
+            raise ValueError(f"DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            break
+        probe = parent
+    candidate = candidate.resolve()
     if _is_within(candidate, root):
         raise ValueError(f"DEPENDENCY_REPORT_ROOT_MUST_BE_EXTERNAL: {candidate}")
     if candidate.exists() and candidate.is_symlink():

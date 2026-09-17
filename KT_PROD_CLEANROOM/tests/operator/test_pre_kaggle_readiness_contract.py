@@ -605,3 +605,55 @@ def test_hf_transport_rejects_unknown_fields(tmp_path: Path) -> None:
     plan, source_root = _plan(tmp_path)
     plan["hf_transport"]["access_token"] = "must-not-appear"
     _expect("HF_TRANSPORT_FIELD_UNKNOWN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_input_inventory_rejects_symlinked_directory_escape(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    stage_root = Path(plan["input_inventory"]["stage_root"])
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    payload = outside / "payload.bin"
+    payload.write_bytes(b"outside")
+    link_dir = stage_root / "linked"
+    link_dir.symlink_to(outside, target_is_directory=True)
+    plan["input_inventory"]["required_inputs"].append(
+        {"logical_name": "escaped", "relative_path": "linked/payload.bin", "sha256": _digest(payload.read_bytes())}
+    )
+    _expect("INPUT_PATH_ESCAPES_STAGE_ROOT", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_output_assessment_return_rejects_symlink_root(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    output_root = Path(plan["output"]["output_root"])
+    output_root.mkdir()
+    outside = tmp_path / "outside-assessment"
+    outside.mkdir()
+    (output_root / "assessment_return").symlink_to(outside, target_is_directory=True)
+    _expect(
+        "ASSESSMENT_RETURN_ROOT_INVALID",
+        contract.preserve_partial_measurements,
+        source_root,
+        plan["output"],
+        1024,
+        [],
+        "fixture failure",
+    )
+
+
+def test_finalization_rejects_nonfinite_numbers(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["finalization_payload"] = {"nan": float("nan")}
+    _expect("FINALIZATION_PAYLOAD_NOT_JSON_SAFE", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_dependency_report_root_rejects_symlink_before_resolution(tmp_path: Path) -> None:
+    from tools.operator import dependency_inventory_emit as emit
+
+    root = tmp_path / "repo"
+    root.mkdir()
+    target = tmp_path / "external"
+    target.mkdir()
+    link = root / "reports"
+    link.symlink_to(target, target_is_directory=True)
+    with pytest.raises(ValueError, match="DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN"):
+        emit.resolve_external_report_root(root=root, report_root="reports")

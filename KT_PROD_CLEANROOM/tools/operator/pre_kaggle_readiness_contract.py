@@ -286,6 +286,10 @@ def validate_input_inventory(inventory: Mapping[str, Any]) -> dict[str, Any]:
         expected_paths.add(relative_text)
         expected_sha = _sha256(row.get("sha256"), "INPUT_SHA256_INVALID", "sha256")
         path = stage_root / relative
+        stage_resolved = stage_root.resolve()
+        resolved_path = path.resolve(strict=False)
+        if not _is_within(resolved_path, stage_resolved):
+            _fail("INPUT_PATH_ESCAPES_STAGE_ROOT", relative_text)
         _regular_file(path, "INPUT_REQUIRED_ARTIFACT_MISSING")
         actual_sha = sha256_file(path)
         if actual_sha != expected_sha:
@@ -762,7 +766,7 @@ def validate_claim_ceiling(claims: Mapping[str, Any]) -> dict[str, Any]:
 def validate_finalization_payload(payload: object) -> None:
     """Fail before a packaging tail can hide a non-JSON-safe summary object."""
     try:
-        json.dumps(payload, sort_keys=True)
+        json.dumps(payload, sort_keys=True, allow_nan=False)
     except (TypeError, ValueError) as exc:
         _fail("FINALIZATION_PAYLOAD_NOT_JSON_SAFE", str(exc))
 
@@ -872,6 +876,8 @@ def preserve_partial_measurements(
     reason = _text(failure_reason, "PARTIAL_FAILURE_REASON_INVALID", "failure_reason")
     root = Path(output["output_root"])
     assessment = root / "assessment_return"
+    if assessment.exists() and (assessment.is_symlink() or not assessment.is_dir()):
+        _fail("ASSESSMENT_RETURN_ROOT_INVALID", str(assessment))
     assessment.mkdir(parents=True, exist_ok=True)
     journal_path = assessment / "measurement_journal.jsonl"
     written = 0
