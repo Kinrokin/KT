@@ -656,7 +656,7 @@ def test_dependency_report_root_rejects_symlink_before_resolution(tmp_path: Path
     link = root / "reports"
     link.symlink_to(target, target_is_directory=True)
     with pytest.raises(ValueError, match="DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN"):
-        emit.resolve_external_report_root(root=root, report_root="reports")
+        emit.resolve_external_report_root(root=root, report_root=root / "reports")
 
 
 def test_packet_selection_rejects_symlink_entries(tmp_path: Path) -> None:
@@ -708,3 +708,4 @@ def test_output_allocation_requires_assessment_contents(tmp_path: Path) -> None:
     plan, source_root = _plan(tmp_path)
     plan["output"]["assessment_includes"] = []
     _expect("ASSESSMENT_CONTENTS_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+

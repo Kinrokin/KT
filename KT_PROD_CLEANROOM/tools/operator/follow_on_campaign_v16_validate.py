@@ -370,7 +370,8 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     Historical checked-in reports are immutable; this legacy campaign helper
     must never rewrite them while refreshing current-head evidence.
     """
-    report_root = Path(tempfile.mkdtemp(prefix="kt-v16-dependency-"))
+    report_root = root.parent / ".kt_dependency_evidence" / subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    report_root.mkdir(parents=True, exist_ok=True)
     try:
         dependency_reports = build_dependency_reports(root=root)
         write_json_stable(report_root / "dependency_inventory.json", dependency_reports["inventory"], volatile_keys=())
@@ -385,7 +386,7 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
             "validation": validation,
         }
     finally:
-        shutil.rmtree(report_root, ignore_errors=True)
+        pass
 
 
 def _profile(cls: str) -> Dict[str, float]:
@@ -3757,10 +3758,13 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                     {"id": PHASE_F09, "status": f09_status if f08_pass else "BLOCKED_UPSTREAM"},
                 ]
 
+    external_dependency_root = root.parent / ".kt_dependency_evidence" / head
+    external_dependency_root.mkdir(parents=True, exist_ok=True)
     for rel, payload in outputs.items():
         if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
-            continue
-        _w(root, rel, payload)
+            _w(external_dependency_root, Path(rel).name, payload)
+        else:
+            _w(root, rel, payload)
 
     unexpected = [p for p in _dirty(_status_lines(root)) if not _in_scope(p)]
     if unexpected:

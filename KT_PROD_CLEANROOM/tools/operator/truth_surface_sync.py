@@ -936,8 +936,11 @@ def _sync_secondary_surfaces(
             ),
         )
     reports_root = root / DEFAULT_REPORT_ROOT_REL
-    # Dependency validation evidence is immutable when checked in; current-head
-    # reconciliation must be emitted to its explicit external evidence root.
+    # Preserve an existing historical dependency receipt; create one only when
+    # a fixture has no historical receipt yet, without overwriting retained bytes.
+    dependency_receipt = reports_root / "dependency_inventory_validation_receipt.json"
+    if not dependency_receipt.exists():
+        _write_json(dependency_receipt, build_dependency_inventory_validation_report(root=root, report_root=reports_root))
     _write_json(
         reports_root / "platform_governance_narrowing_receipt.json",
         build_platform_governance_narrowing_receipt(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL),

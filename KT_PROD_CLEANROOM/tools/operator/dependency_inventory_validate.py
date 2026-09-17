@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Sequence
 
@@ -75,6 +76,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         report_root = resolve_external_report_root(root=root, report_root=args.report_root)
         run_root = resolve_external_report_root(root=root, report_root=args.run_root)
         run_dir = make_run_dir(cmd_name="dependency-inventory-validate", requested_run_root=str(run_root))
+        status = subprocess.run(("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"), check=True, capture_output=True, text=True).stdout
+        if status.strip():
+            raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN")
         report = build_dependency_inventory_validation_report(root=root, report_root=report_root)
         write_json_worm(run_dir / "reports" / "dependency_inventory_validation_receipt.json", report, label="dependency_inventory_validation_receipt.json")
         if report["status"] != "PASS":
