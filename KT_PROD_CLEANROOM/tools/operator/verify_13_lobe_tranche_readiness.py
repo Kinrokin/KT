@@ -410,7 +410,7 @@ def run(*, output_root: Path | None = None) -> dict[str, Any]:
         runbook_path.write_text(runbook_text, encoding="utf-8", newline="\n")
         changed.append(RUNBOOK_PATH)
 
-    receipt = inspect(root)
+    receipt = inspect(repo)
     if write_json_stable(root / RECEIPT_PATH, receipt):
         changed.append(RECEIPT_PATH)
 

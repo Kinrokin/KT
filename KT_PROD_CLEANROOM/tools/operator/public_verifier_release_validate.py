@@ -505,6 +505,14 @@ def _build_public_verifier_attestation(
 
 def _require_historical_dependency_artifacts(root: Path) -> None:
     reports_root = root / DEFAULT_REPORT_ROOT_REL
+    probe = reports_root
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency root is symlinked: {probe.as_posix()}")
+        parent = probe.parent
+        if parent == probe:
+            break
+        probe = parent
     for name in (
         "dependency_inventory.json",
         "python_environment_manifest.json",
