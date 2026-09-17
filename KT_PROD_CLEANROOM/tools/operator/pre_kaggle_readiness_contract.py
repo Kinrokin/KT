@@ -124,20 +124,31 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _is_within(candidate: Path, root: Path) -> bool:
-    probe = Path(candidate)
+def _contains_symlink_component(path: Path) -> bool:
+    """Return true when the unresolved path or any ancestor is a symlink."""
+    probe = Path(path)
     while True:
         if probe.is_symlink():
-            return False
+            return True
         parent = probe.parent
         if parent == probe:
-            break
+            return False
         probe = parent
+
+
+def _is_within(candidate: Path, root: Path) -> bool:
+    if _contains_symlink_component(candidate) or _contains_symlink_component(root):
+        return False
     try:
         candidate.resolve().relative_to(root.resolve())
     except ValueError:
         return False
     return True
+
+
+def _reject_symlink_path(path: Path, code: str) -> None:
+    if _contains_symlink_component(path):
+        _fail(code, str(path))
 
 
 def validate_identity_planes(planes: Mapping[str, Any]) -> dict[str, Any]:
@@ -192,7 +203,8 @@ def validate_packet_selection(
     actual_source_head: str,
 ) -> dict[str, str]:
     """Bind a packet to one file, digest, manifest record, and current source head."""
-    if packet_root.is_symlink() or not packet_root.is_dir():
+    _reject_symlink_path(packet_root, "PACKET_ROOT_SYMLINK_FORBIDDEN")
+    if not packet_root.is_dir():
         _fail("PACKET_ROOT_INVALID", str(packet_root))
     expected_name = _single_component(
         selection.get("packet_name"), "PACKET_NAME_INVALID", "packet_name"
@@ -274,7 +286,8 @@ def validate_packet_selection(
 def validate_input_inventory(inventory: Mapping[str, Any]) -> dict[str, Any]:
     """Require one exact nested input inventory instead of a permissive glob."""
     stage_root = Path(_text(inventory.get("stage_root"), "INPUT_STAGE_ROOT_INVALID", "stage_root"))
-    if stage_root.is_symlink() or not stage_root.is_dir():
+    _reject_symlink_path(stage_root, "INPUT_STAGE_ROOT_SYMLINK_FORBIDDEN")
+    if not stage_root.is_dir():
         _fail("INPUT_STAGE_ROOT_INVALID", str(stage_root))
     expected_name = _single_component(
         inventory.get("expected_stage_root_name"), "INPUT_STAGE_ROOT_NAME_INVALID", "expected_stage_root_name"
@@ -330,7 +343,8 @@ def validate_input_inventory(inventory: Mapping[str, Any]) -> dict[str, Any]:
 
 def validate_adapter_identity(adapter_root: Path, expected: Mapping[str, Any]) -> dict[str, Any]:
     """Resolve a future adapter only when all supplied identity fields agree exactly."""
-    if adapter_root.is_symlink() or not adapter_root.is_dir():
+    _reject_symlink_path(adapter_root, "ADAPTER_ROOT_SYMLINK_FORBIDDEN")
+    if not adapter_root.is_dir():
         _fail("ADAPTER_ROOT_INVALID", str(adapter_root))
     directory = _single_component(
         expected.get("adapter_directory"), "ADAPTER_DIRECTORY_INVALID", "adapter_directory"
@@ -587,8 +601,9 @@ def validate_output_allocation(
     source = source_root.resolve()
     output_text = _text(allocation.get("output_root"), "OUTPUT_ROOT_INVALID", "output_root")
     output_root = Path(output_text)
-    if not output_root.is_absolute() or output_root.is_symlink():
+    if not output_root.is_absolute():
         _fail("OUTPUT_ROOT_INVALID", output_text)
+    _reject_symlink_path(output_root, "OUTPUT_ROOT_SYMLINK_FORBIDDEN")
     if _is_within(output_root, source):
         _fail("OUTPUT_ROOT_IN_SOURCE_TREE", str(output_root))
     subtrees = allocation.get("subtrees")
@@ -944,6 +959,8 @@ def preserve_partial_measurements(
     except (TypeError, ValueError) as exc:
         _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
     journal_tmp = journal_path.with_name(f".{journal_path.name}.tmp")
+    if journal_tmp.is_symlink() or journal_tmp.exists():
+        _fail("ASSESSMENT_OUTPUT_DESTINATION_INVALID", str(journal_tmp))
     try:
         journal_tmp.write_text("\n".join(encoded_events) + "\n", encoding="utf-8", newline="\n")
         os.replace(journal_tmp, journal_path)

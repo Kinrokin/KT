@@ -731,3 +731,34 @@ def test_scorecard_rejects_measurement_sample_id_mismatch(tmp_path: Path) -> Non
     plan["scorecard"]["rows"][0]["decision_sample_id"] = "different-sample"
     plan["scorecard"]["rows"][0]["prediction_sample_id"] = "different-sample"
     _expect("SCORECARD_MEASUREMENT_ID_MISMATCH", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_roots_reject_symlinked_ancestors(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    outside = tmp_path / "outside-root"
+    outside.mkdir()
+    linked = tmp_path / "linked-root"
+    linked.symlink_to(outside, target_is_directory=True)
+    plan["output"]["output_root"] = str(linked / "new-output")
+    _expect("OUTPUT_ROOT_SYMLINK_FORBIDDEN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+    (tmp_path / "input-case").mkdir()
+    plan, source_root = _plan(tmp_path / "input-case")
+    outside_stage = tmp_path / "input-outside"
+    outside_stage.mkdir()
+    linked_stage = tmp_path / "input-link"
+    linked_stage.symlink_to(outside_stage, target_is_directory=True)
+    plan["input_inventory"]["stage_root"] = str(linked_stage)
+    plan["input_inventory"]["expected_stage_root_name"] = linked_stage.name
+    _expect("INPUT_STAGE_ROOT_SYMLINK_FORBIDDEN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_partial_measurement_rejects_symlinked_temporary_journal(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    output_root = Path(plan["output"]["output_root"])
+    assessment = output_root / "assessment_return"
+    assessment.mkdir(parents=True)
+    outside = tmp_path / "outside-temporary-journal.jsonl"
+    outside.write_text("external\n", encoding="utf-8")
+    (assessment / ".measurement_journal.jsonl.tmp").symlink_to(outside)
+    _expect("ASSESSMENT_OUTPUT_DESTINATION_INVALID", contract.preserve_partial_measurements, source_root, plan["output"], 1024, [], "fixture failure")
