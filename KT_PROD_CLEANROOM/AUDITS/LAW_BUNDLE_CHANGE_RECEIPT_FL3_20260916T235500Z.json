@@ -2,85 +2,86 @@
   "bundle_id": "LAW_BUNDLE_FL3",
   "counts": {
     "added": 2,
-    "modified": 14,
+    "modified": 13,
     "removed": 0
   },
   "created_at": "2026-09-16T23:55:00Z",
   "diff": {
     "added": [
-      "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260916T235500Z.json",
-      "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_CHANGE_RECEIPT_FL3_20260916T235500Z.json"
+      {
+        "path": "KT_PROD_CLEANROOM/AUDITS/LAW_AMENDMENT_FL3_20260916T235500Z.json",
+        "sha256": "af11ebdf86198e09241abd67d28108aaab8e9c1541e7707803907c74185a0b1a"
+      },
+      {
+        "path": "tests/test_review12_regressions.py",
+        "sha256": "116ac9a34c659d1dfe38e8077842dafdbc7b18d48e66f02bcf9b23913859527e"
+      }
     ],
     "modified": [
       {
+        "new_sha256": "2c7c3a2d4d1b91cbffbd8e0fc3708f855a55d34428f804cbd5bde83048fdf640",
+        "old_sha256": "a48a79c4a9c2b3f85051cf3d94389549080249cd66f6ac774fd8425695eb2b1e",
+        "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
+      },
+      {
         "new_sha256": "14f148e8efff90e1ca8eae5af6e7380b6f097eb886e44609199a907fce15b75e",
-        "old_sha256": "",
+        "old_sha256": "a8946069d2b3b079e73f11bde601c90742dba1802270dd76954de4762d8d4643",
         "path": "KT_PROD_CLEANROOM/tools/growth/analyze_escalation.py"
       },
       {
         "new_sha256": "84d52da3e7a10a2cc7ae44707b9dad0784b6c7d7474ae6cee8f1c70a758b6c49",
-        "old_sha256": "",
+        "old_sha256": "caece4186e6687897ca68d7ae85b240d7d7d7c3ab9a27855ceca8f6d866a8cfb",
         "path": "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus/eval_plus_runner.py"
       },
       {
         "new_sha256": "9609fdd427256d027d92867633e8627ad3ff378444fa138f5f991adf60595578",
-        "old_sha256": "",
+        "old_sha256": "cf611ea991b88774d838295bb3b5c5f018df5031d25bc1b6ae58bd638f2d0e26",
         "path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/epoch_orchestrator.py"
       },
       {
         "new_sha256": "07c46beac7331a9e20e9b43fa11a67f8ade4c99f439cdca771ac38b020a6c8fc",
-        "old_sha256": "",
+        "old_sha256": "eebcf8c541895812f3414f9d4e4de5c5670c893f19dbdfc20b735d9320957957",
         "path": "KT_PROD_CLEANROOM/tools/growth/orchestrator/epoch_schemas.py"
       },
       {
         "new_sha256": "4a1f20be2a0039594f63a51c32832b07b32595eabdf265fb4d206d96a772c627",
-        "old_sha256": "",
+        "old_sha256": "9fce055c19441bb2eed896adf52b09a617a152715afec20bb7c97ab220df4a0b",
         "path": "KT_PROD_CLEANROOM/tools/growth/run_epoch_escalation.py"
       },
       {
         "new_sha256": "3d88ebade3ed0da244b0c77470adcd27ef6673b7dfd0dbd8cc7b7aa90af76dad",
-        "old_sha256": "",
+        "old_sha256": "bb05a265e9da69fa2ae2e61fa9f1a9023ea6d914ca97f85ed2c27bc3231279b4",
         "path": "KT_PROD_CLEANROOM/tools/growth/state/compute_epoch_regret.py"
       },
       {
         "new_sha256": "b530ef4aa78a879d63de67bc7901adb11804b89c9554deb9fe2dd4888c6d1019",
-        "old_sha256": "",
+        "old_sha256": "2d82ce049e6f9c27f6055c42d4ef94aaa521d548e15a113c3b3e11aeed83c0af",
         "path": "KT_PROD_CLEANROOM/tools/growth/state/plan_suggester.py"
       },
       {
+        "new_sha256": "851247314c725d5718ea4d15cf5349f212683ffacd0c641a123edc4d87e1d2e6",
+        "old_sha256": "a3cc6d6fb490d260475f9ea23581a8a8cf4af4ae35c92e2181605e579fbb2597",
+        "path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"
+      },
+      {
         "new_sha256": "3458436dfb63e7c6c2f212be33be8bff36501d26091c67ed8e6bb16a34188b34",
-        "old_sha256": "",
+        "old_sha256": "09f1345e633bf551a14a2b81004ee82b8ccb69d36bc11cfb581c02fd1ea0ebd3",
         "path": "scripts/artifact_authority_registry_writer.py"
       },
       {
         "new_sha256": "e8e4a9679ca804300d4e5cbe965a40b33d346b33cfe4f7bd6574aa482811f3c7",
-        "old_sha256": "",
+        "old_sha256": "45559c87b20247287766e4d77950ec9721c8a0364826f49640776cf8a3f24319",
         "path": "scripts/v17_7_3_evidence_acquisition_common.py"
       },
       {
         "new_sha256": "722fc86b462522d7db9100a6a03cf36567cdb74b6b93628425a1332e94adbd77",
-        "old_sha256": "",
+        "old_sha256": "41d1095fa6d24af136289a574e99c81c9aadf9e81152c874db43a174090f7d60",
         "path": "scripts/v17_7_3_measured_arm_build_common.py"
       },
       {
         "new_sha256": "b8fd6992890228e01cbd4120a2d1ba82db84d73c7f29a39178fce2bf2b363476",
-        "old_sha256": "",
+        "old_sha256": "5de2c056e3658a52db5602d0045039aed691aaf6e2e3e727842872711b3af4c3",
         "path": "scripts/v17_7_3_measurement_authority_common.py"
-      },
-      {
-        "new_sha256": "851247314c725d5718ea4d15cf5349f212683ffacd0c641a123edc4d87e1d2e6",
-        "old_sha256": "",
-        "path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"
-      },
-      {
-        "new_sha256": "2c7c3a2d4d1b91cbffbd8e0fc3708f855a55d34428f804cbd5bde83048fdf640",
-        "old_sha256": "",
-        "path": "KT_PROD_CLEANROOM/AUDITS/LAW_BUNDLE_FL3.sha256"
-      },
-      {
-        "new_sha256": "116ac9a34c659d1dfe38e8077842dafdbc7b18d48e66f02bcf9b23913859527e",
-        "old_sha256": "",
-        "path": "tests/test_review12_regressions.py"
       }
     ],
     "removed": []
@@ -88,7 +89,7 @@
   "new_bundle_hash": "7827bc7014cf53e59f01d7e8b4d8a2c0685fb6476083cbcfe35cba9bb0c3ec23",
   "old_bundle_hash": "93395e5743c2175397b508554a5aebd16797eb0b3a19e1a50386af2e41ec317c",
   "old_ref": "440eb9cd^",
-  "receipt_id": "526e27f797c849ee06b2938d3c19aa4c0fedcb352e993c787ed42b5e770e2572",
+  "receipt_id": "2cacbd1085c0e84c6a79836dd8936e5677376bb1279467cedeac1d66b7c1cce5",
   "schema_id": "kt.law_bundle_change_receipt.v1",
   "schema_version_hash": "6515bbb46c59586cb949daaf2a4a41f942d3fcd93a8d588d86c5f415f5da425f"
 }
