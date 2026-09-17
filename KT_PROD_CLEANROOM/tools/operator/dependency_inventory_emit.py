@@ -4,6 +4,8 @@ import argparse
 import ast
 import importlib.metadata as importlib_metadata
 import json
+import os
+import uuid
 import platform
 import subprocess
 import sys
@@ -222,12 +224,22 @@ def emit_dependency_reports(*, root: Path, report_root: str | Path) -> Dict[str,
         raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN")
     if destination.exists() or destination.is_symlink():
         raise FileExistsError(f"DEPENDENCY_REPORT_ROOT_ALREADY_EXISTS: {destination}")
-    destination.mkdir(parents=True, exist_ok=False)
-    reports = build_dependency_reports(root=root)
-    write_json_stable(destination / "dependency_inventory.json", reports["inventory"])
-    write_json_stable(destination / "python_environment_manifest.json", reports["environment"])
-    write_json_stable(destination / "sbom_cyclonedx.json", reports["sbom"])
-    return reports
+    staging = destination.with_name(f".{destination.name}.staging-{uuid.uuid4().hex}")
+    if staging.exists() or staging.is_symlink():
+        raise FileExistsError(f"DEPENDENCY_REPORT_STAGING_ALREADY_EXISTS: {staging}")
+    try:
+        staging.mkdir(parents=True, exist_ok=False)
+        reports = build_dependency_reports(root=root)
+        write_json_stable(staging / "dependency_inventory.json", reports["inventory"])
+        write_json_stable(staging / "python_environment_manifest.json", reports["environment"])
+        write_json_stable(staging / "sbom_cyclonedx.json", reports["sbom"])
+        os.replace(staging, destination)
+        return reports
+    except Exception:
+        if staging.exists() and not staging.is_symlink():
+            import shutil
+            shutil.rmtree(staging)
+        raise
 
 
 def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:

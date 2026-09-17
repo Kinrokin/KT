@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Sequence
 
 from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
+from tools.operator.dependency_inventory_reconcile import reconcile_dependency_evidence
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -365,11 +366,7 @@ def _third_party_imports_for_surfaces(root: Path, inventory: Dict[str, Any], ref
 
 
 def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
-    """Build current dependency evidence in a disposable external root.
-
-    Historical checked-in reports are immutable; this legacy campaign helper
-    must never rewrite them while refreshing current-head evidence.
-    """
+    """Build current dependency evidence through the guarded reconciler."""
     status = subprocess.run(
         ("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"),
         check=True,
@@ -379,27 +376,24 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     if status.stdout.strip():
         raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_DIRTY")
     head = subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
-    raw_report_root = root.parent / ".kt_dependency_evidence" / head
-    report_root = resolve_external_report_root(root=root, report_root=raw_report_root)
-    if report_root.exists() or report_root.is_symlink():
-        raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_ALREADY_EXISTS: {report_root}")
-    report_root.mkdir(parents=True, exist_ok=False)
-    try:
-        dependency_reports = build_dependency_reports(root=root)
-        write_json_stable(report_root / "dependency_inventory.json", dependency_reports["inventory"], volatile_keys=())
-        write_json_stable(report_root / "python_environment_manifest.json", dependency_reports["environment"], volatile_keys=())
-        write_json_stable(report_root / "sbom_cyclonedx.json", dependency_reports["sbom"], volatile_keys=())
-        validation = build_dependency_inventory_validation_report(root=root, report_root=report_root)
-        write_json_stable(report_root / "dependency_inventory_validation_receipt.json", validation, volatile_keys=())
-        return {
-            "inventory": dependency_reports["inventory"],
-            "environment": dependency_reports["environment"],
-            "sbom": dependency_reports["sbom"],
-            "validation": validation,
-            "external_root": str(report_root),
-        }
-    finally:
-        pass
+    # A run-unique destination permits safe retries while preserving the
+    # reconciler's before/after historical-retention manifest.
+    import uuid
+    report_root = root.parent / ".kt_dependency_evidence" / f"{head}-{uuid.uuid4().hex}"
+    reconcile_dependency_evidence(root=root, report_root=report_root)
+    reports = {
+        name: json.loads((report_root / name).read_text(encoding="utf-8"))
+        for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json")
+    }
+    reports["external_root"] = str(report_root)
+    return {
+        "inventory": reports["dependency_inventory.json"],
+        "environment": reports["python_environment_manifest.json"],
+        "sbom": reports["sbom_cyclonedx.json"],
+        "validation": reports["dependency_inventory_validation_receipt.json"],
+        "external_root": str(report_root),
+        "reconciliation": json.loads((report_root / "dependency_inventory_reconciliation_receipt.json").read_text(encoding="utf-8")),
+    }
 
 
 def _profile(cls: str) -> Dict[str, float]:
@@ -1818,7 +1812,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "generated_utc": utc_now_iso_z(),
             "checks": [
                 _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", dependency_refs),
-                _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, DEPENDENCY_INVENTORY]),
+                _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, *dependency_refs]),
                 _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", dependency_refs),
             ],
             "direct_third_party_imports": direct_third_party_imports,

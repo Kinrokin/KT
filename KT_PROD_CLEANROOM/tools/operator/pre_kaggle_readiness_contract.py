@@ -8,6 +8,7 @@ simulated failure. It never selects a benchmark or grants execution authority.
 
 from __future__ import annotations
 
+import os
 import hashlib
 import json
 import re
@@ -916,30 +917,29 @@ def preserve_partial_measurements(
     for destination in (journal_path, receipt_path):
         if destination.is_symlink() or destination.exists():
             _fail("ASSESSMENT_OUTPUT_DESTINATION_INVALID", str(destination))
-    written = 0
-    with journal_path.open("a", encoding="utf-8", newline="\n") as handle:
-        for index, row in enumerate(completed_rows, start=1):
-            if not isinstance(row, Mapping):
-                _fail("PARTIAL_MEASUREMENT_ROW_INVALID", f"row {index}")
-            event = {"event": "MEASURED_ROW", "sequence": index, "row": dict(row)}
-            try:
-                encoded = json.dumps(event, sort_keys=True, separators=(",", ":"), allow_nan=False)
-            except (TypeError, ValueError) as exc:
-                _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
-            handle.write(encoded + "\n")
-            handle.flush()
-            written += 1
+    encoded_events = []
+    for index, row in enumerate(completed_rows, start=1):
+        if not isinstance(row, Mapping):
+            _fail("PARTIAL_MEASUREMENT_ROW_INVALID", f"row {index}")
+        event = {"event": "MEASURED_ROW", "sequence": index, "row": dict(row)}
         try:
-            failure_event = json.dumps(
-                {"event": "SIMULATED_ARM_FAILURE", "completed_rows": written, "reason": reason},
-                sort_keys=True,
-                separators=(",", ":"),
-                allow_nan=False,
-            )
+            encoded_events.append(json.dumps(event, sort_keys=True, separators=(",", ":"), allow_nan=False))
         except (TypeError, ValueError) as exc:
             _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
-        handle.write(failure_event + "\n")
-        handle.flush()
+    written = len(encoded_events)
+    try:
+        encoded_events.append(json.dumps(
+            {"event": "SIMULATED_ARM_FAILURE", "completed_rows": written, "reason": reason},
+            sort_keys=True, separators=(",", ":"), allow_nan=False,
+        ))
+    except (TypeError, ValueError) as exc:
+        _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
+    journal_tmp = journal_path.with_name(f".{journal_path.name}.tmp")
+    try:
+        journal_tmp.write_text("\n".join(encoded_events) + "\n", encoding="utf-8", newline="\n")
+        os.replace(journal_tmp, journal_path)
+    finally:
+        journal_tmp.unlink(missing_ok=True)
     receipt = {
         "schema_id": SCHEMA_ID,
         "status": PARTIAL_STATUS,
