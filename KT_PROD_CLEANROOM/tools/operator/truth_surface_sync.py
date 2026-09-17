@@ -939,6 +939,8 @@ def _sync_secondary_surfaces(
     # Preserve an existing historical dependency receipt; create one only when
     # a fixture has no historical receipt yet, without overwriting retained bytes.
     dependency_receipt = reports_root / "dependency_inventory_validation_receipt.json"
+    if dependency_receipt.is_symlink() or (dependency_receipt.exists() and not dependency_receipt.is_file()):
+        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {dependency_receipt}")
     if not dependency_receipt.exists():
         _write_json(dependency_receipt, build_dependency_inventory_validation_report(root=root, report_root=reports_root))
     _write_json(

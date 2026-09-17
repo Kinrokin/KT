@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
-from tools.operator.dependency_inventory_emit import build_dependency_reports
+from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
@@ -370,7 +370,8 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     Historical checked-in reports are immutable; this legacy campaign helper
     must never rewrite them while refreshing current-head evidence.
     """
-    report_root = root.parent / ".kt_dependency_evidence" / subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    raw_report_root = root.parent / ".kt_dependency_evidence" / subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    report_root = resolve_external_report_root(root=root, report_root=raw_report_root)
     if report_root.exists() or report_root.is_symlink():
         raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_ALREADY_EXISTS: {report_root}")
     report_root.mkdir(parents=True, exist_ok=False)
@@ -386,6 +387,7 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
             "environment": dependency_reports["environment"],
             "sbom": dependency_reports["sbom"],
             "validation": validation,
+            "external_root": str(report_root),
         }
     finally:
         pass
@@ -1633,6 +1635,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f09_status = "BLOCKED_UPSTREAM"
     f09_next_phase: str | None = PHASE_F09
 
+    dependency_refs = [str(dependency_bundle.get("external_root", ""))]
     outputs = {
         CHILD_DAG: {
             "schema_id": "kt.child_campaign.execution_dag.v1_6",
@@ -1805,9 +1808,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "current_repo_head": head,
             "generated_utc": utc_now_iso_z(),
             "checks": [
-                _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
+                _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", dependency_refs),
                 _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, DEPENDENCY_INVENTORY]),
-                _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
+                _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", dependency_refs),
             ],
             "direct_third_party_imports": direct_third_party_imports,
             "current_strongest_claim": "F03 refreshes and validates current-head dependency evidence for the declared class-A emitter paths only." if f03_checks["dependency_airlock_valid"] else "F03 does not yet validate the current-head dependency evidence for the declared class-A emitter paths.",
@@ -3761,11 +3764,13 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 ]
 
     external_dependency_root = root.parent / ".kt_dependency_evidence" / head
-    if not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
-        raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_INVALID: {external_dependency_root}")
+    if f02b_pass:
+        if not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
+            raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_INVALID: {external_dependency_root}")
     for rel, payload in outputs.items():
         if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
-            _w(external_dependency_root, Path(rel).name, payload)
+            if f02b_pass:
+                _w(external_dependency_root, Path(rel).name, payload)
         else:
             _w(root, rel, payload)
 
