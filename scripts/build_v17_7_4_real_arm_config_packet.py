@@ -266,6 +266,14 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
             status="LIVE_CURRENT_HEAD_PREP_ONLY",
             authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
             sha256=sha256_file(path),
+            primary_class="GENERATED_OUTPUT",
+            validation_status="PASS",
+            controls_execution=False,
+            claim_authority="NONE",
+            current_authority=False,
+            current_file_sha256=None,
+            supersedes=[],
+            superseded_by=None,
             notes="Compression-frontier prep artifact; no promotion, runtime authority, V18 authority, or superiority claim.",
         )
         if rel not in existing:

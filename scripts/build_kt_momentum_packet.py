@@ -722,7 +722,7 @@ def register_artifacts(paths: list[Path]) -> None:
         if rel not in by_path:
             artifacts.append(entry)
             by_path[rel] = entry
-        additions.append(entry)
+        additions.append(by_path.get(rel, entry))
 
     timestamp = utc_now()
     registry["current_head"] = git_rev_parse()

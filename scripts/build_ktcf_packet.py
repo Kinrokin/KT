@@ -1221,7 +1221,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
         if rel not in by_path:
             artifacts.append(entry)
             by_path[rel] = entry
-        additions.append(entry)
+        additions.append(by_path.get(rel, entry))
     registry["current_head"] = git_output("rev-parse", "HEAD")
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp

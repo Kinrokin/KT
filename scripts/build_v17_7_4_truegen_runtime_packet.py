@@ -429,6 +429,14 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
                 status="LIVE_CURRENT_HEAD_PREP_ONLY",
                 authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
                 sha256=sha256_file(path),
+                primary_class="GENERATED_OUTPUT",
+                validation_status="PASS",
+                controls_execution=False,
+                claim_authority="NONE",
+                current_authority=False,
+                current_file_sha256=None,
+                supersedes=[],
+                superseded_by=None,
             )
             registry.setdefault("artifacts", []).append(item)
             added.append(rel)
@@ -442,6 +450,14 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
                 status="LIVE_CURRENT_HEAD_PREP_ONLY",
                 authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
                 sha256=packet_sha,
+                primary_class="GENERATED_OUTPUT",
+                validation_status="PASS",
+                controls_execution=False,
+                claim_authority="NONE",
+                current_authority=False,
+                current_file_sha256=None,
+                supersedes=[],
+                superseded_by=None,
             )
         )
         added.append(rel_packet)

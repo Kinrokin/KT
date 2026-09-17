@@ -253,20 +253,7 @@ def _sha256_registered_file(root: Path, relative: str) -> str:
                 os.close(leaf)
         finally:
             os.close(fd)
-    candidate = root / relative
-    if os.name == "nt" or not all(hasattr(os, flag) for flag in ("O_DIRECTORY", "O_NOFOLLOW")):
-        raise ValueError("secure digest read unavailable (fail-closed)")
-    fd = os.open(candidate, os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0))
-    try:
-        digest = hashlib.sha256()
-        while True:
-            chunk = os.read(fd, 1024 * 1024)
-            if not chunk:
-                break
-            digest.update(chunk)
-        return digest.hexdigest()
-    finally:
-        os.close(fd)
+    raise ValueError("secure digest read unavailable (fail-closed)")
 
 
 def check(root: Path = ROOT) -> list[str]:
