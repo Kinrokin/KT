@@ -954,9 +954,12 @@ def _sync_secondary_surfaces(
         "dependency_inventory_validation_receipt.json",
     )
     historical_paths = [reports_root / name for name in historical_names]
-    for historical_path in historical_paths:
-        if historical_path.is_symlink() or (historical_path.exists() and not historical_path.is_file()):
-            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {historical_path}")
+    for historical_path in historical_paths[:3]:
+        if historical_path.is_symlink() or not historical_path.is_file():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {historical_path}")
+    receipt_path = historical_paths[3]
+    if receipt_path.is_symlink() or (receipt_path.exists() and not receipt_path.is_file()):
+        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {receipt_path}")
     # Preserve an existing historical dependency receipt; create one only when
     # a fixture has no historical receipt yet, without overwriting retained bytes.
     dependency_receipt = reports_root / "dependency_inventory_validation_receipt.json"

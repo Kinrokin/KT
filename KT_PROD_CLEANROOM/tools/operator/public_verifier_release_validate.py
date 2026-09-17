@@ -219,10 +219,10 @@ def _public_verifier_manifest_payload(*, root: Path, live_head: str, report_root
         ],
         "publication_evidence_refs": list(claims.get("publication_evidence_refs", [])),
         "historical_dependency_artifacts": [
-            _report_ref(report_root_rel, "dependency_inventory.json"),
-            _report_ref(report_root_rel, "python_environment_manifest.json"),
-            _report_ref(report_root_rel, "sbom_cyclonedx.json"),
-            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "python_environment_manifest.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "sbom_cyclonedx.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory_validation_receipt.json"),
         ],
     }
 

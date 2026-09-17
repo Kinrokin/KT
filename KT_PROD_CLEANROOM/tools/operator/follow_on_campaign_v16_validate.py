@@ -3766,9 +3766,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                     {"id": PHASE_F09, "status": f09_status if f08_pass else "BLOCKED_UPSTREAM"},
                 ]
 
-    external_dependency_root = root.parent / ".kt_dependency_evidence" / head
+    external_dependency_root = Path(str(dependency_bundle.get("external_root", ""))) if f02b_pass else None
     if f02b_pass:
-        if not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
+        if external_dependency_root is None or not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
             raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_INVALID: {external_dependency_root}")
     for rel, payload in outputs.items():
         if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
