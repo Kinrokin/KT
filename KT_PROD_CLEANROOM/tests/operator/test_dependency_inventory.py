@@ -136,3 +136,17 @@ def test_dependency_reconciliation_refuses_dirty_source_bytes(tmp_path: Path) ->
     with pytest.raises(RuntimeError, match="DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN"):
         reconcile_dependency_evidence(root=root, report_root=evidence_root)
     assert not evidence_root.exists()
+
+
+def test_reconcile_rejects_symlinked_historical_report_root(tmp_path: Path) -> None:
+    root = tmp_path / "source"
+    (root / "KT_PROD_CLEANROOM").mkdir(parents=True)
+    external = tmp_path / "external-reports"
+    external.mkdir()
+    (root / "KT_PROD_CLEANROOM" / "reports").symlink_to(external, target_is_directory=True)
+    _init_git(root)
+    with pytest.raises(RuntimeError, match="HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN"):
+        reconcile_dependency_evidence(root=root, report_root=tmp_path / "current")
+
+
+

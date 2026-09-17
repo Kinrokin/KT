@@ -31,7 +31,16 @@ HOLD_STATUS = "HOLD_CURRENT_EXTERNAL_DEPENDENCY_EVIDENCE"
 
 
 def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
-    report_root = (root / HISTORICAL_REPORT_ROOT_REL).resolve()
+    raw_root = root / HISTORICAL_REPORT_ROOT_REL
+    probe = raw_root
+    while True:
+        if probe.exists() and probe.is_symlink():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            break
+        probe = parent
+    report_root = raw_root.resolve()
     result: Dict[str, Dict[str, str]] = {}
     for filename in HISTORICAL_FILENAMES:
         path = report_root / filename

@@ -657,3 +657,42 @@ def test_dependency_report_root_rejects_symlink_before_resolution(tmp_path: Path
     link.symlink_to(target, target_is_directory=True)
     with pytest.raises(ValueError, match="DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN"):
         emit.resolve_external_report_root(root=root, report_root="reports")
+
+
+def test_packet_selection_rejects_symlink_entries(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    packet_root = Path(plan["packet_root"])
+    packet_root.joinpath("linked.zip").symlink_to(packet_root / "exact_fixture.zip")
+    _expect("PACKET_SYMLINK_ENTRY_FORBIDDEN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_execution_ceiling_rejects_unknown_operation_flags(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["execution"]["network_access_requested"] = True
+    _expect("OUT_OF_SCOPE_EXECUTION_REQUEST", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+    plan, source_root = _plan(tmp_path)
+    plan["execution"]["unlisted_operation"] = False
+    _expect("EXECUTION_FLAG_UNKNOWN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_fresh_generation_cannot_claim_promotion_or_superiority(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["claim_ceiling"]["evidence_mode"] = "FRESH_GENERATION_INTERNAL"
+    plan["claim_ceiling"]["claims"]["promotion"] = True
+    _expect("CLAIM_EXCEEDS_EVIDENCE_TIER", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_output_assessment_rejects_symlink_destination_file(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    output_root = Path(plan["output"]["output_root"])
+    assessment = output_root / "assessment_return"
+    assessment.mkdir(parents=True)
+    outside = tmp_path / "outside-journal.jsonl"
+    outside.write_text("external\n", encoding="utf-8")
+    (assessment / "measurement_journal.jsonl").symlink_to(outside)
+    _expect("ASSESSMENT_OUTPUT_DESTINATION_INVALID", contract.preserve_partial_measurements, source_root, plan["output"], 1024, [], "fixture failure")
+
+
+def test_partial_measurement_rejects_nonfinite_row(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    _expect("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", contract.preserve_partial_measurements, source_root, plan["output"], 1024, [{"value": float("inf")}], "fixture failure")

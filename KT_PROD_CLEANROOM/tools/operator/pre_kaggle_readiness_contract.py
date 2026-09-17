@@ -31,6 +31,11 @@ REQUIRED_OUTPUT_SUBTREES = (
 )
 EXECUTION_FLAGS = (
     "model_inference_requested",
+    "model_loading_requested",
+    "model_download_requested",
+    "provider_model_calls_requested",
+    "notebook_execution_requested",
+    "network_access_requested",
     "training_requested",
     "kaggle_execution_requested",
     "paid_compute_requested",
@@ -223,10 +228,11 @@ def validate_packet_selection(
             "historical_reproduction_contract_sha256",
         )
 
-    candidates = sorted(
-        path for path in packet_root.iterdir()
-        if not path.is_symlink() and path.is_file() and path.suffix == ".zip"
-    )
+    entries = list(packet_root.iterdir())
+    linked = sorted(path.name for path in entries if path.is_symlink())
+    if linked:
+        _fail("PACKET_SYMLINK_ENTRY_FORBIDDEN", ", ".join(linked))
+    candidates = sorted(path for path in entries if path.is_file() and path.suffix == ".zip")
     if len(candidates) == 0:
         _fail("PACKET_DISCOVERY_NO_CANDIDATE", str(packet_root))
     if len(candidates) != 1:
@@ -745,6 +751,9 @@ def validate_claim_ceiling(claims: Mapping[str, Any]) -> dict[str, Any]:
     if evidence_mode in {"PLAN_ONLY", "SIMULATION_ONLY", "SCAFFOLD_ONLY", "FROZEN_OUTPUT_REPLAY", "SOURCE_ROW_REPLAY"}:
         if any(outcomes[field] for field in claim_fields):
             _fail("CLAIM_EXCEEDS_EVIDENCE_TIER", evidence_mode)
+    if evidence_mode in {"FRESH_GENERATION_INTERNAL", "FRESH_GENERATION_EXTERNAL"}:
+        if any(outcomes[field] for field in ("performance_superiority", "promotion", "external_authority", "commercial_authority")):
+            _fail("CLAIM_EXCEEDS_EVIDENCE_TIER", evidence_mode)
     if claims.get("hf_upload_observed") is True and outcomes["promotion"]:
         _fail("HF_UPLOAD_CANNOT_PROMOTE", "promotion")
     gates = claims.get("mandatory_gates")
@@ -773,6 +782,9 @@ def validate_finalization_payload(payload: object) -> None:
 
 def validate_execution_ceiling(execution: Mapping[str, Any]) -> None:
     """Reject a request to turn this static control into an execution authorization."""
+    unknown = sorted(set(execution) - set(EXECUTION_FLAGS))
+    if unknown:
+        _fail("EXECUTION_FLAG_UNKNOWN", ", ".join(unknown))
     for flag in EXECUTION_FLAGS:
         if execution.get(flag) is not False:
             _fail("OUT_OF_SCOPE_EXECUTION_REQUEST", flag)
@@ -880,22 +892,33 @@ def preserve_partial_measurements(
         _fail("ASSESSMENT_RETURN_ROOT_INVALID", str(assessment))
     assessment.mkdir(parents=True, exist_ok=True)
     journal_path = assessment / "measurement_journal.jsonl"
+    receipt_path = assessment / "partial_assessment_receipt.json"
+    for destination in (journal_path, receipt_path):
+        if destination.exists() and (destination.is_symlink() or not destination.is_file()):
+            _fail("ASSESSMENT_OUTPUT_DESTINATION_INVALID", str(destination))
     written = 0
     with journal_path.open("a", encoding="utf-8", newline="\n") as handle:
         for index, row in enumerate(completed_rows, start=1):
             if not isinstance(row, Mapping):
                 _fail("PARTIAL_MEASUREMENT_ROW_INVALID", f"row {index}")
             event = {"event": "MEASURED_ROW", "sequence": index, "row": dict(row)}
-            handle.write(json.dumps(event, sort_keys=True, separators=(",", ":")) + "\n")
+            try:
+                encoded = json.dumps(event, sort_keys=True, separators=(",", ":"), allow_nan=False)
+            except (TypeError, ValueError) as exc:
+                _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
+            handle.write(encoded + "\n")
             handle.flush()
             written += 1
-        handle.write(
-            json.dumps(
+        try:
+            failure_event = json.dumps(
                 {"event": "SIMULATED_ARM_FAILURE", "completed_rows": written, "reason": reason},
                 sort_keys=True,
                 separators=(",", ":"),
-            ) + "\n"
-        )
+                allow_nan=False,
+            )
+        except (TypeError, ValueError) as exc:
+            _fail("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", str(exc))
+        handle.write(failure_event + "\n")
         handle.flush()
     receipt = {
         "schema_id": SCHEMA_ID,
@@ -911,6 +934,5 @@ def preserve_partial_measurements(
         "kaggle_execution_authorized": False,
         "performance_claim_authorized": False,
     }
-    receipt_path = assessment / "partial_assessment_receipt.json"
-    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
     return receipt

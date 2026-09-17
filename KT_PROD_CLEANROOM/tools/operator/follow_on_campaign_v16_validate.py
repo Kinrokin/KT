@@ -365,19 +365,27 @@ def _third_party_imports_for_surfaces(root: Path, inventory: Dict[str, Any], ref
 
 
 def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
-    report_root = (root / REPORT).resolve()
-    dependency_reports = build_dependency_reports(root=root)
-    _w(root, DEPENDENCY_INVENTORY, dependency_reports["inventory"])
-    _w(root, PYTHON_ENVIRONMENT, dependency_reports["environment"])
-    _w(root, SBOM, dependency_reports["sbom"])
-    validation = build_dependency_inventory_validation_report(root=root, report_root=report_root)
-    _w(root, DEPENDENCY_VALIDATION, validation)
-    return {
-        "inventory": dependency_reports["inventory"],
-        "environment": dependency_reports["environment"],
-        "sbom": dependency_reports["sbom"],
-        "validation": validation,
-    }
+    """Build current dependency evidence in a disposable external root.
+
+    Historical checked-in reports are immutable; this legacy campaign helper
+    must never rewrite them while refreshing current-head evidence.
+    """
+    report_root = Path(tempfile.mkdtemp(prefix="kt-v16-dependency-"))
+    try:
+        dependency_reports = build_dependency_reports(root=root)
+        write_json_stable(report_root / "dependency_inventory.json", dependency_reports["inventory"], volatile_keys=())
+        write_json_stable(report_root / "python_environment_manifest.json", dependency_reports["environment"], volatile_keys=())
+        write_json_stable(report_root / "sbom_cyclonedx.json", dependency_reports["sbom"], volatile_keys=())
+        validation = build_dependency_inventory_validation_report(root=root, report_root=report_root)
+        write_json_stable(report_root / "dependency_inventory_validation_receipt.json", validation, volatile_keys=())
+        return {
+            "inventory": dependency_reports["inventory"],
+            "environment": dependency_reports["environment"],
+            "sbom": dependency_reports["sbom"],
+            "validation": validation,
+        }
+    finally:
+        shutil.rmtree(report_root, ignore_errors=True)
 
 
 def _profile(cls: str) -> Dict[str, float]:
