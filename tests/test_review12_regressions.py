@@ -6,8 +6,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus"))
 sys.path.insert(0, str(ROOT / "KT_PROD_CLEANROOM/tools/growth/orchestrator"))
 
-from KT_PROD_CLEANROOM.tools.growth import analyze_escalation
-from KT_PROD_CLEANROOM.tools.growth.state import compute_epoch_regret, plan_suggester
+from KT_PROD_CLEANROOM.tools.growth import analyze_escalation, run_epoch_escalation
+from KT_PROD_CLEANROOM.tools.growth.state import build_phaseA2_dataset, compute_epoch_regret, plan_suggester
 from KT_PROD_CLEANROOM.tools.growth.orchestrator import epoch_orchestrator, epoch_schemas
 from KT_PROD_CLEANROOM.tools.growth.eval_harness_plus import eval_plus_runner
 from scripts.artifact_authority_registry_writer import merge_registry_entries
@@ -16,12 +16,15 @@ from scripts.artifact_authority_registry_writer import merge_registry_entries
 def test_growth_readers_follow_canonical_hyphenated_crucibles(tmp_path):
     epoch = tmp_path / "EPOCH-TEST"
     (epoch / "CRU-GOV-HONESTY-01").mkdir(parents=True)
-    payload = {"steps": [{"domain": "governance"}, {"domain": "math"}]}
+    payload = {"steps": [{"domain": "governance", "flags": {"resolve_mode": "forced"}}, {"domain": "math", "flags": {"coherence_bucket": "LOW"}}]}
     (epoch / "CRU-GOV-HONESTY-01" / "micro_steps.json").write_text(json.dumps(payload), encoding="utf-8")
     entropy, domains = analyze_escalation.micro_stats(epoch)
     assert domains == 2 and entropy > 0
     assert compute_epoch_regret._collect_micro_steps(epoch)
     assert plan_suggester._collect_micro_steps(epoch)
+    assert build_phaseA2_dataset._collect_micro_steps(epoch)
+    steps, forced, low = run_epoch_escalation.inspect_micro_steps(epoch)
+    assert (steps, forced, low) == (2, 1, 1)
 
 
 def test_eval_plus_rejects_windows_portability_chars():

@@ -437,6 +437,11 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_armfix_delta_receipt.json"
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
+    # Finalize the receipt before registering its immutable digest.  A fresh
+    # invocation must never hash a missing or previous-run delta file.
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
+    delta["artifacts_added_or_updated"] = [canonical[item["path"]] for item in artifacts if item["path"] in canonical]
+    write_json(delta_path, delta)
     delta_entry = {
         "artifact_id": delta_path.stem.upper(),
         "path": delta_path.relative_to(root).as_posix(),
@@ -454,9 +459,6 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
         "current_file_sha256": None,
     }
     merge_registry_entries(registry, artifacts + [delta_entry])
-    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
-    delta["artifacts_added_or_updated"] = [canonical[item["path"]] for item in artifacts if item["path"] in canonical]
-    write_json(delta_path, delta)
     bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path
