@@ -818,6 +818,8 @@ def evaluate_static_preflight(
         actual_head = _head(actual_head, "SOURCE_HEAD_INVALID", "actual_source_head")
     except (OSError, subprocess.CalledProcessError) as exc:
         _fail("SOURCE_HEAD_UNAVAILABLE", str(source_root))
+    if declared_head != actual_head:
+        _fail("SOURCE_HEAD_MISMATCH", f"declared={declared_head} actual={actual_head}")
     packet = validate_packet_selection(
         packet_root,
         _mapping(plan.get("packet_selection"), "PACKET_SELECTION_INVALID", "packet_selection"),

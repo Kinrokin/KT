@@ -97,6 +97,11 @@ def reconcile_dependency_evidence(*, root: Path, report_root: str | Path) -> Dic
     historical_before = _historical_manifest(root)
     reports = emit_dependency_reports(root=root, report_root=destination)
     validation = build_dependency_inventory_validation_report(root=root, report_root=destination)
+    # Recheck the source after emission so concurrent edits cannot be reported
+    # as clean evidence bound to the initial head.
+    post_head = _require_clean_git_head(root)
+    if post_head != clean_head:
+        raise RuntimeError("DEPENDENCY_SOURCE_CHANGED_DURING_RECONCILIATION")
     write_json_worm(
         destination / "dependency_inventory_validation_receipt.json",
         validation,

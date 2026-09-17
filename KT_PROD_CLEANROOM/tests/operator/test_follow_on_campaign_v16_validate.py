@@ -196,6 +196,9 @@ def _seed_repo(tmp_path: Path) -> str:
     (tmp_path / OUTSIDER_TEST_REL).parent.mkdir(parents=True, exist_ok=True)
     (tmp_path / OUTSIDER_TEST_REL).write_text("seed\n", encoding="utf-8", newline="\n")
     _seed_runtime(tmp_path, source_root)
+    # The reconciler requires the retained historical dependency bundle.
+    for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
+        _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / name, {"schema_id": "historical.fixture", "status": "PASS"})
     _write_json(tmp_path / PARENT_DAG, {"schema_id": "kt.governance.execution_dag.v1", "status": "ACTIVE", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
     _write_json(tmp_path / PARENT_FINAL, {"schema_id": "kt.operator.ws18.final_readjudication_receipt.v1", "status": "PASS", "final_verdict": {"current_head_capability_status": "NOT_EXTERNALLY_CONFIRMED", "release_eligibility": "NOT_ELIGIBLE"}})
     _write_json(tmp_path / PARENT_PRODUCT, {"schema_id": "kt.operator.ws19.product_surface_receipt.v1", "status": "PASS", "campaign_completion_status": "STILL_BLOCKED", "next_lawful_workstream": None})
