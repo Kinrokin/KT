@@ -373,7 +373,8 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
         capture_output=True,
         text=True,
     )
-    if status.stdout.strip():
+    dirty_source = [line for line in status.stdout.splitlines() if line[3:].replace("\\", "/").endswith(".py")]
+    if dirty_source:
         raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_DIRTY")
     head = subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
     # A run-unique destination permits safe retries while preserving the

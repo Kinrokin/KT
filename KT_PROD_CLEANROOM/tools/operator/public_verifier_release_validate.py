@@ -522,11 +522,12 @@ def _require_historical_dependency_artifacts(root: Path) -> None:
         path = reports_root / name
         if path.is_symlink() or not path.is_file():
             raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact unavailable: {path.as_posix()}")
-        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", str(path.relative_to(root))), capture_output=True, text=True)
-        if tracked.returncode != 0 or tracked.stdout.strip() != str(path.relative_to(root)):
+        relative = path.relative_to(root).as_posix()
+        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative), capture_output=True, text=True)
+        if tracked.returncode != 0 or tracked.stdout.strip() != relative:
             raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact is not tracked: {path.as_posix()}")
         registry = load_json(root / "registry/artifact_authority_registry.json")
-        row = next((item for item in registry.get("artifacts", []) if item.get("path") == str(path.relative_to(root))), None)
+        row = next((item for item in registry.get("artifacts", []) if item.get("path") == relative), None)
         if not isinstance(row, dict) or not (
             row.get("authority_state") == "ARCHIVE"
             and row.get("primary_class") == "ARCHIVE_HISTORY"
