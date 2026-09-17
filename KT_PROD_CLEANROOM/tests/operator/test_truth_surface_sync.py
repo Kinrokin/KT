@@ -32,7 +32,17 @@ def _commit_dependency_history(root: Path) -> None:
     artifacts = []
     for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
         path = report_root / name
-        artifacts.append({"path": f"KT_PROD_CLEANROOM/reports/{name}", "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+        artifacts.append(
+            {
+                "path": f"KT_PROD_CLEANROOM/reports/{name}",
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "authority_state": "ARCHIVE",
+                "primary_class": "ARCHIVE_HISTORY",
+                "role": "historical_dependency_evidence",
+                "current_authority": False,
+                "controls_execution": False,
+            }
+        )
     _write_json(root / "registry/artifact_authority_registry.json", {"artifacts": artifacts})
     subprocess.run(("git", "init"), cwd=root, check=True, capture_output=True)
     subprocess.run(("git", "config", "user.email", "test@example.com"), cwd=root, check=True)

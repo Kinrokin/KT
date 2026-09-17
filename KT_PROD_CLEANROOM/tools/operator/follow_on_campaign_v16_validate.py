@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
-from tools.operator.dependency_inventory_emit import build_dependency_reports, resolve_external_report_root
+from tools.operator.dependency_inventory_emit import DEFAULT_SCAN_ROOTS, build_dependency_reports, resolve_external_report_root
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.dependency_inventory_reconcile import CURRENT_EVIDENCE_STATUS, reconcile_dependency_evidence
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
@@ -368,7 +368,7 @@ def _third_party_imports_for_surfaces(root: Path, inventory: Dict[str, Any], ref
 def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     """Build current dependency evidence through the guarded reconciler."""
     status = subprocess.run(
-        ("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"),
+        ("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all", "--", *DEFAULT_SCAN_ROOTS),
         check=True,
         capture_output=True,
         text=True,

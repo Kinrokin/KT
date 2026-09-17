@@ -183,7 +183,17 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
     for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
         path = tmp_path / "KT_PROD_CLEANROOM/reports" / name
         rel = f"KT_PROD_CLEANROOM/reports/{name}"
-        artifacts.append({"path": rel, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+        artifacts.append(
+            {
+                "path": rel,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "authority_state": "ARCHIVE",
+                "primary_class": "ARCHIVE_HISTORY",
+                "role": "historical_dependency_evidence",
+                "current_authority": False,
+                "controls_execution": False,
+            }
+        )
     _write_json(tmp_path / "registry/artifact_authority_registry.json", {"artifacts": artifacts})
 
 

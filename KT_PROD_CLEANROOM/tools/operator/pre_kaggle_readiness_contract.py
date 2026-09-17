@@ -91,7 +91,18 @@ def _single_component(value: object, code: str, label: str) -> str:
 def _relative_path(value: object, code: str, label: str) -> Path:
     text = _text(value, code, label)
     path = Path(text)
-    if path.is_absolute() or ".." in path.parts or "\\" in text or not path.parts:
+    if (
+        path.is_absolute()
+        or ".." in path.parts
+        or "\\" in text
+        or not path.parts
+        or any(
+            ":" in part
+            or part.endswith((".", " "))
+            or part.split(".", 1)[0].upper() in {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}
+            for part in path.parts
+        )
+    ):
         _fail(code, f"{label} must be a safe relative path")
     return path
 

@@ -881,6 +881,14 @@ def _validate_historical_dependency_bundle(root: Path) -> None:
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
         registry = _load_required(root / "registry/artifact_authority_registry.json")
         row = next((item for item in registry.get("artifacts", []) if item.get("path") == str(path.relative_to(root))), None)
+        if not isinstance(row, dict) or not (
+            row.get("authority_state") == "ARCHIVE"
+            and row.get("primary_class") == "ARCHIVE_HISTORY"
+            and row.get("role") == "historical_dependency_evidence"
+            and row.get("current_authority") is False
+            and row.get("controls_execution") is False
+        ):
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_AUTHORITY_INVALID: {path}")
         expected = row.get("sha256") if isinstance(row, dict) else None
         if not isinstance(expected, str) or file_sha256(path) != expected:
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_DIGEST_MISMATCH: {path}")

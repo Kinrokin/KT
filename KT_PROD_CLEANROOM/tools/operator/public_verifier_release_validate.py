@@ -527,6 +527,14 @@ def _require_historical_dependency_artifacts(root: Path) -> None:
             raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact is not tracked: {path.as_posix()}")
         registry = load_json(root / "registry/artifact_authority_registry.json")
         row = next((item for item in registry.get("artifacts", []) if item.get("path") == str(path.relative_to(root))), None)
+        if not isinstance(row, dict) or not (
+            row.get("authority_state") == "ARCHIVE"
+            and row.get("primary_class") == "ARCHIVE_HISTORY"
+            and row.get("role") == "historical_dependency_evidence"
+            and row.get("current_authority") is False
+            and row.get("controls_execution") is False
+        ):
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact has non-historical authority: {path.as_posix()}")
         expected = row.get("sha256") if isinstance(row, dict) else None
         if not isinstance(expected, str) or file_sha256(path) != expected:
             raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact digest mismatch: {path.as_posix()}")
