@@ -41,6 +41,12 @@ def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
             break
         probe = parent
     report_root = raw_root.resolve()
+    registry_path = root / "registry/artifact_authority_registry.json"
+    registry = None
+    if registry_path.exists() or registry_path.is_symlink():
+        if registry_path.is_symlink() or not registry_path.is_file():
+            raise RuntimeError(f"HISTORICAL_AUTHORITY_REGISTRY_INVALID: {registry_path}")
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
     result: Dict[str, Dict[str, str]] = {}
     for filename in HISTORICAL_FILENAMES:
         path = report_root / filename
@@ -54,6 +60,17 @@ def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
         )
         if tracked.returncode != 0 or tracked.stdout.strip() != relative:
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
+        if registry is not None:
+            row = next((item for item in registry.get("artifacts", []) if item.get("path") == relative), None)
+            if not isinstance(row, dict) or not (
+                row.get("authority_state") == "ARCHIVE"
+                and row.get("primary_class") == "ARCHIVE_HISTORY"
+                and row.get("role") == "historical_dependency_evidence"
+                and row.get("current_authority") is False
+                and row.get("controls_execution") is False
+                and row.get("sha256") == file_sha256(path)
+            ):
+                raise RuntimeError(f"HISTORICAL_DEPENDENCY_AUTHORITY_INVALID: {path}")
         result[filename] = {
             "path": f"{HISTORICAL_REPORT_ROOT_REL}/{filename}",
             "sha256": file_sha256(path),
@@ -88,7 +105,8 @@ def _require_clean_git_head(root: Path) -> str:
         ).stdout.strip()
     except subprocess.CalledProcessError as exc:
         raise RuntimeError("DEPENDENCY_SOURCE_HEAD_UNAVAILABLE") from exc
-    if status.strip():
+    dirty_source = [line for line in status.splitlines() if line[3:].replace("\\", "/").endswith(".py")]
+    if dirty_source:
         raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN")
     return head
 
