@@ -16,7 +16,8 @@ from typing import Callable, Dict, List, Optional, Tuple
 import yaml
 
 # Ensure repo root on sys.path for absolute imports (tooling-only).
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+_REPO_ROOT = _CLEANROOM_ROOT
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 from tools.growth.providers.live_guard import enforce_live_guard
@@ -76,15 +77,21 @@ def _growth_artifacts_root() -> Path:
     Default: KT_PROD_CLEANROOM/tools/growth/artifacts
 
     Seal / gate override: set KT_GROWTH_ARTIFACTS_ROOT to an absolute path or a
-    cleanroom-relative path (resolved relative to _repo_root()).
+    cleanroom-relative path (resolved relative to KT_PROD_CLEANROOM; the
+    historical _repo_root() helper names that cleanroom root).
     """
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
     if not override:
-        return _repo_root() / "tools" / "growth" / "artifacts"
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
     p = Path(override)
     if not p.is_absolute():
-        p = _repo_root() / p
+        p = _CLEANROOM_ROOT / p
     return p.resolve()
+
+
+def _default_salvage_root(epoch_base_root: Path) -> Path:
+    """Keep default salvage beside the epoch root selected for this run."""
+    return epoch_base_root.parent / "salvage"
 
 
 def _load_plan(path: Path) -> EpochPlan:
@@ -864,7 +871,7 @@ def preflight_epoch(
             return 2
         crucible_specs[cid] = _read_crucible(crucible_path)
 
-    base_root = artifacts_root if artifacts_root is not None else (repo_root / "tools" / "growth" / "artifacts" / "epochs")
+    base_root = artifacts_root if artifacts_root is not None else (_growth_artifacts_root() / "epochs")
 
     blocks: List[str] = []
     warns: List[str] = []
@@ -1487,7 +1494,7 @@ def run_epoch(
     if salvage:
         salvage_status = {"status": "FAIL", "error": "not-run"}
         try:
-            salvage_base = salvage_out_root if salvage_out_root is not None else (_repo_root() / "tools" / "growth" / "artifacts" / "salvage")
+            salvage_base = salvage_out_root if salvage_out_root is not None else _default_salvage_root(base_root)
             salvage_out = salvage_base / plan.epoch_id
             cmd = [
                 str(Path(sys.executable).resolve()),
@@ -1535,8 +1542,8 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--salvage-out-root",
-        default="KT_PROD_CLEANROOM/tools/growth/artifacts/salvage",
-        help="Base directory for salvage outputs (default: tools/growth/artifacts/salvage)",
+        default=None,
+        help="Base directory for salvage outputs (default: growth artifacts root / salvage)",
     )
     p.add_argument(
         "--no-auto-bump",
@@ -1582,6 +1589,7 @@ def run_epoch_from_plan(
     artifacts_root: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
+    debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     """
     Canonical epoch invocation. Tooling-only; advisory.
@@ -1598,6 +1606,7 @@ def run_epoch_from_plan(
         salvage_out_root=salvage_out_root,
         auto_bump=auto_bump,
         quiet=quiet,
+        debug_run_roots=debug_run_roots,
     )
 
 
@@ -1611,9 +1620,10 @@ def main() -> int:
         resume=args.resume,
         mode=args.mode,
         env=None,
-        salvage_out_root=Path(args.salvage_out_root),
+        salvage_out_root=Path(args.salvage_out_root) if args.salvage_out_root is not None else None,
         auto_bump=not args.no_auto_bump,
         quiet=args.summary_only,
+        debug_run_roots=args.debug_run_roots,
     )
     epoch_id = summary.get("epoch_id", "UNKNOWN")
     profile = summary.get("epoch_profile", "UNKNOWN")

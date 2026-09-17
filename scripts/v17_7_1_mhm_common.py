@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, existing_artifact_ids_for_paths
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, existing_artifact_ids_for_paths
+
 import hashlib
 import json
 import math
@@ -860,11 +865,10 @@ def write_registry_delta(receipts: dict[Path, dict[str, Any]]) -> None:
     for path in sorted(receipts):
         if path.exists():
             artifacts.append({"artifact_id": path.stem.upper(), "path": path.relative_to(root).as_posix(), "sha256": sha256_file(path), "authority_state": "LIVE_CURRENT_HEAD_DIAGNOSTIC_ONLY", "claim_authority": "INTERNAL_SHADOW", "controls_execution": False, "validation_status": "PASS", "notes": "V17.7.1 MHM evidence constitution artifact; no runtime authority, no promotion, no claim expansion."})
-    delta = {"schema_id": "kt.artifact_authority_registry_delta.v17_7_1.v1", "program_id": PROGRAM_ID, "current_head": current_head(), "created_at": utc_now(), "artifacts_added_or_updated": artifacts, "claim_ceiling_preserved": True, "runtime_authority_added": False, "promotion_authority_added": False, "learned_router_superiority_claim_added": False}
-    write_json(root / "registry" / "artifact_authority_registry_v17_7_1_delta_receipt.json", delta)
     registry = read_json(root / "registry" / "artifact_authority_registry.json")
-    existing = {entry.get("artifact_id"): entry for entry in registry.get("artifacts", [])}
-    for entry in artifacts:
-        existing[entry["artifact_id"]] = {**entry, "role": "v17_7_1_mhm_evidence_constitution", "supersedes": [], "superseded_by": None}
-    registry["artifacts"] = list(existing.values())
-    write_json(root / "registry" / "artifact_authority_registry.json", registry)
+    identities = existing_artifact_ids_for_paths(registry, [entry["path"] for entry in artifacts])
+    delta = {"schema_id": "kt.artifact_authority_registry_delta.v17_7_1.v1", "program_id": PROGRAM_ID, "current_head": current_head(), "created_at": utc_now(), "artifacts_added_or_updated": identities, "claim_ceiling_preserved": True, "runtime_authority_added": False, "promotion_authority_added": False, "learned_router_superiority_claim_added": False}
+    write_json(root / "registry" / "artifact_authority_registry_v17_7_1_delta_receipt.json", delta)
+    registry_path = root / "registry" / "artifact_authority_registry.json"
+    bind_current_file_digests(registry_path, registry)
+    write_json(registry_path, registry)

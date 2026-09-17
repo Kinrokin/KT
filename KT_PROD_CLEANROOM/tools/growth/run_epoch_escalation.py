@@ -4,13 +4,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path("KT_PROD_CLEANROOM")
-ARTIFACT_EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from tools.growth.orchestrator.epoch_orchestrator import run_epoch_from_plan
+from tools.growth.orchestrator.epoch_orchestrator import _growth_artifacts_root, run_epoch_from_plan
 
 PLAN_FILES = {
     "next": ROOT / "tools" / "growth" / "orchestrator" / "examples" / "EPOCH_NEXT_AUTO.json",
@@ -19,8 +18,19 @@ PLAN_FILES = {
 }
 
 
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
+
+
+def _epoch_escalation_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "epoch_escalation_log.json"
+
+
 def find_latest_epoch() -> Path:
-    dirs = [p for p in ARTIFACT_EPOCHS.iterdir() if p.is_dir()]
+    epochs_root = _artifact_epochs_root()
+    if not epochs_root.is_dir():
+        raise RuntimeError("no epoch directories found")
+    dirs = [p for p in epochs_root.iterdir() if p.is_dir()]
     if not dirs:
         raise RuntimeError("no epoch directories found")
     return max(dirs, key=lambda p: p.stat().st_mtime)
@@ -30,7 +40,7 @@ def inspect_micro_steps(epoch_root: Path):
     forced = 0
     low = 0
     steps_seen = 0
-    for ms_path in epoch_root.glob("CRU_*/micro_steps.json"):
+    for ms_path in epoch_root.glob("CRU-*/micro_steps.json"):
         try:
             payload = json.loads(ms_path.read_text())
         except Exception:
@@ -101,8 +111,9 @@ def main():
     }
     print("\n=== SUMMARY ===")
     print(json.dumps(summary, indent=2))
-    detail_path = Path("epoch_escalation_log.json")
-    detail_path.write_text(json.dumps(records, indent=2))
+    detail_path = _epoch_escalation_log_path()
+    detail_path.parent.mkdir(parents=True, exist_ok=True)
+    detail_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
     print(f"Details saved to {detail_path}")
 
 

@@ -1,19 +1,81 @@
 import json
+import os
+import re
 import statistics
 from collections import Counter, defaultdict
 from math import isfinite
 from pathlib import Path
 
-ROOT = Path("KT_PROD_CLEANROOM")
-LOG_PATH = Path("autonomous_escalation_log.json")
-EPOCHS = ROOT / "tools" / "growth" / "artifacts" / "epochs"
-C019_RUNS = ROOT / "tools" / "growth" / "artifacts" / "c019_runs"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[2]
+_SAFE_COMPONENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
+_RESERVED_DEVICE_BASENAMES = {"CON", "PRN", "AUX", "NUL"} | {
+    f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
+}
+
+def _is_reserved_device_name(value: str) -> bool:
+    return value.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES
+
+_RUN_ID = re.compile(r"[0-9a-f]{64}")
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    root = Path(override)
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _autonomous_log_path() -> Path:
+    return _growth_artifacts_root() / "logs" / "autonomous_escalation_log.json"
+
+
+def _artifact_epochs_root() -> Path:
+    return _growth_artifacts_root() / "epochs"
+
+
+def _c019_runs_root() -> Path:
+    return _growth_artifacts_root() / "c019_runs"
+
+
+def _analysis_path() -> Path:
+    return _growth_artifacts_root() / "reports" / "autonomous_analysis.json"
+
+
+def _safe_child(root: Path, value: object, *, label: str) -> Path:
+    if (
+        not isinstance(value, str)
+        or _SAFE_COMPONENT.fullmatch(value) is None
+        or value.endswith((".", " "))
+        or _is_reserved_device_name(value)
+    ):
+        raise ValueError(f"unsafe_{label}_path_component")
+    resolved_root = root.resolve()
+    candidate = (resolved_root / value).resolve()
+    try:
+        candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"unsafe_{label}_path_containment") from exc
+    return candidate
+
+
+def _safe_evidence_path(root: Path, path: Path, *, label: str) -> Path:
+    resolved_root = root.resolve()
+    candidate = path.resolve()
+    try:
+        candidate.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError(f"unsafe_{label}_path_containment") from exc
+    return candidate
 
 
 def load_records():
-    if not LOG_PATH.exists():
-        raise FileNotFoundError("autonomous_escalation_log.json missing")
-    return json.loads(LOG_PATH.read_text())
+    log_path = _autonomous_log_path()
+    if not log_path.exists():
+        raise FileNotFoundError(f"autonomous escalation log missing: {log_path}")
+    return json.loads(log_path.read_text())
 
 
 def transition_stats(records):
@@ -60,19 +122,35 @@ def entropy_curve(records):
 
 
 def find_runner_record(run_id: str) -> Path | None:
-    for kernel_dir in C019_RUNS.iterdir():
-        candidate = kernel_dir / run_id / "runner_record.json"
-        if candidate.exists():
+    if not isinstance(run_id, str) or _RUN_ID.fullmatch(run_id) is None:
+        raise ValueError("unsafe_run_id_path_component")
+    c019_runs = _c019_runs_root()
+    if not c019_runs.is_dir():
+        return None
+    resolved_root = c019_runs.resolve()
+    for kernel_dir in c019_runs.iterdir():
+        candidate = _safe_evidence_path(
+            resolved_root,
+            kernel_dir / run_id / "runner_record.json",
+            label="runner_record",
+        )
+        if candidate.is_file():
             return candidate
     return None
 
 
 def duration_stats(records):
     durations_by_plan = defaultdict(list)
+    epochs = _artifact_epochs_root()
     for rec in records:
-        epoch_dir = EPOCHS / rec["epoch"]
+        epoch_dir = _safe_child(epochs, rec["epoch"], label="epoch")
+        summary_path = _safe_evidence_path(
+            epochs,
+            epoch_dir / "epoch_summary.json",
+            label="epoch_summary",
+        )
         try:
-            summary = json.loads((epoch_dir / "epoch_summary.json").read_text())
+            summary = json.loads(summary_path.read_text())
         except Exception:
             continue
         total = 0
@@ -123,8 +201,10 @@ def main():
         }
     }
 
-    Path("autonomous_analysis.json").write_text(json.dumps(output, indent=2))
-    print("Analysis written to autonomous_analysis.json")
+    analysis_path = _analysis_path()
+    analysis_path.parent.mkdir(parents=True, exist_ok=True)
+    analysis_path.write_text(json.dumps(output, indent=2), encoding="utf-8")
+    print(f"Analysis written to {analysis_path}")
 
 
 if __name__ == "__main__":

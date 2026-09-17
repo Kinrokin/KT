@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
+
 import hashlib
 import json
 import math
@@ -1174,7 +1179,7 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
         if rel.startswith("schemas/"):
             return "CANONICAL_SCHEMA"
         if rel.startswith("packets/"):
-            return "CANONICAL_PACKET_CURRENT"
+            return "GENERATED_OUTPUT"
         if rel.startswith("docs/") or rel.startswith("configs/"):
             return "CANONICAL_GOVERNANCE"
         if rel.startswith("reports/") or rel.startswith("registry/"):
@@ -1202,9 +1207,9 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "primary_class": cls,
             "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
             "validation_status": "PASS",
-            "controls_execution": cls in {"CANONICAL_SOURCE", "CANONICAL_SCHEMA", "CANONICAL_TEST", "CANONICAL_GOVERNANCE", "CANONICAL_PACKET_CURRENT"},
+            "controls_execution": False,
             "claim_authority": claim_authority(cls),
-            "current_authority": True,
+            "current_authority": cls not in {"GENERATED_OUTPUT", "LAB_PROVISIONAL"},
             "sha256": artifact_sha,
             "size_bytes": artifact_size,
             "source_lane": lane,
@@ -1213,15 +1218,15 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
             "updated_utc": utc_now(),
             "notes": "KTCF repo-side packet forge; no Kaggle, training, promotion, selector deployment, budget deployment, adapter mutation, production prompt mutation, or production math-mode authority.",
         }
-        if rel in by_path:
-            by_path[rel].update(entry)
-        else:
+        if rel not in by_path:
             artifacts.append(entry)
-        additions.append(entry)
+            by_path[rel] = entry
+        additions.append(by_path.get(rel, entry))
     registry["current_head"] = git_output("rev-parse", "HEAD")
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp
     registry["updated_utc"] = registry_timestamp
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     write_json(
         delta_path,
@@ -1257,13 +1262,12 @@ def register_artifacts(paths: list[Path], lane: str = ACTIVE_TRANCHE) -> None:
         "notes": "KTCF repo-side packet forge delta receipt; no runtime, training, promotion, selector deployment, adapter mutation, production prompt mutation, or production math-mode authority.",
     }
     by_path = {artifact["path"]: artifact for artifact in artifacts}
-    if rel in by_path:
-        by_path[rel].update(delta_entry)
-    else:
+    if rel not in by_path:
         artifacts.append(delta_entry)
     registry_timestamp = utc_now()
     registry["generated_utc"] = registry_timestamp
     registry["updated_utc"] = registry_timestamp
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 

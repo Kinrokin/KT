@@ -1,5 +1,18 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+
 import hashlib
 import json
 import os
@@ -1189,41 +1202,12 @@ def build_schemas() -> dict[Path, dict[str, Any]]:
 def update_registry(packet_sha: str) -> dict[Path, dict[str, Any]]:
     root = repo_root()
     registry_path = root / "registry/artifact_authority_registry.json"
-    registry = read_json(registry_path) if registry_path.exists() else {"artifacts": []}
-    artifacts = registry.setdefault("artifacts", [])
-    new_entries = [
-        {
-            "artifact_id": "v17_canary_policy_config",
-            "path": "admission/v17_canary_policy_config.json",
-            "authority": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-        {
-            "artifact_id": "v17_canary_route_value_packet",
-            "path": f"packets/{PACKET_NAME}",
-            "sha256": packet_sha,
-            "authority": "LIVE_CURRENT_HEAD_COMPUTE_PACKET_PREP_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-        {
-            "artifact_id": "v18_coalition_admission_atlas",
-            "path": "capability/capability_habitat_topology.json",
-            "authority": "LIVE_CURRENT_HEAD_LAB_PREP_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-    ]
-    by_id = {entry.get("artifact_id"): entry for entry in artifacts if isinstance(entry, dict)}
-    for entry in new_entries:
-        if entry["artifact_id"] in by_id:
-            by_id[entry["artifact_id"]].update(entry)
-        else:
-            artifacts.append(entry)
+    registry = read_json(registry_path)
+    identities = existing_artifact_ids_for_paths(registry, [
+        "admission/v17_canary_policy_config.json",
+        f"packets/{PACKET_NAME}",
+        "capability/capability_habitat_topology.json",
+    ])
     registry["updated_by"] = PROGRAM_ID
     registry["updated_utc"] = utc_now()
     registry["claim_ceiling_preserved"] = True
@@ -1232,12 +1216,13 @@ def update_registry(packet_sha: str) -> dict[Path, dict[str, Any]]:
         "program_id": PROGRAM_ID,
         "created_utc": utc_now(),
         "current_head": current_head(),
-        "artifacts_added_or_updated": new_entries,
+        "artifacts_added_or_updated": identities,
         "runtime_authority_added": False,
         "promotion_authority_added": False,
         "claim_ceiling_preserved": True,
         "status": "PASS",
     }
+    bind_current_file_digests(registry_path, registry)
     return {
         registry_path: registry,
         root / "registry/artifact_authority_registry_v17_delta_receipt.json": delta,
@@ -1287,6 +1272,7 @@ def build_all_outputs() -> dict[str, Any]:
         "blockers": [],
     }
     write_json(root / "reports/v17_builder_summary.json", summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 

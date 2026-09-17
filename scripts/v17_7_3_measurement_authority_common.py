@@ -1,5 +1,18 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        merge_registry_entries,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        merge_registry_entries,
+        rebind_authority_registry_file,
+    )
+
 import argparse
 import hashlib
 import json
@@ -575,6 +588,17 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
             "path": rel,
             "role": "measurement_authority_adjudication",
             "status": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "primary_class": "GENERATED_OUTPUT",
+            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+            "validation_status": "PASS",
+            "claim_authority": "NONE",
+            "controls_execution": False,
+            "current_authority": False,
+            "current_file_sha256": None,
+            "sha256": sha256_file(path),
+            "size_bytes": path.stat().st_size,
+            "supersedes": [],
+            "superseded_by": None,
             "claim_ceiling_preserved": True,
             "runtime_authority": False,
             "promotion_authority": False,
@@ -582,12 +606,13 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
             "learned_router_superiority_claim": False,
             "v18_runtime_authority": False,
         }
-        existing[rel] = entry
         added.append(entry)
-    registry["artifacts"] = list(existing.values())
+    merge_registry_entries(registry, added)
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     delta = authority(
         schema_id="kt.artifact_authority_registry.v17_7_3_measurement_authority_delta.v1",
@@ -595,13 +620,14 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
         current_head=current_head(),
         packet_path=packet_path.relative_to(root).as_posix(),
         packet_sha256=packet_sha,
-        artifacts_added_or_updated=added,
+        artifacts_added_or_updated=[canonical[item["path"]] for item in added if item["path"] in canonical],
         no_runtime_authority_added=True,
         no_promotion_authority_added=True,
         no_claim_ceiling_expansion=True,
     )
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_measurement_authority_delta_receipt.json"
     write_json(delta_path, delta)
+    rebind_authority_registry_file(registry_path)
     return delta_path
 
 
@@ -886,6 +912,7 @@ def build_reports(root: Path, assessment_path: Path | None = None, preflight_sta
     )
     summary_path = root / "reports" / "v17_7_3_measurement_authority_builder_summary.json"
     write_json(summary_path, summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 

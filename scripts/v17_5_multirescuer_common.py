@@ -1,5 +1,18 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+
 import hashlib
 import json
 import math
@@ -807,47 +820,26 @@ def update_registry(packet_sha: str) -> None:
     root = repo_root()
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
-    artifacts = registry.setdefault("artifacts", [])
-    additions = [
-        {
-            "artifact_id": "v17_4_result_review",
-            "path": "reports/v17_4_result_review_receipt.json",
-            "authority": "LIVE_CURRENT_HEAD_MEASURED_EVIDENCE_REVIEW_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-        {
-            "artifact_id": "v17_5_multirescuer_canary_packet",
-            "path": f"packets/{PACKET_NAME}",
-            "sha256": packet_sha,
-            "authority": "LIVE_CURRENT_HEAD_COMPUTE_PACKET_PREP_ONLY",
-            "claim_expansion": False,
-            "runtime_authority": False,
-            "promotion_authority": False,
-        },
-    ]
-    by_id = {entry.get("artifact_id"): entry for entry in artifacts if isinstance(entry, dict)}
-    for entry in additions:
-        if entry["artifact_id"] in by_id:
-            by_id[entry["artifact_id"]].update(entry)
-        else:
-            artifacts.append(entry)
+    identities = existing_artifact_ids_for_paths(
+        registry, ["reports/v17_4_result_review_receipt.json", f"packets/{PACKET_NAME}"]
+    )
     registry["updated_by"] = PROGRAM_ID
     registry["updated_utc"] = utc_now()
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     write_json(
         root / "registry" / "artifact_authority_registry_v17_5_delta_receipt.json",
         {
             "schema_id": "kt.artifact_authority_registry_v17_5_delta_receipt.v1",
-            "artifacts_added_or_updated": additions,
+            "artifacts_added_or_updated": identities,
             "claim_ceiling_preserved": True,
             "runtime_authority_added": False,
             "promotion_authority_added": False,
             "status": "PASS",
         },
     )
+    rebind_authority_registry_file(registry_path)
 
 
 def build_all_outputs() -> dict[str, Any]:
@@ -1197,6 +1189,7 @@ subprocess.check_call([sys.executable, 'KTG3FULL_V17_5_MULTIRESCUER_E2E_V1_RUNNE
         "next_lawful_move": NEXT_LAWFUL_MOVE,
     }
     write_json(root / "reports" / "v17_5_builder_summary.json", summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 

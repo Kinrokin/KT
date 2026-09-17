@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+    )
+
 import hashlib
 import ast
 import json
@@ -829,15 +840,14 @@ def write_registry_delta(paths: list[Path], blocked: bool) -> None:
 
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
-    existing = {entry.get("artifact_id"): entry for entry in registry.get("artifacts", [])}
-    for entry in artifacts:
-        existing[entry["artifact_id"]] = {
-            **entry,
-            "role": "v17_7_oats_sddr_policy_search_replay",
-            "supersedes": [],
-            "superseded_by": None,
-        }
-    registry["artifacts"] = list(existing.values())
+    canonical_ids = existing_artifact_ids_for_paths(
+        registry, [entry["path"] for entry in artifacts]
+    )
+    delta["artifacts_added_or_updated"] = canonical_ids
+    write_json(root / "registry" / "artifact_authority_registry_v17_7_delta_receipt.json", delta)
+    # The generated replay artifacts are already admitted by the canonical
+    # registry; do not replace those rows with legacy OATS metadata.
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 

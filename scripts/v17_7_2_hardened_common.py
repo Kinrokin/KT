@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, existing_artifact_ids_for_paths
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, existing_artifact_ids_for_paths
+
 import hashlib
 import json
 import math
@@ -1149,13 +1154,16 @@ def write_registry_delta(root: Path, paths: list[Path], outcome: str) -> None:
                     "notes": "V17.7.2 hardened falsification artifact; no runtime authority, no promotion, no claim expansion.",
                 }
             )
+    registry_path = root / "registry" / "artifact_authority_registry.json"
+    registry = read_json(registry_path)
+    identities = existing_artifact_ids_for_paths(registry, [entry["path"] for entry in artifacts])
     delta = {
         "schema_id": "kt.artifact_authority_registry_delta.v17_7_2.v1",
         "program_id": PROGRAM_ID,
         "created_at": utc_now(),
         "current_head": current_head(),
         "outcome": outcome,
-        "artifacts_added_or_updated": artifacts,
+        "artifacts_added_or_updated": identities,
         "runtime_authority_added": False,
         "promotion_authority_added": False,
         "learned_router_superiority_claim_added": False,
@@ -1163,16 +1171,11 @@ def write_registry_delta(root: Path, paths: list[Path], outcome: str) -> None:
     }
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_2_delta_receipt.json"
     write_json(delta_path, delta)
-    registry_path = root / "registry" / "artifact_authority_registry.json"
-    registry = read_json(registry_path)
-    existing = {entry["artifact_id"]: entry for entry in registry.get("artifacts", [])}
-    for entry in artifacts:
-        existing[entry["artifact_id"]] = entry
-    registry["artifacts"] = list(existing.values())
     registry["updated_by"] = PROGRAM_ID
     registry["updated_utc"] = utc_now()
     registry["current_head"] = current_head()
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 
@@ -1201,4 +1204,10 @@ def build_all(packet_path: str = PACKET_PATH, prompt_path: str = PROMPT_PATH) ->
     doc_fixture_receipts = write_docs_and_fixtures(root, summary, metrics)
     all_paths = list(receipts) + schema_paths + list(doc_fixture_receipts)
     write_registry_delta(root, all_paths, summary["outcome"])
+    # The registry delta is the final registered write in this builder; bind
+    # once more after it so the registry reflects the complete current head.
+    registry_path = root / "registry" / "artifact_authority_registry.json"
+    registry = read_json(registry_path)
+    bind_current_file_digests(registry_path, registry)
+    write_json(registry_path, registry)
     return summary

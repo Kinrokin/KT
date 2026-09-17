@@ -7,11 +7,24 @@ heads separate instead of laundering branch evidence as merged-main truth.
 """
 from __future__ import annotations
 
+import importlib.util
+from pathlib import Path
+
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests
+except ModuleNotFoundError:
+    _writer_path = Path(__file__).resolve().with_name("artifact_authority_registry_writer.py")
+    _writer_spec = importlib.util.spec_from_file_location("_kt_artifact_authority_registry_writer", _writer_path)
+    if _writer_spec is None or _writer_spec.loader is None:
+        raise ImportError(f"cannot load artifact authority registry writer from {_writer_path}")
+    _writer_module = importlib.util.module_from_spec(_writer_spec)
+    _writer_spec.loader.exec_module(_writer_module)
+    bind_current_file_digests = _writer_module.bind_current_file_digests
+
 import argparse
 import hashlib
 import json
 import subprocess
-from pathlib import Path
 from typing import Any
 
 
@@ -645,6 +658,10 @@ def build(args: argparse.Namespace) -> None:
             "controls_execution": False,
             "claim_authority": registry_claim_authority,
             "sha256": sha,
+            "current_file_sha256": None,
+            "current_authority": False,
+            "supersedes": [],
+            "superseded_by": None,
         })
     upsert({
         "artifact_id": "stop300_v41_packet_decision",
@@ -659,6 +676,7 @@ def build(args: argparse.Namespace) -> None:
     })
     registry["current_head"] = build_subject_head
     registry["generated_utc"] = CREATED_UTC
+    bind_current_file_digests(registry_path, registry)
     write(registry_path, registry)
 
     print(json.dumps({

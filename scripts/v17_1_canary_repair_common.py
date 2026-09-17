@@ -1,5 +1,18 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+
 import dataclasses
 import hashlib
 import json
@@ -564,6 +577,7 @@ def build_all_outputs() -> dict[str, Any]:
         "blockers": [],
     }
     write_json(root / "reports/v17_1_builder_summary.json", summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary
 
 
@@ -571,26 +585,21 @@ def update_registry(packet_sha: str) -> None:
     root = repo_root()
     registry_path = root / "registry/artifact_authority_registry.json"
     registry = read_json(registry_path)
-    artifacts = registry.setdefault("artifacts", [])
-    additions = [
-        {"artifact_id": "v17_1_repaired_canary_packet", "path": f"packets/{PACKET_NAME}", "sha256": packet_sha, "authority": "LIVE_CURRENT_HEAD_COMPUTE_PACKET_PREP_ONLY", "claim_expansion": False, "runtime_authority": False, "promotion_authority": False},
-        {"artifact_id": "v17_1_score_source_authority", "path": "reports/v17_1_score_source_authority_receipt.json", "authority": "LIVE_CURRENT_HEAD_PREP_ONLY", "claim_expansion": False},
-        {"artifact_id": "v17_1_json_safe_finalization", "path": "reports/v17_1_json_safe_serializer_receipt.json", "authority": "LIVE_CURRENT_HEAD_PREP_ONLY", "claim_expansion": False},
-    ]
-    by_id = {entry.get("artifact_id"): entry for entry in artifacts if isinstance(entry, dict)}
-    for entry in additions:
-        if entry["artifact_id"] in by_id:
-            by_id[entry["artifact_id"]].update(entry)
-        else:
-            artifacts.append(entry)
+    identities = existing_artifact_ids_for_paths(registry, [
+        f"packets/{PACKET_NAME}",
+        "reports/v17_1_score_source_authority_receipt.json",
+        "reports/v17_1_json_safe_serializer_receipt.json",
+    ])
     registry["updated_by"] = PROGRAM_ID
     registry["updated_utc"] = utc_now()
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     write_json(
         root / "registry/artifact_authority_registry_v17_1_delta_receipt.json",
-        {"schema_id": "kt.artifact_authority_registry_v17_1_delta_receipt.v1", "program_id": PROGRAM_ID, "artifacts_added_or_updated": additions, "claim_ceiling_preserved": True, "runtime_authority_added": False, "promotion_authority_added": False, "status": "PASS"},
+        {"schema_id": "kt.artifact_authority_registry_v17_1_delta_receipt.v1", "program_id": PROGRAM_ID, "artifacts_added_or_updated": identities, "claim_ceiling_preserved": True, "runtime_authority_added": False, "promotion_authority_added": False, "status": "PASS"},
     )
+    rebind_authority_registry_file(registry_path)
 
 
 if __name__ == "__main__":

@@ -42,11 +42,20 @@ KT is a **governed, auditable intelligence system** built around a sealed runtim
 
 ## Reproducibility
 
-Artifacts and ledgers are generated **locally** and are not committed:
-- `KT_PROD_CLEANROOM/tools/growth/artifacts/`
-- `KT_PROD_CLEANROOM/tools/growth/ledgers/`
+Keep generated artifacts and ledgers outside the source checkout. Set
+`KT_GROWTH_ARTIFACTS_ROOT` to an absolute external directory before using the
+growth entrypoints. C019 runs, epochs, salvage and C019 ledgers then share that
+root; evaluation takes explicit input/output paths as documented in the runbook.
 
-Runbook: `docs/RUNBOOK.md`
+The ignored `KT_PROD_CLEANROOM/tools/growth/artifacts/` and
+`KT_PROD_CLEANROOM/tools/growth/ledgers/` paths remain compatibility fallbacks.
+Ignoring files prevents commits; it does not remove them from the editor's work
+area. Required versioned fixtures, source contracts and historical evidence keep
+their existing identities.
+
+Runbook: `docs/RUNBOOK.md`. These commands describe the growth/evaluation tooling;
+they do not replace a separately frozen proof contract or establish completion
+of the sovereign, Academy, lobe-training or benchmark program.
 
 ## Docs
 

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import sys
@@ -21,7 +23,7 @@ def _add_growth_to_syspath() -> None:
 _add_growth_to_syspath()
 
 from epoch_manifest import compute_epoch_hash  # noqa: E402
-from epoch_orchestrator import _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, run_epoch  # noqa: E402
+from epoch_orchestrator import _default_salvage_root, _precompute_run_id, _repo_root, _run_subprocess_capped, _write_once, preflight_epoch, run_epoch  # noqa: E402
 from tools.growth.orchestrator.epoch_schemas import EpochPlan, EpochSchemaError  # noqa: E402
 from checkpoint_store import append_checkpoint, completed_crucible_ids, CheckpointRecord  # noqa: E402
 from crucible_loader import load_crucible  # noqa: E402
@@ -329,7 +331,306 @@ class TestKernelTargetRouting(unittest.TestCase):
 
 
 class TestArtifactsRootOverride(unittest.TestCase):
-    def test_env_override_routes_c019_runs_under_override_root(self) -> None:
+    def test_explicit_epoch_root_selects_sibling_salvage_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            epoch_root = Path(td) / "explicit" / "epochs"
+            self.assertEqual(_default_salvage_root(epoch_root), Path(td) / "explicit" / "salvage")
+
+    def test_autonomous_analyzer_rejects_log_epoch_escape(self) -> None:
+        from tools.growth import analyze_autonomous_run
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            outside = growth_root / "outside"
+            outside.mkdir(parents=True)
+            (outside / "epoch_summary.json").write_text('{"runs": []}', encoding="utf-8")
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_epoch_path_component"):
+                    analyze_autonomous_run.duration_stats(
+                        [{"epoch": "../outside", "plan_run": "coverage"}]
+                    )
+
+    def test_autonomous_analyzer_rejects_log_run_id_escape(self) -> None:
+        from tools.growth import analyze_autonomous_run
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            epoch = growth_root / "epochs" / "EPOCH-SAFE"
+            epoch.mkdir(parents=True)
+            (epoch / "epoch_summary.json").write_text(
+                json.dumps({"runs": [{"run_id": "../../outside"}]}),
+                encoding="utf-8",
+            )
+            (growth_root / "c019_runs" / "KERNEL").mkdir(parents=True)
+            outside = growth_root / "outside"
+            outside.mkdir()
+            (outside / "runner_record.json").write_text(
+                json.dumps({"duration_ms": 999}), encoding="utf-8"
+            )
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_run_id_path_component"):
+                    analyze_autonomous_run.duration_stats(
+                        [{"epoch": "EPOCH-SAFE", "plan_run": "coverage"}]
+                    )
+
+    def test_escalation_analyzer_rejects_log_epoch_escape(self) -> None:
+        from tools.growth import analyze_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            growth_root = Path(td) / "growth"
+            log_path = growth_root / "logs" / "epoch_escalation_log.json"
+            log_path.parent.mkdir(parents=True)
+            log_path.write_text(
+                json.dumps([{"epoch": "../outside", "plan": "next", "bad": False}]),
+                encoding="utf-8",
+            )
+            outside = growth_root / "outside"
+            outside.mkdir()
+            (outside / "epoch_summary.json").write_text("{}", encoding="utf-8")
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(growth_root)}):
+                with self.assertRaisesRegex(ValueError, "unsafe_epoch_path_component"):
+                    analyze_escalation.run()
+
+    def test_relative_override_has_one_cleanroom_base(self) -> None:
+        from epoch_orchestrator import _growth_artifacts_root
+        from tools.growth import analyze_autonomous_run, analyze_escalation, e2e_gate
+        from tools.growth.state import (
+            analyze_policy_shadow,
+            cce_state,
+            compute_epoch_regret,
+            oce_state,
+            plan_suggester,
+            rwrp_state,
+        )
+
+        relative = Path("relative-growth-root")
+        expected = (_repo_root() / relative).resolve()
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(relative)}):
+            self.assertEqual(_growth_artifacts_root(), expected)
+            self.assertEqual(e2e_gate._epoch_artifacts_root(), expected / "epochs")
+            self.assertEqual(e2e_gate._salvage_root(), expected / "salvage")
+            self.assertEqual(analyze_autonomous_run._growth_artifacts_root(), expected)
+            self.assertEqual(analyze_escalation._growth_artifacts_root(), expected)
+            self.assertEqual(analyze_policy_shadow._growth_artifacts_root(), expected)
+            self.assertEqual(compute_epoch_regret._growth_artifacts_root(), expected)
+            self.assertEqual(plan_suggester._growth_artifacts_root(), expected)
+            self.assertEqual(cce_state._state_path().parents[1], expected)
+            self.assertEqual(oce_state._state_path().parents[1], expected)
+            self.assertEqual(rwrp_state._state_path().parents[1], expected)
+
+    def test_escalation_consumers_share_external_epochs_root(self) -> None:
+        from tools.growth import run_autonomous_escalation, run_epoch_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = Path(td) / "external growth"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                expected = (override_root / "epochs").resolve()
+                self.assertEqual(run_epoch_escalation._artifact_epochs_root(), expected)
+                self.assertEqual(run_autonomous_escalation._artifact_epochs_root(), expected)
+
+    def test_escalation_consumers_route_all_mutable_outputs_external(self) -> None:
+        from tools.growth import (
+            analyze_autonomous_run,
+            analyze_escalation,
+            run_autonomous_escalation,
+            run_epoch_escalation,
+        )
+        from tools.growth.state import analyze_policy_shadow
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                self.assertEqual(run_autonomous_escalation._artifact_state_root(), override_root / "state")
+                self.assertEqual(
+                    run_autonomous_escalation._plan_suggestions_ledger_path(),
+                    override_root / "state" / "plan_suggestions.jsonl",
+                )
+                self.assertEqual(
+                    run_autonomous_escalation._autonomous_log_path(),
+                    override_root / "logs" / "autonomous_escalation_log.json",
+                )
+                self.assertEqual(
+                    run_epoch_escalation._epoch_escalation_log_path(),
+                    override_root / "logs" / "epoch_escalation_log.json",
+                )
+                self.assertEqual(analyze_autonomous_run._autonomous_log_path(), override_root / "logs" / "autonomous_escalation_log.json")
+                self.assertEqual(analyze_autonomous_run._artifact_epochs_root(), override_root / "epochs")
+                self.assertEqual(analyze_autonomous_run._c019_runs_root(), override_root / "c019_runs")
+                self.assertEqual(analyze_autonomous_run._analysis_path(), override_root / "reports" / "autonomous_analysis.json")
+                self.assertEqual(analyze_escalation._artifact_epochs_root(), override_root / "epochs")
+                self.assertEqual(analyze_escalation._epoch_escalation_log_path(), override_root / "logs" / "epoch_escalation_log.json")
+                self.assertEqual(
+                    analyze_policy_shadow._default_policy_log_path(),
+                    override_root / "state" / "lane_policy_comparison.jsonl",
+                )
+
+    def test_plan_suggester_and_analyzer_share_external_policy_log(self) -> None:
+        from tools.growth.state import analyze_policy_shadow, plan_suggester
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            expected = override_root / "state" / "lane_policy_comparison.jsonl"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                self.assertEqual(plan_suggester._default_policy_log_path(), expected)
+                self.assertEqual(analyze_policy_shadow._default_policy_log_path(), expected)
+
+    def test_cce_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import cce_state
+
+        expected = cce_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "cce_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(cce_state._state_path(), expected)
+            self.assertNotEqual(cce_state._state_path(), cce_state._STATE_PATH)
+
+    def test_oce_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import oce_state
+
+        expected = oce_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "oce_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(oce_state._state_path(), expected)
+            self.assertNotEqual(oce_state._state_path(), oce_state._STATE_PATH)
+
+    def test_rwrp_default_state_is_outside_registered_source_state(self) -> None:
+        from tools.growth.state import rwrp_state
+
+        expected = rwrp_state._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "rwrp_state.json"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(rwrp_state._state_path(), expected)
+            self.assertNotEqual(rwrp_state._state_path(), rwrp_state._STATE_PATH)
+
+    def test_plan_suggester_append_default_uses_growth_artifacts_state(self) -> None:
+        from tools.growth.state import plan_suggester
+
+        expected = plan_suggester._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "state" / "plan_suggestions.jsonl"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(plan_suggester._default_suggestions_log_path(), expected)
+
+    def test_epoch_regret_default_uses_growth_artifacts_epochs(self) -> None:
+        from tools.growth.state import compute_epoch_regret
+
+        expected = compute_epoch_regret._CLEANROOM_ROOT / "tools" / "growth" / "artifacts" / "epochs"
+        with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": ""}):
+            self.assertEqual(compute_epoch_regret._default_epochs_dir(), expected)
+
+    def test_plan_suggester_uses_explicit_external_ledger(self) -> None:
+        from tools.growth import run_autonomous_escalation
+
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            epoch_root = override_root / "epochs" / "EPOCH-SUGGESTED-RUN1"
+            observed = {}
+
+            def fake_run(command, *, env, check):
+                observed["command"] = list(command)
+                observed["env"] = dict(env)
+                observed["check"] = check
+                epoch_root.mkdir(parents=True)
+                (epoch_root / "plan_suggestion.json").write_text(
+                    json.dumps({"status": "PASS"}), encoding="utf-8"
+                )
+
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}), patch.object(
+                run_autonomous_escalation.subprocess, "run", side_effect=fake_run
+            ):
+                result = run_autonomous_escalation.run_plan_suggester()
+
+            command = observed["command"]
+            self.assertEqual(result, {"status": "PASS"})
+            self.assertTrue(observed["check"])
+            self.assertNotIn("--append-log", command)
+            self.assertEqual(
+                command[command.index("--ledger-out") + 1],
+                str(override_root / "state" / "plan_suggestions.jsonl"),
+            )
+            self.assertEqual(
+                command[command.index("--epochs-dir") + 1],
+                str(override_root / "epochs"),
+            )
+
+    def test_growth_state_updates_preserve_repository_state_files(self) -> None:
+        from tools.growth.state import cce_state, oce_state, rwrp_state
+
+        modules = (cce_state, oce_state, rwrp_state)
+        source_before = {
+            module._STATE_PATH: module._STATE_PATH.read_bytes() if module._STATE_PATH.exists() else None
+            for module in modules
+        }
+        with tempfile.TemporaryDirectory() as td:
+            override_root = (Path(td) / "external growth").resolve()
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(override_root)}):
+                cce_state.update_state(executed_lane="COVERAGE_HOP_RECOVERY", epoch_id="EPOCH-EXTERNAL-STATE")
+                oce_state.update_state(executed_lane="COVERAGE_HOP_RECOVERY", epoch_id="EPOCH-EXTERNAL-STATE")
+                rwrp_state.update_state(
+                    executed_lane="COVERAGE_HOP_RECOVERY",
+                    epoch_id="EPOCH-EXTERNAL-STATE",
+                    regret_global=0.25,
+                )
+                for module in modules:
+                    state_path = module._state_path()
+                    self.assertEqual(state_path.parent, override_root / "state")
+                    self.assertTrue(state_path.is_file())
+                    payload = json.loads(state_path.read_text(encoding="utf-8"))
+                    self.assertEqual(payload["updated_at_epoch_id"], "EPOCH-EXTERNAL-STATE")
+
+        for path, original in source_before.items():
+            if original is None:
+                self.assertFalse(path.exists())
+            else:
+                self.assertEqual(path.read_bytes(), original)
+
+    def test_preflight_uses_external_collision_history_and_explicit_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            crucible_path = root / "c.json"
+            _minimal_crucible(crucible_path, kernel_targets=["KERNEL_GOVERNANCE_BASELINE"])
+            plan = _minimal_plan(crucible_path, kernel_target="KERNEL_GOVERNANCE_BASELINE", epoch_profile="GOVERNANCE")
+            plan["epoch_id"] = "EPOCH-EXTERNAL-PREFLIGHT_RUN1"
+            plan_path = root / "epoch.json"
+            plan_path.write_text(json.dumps(plan), encoding="utf-8")
+            artifacts_root = root / "external growth"
+            with patch.dict(os.environ, {"KT_GROWTH_ARTIFACTS_ROOT": str(artifacts_root)}):
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=None, auto_bump=False), 0)
+                occupied = artifacts_root / "epochs" / plan["epoch_id"]
+                occupied.mkdir(parents=True)
+                sentinel = occupied / "epoch_manifest.json"
+                sentinel.write_text("{}", encoding="utf-8")
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=None, auto_bump=False), 2)
+                self.assertEqual(preflight_epoch(plan_path, resume=False, artifacts_root=root / "explicit epochs", auto_bump=False), 0)
+                self.assertEqual(sentinel.read_text(encoding="utf-8"), "{}")
+                self.assertEqual(set(artifacts_root.rglob("*")), {artifacts_root / "epochs", occupied, sentinel})
+
+    def test_preflight_rejects_epoch_ids_that_can_escape_or_alias_the_artifact_root(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            crucible_path = root / "c.json"
+            _minimal_crucible(crucible_path, kernel_targets=["KERNEL_GOVERNANCE_BASELINE"])
+            artifacts_root = root / "external growth"
+            plan_path = root / "epoch.json"
+            for epoch_id in (
+                "../outside",
+                "/absolute/outside",
+                "nested/outside",
+                "nested\\outside",
+                ".",
+                "..",
+                "EPOCH-TRAILING.",
+                "CON",
+                "nul.json",
+                "Com1.log",
+                "LPT9",
+            ):
+                plan = _minimal_plan(
+                    crucible_path,
+                    kernel_target="KERNEL_GOVERNANCE_BASELINE",
+                    epoch_profile="GOVERNANCE",
+                )
+                plan["epoch_id"] = epoch_id
+                plan_path.write_text(json.dumps(plan), encoding="utf-8")
+                with self.assertRaisesRegex(EpochSchemaError, "portable direct path component"):
+                    preflight_epoch(plan_path, resume=False, artifacts_root=artifacts_root, auto_bump=False)
+                self.assertFalse(artifacts_root.exists(), epoch_id)
+
+    def test_env_override_routes_c019_epochs_and_salvage_under_override_root(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             td_path = Path(td)
             crucible_path = td_path / "c.json"
@@ -348,6 +649,7 @@ class TestArtifactsRootOverride(unittest.TestCase):
             )
 
             override_root = td_path / "growth_artifacts"
+            previous_override = os.environ.get("KT_GROWTH_ARTIFACTS_ROOT")
             os.environ["KT_GROWTH_ARTIFACTS_ROOT"] = override_root.as_posix()
             try:
                 loaded = load_crucible(crucible_path)
@@ -424,13 +726,28 @@ class TestArtifactsRootOverride(unittest.TestCase):
                     script = f"import json; print(json.dumps([{{'run_id':'{expected_run_id}','outcome':'PASS'}}]))"
                     return [sys.executable, "-c", script], td_path
 
-                summary = run_epoch(plan_path, resume=False, runner_cmd_override=runner_override, artifacts_root=td_path / "epochs")
+                summary = run_epoch(plan_path, resume=False, runner_cmd_override=runner_override, salvage=True)
+                epoch_root = override_root / "epochs" / summary["epoch_id"]
+                self.assertTrue((epoch_root / "epoch_manifest.json").is_file())
+                salvage_status = json.loads((epoch_root / "salvage_status.json").read_text(encoding="utf-8"))
+                self.assertEqual(salvage_status["status"], "OK", salvage_status)
+                salvage_root = override_root / "salvage" / summary["epoch_id"]
+                self.assertEqual(Path(salvage_status["out"]).resolve(), salvage_root.resolve())
+                manifest = json.loads((salvage_root / "salvage_manifest.json").read_text(encoding="utf-8"))
+                for output in manifest["outputs"].values():
+                    output_path = Path(output["path"]).resolve()
+                    output_path.relative_to(salvage_root.resolve())
+                    self.assertTrue(output_path.is_file())
+                    self.assertEqual(hashlib.sha256(output_path.read_bytes()).hexdigest(), output["sha256"])
                 self.assertEqual(summary["epoch_id"], "EPOCH-TEST-01")
                 self.assertTrue(
                     (override_root / "c019_runs" / "KERNEL_GOVERNANCE_BASELINE" / expected_run_id / "crucible_coverage.json").exists()
                 )
             finally:
-                os.environ.pop("KT_GROWTH_ARTIFACTS_ROOT", None)
+                if previous_override is None:
+                    os.environ.pop("KT_GROWTH_ARTIFACTS_ROOT", None)
+                else:
+                    os.environ["KT_GROWTH_ARTIFACTS_ROOT"] = previous_override
 
 
 if __name__ == "__main__":

@@ -1,12 +1,15 @@
 # Current Context
 
-Head at census generation: `2a224a33162e5d5dbe5a04f4b9338fbd1e329d21`
+Current posture: repository authority selects no current execution packet.
 
-Current posture: BUD100 is canonical on public main and remains the next furnace candidate if this census finds no blockers.
+Current packet: none.
 
-Current packet: `packets/ktbud100_v1.zip`
+Current packet SHA256: none.
 
-Current packet SHA256: `216eb74184cf5649e9d9ba2a08401b34ad29df02362578c5b4569b27c232e500`
+Next lawful move: none.
+
+No repository memory surface grants a next execution step. Previously selected
+budget packets remain historical evidence.
 
 Claim ceiling: preserved.
 

@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+
 import hashlib
 import json
 import os
@@ -872,56 +883,33 @@ def update_registry(root: Path, head: str, packet_sha: str) -> None:
     registry_path = root / "registry/artifact_authority_registry.json"
     registry = read_json(registry_path)
     artifacts = registry.setdefault("artifacts", [])
-    by_id = {row.get("artifact_id"): row for row in artifacts if isinstance(row, dict)}
-    additions = [
-        {
-            "artifact_id": "KT_ACCOUNTABILITY_KERNEL_RECEIPT",
-            "path": "accountability/accountability_kernel_receipt.json",
-            "role": "accountability_kernel_receipt",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": file_sha256(root / "accountability/accountability_kernel_receipt.json"),
-            "superseded_by": None,
-            "supersedes": [],
-            "notes": "Repo-side accountability law receipt; no commercial, external, S-tier, 7B, router, multi-lobe, production, or adapter-promotion authority.",
-        },
-        {
-            "artifact_id": "KTG3FULL_V12_SPECIALIST_ROUTING_PACKET",
-            "path": PACKET_ZIP.as_posix(),
-            "role": "future_specialist_routing_compute_packet",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "validation_status": "PASS",
-            "controls_execution": False,
-            "claim_authority": "NONE",
-            "sha256": packet_sha,
-            "superseded_by": None,
-            "supersedes": [],
-            "notes": "Future compute packet scaffold; runtime evidence not earned until Kaggle/assessment run.",
-        },
-    ]
-    for item in additions:
-        if item["artifact_id"] in by_id:
-            existing = by_id[item["artifact_id"]]
-            existing.pop("authority", None)
-            existing.pop("claim_ceiling_effect", None)
-            existing.update(item)
-        else:
-            artifacts.append(item)
+    paths = (
+        "accountability/accountability_kernel_receipt.json",
+        PACKET_ZIP.as_posix(),
+    )
+    identities = []
+    for path in paths:
+        matches = [row for row in artifacts if isinstance(row, dict) and row.get("path") == path]
+        if len(matches) != 1:
+            raise ValueError(f"accountability registry requires one existing path: {path}")
+        identities.append(matches[0]["artifact_id"])
+    # These paths already have canonical registrations. Reusing their identity
+    # preserves the historical packet archive and cannot grant new authority.
     registry["current_head"] = head
     registry["generated_utc"] = utc_now()
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     delta = {
         "schema_id": "kt.artifact_authority_registry_accountability_kernel_delta_receipt.v1",
         "created_utc": utc_now(),
         "current_head": head,
-        "artifacts_added_or_updated": [row["artifact_id"] for row in additions],
+        "artifacts_added_or_updated": identities,
         "claim_ceiling_unchanged": True,
         "production_commercial_external_superiority_authority_added": False,
         **CLAIM_CEILING,
     }
     write_json(root / "registry/artifact_authority_registry_accountability_kernel_delta_receipt.json", delta)
+    rebind_authority_registry_file(registry_path)
 
 
 def validate_claim_ceiling() -> bool:
@@ -976,6 +964,7 @@ def run_superlane(root: Path | None = None, audit_clean: bool | None = None) -> 
         **CLAIM_CEILING,
     }
     write_json(root / "reports/accountability_superlane_receipt.json", receipt)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return receipt
 
 

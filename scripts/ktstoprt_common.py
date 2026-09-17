@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries
+
 import hashlib
 import json
 import subprocess
@@ -148,12 +153,29 @@ def artifact_id(path: str) -> str:
 def registry_entry(path: Path, primary_class: str, claim_authority: str, controls_execution: bool, notes: str) -> dict[str, Any]:
     relative = rel(path)
     sha, size = repo_artifact_stats(path)
+    aliases = {
+        "GENERATED_RUNTIME_PACKET": "GENERATED_OUTPUT",
+        "EVIDENCE_ARCHIVE": "ARCHIVE_HISTORY",
+        "EVIDENCE_SUMMARY": "ARCHIVE_HISTORY",
+        "EVIDENCE_LEDGER": "ARCHIVE_HISTORY",
+        "CANONICAL_RUNBOOK": "CANONICAL_GOVERNANCE",
+        "CANONICAL_FIXTURE": "ARCHIVE_HISTORY",
+    }
+    primary_class = aliases.get(primary_class, primary_class)
+    if primary_class in {"GENERATED_OUTPUT", "ARCHIVE_HISTORY"}:
+        claim_authority = "NONE"
+        controls_execution = False
+        authority_state = "GENERATED_PENDING_VALIDATION" if primary_class == "GENERATED_OUTPUT" else "ARCHIVE"
+        current_authority = False
+    else:
+        authority_state = "LIVE_CURRENT_HEAD_PREP_ONLY"
+        current_authority = True
     return {
         "artifact_id": artifact_id(relative),
-        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+        "authority_state": authority_state,
         "claim_authority": claim_authority,
-        "controls_execution": controls_execution,
-        "current_authority": True,
+        "controls_execution": False,
+        "current_authority": current_authority,
         "notes": notes,
         "path": relative,
         "primary_class": primary_class,
@@ -172,6 +194,19 @@ def update_registry(paths: list[tuple[Path, str, str, bool, str]]) -> None:
     registry_path = REGISTRY / "artifact_authority_registry.json"
     registry = read_json(registry_path)
     entries = [registry_entry(*spec) for spec in paths if spec[0].exists()]
+    for entry in entries:
+        if entry.get("primary_class") == "GENERATED_RUNTIME_PACKET":
+            entry["primary_class"] = "GENERATED_OUTPUT"
+            entry["authority_state"] = "GENERATED_PENDING_VALIDATION"
+            entry["current_authority"] = False
+            entry["controls_execution"] = False
+            entry["claim_authority"] = "NONE"
+        elif entry.get("primary_class") in {"EVIDENCE_ARCHIVE", "EVIDENCE_SUMMARY", "EVIDENCE_LEDGER", "CANONICAL_FIXTURE"}:
+            entry["primary_class"] = "ARCHIVE_HISTORY"
+            entry["authority_state"] = "ARCHIVE"
+            entry["current_authority"] = False
+            entry["controls_execution"] = False
+            entry["claim_authority"] = "NONE"
     delta_path = REGISTRY / "artifact_authority_registry_ktstoprt_delta_receipt.json"
     delta = {
         "schema_id": "kt.artifact_authority_registry.ktstoprt_delta_receipt.v1",
@@ -194,13 +229,11 @@ def update_registry(paths: list[tuple[Path, str, str, bool, str]]) -> None:
     )
     delta["entries_added_or_updated"] = entries
     write_json(delta_path, delta)
-    by_path = {artifact["path"]: artifact for artifact in registry["artifacts"]}
-    for entry in entries:
-        by_path[entry["path"]] = entry
-    registry["artifacts"] = list(by_path.values())
+    merge_registry_entries(registry, entries)
     registry["artifact_count"] = len(registry["artifacts"])
     registry["current_head"] = git_output("rev-parse", "HEAD")
     registry["updated_utc"] = utc_now()
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
 
 

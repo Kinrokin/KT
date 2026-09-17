@@ -1,14 +1,17 @@
 """
 Compute advisory-only regret metrics per epoch (offline, fail-closed).
 
-Writes KT_PROD_CLEANROOM/tools/growth/artifacts/epochs/<epoch_id>/epoch_regret.json
-based solely on real evidence (micro_steps + epoch_summary). No stubs, no routing/gov changes.
+Writes <KT_GROWTH_ARTIFACTS_ROOT>/epochs/<epoch_id>/epoch_regret.json. When the
+override is unset, the shared fallback is
+KT_PROD_CLEANROOM/tools/growth/artifacts/epochs. The result is based solely on
+real evidence (micro_steps + epoch_summary). No stubs, no routing/gov changes.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import math
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -21,6 +24,19 @@ class RegretComputeError(RuntimeError):
 LANE_COVERAGE = "coverage_lane"
 LANE_REANCHOR = "reanchor_lane"
 LANE_STABILIZE = "stabilize_lane"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    root = Path(override) if override else _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _default_epochs_dir() -> Path:
+    return _growth_artifacts_root() / "epochs"
 
 
 @dataclass(frozen=True)
@@ -66,7 +82,7 @@ def _lane_from_epoch_id(epoch_id: str) -> str:
 
 def _collect_micro_steps(epoch_root: Path) -> Optional[List[Dict[str, Any]]]:
     steps: List[Dict[str, Any]] = []
-    for path in sorted(epoch_root.glob("CRU_*/micro_steps.json"), key=lambda p: p.name):
+    for path in sorted(epoch_root.glob("CRU-*/micro_steps.json"), key=lambda p: p.name):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except Exception:
@@ -205,7 +221,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--epochs-dir",
         type=Path,
-        default=Path("KT_PROD_CLEANROOM/tools/growth/artifacts/epochs"),
+        default=_default_epochs_dir(),
         help="Epoch artifacts root.",
     )
     p.add_argument(

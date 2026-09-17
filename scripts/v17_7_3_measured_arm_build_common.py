@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
+
 import importlib.util
 import json
 import shutil
@@ -399,11 +404,15 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
                 "artifact_id": path.stem.upper().replace(".", "_").replace("-", "_"),
                 "path": path.relative_to(root).as_posix(),
                 "sha256": sha256_file(path),
+                "size_bytes": path.stat().st_size,
                 "role": "v17_7_3_measured_arm_execution_repair",
-                "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ONLY_PREP",
+                "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
                 "claim_authority": "INTERNAL_SHADOW",
                 "validation_status": "PASS",
-                "controls_execution": path.as_posix().endswith(PACKET_NAME),
+                "controls_execution": False,
+                "current_authority": False,
+                "current_file_sha256": None,
+                "primary_class": "GENERATED_OUTPUT",
                 "supersedes": [OLD_PACKET] if path.name == PACKET_NAME else [],
                 "superseded_by": None,
                 "notes": "Measured-arm repair artifact; no runtime authority, no policy optimization, no training, no route or adapter promotion, no claim expansion.",
@@ -426,26 +435,31 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
         "v18_runtime_authority": False,
     }
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_armfix_delta_receipt.json"
-    write_json(delta_path, delta)
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
-    by_path = {artifact["path"]: artifact for artifact in registry.get("artifacts", [])}
-    for artifact in artifacts:
-        by_path[artifact["path"]] = artifact
-    by_path[delta_path.relative_to(root).as_posix()] = {
+    # Finalize the receipt before registering its immutable digest.  A fresh
+    # invocation must never hash a missing or previous-run delta file.
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
+    delta["artifacts_added_or_updated"] = [canonical[item["path"]] for item in artifacts if item["path"] in canonical]
+    write_json(delta_path, delta)
+    delta_entry = {
         "artifact_id": delta_path.stem.upper(),
         "path": delta_path.relative_to(root).as_posix(),
         "sha256": sha256_file(delta_path),
         "role": "v17_7_3_measured_arm_execution_repair",
-        "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ONLY_PREP",
+        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
         "claim_authority": "INTERNAL_SHADOW",
         "validation_status": "PASS",
         "controls_execution": False,
         "supersedes": [],
         "superseded_by": None,
         "notes": "Registry delta for measured-arm repair; claim ceiling unchanged.",
+        "primary_class": "GENERATED_OUTPUT",
+        "current_authority": False,
+        "current_file_sha256": None,
     }
-    registry["artifacts"] = list(by_path.values())
+    merge_registry_entries(registry, artifacts + [delta_entry])
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path
 
@@ -471,4 +485,5 @@ def build_all() -> dict[str, Any]:
     summary = read_json(summary_path)
     summary["registry_delta_path"] = delta_path.relative_to(root).as_posix()
     write_json(summary_path, summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import re
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple
 
@@ -50,8 +51,20 @@ def _require_str(value: Any, *, name: str, min_len: int = 1, max_len: int = 256)
     return value
 
 
+def _require_safe_path_component(value: Any, *, name: str, max_len: int) -> str:
+    value = _require_str(value, name=name, min_len=1, max_len=max_len)
+    device_basename = value.split(".", 1)[0].upper()
+    reserved_device = device_basename in {"CON", "PRN", "AUX", "NUL"} or bool(
+        re.fullmatch(r"(?:COM|LPT)[1-9]", device_basename)
+    )
+    if (re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) is None
+            or value.endswith((".", " ")) or reserved_device):
+        raise EpochSchemaError(f"{name} must be one portable direct path component (fail-closed)")
+    return value
+
+
 def _require_int(value: Any, *, name: str, lo: int, hi: int) -> int:
-    if not isinstance(value, int):
+    if type(value) is not int:
         raise EpochSchemaError(f"{name} must be an integer (fail-closed)")
     if not (lo <= value <= hi):
         raise EpochSchemaError(f"{name} out of bounds (fail-closed)")
@@ -191,13 +204,17 @@ class EpochPlan:
             },
             name="epoch_plan",
         )
-        epoch_id = _require_str(payload.get("epoch_id"), name="epoch_id", min_len=1, max_len=80)
+        epoch_id = _require_safe_path_component(payload.get("epoch_id"), name="epoch_id", max_len=80)
         epoch_profile = _require_str(payload.get("epoch_profile", "COVERAGE"), name="epoch_profile", min_len=1, max_len=64)
         kernel_identity = KernelIdentity.from_dict(_require_dict(payload.get("kernel_identity"), name="kernel_identity"))
         crucible_order_list = _require_list(payload.get("crucible_order"), name="crucible_order")
         crucible_order: List[str] = []
         for idx, item in enumerate(crucible_order_list):
-            crucible_order.append(_require_str(item, name=f"crucible_order[{idx}]", min_len=1, max_len=80))
+            crucible_order.append(
+                _require_safe_path_component(
+                    item, name=f"crucible_order[{idx}]", max_len=80
+                )
+            )
         if len(set(crucible_order)) != len(crucible_order):
             raise EpochSchemaError("crucible_order contains duplicates (fail-closed)")
 

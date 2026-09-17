@@ -1,5 +1,18 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        existing_artifact_ids_for_paths,
+        rebind_authority_registry_file,
+    )
+
 import json
 import subprocess
 from collections import Counter
@@ -584,26 +597,23 @@ def write_all(root: Path | None = None) -> dict:
     )
 
     registry_path = root / "registry/artifact_authority_registry.json"
+    receipt_path = root / "reports/v15_oracle_harvest_superlane_receipt.json"
+    if registry_path.exists() and not receipt_path.exists():
+        write_json(
+            receipt_path,
+            {
+                "schema_id": "kt.v15_oracle_harvest_superlane_receipt.v1",
+                "status": "PENDING_WRITE_BEFORE_REGISTRY_BIND",
+            },
+        )
     if registry_path.exists():
         registry = read_json(registry_path)
-        artifacts = registry.setdefault("artifacts", [])
-        by_id = {item.get("artifact_id"): item for item in artifacts}
-        entry = {
-            "artifact_id": "KT_V15_ORACLE_HARVEST_RECEIPT",
-            "path": "reports/v15_oracle_harvest_superlane_receipt.json",
-            "role": "oracle_harvest_route_value_distillation",
-            "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-            "claim_authority": "NONE",
-            "controls_execution": False,
-            "notes": "Oracle harvest route-value artifacts only; no training, runtime, route promotion, adapter promotion, superiority, commercial, 7B, or production authority.",
-            "validation_status": "PASS",
-        }
-        if entry["artifact_id"] in by_id:
-            by_id[entry["artifact_id"]].update(entry)
-        else:
-            artifacts.append(entry)
+        receipt_id = existing_artifact_ids_for_paths(
+            registry, ["reports/v15_oracle_harvest_superlane_receipt.json"]
+        )[0]
         registry["current_head"] = head
         registry["generated_utc"] = created
+        bind_current_file_digests(registry_path, registry)
         write_json(registry_path, registry)
     write_json(
         root / "registry/artifact_authority_registry_v15_oracle_harvest_delta_receipt.json",
@@ -611,7 +621,7 @@ def write_all(root: Path | None = None) -> dict:
             "schema_id": "kt.artifact_authority_registry_v15_oracle_harvest_delta_receipt.v1",
             "current_head": head,
             "created_utc": created,
-            "artifact_added": "KT_V15_ORACLE_HARVEST_RECEIPT",
+            "artifact_added": receipt_id if registry_path.exists() else None,
             "claim_ceiling_preserved": True,
             "no_runtime_or_promotion_authority_added": True,
         },
@@ -641,4 +651,6 @@ def write_all(root: Path | None = None) -> dict:
         "blockers": [],
     }
     write_json(root / "reports/v15_oracle_harvest_superlane_receipt.json", superlane)
+    if registry_path.exists():
+        rebind_authority_registry_file(registry_path)
     return superlane

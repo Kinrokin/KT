@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import bind_current_file_digests, merge_registry_entries, rebind_authority_registry_file
+
 import hashlib
 import json
 import math
@@ -665,15 +670,18 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
             artifacts.append(
                 {
                     "artifact_id": path.stem.upper().replace(".", "_").replace("-", "_"),
-                    "authority_state": "LIVE_CURRENT_HEAD_EVIDENCE_ACQUISITION_ONLY",
+                    "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
                     "claim_authority": "INTERNAL_SHADOW",
-                    "controls_execution": path.as_posix().startswith("packets/"),
+                    "controls_execution": False,
+                    "current_authority": False,
+                    "current_file_sha256": None,
+                    "primary_class": "GENERATED_OUTPUT",
+                    "supersedes": [],
+                    "superseded_by": None,
                     "notes": "V17.7.3 evidence-acquisition artifact; no runtime authority, no policy optimization, no training, no promotion, no claim expansion.",
                     "path": path.relative_to(root).as_posix(),
                     "role": "v17_7_3_evidence_acquisition",
                     "sha256": sha256_file(path),
-                    "superseded_by": None,
-                    "supersedes": [],
                     "validation_status": "PASS",
                 }
             )
@@ -688,13 +696,13 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
         **AUTHORITY_FALSE,
     }
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_delta_receipt.json"
-    write_json(delta_path, delta)
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
-    by_path = {artifact["path"]: artifact for artifact in registry.get("artifacts", [])}
-    for artifact in artifacts:
-        by_path[artifact["path"]] = artifact
-    registry["artifacts"] = list(by_path.values())
+    merge_registry_entries(registry, artifacts)
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
+    delta["artifacts_added_or_updated"] = [canonical[item["path"]] for item in artifacts if item["path"] in canonical]
+    write_json(delta_path, delta)
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path
 
@@ -921,4 +929,5 @@ def build_all() -> dict[str, Any]:
     summary = read_json(summary_path)
     summary["registry_delta_path"] = delta_path.relative_to(root).as_posix()
     write_json(summary_path, summary)
+    rebind_authority_registry_file(root / "registry/artifact_authority_registry.json")
     return summary

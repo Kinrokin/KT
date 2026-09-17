@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import dataclass
 from datetime import datetime
@@ -32,6 +33,25 @@ TriBool = Optional[bool]
 
 DEFAULT_HISTORY = 50
 POLICY_B_REGISTRY_PATH = Path(__file__).resolve().parent / "policy_b_variable_registry.json"
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _growth_artifacts_root() -> Path:
+    override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
+    if not override:
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
+    root = Path(override)
+    if not root.is_absolute():
+        root = _CLEANROOM_ROOT / root
+    return root.resolve()
+
+
+def _default_policy_log_path() -> Path:
+    return _growth_artifacts_root() / "state" / "lane_policy_comparison.jsonl"
+
+
+def _default_suggestions_log_path() -> Path:
+    return _growth_artifacts_root() / "state" / "plan_suggestions.jsonl"
 
 @dataclass(frozen=True)
 class EpochSignals:
@@ -159,7 +179,7 @@ def _count_transition_dict(payload: Any) -> Tuple[int, int]:
 
 def _collect_micro_steps(root: Path) -> Optional[Dict[str, Any]]:
     steps: List[Dict[str, Any]] = []
-    for path in sorted(root.glob("CRU_*/micro_steps.json"), key=lambda p: p.name):
+    for path in sorted(root.glob("CRU-*/micro_steps.json"), key=lambda p: p.name):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except Exception:
@@ -592,7 +612,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--append-log",
         action="store_true",
-        help="Append suggestion to default log path (tools/growth/state/plan_suggestions.jsonl).",
+        help="Append suggestion to the growth-artifacts state/plan_suggestions.jsonl log.",
     )
     p.add_argument("--write-epoch", action="store_true", help="Write plan_suggestion.json into the latest epoch root.")
     p.add_argument(
@@ -604,8 +624,8 @@ def _parse_args() -> argparse.Namespace:
         "--policy-log",
         type=Path,
         nargs="?",
-        const=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
-        default=Path(__file__).resolve().parent / "lane_policy_comparison.jsonl",
+        const=_default_policy_log_path(),
+        default=_default_policy_log_path(),
         help="Path to append policy comparison logs.",
     )
     return p.parse_args()
@@ -914,7 +934,7 @@ def main() -> int:
     if args.ledger_out:
         ledger_path = Path(args.ledger_out)
     elif args.append_log:
-        ledger_path = Path(__file__).resolve().parent / "plan_suggestions.jsonl"
+        ledger_path = _default_suggestions_log_path()
 
     if ledger_path is not None:
         _append_jsonl(ledger_path, payload)

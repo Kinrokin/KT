@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+
 import hashlib
 import json
 import subprocess
@@ -33,6 +44,15 @@ def root() -> Path:
 def authority(**extra: Any) -> dict[str, Any]:
     payload = dict(AUTHORITY_FALSE)
     payload.update(extra)
+    if "path" in payload:
+        payload.setdefault("primary_class", "GENERATED_OUTPUT")
+        payload.setdefault("validation_status", "PASS")
+        payload.setdefault("controls_execution", False)
+        payload.setdefault("claim_authority", "NONE")
+        payload.setdefault("current_authority", False)
+        payload.setdefault("current_file_sha256", None)
+        payload.setdefault("supersedes", [])
+        payload.setdefault("superseded_by", None)
     return payload
 
 
@@ -246,18 +266,26 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
             status="LIVE_CURRENT_HEAD_PREP_ONLY",
             authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
             sha256=sha256_file(path),
+            primary_class="GENERATED_OUTPUT",
+            validation_status="PASS",
+            controls_execution=False,
+            claim_authority="NONE",
+            current_authority=False,
+            current_file_sha256=None,
+            supersedes=[],
+            superseded_by=None,
             notes="Compression-frontier prep artifact; no promotion, runtime authority, V18 authority, or superiority claim.",
         )
-        if rel in existing:
-            existing[rel].update(payload)
-        else:
+        if rel not in existing:
             artifacts.append(payload)
+            existing[rel] = payload
         changed.append(rel)
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
-    return write_json(
+    delta_path = write_json(
         repo / "registry" / "artifact_authority_registry_v17_7_4_real_arm_config_delta_receipt.json",
         authority(
         schema_id="kt.v17_7_4.compression_frontier_artifact_authority_delta_receipt.v1",
@@ -271,6 +299,8 @@ def update_registry(repo: Path, packet: Path, packet_sha: str, doc: Path) -> Pat
             no_promotion_authority_added=True,
         ),
     )
+    rebind_authority_registry_file(registry_path)
+    return delta_path
 
 
 def build() -> dict[str, Any]:
@@ -360,6 +390,7 @@ def build() -> dict[str, Any]:
             blockers=[],
         ),
     )
+    rebind_authority_registry_file(repo / "registry/artifact_authority_registry.json")
     print(json.dumps(summary, indent=2, sort_keys=True))
     return summary
 

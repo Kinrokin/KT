@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+try:
+    from scripts.artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+except ModuleNotFoundError:
+    from artifact_authority_registry_writer import (
+        bind_current_file_digests,
+        rebind_authority_registry_file,
+    )
+
 import argparse
 import hashlib
 import importlib.util
@@ -82,6 +93,15 @@ def stable_hash(value: Any) -> str:
 def authority(**extra: Any) -> dict[str, Any]:
     payload = dict(AUTHORITY_FALSE)
     payload.update(extra)
+    if "path" in payload:
+        payload.setdefault("primary_class", "GENERATED_OUTPUT")
+        payload.setdefault("validation_status", "PASS")
+        payload.setdefault("controls_execution", False)
+        payload.setdefault("claim_authority", "NONE")
+        payload.setdefault("current_authority", False)
+        payload.setdefault("current_file_sha256", None)
+        payload.setdefault("supersedes", [])
+        payload.setdefault("superseded_by", None)
     return payload
 
 
@@ -409,6 +429,14 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
                 status="LIVE_CURRENT_HEAD_PREP_ONLY",
                 authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
                 sha256=sha256_file(path),
+                primary_class="GENERATED_OUTPUT",
+                validation_status="PASS",
+                controls_execution=False,
+                claim_authority="NONE",
+                current_authority=False,
+                current_file_sha256=None,
+                supersedes=[],
+                superseded_by=None,
             )
             registry.setdefault("artifacts", []).append(item)
             added.append(rel)
@@ -422,12 +450,21 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
                 status="LIVE_CURRENT_HEAD_PREP_ONLY",
                 authority_state="LIVE_CURRENT_HEAD_PREP_ONLY",
                 sha256=packet_sha,
+                primary_class="GENERATED_OUTPUT",
+                validation_status="PASS",
+                controls_execution=False,
+                claim_authority="NONE",
+                current_authority=False,
+                current_file_sha256=None,
+                supersedes=[],
+                superseded_by=None,
             )
         )
         added.append(rel_packet)
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True
+    bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     delta = authority(
         schema_id="kt.v17_7_4.artifact_authority_delta_receipt.v1",
@@ -440,7 +477,12 @@ def update_registry(repo: Path, paths: list[Path], packet: Path, packet_sha: str
         new_packet_sha256=packet_sha,
         no_claim_ceiling_expansion=True,
     )
-    return write_json(repo / "registry" / "artifact_authority_registry_v17_7_4_truegen_execfix_delta_receipt.json", delta)
+    delta_path = write_json(
+        repo / "registry" / "artifact_authority_registry_v17_7_4_truegen_execfix_delta_receipt.json",
+        delta,
+    )
+    rebind_authority_registry_file(registry_path)
+    return delta_path
 
 
 def build(preflight_status: str | None = None) -> dict[str, Any]:
@@ -500,6 +542,7 @@ def build(preflight_status: str | None = None) -> dict[str, Any]:
         next_lawful_move=NEXT_LAWFUL_MOVE,
     )
     write_json(repo / "reports" / "v17_7_4_truegen_execfix_builder_summary.json", summary)
+    rebind_authority_registry_file(repo / "registry/artifact_authority_registry.json")
     return summary
 
 
