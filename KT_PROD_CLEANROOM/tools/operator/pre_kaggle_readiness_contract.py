@@ -431,7 +431,10 @@ def validate_hf_transport(transport: Mapping[str, Any], source_root: Path) -> di
     if secret_source not in {"KAGGLE_SECRETS", "HOST_SECRET_STORE", "NONE_FOR_MOUNTED_LOCAL"}:
         _fail("HF_SECRET_SOURCE_INVALID", "secret_source")
     cache_root = Path(_text(transport.get("cache_root"), "HF_CACHE_ROOT_INVALID", "cache_root"))
-    if not cache_root.is_absolute() or cache_root.is_symlink() or _is_within(cache_root, source_root):
+    if not cache_root.is_absolute():
+        _fail("HF_CACHE_ROOT_INVALID", str(cache_root))
+    _reject_symlink_path(cache_root, "HF_CACHE_ROOT_INVALID")
+    if _is_within(cache_root, source_root):
         _fail("HF_CACHE_ROOT_INVALID", str(cache_root))
     if transport.get("dependency_conflict") is not False:
         _fail("HF_TRANSPORT_DEPENDENCY_CONFLICT", "dependency_conflict must be false")

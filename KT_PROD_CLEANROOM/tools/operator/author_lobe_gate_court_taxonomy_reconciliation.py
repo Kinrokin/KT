@@ -491,12 +491,24 @@ def _next_move(current_head: str) -> dict[str, Any]:
     }
 
 
+def _reject_symlink_components(path: Path) -> None:
+    probe = path
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            return
+        probe = parent
+
+
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
     repo = repo_root()
     current_head = _git_head(repo)
     # Default emissions live outside the checkout so registry-bound source bytes
     # remain unchanged when this read-only operator is rerun.
     root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
+    _reject_symlink_components(root)
     changed: list[str] = []
     payloads = {
         OUTPUTS["cognitive_lobe_registry"]: _lobe_registry(),
@@ -511,7 +523,11 @@ def run(*, output_root: Path | None = None) -> dict[str, Any]:
         OUTPUTS["taxonomy_next_move"]: _next_move(current_head),
     }
     for raw, obj in payloads.items():
-        if write_json_stable(root / raw, obj):
+        destination = root / raw
+        _reject_symlink_components(destination)
+        if destination.exists() and destination.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {destination}")
+        if write_json_stable(destination, obj):
             changed.append(raw)
     return {
         "current_head": current_head,

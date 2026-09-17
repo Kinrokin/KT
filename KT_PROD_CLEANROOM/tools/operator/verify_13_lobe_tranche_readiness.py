@@ -272,8 +272,9 @@ def _mapping_by_source(mapping: Mapping[str, Any]) -> dict[str, Mapping[str, Any
     }
 
 
-def inspect(root: Path | None = None) -> dict[str, Any]:
-    base = root or repo_root()
+def inspect(root: Path | None = None, *, source_root: Path | None = None) -> dict[str, Any]:
+    emitted = root or repo_root()
+    base = source_root or emitted
     failures: list[dict[str, Any]] = []
 
     lobe_registry = _read(base, taxonomy.OUTPUTS["cognitive_lobe_registry"])
@@ -343,7 +344,7 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     if props.get("signal_only", {}).get("const") is not True:
         failures.append({"failure_id": "advisor_interface_not_signal_only"})
 
-    config = _read(base, CONFIG_PATH)
+    config = _read(emitted, CONFIG_PATH)
     target_lobes = [str(item) for item in config.get("target_lobe_ids", [])]
     if target_lobes != CANONICAL_LOBES:
         failures.append({"failure_id": "tranche_config_targets_not_13_canonical", "actual": target_lobes, "expected": CANONICAL_LOBES})
@@ -364,7 +365,8 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
         ("claim_ceiling", "governance/current_claim_ceiling.json"),
         ("artifact_authority_registry", REGISTRY_PATH),
     ):
-        if not (base / raw).is_file():
+        required_base = emitted if raw in {CONFIG_PATH, RUNBOOK_PATH, RECEIPT_PATH} else base
+        if not (required_base / raw).is_file():
             failures.append({"failure_id": "required_file_missing", "artifact": artifact, "path": raw})
 
     current_head = _git_head(base)
@@ -393,25 +395,42 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     }
 
 
+def _reject_symlink_components(path: Path) -> None:
+    probe = path
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            return
+        probe = parent
+
+
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
     repo = repo_root()
     current_head = _git_head(repo)
     # Default emissions live outside the checkout so registry-bound source bytes
     # remain unchanged when this read-only operator is rerun.
     root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
+    _reject_symlink_components(root)
     changed: list[str] = []
 
-    if write_json_stable(root / CONFIG_PATH, _tranche_config(current_head)):
+    config_destination = root / CONFIG_PATH
+    _reject_symlink_components(config_destination)
+    if write_json_stable(config_destination, _tranche_config(current_head)):
         changed.append(CONFIG_PATH)
     runbook_path = root / RUNBOOK_PATH
+    _reject_symlink_components(runbook_path)
     runbook_text = _runbook_text()
     if not runbook_path.exists() or runbook_path.read_text(encoding="utf-8") != runbook_text:
         runbook_path.parent.mkdir(parents=True, exist_ok=True)
         runbook_path.write_text(runbook_text, encoding="utf-8", newline="\n")
         changed.append(RUNBOOK_PATH)
 
-    receipt = inspect(repo)
-    if write_json_stable(root / RECEIPT_PATH, receipt):
+    receipt = inspect(root, source_root=repo)
+    receipt_destination = root / RECEIPT_PATH
+    _reject_symlink_components(receipt_destination)
+    if write_json_stable(receipt_destination, receipt):
         changed.append(RECEIPT_PATH)
 
     return {

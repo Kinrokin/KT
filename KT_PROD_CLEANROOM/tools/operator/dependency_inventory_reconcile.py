@@ -46,6 +46,13 @@ def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
         path = report_root / filename
         if path.is_symlink() or not path.is_file():
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {path}")
+        tracked = subprocess.run(
+            ("git", "-C", str(root), "ls-files", "--error-unmatch", "--", str(path.relative_to(root))),
+            capture_output=True,
+            text=True,
+        )
+        if tracked.returncode != 0 or tracked.stdout.strip() != str(path.relative_to(root)):
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
         result[filename] = {
             "path": f"{HISTORICAL_REPORT_ROOT_REL}/{filename}",
             "sha256": file_sha256(path),

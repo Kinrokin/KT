@@ -10,6 +10,17 @@ from tools.operator.dependency_inventory_emit import DEFAULT_SCAN_ROOTS, build_d
 from tools.operator.titanium_common import make_run_dir, repo_root, write_failure_artifacts, write_json_worm
 
 
+def _reject_symlink_components(path: Path) -> None:
+    probe = path
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"FAIL_CLOSED: symlinked report path component: {probe.as_posix()}")
+        parent = probe.parent
+        if parent == probe:
+            return
+        probe = parent
+
+
 def _load_json(path: Path) -> Dict[str, Any]:
     if path.is_symlink() or not path.is_file():
         raise RuntimeError(f"FAIL_CLOSED: required artifact must be a regular file: {path.as_posix()}")
@@ -26,6 +37,7 @@ def _normalized(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def build_dependency_inventory_validation_report(*, root: Path, report_root: Path) -> Dict[str, Any]:
+    _reject_symlink_components(report_root)
     actual_inventory = _load_json(report_root / "dependency_inventory.json")
     actual_environment = _load_json(report_root / "python_environment_manifest.json")
     actual_sbom = _load_json(report_root / "sbom_cyclonedx.json")
