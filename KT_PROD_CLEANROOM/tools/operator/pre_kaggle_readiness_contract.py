@@ -82,8 +82,16 @@ def _head(value: object, code: str, label: str) -> str:
 def _single_component(value: object, code: str, label: str) -> str:
     text = _text(value, code, label)
     candidate = Path(text)
-    if (candidate.name != text or text in {".", ".."} or "/" in text
-            or "\\" in text or candidate.is_absolute()):
+    if (
+        candidate.name != text
+        or text in {".", ".."}
+        or "/" in text
+        or "\\" in text
+        or candidate.is_absolute()
+        or ":" in text
+        or text.endswith((".", " "))
+        or text.split(".", 1)[0].upper() in {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}
+    ):
         _fail(code, f"{label} must be one relative path component")
     return text
 

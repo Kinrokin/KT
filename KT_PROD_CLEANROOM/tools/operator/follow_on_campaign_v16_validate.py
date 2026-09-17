@@ -401,7 +401,7 @@ def _dependency_evidence_refs(root: Path, external_root: str) -> List[str]:
     """Return relocatable refs to the sibling external evidence bundle."""
     relative_root = Path(os.path.relpath(external_root, root))
     return [
-        str(relative_root / name)
+        (relative_root / name).as_posix()
         for name in (
             "dependency_inventory.json",
             "python_environment_manifest.json",
