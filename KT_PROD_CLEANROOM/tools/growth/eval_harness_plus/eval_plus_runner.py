@@ -41,14 +41,12 @@ def _ensure_under_root(*, path: Path, root: Path, label: str) -> None:
 
 
 def _reject_nonportable_path_components(*, path: Path, label: str) -> None:
-    reserved = {"CON", "PRN", "AUX", "NUL"} | {
-        f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10)
-    }
     for part in path.parts:
-        if part in {".", ".."}:
+        # Anchors identify the root and are not user-controlled components.
+        if part in {path.anchor, ".", ".."}:
             continue
         if (":" in part or "\\" in part or part.endswith((".", " "))
-                or part.split(".", 1)[0].upper() in reserved):
+                or part.split(".", 1)[0].upper() in _RESERVED_DEVICE_BASENAMES):
             raise ValueError(f"{label}_nonportable_path_component (fail-closed)")
 
 

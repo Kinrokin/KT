@@ -3,6 +3,7 @@ import json
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "KT_PROD_CLEANROOM"))
 sys.path.insert(0, str(ROOT / "KT_PROD_CLEANROOM/tools/growth/eval_harness_plus"))
 sys.path.insert(0, str(ROOT / "KT_PROD_CLEANROOM/tools/growth/orchestrator"))
 
