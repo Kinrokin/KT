@@ -503,6 +503,19 @@ def _build_public_verifier_attestation(
     }
 
 
+def _require_historical_dependency_artifacts(root: Path) -> None:
+    reports_root = root / DEFAULT_REPORT_ROOT_REL
+    for name in (
+        "dependency_inventory.json",
+        "python_environment_manifest.json",
+        "sbom_cyclonedx.json",
+        "dependency_inventory_validation_receipt.json",
+    ):
+        path = reports_root / name
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact unavailable: {path.as_posix()}")
+
+
 def build_public_verifier_release_outputs(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL, generated_utc: str = "") -> Dict[str, Any]:
     generated = str(generated_utc).strip() or utc_now_iso_z()
     compiled_head_commit = _git_head(root)
@@ -514,6 +527,7 @@ def build_public_verifier_release_outputs(*, root: Path, report_root_rel: str = 
     if any(row["status"] != "PASS" for row in dependency_checks):
         raise RuntimeError("FAIL_CLOSED: public verifier dependency boundary is not releasable")
 
+    _require_historical_dependency_artifacts(root)
     fresh_manifest = _public_verifier_manifest_payload(root=root, live_head=compiled_head_commit, report_root_rel=report_root_rel)
     write_json_stable((root / Path(PUBLIC_VERIFIER_MANIFEST_REL)).resolve(), fresh_manifest)
     verifier_report = build_public_verifier_report(root=root, report_root_rel=report_root_rel)

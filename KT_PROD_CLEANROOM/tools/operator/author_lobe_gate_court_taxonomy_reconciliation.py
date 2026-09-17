@@ -492,8 +492,11 @@ def _next_move(current_head: str) -> dict[str, Any]:
 
 
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
-    root = output_root or repo_root()
-    current_head = _git_head(root)
+    repo = repo_root()
+    current_head = _git_head(repo)
+    # Default emissions live outside the checkout so registry-bound source bytes
+    # remain unchanged when this read-only operator is rerun.
+    root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
     changed: list[str] = []
     payloads = {
         OUTPUTS["cognitive_lobe_registry"]: _lobe_registry(),
