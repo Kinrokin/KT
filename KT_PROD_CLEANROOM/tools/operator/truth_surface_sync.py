@@ -880,7 +880,10 @@ def _validate_historical_dependency_bundle(root: Path) -> None:
         tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative), capture_output=True, text=True)
         if tracked.returncode != 0 or tracked.stdout.strip() != relative:
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
-        registry = _load_required(root / "registry/artifact_authority_registry.json")
+        registry_path = root / "registry/artifact_authority_registry.json"
+        if registry_path.is_symlink() or not registry_path.is_file():
+            raise RuntimeError(f"HISTORICAL_AUTHORITY_REGISTRY_INVALID: {registry_path}")
+        registry = _load_required(registry_path)
         row = next((item for item in registry.get("artifacts", []) if item.get("path") == relative), None)
         if not isinstance(row, dict) or not (
             row.get("authority_state") == "ARCHIVE"
