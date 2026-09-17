@@ -658,6 +658,10 @@ def build(args: argparse.Namespace) -> None:
             "controls_execution": False,
             "claim_authority": registry_claim_authority,
             "sha256": sha,
+            "current_file_sha256": None,
+            "current_authority": False,
+            "supersedes": [],
+            "superseded_by": None,
         })
     upsert({
         "artifact_id": "stop300_v41_packet_decision",

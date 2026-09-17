@@ -93,6 +93,15 @@ def stable_hash(value: Any) -> str:
 def authority(**extra: Any) -> dict[str, Any]:
     payload = dict(AUTHORITY_FALSE)
     payload.update(extra)
+    if "path" in payload:
+        payload.setdefault("primary_class", "GENERATED_OUTPUT")
+        payload.setdefault("validation_status", "PASS")
+        payload.setdefault("controls_execution", False)
+        payload.setdefault("claim_authority", "NONE")
+        payload.setdefault("current_authority", False)
+        payload.setdefault("current_file_sha256", None)
+        payload.setdefault("supersedes", [])
+        payload.setdefault("superseded_by", None)
     return payload
 
 

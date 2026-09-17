@@ -216,6 +216,8 @@ def _sha256_repository_file(root: Path, relative: str) -> str:
         finally:
             os.close(fd)
     candidate = _repository_path(root, relative)
+    if os.name == "nt" or not all(hasattr(os, flag) for flag in ("O_DIRECTORY", "O_NOFOLLOW")):
+        raise ValueError("registry secure digest read unavailable (fail-closed)")
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
     fd = os.open(candidate, flags)
     try:
@@ -321,6 +323,11 @@ def _normalize_primary_class_alias(row: dict[str, Any]) -> None:
     row["primary_class"] = mapped
     if mapped == "ARCHIVE_HISTORY":
         row["authority_state"] = "ARCHIVE"
+        row["current_authority"] = False
+        row["controls_execution"] = False
+        row["claim_authority"] = "NONE"
+    elif mapped == "GENERATED_OUTPUT":
+        row["authority_state"] = "GENERATED_PENDING_VALIDATION"
         row["current_authority"] = False
         row["controls_execution"] = False
         row["claim_authority"] = "NONE"

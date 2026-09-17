@@ -679,14 +679,23 @@ def artifact_id(path: str) -> str:
 
 
 def registry_entry(path: Path, primary_class: str, claim_authority: str, controls_execution: bool, notes: str) -> dict[str, Any]:
-    rel = path.relative_to(ROOT).as_posix()
+    rel = rel(path)
     sha, size = repo_artifact_stats(path)
+    if primary_class == "GENERATED_RUNTIME_PACKET":
+        primary_class = "GENERATED_OUTPUT"
+        claim_authority = "NONE"
+        controls_execution = False
+        authority_state = "GENERATED_PENDING_VALIDATION"
+        current_authority = False
+    else:
+        authority_state = "LIVE_CURRENT_HEAD_PREP_ONLY"
+        current_authority = True
     return {
         "artifact_id": artifact_id(rel),
-        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
+        "authority_state": authority_state,
         "claim_authority": claim_authority,
         "controls_execution": False,
-        "current_authority": True,
+        "current_authority": current_authority,
         "notes": notes,
         "path": rel,
         "primary_class": primary_class,
