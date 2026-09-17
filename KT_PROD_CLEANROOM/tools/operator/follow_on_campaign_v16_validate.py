@@ -1639,7 +1639,20 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f09_status = "BLOCKED_UPSTREAM"
     f09_next_phase: str | None = PHASE_F09
 
-    dependency_refs = [str(dependency_bundle.get("external_root", ""))]
+    external_root = str(dependency_bundle.get("external_root", "")).strip()
+    if external_root:
+        dependency_refs = [
+            str(Path(external_root) / name)
+            for name in (
+                "dependency_inventory.json",
+                "python_environment_manifest.json",
+                "sbom_cyclonedx.json",
+                "dependency_inventory_validation_receipt.json",
+                "dependency_inventory_reconciliation_receipt.json",
+            )
+        ]
+    else:
+        dependency_refs = []
     outputs = {
         CHILD_DAG: {
             "schema_id": "kt.child_campaign.execution_dag.v1_6",

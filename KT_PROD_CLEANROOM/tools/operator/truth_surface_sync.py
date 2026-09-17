@@ -858,6 +858,25 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     }
 
 
+def _validate_historical_dependency_bundle(root: Path) -> None:
+    """Validate retained dependency bytes before any secondary-surface writes."""
+    reports_root = root / DEFAULT_REPORT_ROOT_REL
+    cursor = root
+    for part in reports_root.relative_to(root).parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {cursor}")
+    for name in (
+        "dependency_inventory.json",
+        "python_environment_manifest.json",
+        "sbom_cyclonedx.json",
+        "dependency_inventory_validation_receipt.json",
+    ):
+        path = reports_root / name
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {path}")
+
+
 def _sync_secondary_surfaces(
     *,
     root: Path,
@@ -869,6 +888,7 @@ def _sync_secondary_surfaces(
     convergence_status: str,
     convergence_failures: Sequence[str],
 ) -> None:
+    _validate_historical_dependency_bundle(root)
     try:
         authoritative_truth_source = str(active_truth_source_ref(root=root)).strip() or truth_source_ref
     except Exception:  # noqa: BLE001
@@ -936,35 +956,7 @@ def _sync_secondary_surfaces(
             ),
         )
     reports_root = root / DEFAULT_REPORT_ROOT_REL
-    # Historical dependency bytes are immutable and must never traverse symlinked
-    # directories or files while being read or published.
-    try:
-        report_parts = reports_root.relative_to(root).parts
-    except ValueError:
-        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_ROOT_INVALID: {reports_root}")
-    cursor = root
-    for part in report_parts:
-        cursor = cursor / part
-        if cursor.is_symlink():
-            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {cursor}")
-    historical_names = (
-        "dependency_inventory.json",
-        "python_environment_manifest.json",
-        "sbom_cyclonedx.json",
-        "dependency_inventory_validation_receipt.json",
-    )
-    historical_paths = [reports_root / name for name in historical_names]
-    for historical_path in historical_paths[:3]:
-        if historical_path.is_symlink() or not historical_path.is_file():
-            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {historical_path}")
-    receipt_path = historical_paths[3]
-    if receipt_path.is_symlink() or (receipt_path.exists() and not receipt_path.is_file()):
-        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {receipt_path}")
-    # Historical dependency receipts are retained inputs; never synthesize one
-    # in the checked-in reports directory during synchronization.
-    dependency_receipt = reports_root / "dependency_inventory_validation_receipt.json"
-    if not dependency_receipt.is_file() or dependency_receipt.is_symlink():
-        raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {dependency_receipt}")
+    _validate_historical_dependency_bundle(root)
     _write_json(
         reports_root / "platform_governance_narrowing_receipt.json",
         build_platform_governance_narrowing_receipt(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL),
