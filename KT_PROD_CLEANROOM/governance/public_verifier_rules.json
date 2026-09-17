@@ -36,7 +36,7 @@
     "python -m tools.operator.public_verifier",
     "python -m tools.operator.authority_convergence_validate",
     "python -m tools.operator.documentary_truth_validate",
-    "python -m tools.operator.dependency_inventory_validate"
+    "python -m tools.operator.dependency_inventory_validate --report-root <external-report-root> --run-root <external-run-root>"
   ],
   "rules": [
     "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, finalized platform governance decision receipts, and cryptographic publication evidence only.",

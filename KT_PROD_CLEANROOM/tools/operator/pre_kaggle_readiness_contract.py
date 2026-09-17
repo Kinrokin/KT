@@ -291,10 +291,14 @@ def validate_input_inventory(inventory: Mapping[str, Any]) -> dict[str, Any]:
         if actual_sha != expected_sha:
             _fail("INPUT_SHA256_MISMATCH", relative_text)
         bindings.append({"logical_name": logical_name, "relative_path": relative_text, "sha256": actual_sha})
+    discovered = list(stage_root.rglob("*"))
+    linked = sorted(path.relative_to(stage_root).as_posix() for path in discovered if path.is_symlink())
+    if linked:
+        _fail("INPUT_INVENTORY_SYMLINK_FORBIDDEN", ", ".join(linked))
     actual_paths = {
         path.relative_to(stage_root).as_posix()
-        for path in stage_root.rglob("*")
-        if path.is_file() and not path.is_symlink()
+        for path in discovered
+        if path.is_file()
     }
     unexpected = sorted(actual_paths - expected_paths)
     if unexpected:
@@ -371,6 +375,15 @@ def validate_hf_transport(transport: Mapping[str, Any], source_root: Path) -> di
     exposed = sorted(key for key in transport if key.casefold() in forbidden_secret_fields)
     if exposed:
         _fail("SECRET_MATERIAL_FORBIDDEN", ", ".join(exposed))
+    allowed_fields = {
+        "selected_source", "secret_source", "token_printed", "token_available_to_runner",
+        "live_route_available", "mounted_fallback_allowed", "transport_mode",
+        "xet_failure_observed", "transport_fallback_policy", "dependency_conflict",
+        "download_state", "cache_root",
+    }
+    unknown = sorted(key for key in transport if key not in allowed_fields)
+    if unknown:
+        _fail("HF_TRANSPORT_FIELD_UNKNOWN", ", ".join(unknown))
     if transport.get("token_printed") is not False:
         _fail("SECRET_EXPOSURE_FORBIDDEN", "token_printed must be false")
     selected_source = transport.get("selected_source")
@@ -555,7 +568,12 @@ def validate_output_allocation(
     if _is_within(output_root, source):
         _fail("OUTPUT_ROOT_IN_SOURCE_TREE", str(output_root))
     subtrees = allocation.get("subtrees")
-    if not isinstance(subtrees, list) or len(subtrees) != len(set(subtrees)) or set(subtrees) != set(REQUIRED_OUTPUT_SUBTREES):
+    if (
+        not isinstance(subtrees, list)
+        or not all(isinstance(item, str) and item for item in subtrees)
+        or len(subtrees) != len(set(subtrees))
+        or set(subtrees) != set(REQUIRED_OUTPUT_SUBTREES)
+    ):
         _fail("OUTPUT_SUBTREE_LAYOUT_INVALID", "exact required output subtrees are required")
     minimum = allocation.get("minimum_free_bytes")
     if type(minimum) is not int or minimum < 0 or type(available_bytes) is not int or available_bytes < 0:
@@ -677,10 +695,19 @@ def validate_scorecard_reconciliation(scorecard: Mapping[str, Any]) -> dict[str,
         if row["decision_correct"] != row["prediction_correct"]:
             _fail("SCORECARD_DECISION_PREDICTION_MISMATCH", sample_id)
         correct_count += int(row["prediction_correct"])
-    if scorecard.get("row_count") != len(rows) or scorecard.get("correct_count") != correct_count:
+    row_count = scorecard.get("row_count")
+    declared_correct = scorecard.get("correct_count")
+    accuracy = scorecard.get("accuracy")
+    if (
+        type(row_count) is not int
+        or type(declared_correct) is not int
+        or type(accuracy) not in (int, float)
+        or row_count != len(rows)
+        or declared_correct != correct_count
+    ):
         _fail("SCORECARD_AGGREGATE_MISMATCH", "row_count or correct_count")
     expected_accuracy = correct_count / len(rows)
-    if scorecard.get("accuracy") != expected_accuracy:
+    if accuracy != expected_accuracy:
         _fail("SCORECARD_AGGREGATE_MISMATCH", "accuracy")
     if scorecard.get("frozen_source_reuse") is not False:
         _fail("SCORECARD_STALE_SOURCE_REUSE", "frozen_source_reuse")

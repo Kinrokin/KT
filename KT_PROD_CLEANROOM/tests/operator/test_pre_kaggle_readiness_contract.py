@@ -579,3 +579,29 @@ def test_finalization_rejects_non_json_safe_payload_before_a_tail_failure(tmp_pa
     plan, source_root = _plan(tmp_path)
     plan["finalization_payload"] = {"unsafe_path": Path("not-json-safe")}
     _expect("FINALIZATION_PAYLOAD_NOT_JSON_SAFE", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_output_subtrees_reject_non_string_entries(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["output"]["subtrees"] = [{}]
+    _expect("OUTPUT_SUBTREE_LAYOUT_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_input_inventory_rejects_symlink_entries(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    stage_root = Path(plan["input_inventory"]["stage_root"])
+    link = stage_root / "nested" / "linked.marker"
+    link.symlink_to(stage_root / "nested" / "prompt_manifest.json")
+    _expect("INPUT_INVENTORY_SYMLINK_FORBIDDEN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_scorecard_rejects_boolean_aggregates(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["scorecard"]["row_count"] = True
+    _expect("SCORECARD_AGGREGATE_MISMATCH", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_hf_transport_rejects_unknown_fields(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["hf_transport"]["access_token"] = "must-not-appear"
+    _expect("HF_TRANSPORT_FIELD_UNKNOWN", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
