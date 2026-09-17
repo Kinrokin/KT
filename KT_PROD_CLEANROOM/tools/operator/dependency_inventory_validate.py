@@ -11,8 +11,8 @@ from tools.operator.titanium_common import make_run_dir, repo_root, write_failur
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
-    if not path.exists():
-        raise RuntimeError(f"FAIL_CLOSED: missing required artifact: {path.as_posix()}")
+    if path.is_symlink() or not path.is_file():
+        raise RuntimeError(f"FAIL_CLOSED: required artifact must be a regular file: {path.as_posix()}")
     return json.loads(path.read_text(encoding="utf-8"))
 
 
