@@ -1641,8 +1641,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
 
     external_root = str(dependency_bundle.get("external_root", "")).strip()
     if external_root:
+        bundle_id = Path(external_root).name or "current"
         dependency_refs = [
-            str(Path(external_root) / name)
+            f"external_dependency_evidence/{bundle_id}/{name}"
             for name in (
                 "dependency_inventory.json",
                 "python_environment_manifest.json",

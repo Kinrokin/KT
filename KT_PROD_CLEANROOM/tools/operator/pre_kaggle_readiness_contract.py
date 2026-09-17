@@ -433,8 +433,11 @@ def validate_hf_transport(transport: Mapping[str, Any], source_root: Path) -> di
     cache_root = Path(_text(transport.get("cache_root"), "HF_CACHE_ROOT_INVALID", "cache_root"))
     if not cache_root.is_absolute():
         _fail("HF_CACHE_ROOT_INVALID", str(cache_root))
+    _reject_symlink_path(source_root, "HF_SOURCE_ROOT_INVALID")
     _reject_symlink_path(cache_root, "HF_CACHE_ROOT_INVALID")
     if _is_within(cache_root, source_root):
+        _fail("HF_CACHE_ROOT_INVALID", str(cache_root))
+    if cache_root.exists() and not cache_root.is_dir():
         _fail("HF_CACHE_ROOT_INVALID", str(cache_root))
     if transport.get("dependency_conflict") is not False:
         _fail("HF_TRANSPORT_DEPENDENCY_CONFLICT", "dependency_conflict must be false")

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import subprocess
 from pathlib import Path
 
 from tools.operator.dependency_inventory_emit import build_dependency_reports
@@ -23,6 +25,20 @@ def _write_dependency_reports(root: Path) -> None:
     _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory.json", reports["inventory"])
     _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "python_environment_manifest.json", reports["environment"])
     _write_json(root / "KT_PROD_CLEANROOM" / "reports" / "sbom_cyclonedx.json", reports["sbom"])
+
+
+def _commit_dependency_history(root: Path) -> None:
+    report_root = root / "KT_PROD_CLEANROOM" / "reports"
+    artifacts = []
+    for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
+        path = report_root / name
+        artifacts.append({"path": f"KT_PROD_CLEANROOM/reports/{name}", "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    _write_json(root / "registry/artifact_authority_registry.json", {"artifacts": artifacts})
+    subprocess.run(("git", "init"), cwd=root, check=True, capture_output=True)
+    subprocess.run(("git", "config", "user.email", "test@example.com"), cwd=root, check=True)
+    subprocess.run(("git", "config", "user.name", "Test User"), cwd=root, check=True)
+    subprocess.run(("git", "add", "-A"), cwd=root, check=True)
+    subprocess.run(("git", "commit", "-m", "seed historical dependency evidence"), cwd=root, check=True, capture_output=True)
 
 
 def _write_platform_governance_receipts(root: Path, subject_head: str) -> None:
@@ -92,6 +108,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     )
     _write_dependency_reports(tmp_path)
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "PASS"})
+    _commit_dependency_history(tmp_path)
     _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(
@@ -218,6 +235,7 @@ def test_sync_secondary_surfaces_is_stable_on_repeat_sync(tmp_path: Path) -> Non
     )
     _write_dependency_reports(tmp_path)
     _write_json(tmp_path / "KT_PROD_CLEANROOM" / "reports" / "dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "PASS"})
+    _commit_dependency_history(tmp_path)
     _write_platform_governance_receipts(tmp_path, "abc123")
 
     _sync_secondary_surfaces(
@@ -362,4 +380,3 @@ def test_build_constitutional_board_state_opens_domain2_exit_from_current_head_r
     assert domain2["maturity_state"] == "PROVEN_ON_CURRENT_HEAD"
     assert domain2["gate_state"] == "OPEN"
     assert domain2["active_blockers"] == []
-
