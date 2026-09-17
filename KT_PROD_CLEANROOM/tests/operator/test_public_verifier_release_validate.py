@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 from pathlib import Path
@@ -178,6 +179,12 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
         ("dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "FAIL"}),
     ):
         _write_json(tmp_path / "KT_PROD_CLEANROOM/reports" / name, payload)
+    artifacts = []
+    for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
+        path = tmp_path / "KT_PROD_CLEANROOM/reports" / name
+        rel = f"KT_PROD_CLEANROOM/reports/{name}"
+        artifacts.append({"path": rel, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    _write_json(tmp_path / "registry/artifact_authority_registry.json", {"artifacts": artifacts})
 
 
 def _seed_public_surfaces(tmp_path: Path) -> None:

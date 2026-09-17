@@ -444,6 +444,8 @@ def validate_hf_transport(transport: Mapping[str, Any], source_root: Path) -> di
     if mode not in {"XET", "HTTP_FALLBACK", "MOUNTED_LOCAL"}:
         _fail("HF_TRANSPORT_MODE_INVALID", "transport_mode")
     if selected_source == "HF_VAULT":
+        if secret_source not in {"KAGGLE_SECRETS", "HOST_SECRET_STORE"}:
+            _fail("HF_SECRET_SOURCE_INVALID", "HF_VAULT requires a secret store")
         if transport.get("live_route_available") is not True:
             _fail("HF_LIVE_ROUTE_UNAVAILABLE", "live_route_available")
         if transport.get("token_available_to_runner") is not True:
@@ -451,6 +453,8 @@ def validate_hf_transport(transport: Mapping[str, Any], source_root: Path) -> di
         if mode == "MOUNTED_LOCAL":
             _fail("HF_TRANSPORT_MODE_INVALID", "HF_VAULT cannot use MOUNTED_LOCAL mode")
     else:
+        if secret_source != "NONE_FOR_MOUNTED_LOCAL":
+            _fail("HF_SECRET_SOURCE_INVALID", "MOUNTED_LOCAL requires no secret source")
         if transport.get("mounted_fallback_allowed") is not True:
             _fail("MOUNTED_FALLBACK_NOT_AUTHORIZED", "mounted_fallback_allowed")
         if mode != "MOUNTED_LOCAL":
@@ -792,8 +796,8 @@ def validate_claim_ceiling(claims: Mapping[str, Any]) -> dict[str, Any]:
     if evidence_mode in {"FRESH_GENERATION_INTERNAL", "FRESH_GENERATION_EXTERNAL"}:
         if any(outcomes[field] for field in ("performance_superiority", "promotion", "external_authority", "commercial_authority")):
             _fail("CLAIM_EXCEEDS_EVIDENCE_TIER", evidence_mode)
-    if claims.get("hf_upload_observed") is True and outcomes["promotion"]:
-        _fail("HF_UPLOAD_CANNOT_PROMOTE", "promotion")
+    if claims.get("hf_upload_observed") is True:
+        _fail("HF_UPLOAD_OUT_OF_SCOPE", "hf_upload_observed")
     gates = claims.get("mandatory_gates")
     if not isinstance(gates, list) or not gates:
         _fail("MANDATORY_GATE_LIST_INVALID", "mandatory_gates")

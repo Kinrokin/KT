@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
@@ -11,7 +12,7 @@ from tools.operator.posture_consistency import verify_posture
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.documentary_truth_validate import build_documentary_truth_report
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import active_truth_source_ref, build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
     CURRENT_POINTER_REL,
@@ -875,6 +876,14 @@ def _validate_historical_dependency_bundle(root: Path) -> None:
         path = reports_root / name
         if path.is_symlink() or not path.is_file():
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {path}")
+        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", str(path.relative_to(root))), capture_output=True, text=True)
+        if tracked.returncode != 0 or tracked.stdout.strip() != str(path.relative_to(root)):
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
+        registry = _load_required(root / "registry/artifact_authority_registry.json")
+        row = next((item for item in registry.get("artifacts", []) if item.get("path") == str(path.relative_to(root))), None)
+        expected = row.get("sha256") if isinstance(row, dict) else None
+        if not isinstance(expected, str) or file_sha256(path) != expected:
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_DIGEST_MISMATCH: {path}")
 
 
 def _sync_secondary_surfaces(

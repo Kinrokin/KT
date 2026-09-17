@@ -66,10 +66,20 @@ def resolve_external_report_root(*, root: Path, report_root: str | Path) -> Path
 
 def _iter_python_files(root: Path, scan_roots: Iterable[str]) -> Iterable[Path]:
     for rel in scan_roots:
-        base = (root / rel).resolve()
+        base = root / rel
+        if base.is_symlink():
+            raise RuntimeError(f"DEPENDENCY_SOURCE_SCAN_ROOT_SYMLINKED: {base}")
         if not base.exists():
             continue
         for path in sorted(base.rglob("*.py")):
+            probe = path
+            while True:
+                if probe.is_symlink():
+                    raise RuntimeError(f"DEPENDENCY_SOURCE_SYMLINKED_FILE: {path}")
+                parent = probe.parent
+                if parent == root or parent == probe:
+                    break
+                probe = parent
             if path.is_file():
                 yield path
 

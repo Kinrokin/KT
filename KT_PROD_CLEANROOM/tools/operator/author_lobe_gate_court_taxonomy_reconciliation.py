@@ -502,13 +502,22 @@ def _reject_symlink_components(path: Path) -> None:
         probe = parent
 
 
+def _validate_external_output_root(root: Path, repo: Path) -> None:
+    _reject_symlink_components(root)
+    try:
+        root.resolve().relative_to(repo.resolve())
+    except ValueError:
+        return
+    raise RuntimeError(f"OUTPUT_ROOT_MUST_BE_EXTERNAL: {root}")
+
+
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
     repo = repo_root()
     current_head = _git_head(repo)
     # Default emissions live outside the checkout so registry-bound source bytes
     # remain unchanged when this read-only operator is rerun.
     root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
-    _reject_symlink_components(root)
+    _validate_external_output_root(root, repo)
     changed: list[str] = []
     payloads = {
         OUTPUTS["cognitive_lobe_registry"]: _lobe_registry(),

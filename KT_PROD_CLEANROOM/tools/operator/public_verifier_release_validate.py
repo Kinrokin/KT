@@ -522,6 +522,14 @@ def _require_historical_dependency_artifacts(root: Path) -> None:
         path = reports_root / name
         if path.is_symlink() or not path.is_file():
             raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact unavailable: {path.as_posix()}")
+        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", str(path.relative_to(root))), capture_output=True, text=True)
+        if tracked.returncode != 0 or tracked.stdout.strip() != str(path.relative_to(root)):
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact is not tracked: {path.as_posix()}")
+        registry = load_json(root / "registry/artifact_authority_registry.json")
+        row = next((item for item in registry.get("artifacts", []) if item.get("path") == str(path.relative_to(root))), None)
+        expected = row.get("sha256") if isinstance(row, dict) else None
+        if not isinstance(expected, str) or file_sha256(path) != expected:
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact digest mismatch: {path.as_posix()}")
 
 
 def build_public_verifier_release_outputs(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL, generated_utc: str = "") -> Dict[str, Any]:
