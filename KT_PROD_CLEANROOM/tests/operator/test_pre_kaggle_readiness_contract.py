@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -23,6 +24,13 @@ def _write_json(path: Path, payload: dict) -> None:
 def _plan(tmp_path: Path) -> tuple[dict, Path]:
     source_root = tmp_path / "source"
     source_root.mkdir(exist_ok=True)
+    if not (source_root / ".git").exists():
+        subprocess.run(["git", "-C", str(source_root), "init", "-q"], check=True)
+        subprocess.run(["git", "-C", str(source_root), "config", "user.email", "test@example.com"], check=True)
+        subprocess.run(["git", "-C", str(source_root), "config", "user.name", "KT Test"], check=True)
+        (source_root / "source.marker").write_text("fixture source\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(source_root), "add", "source.marker"], check=True)
+        subprocess.run(["git", "-C", str(source_root), "commit", "-qm", "fixture source"], check=True)
     packet_root = tmp_path / "packet-input"
     packet_root.mkdir(exist_ok=True)
     packet = packet_root / "exact_fixture.zip"
@@ -52,7 +60,7 @@ def _plan(tmp_path: Path) -> tuple[dict, Path]:
     model_path = adapter_dir / "adapter_model.safetensors"
     model_path.write_bytes(b"fixture adapter weights")
 
-    source_head = "b" * 40
+    source_head = subprocess.check_output(["git", "-C", str(source_root), "rev-parse", "HEAD"], text=True).strip()
     packet_sha = _digest(packet.read_bytes())
     plan = {
         "identity_planes": {

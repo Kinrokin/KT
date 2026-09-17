@@ -816,9 +816,8 @@ def evaluate_static_preflight(
         import subprocess
         actual_head = subprocess.run(("git", "-C", str(source_root), "rev-parse", "HEAD"), check=True, capture_output=True, text=True).stdout.strip()
         actual_head = _head(actual_head, "SOURCE_HEAD_INVALID", "actual_source_head")
-    except (OSError, subprocess.CalledProcessError):
-        if (source_root / "KT_PROD_CLEANROOM").exists():
-            _fail("SOURCE_HEAD_UNAVAILABLE", str(source_root))
+    except (OSError, subprocess.CalledProcessError) as exc:
+        _fail("SOURCE_HEAD_UNAVAILABLE", str(source_root))
     packet = validate_packet_selection(
         packet_root,
         _mapping(plan.get("packet_selection"), "PACKET_SELECTION_INVALID", "packet_selection"),
