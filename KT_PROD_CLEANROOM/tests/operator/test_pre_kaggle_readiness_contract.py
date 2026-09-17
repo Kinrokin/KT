@@ -762,3 +762,10 @@ def test_partial_measurement_rejects_symlinked_temporary_journal(tmp_path: Path)
     outside.write_text("external\n", encoding="utf-8")
     (assessment / ".measurement_journal.jsonl.tmp").symlink_to(outside)
     _expect("ASSESSMENT_OUTPUT_DESTINATION_INVALID", contract.preserve_partial_measurements, source_root, plan["output"], 1024, [], "fixture failure")
+
+
+def test_output_allocation_rejects_existing_file_root(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    output_root = Path(plan["output"]["output_root"])
+    output_root.write_text("not a directory", encoding="utf-8")
+    _expect("OUTPUT_ROOT_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
