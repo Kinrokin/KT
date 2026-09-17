@@ -396,6 +396,21 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     }
 
 
+def _dependency_evidence_refs(root: Path, external_root: str) -> List[str]:
+    """Return relocatable refs to the sibling external evidence bundle."""
+    relative_root = Path(os.path.relpath(external_root, root))
+    return [
+        str(relative_root / name)
+        for name in (
+            "dependency_inventory.json",
+            "python_environment_manifest.json",
+            "sbom_cyclonedx.json",
+            "dependency_inventory_validation_receipt.json",
+            "dependency_inventory_reconciliation_receipt.json",
+        )
+    ]
+
+
 def _profile(cls: str) -> Dict[str, float]:
     return {
         "doctrinal_only": {"theater_risk_score": 1.0, "underexercised_surface_score": 1.0, "narrative_to_runtime_ratio": 4.0},
@@ -1641,17 +1656,7 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
 
     external_root = str(dependency_bundle.get("external_root", "")).strip()
     if external_root:
-        bundle_id = Path(external_root).name or "current"
-        dependency_refs = [
-            f"external_dependency_evidence/{bundle_id}/{name}"
-            for name in (
-                "dependency_inventory.json",
-                "python_environment_manifest.json",
-                "sbom_cyclonedx.json",
-                "dependency_inventory_validation_receipt.json",
-                "dependency_inventory_reconciliation_receipt.json",
-            )
-        ]
+        dependency_refs = _dependency_evidence_refs(root, external_root)
     else:
         dependency_refs = []
     outputs = {

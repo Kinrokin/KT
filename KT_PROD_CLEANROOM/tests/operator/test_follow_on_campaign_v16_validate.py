@@ -103,6 +103,7 @@ from tools.operator.follow_on_campaign_v16_validate import (  # noqa: E402
     VERIFIER_V2_MANIFEST,
     VERIFIER_V2_VSA,
     emit_follow_on_campaign_v16,
+    _dependency_evidence_refs,
 )
 
 
@@ -361,6 +362,18 @@ def _seed_repo(tmp_path: Path) -> str:
         },
     )
     return _commit_all(tmp_path, "seed repo evidence")
+
+
+def test_dependency_evidence_refs_follow_the_external_sibling_bundle(tmp_path: Path) -> None:
+    external_root = tmp_path.parent / ".kt_dependency_evidence" / "head-uuid"
+    refs = _dependency_evidence_refs(tmp_path, str(external_root))
+    assert refs == [
+        "../.kt_dependency_evidence/head-uuid/dependency_inventory.json",
+        "../.kt_dependency_evidence/head-uuid/python_environment_manifest.json",
+        "../.kt_dependency_evidence/head-uuid/sbom_cyclonedx.json",
+        "../.kt_dependency_evidence/head-uuid/dependency_inventory_validation_receipt.json",
+        "../.kt_dependency_evidence/head-uuid/dependency_inventory_reconciliation_receipt.json",
+    ]
 
 
 def test_child_campaign_f07_blocks_honestly_when_release_prerequisites_remain_planned_only(tmp_path: Path) -> None:
