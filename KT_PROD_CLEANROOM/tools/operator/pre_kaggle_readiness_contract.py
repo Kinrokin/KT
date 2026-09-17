@@ -746,6 +746,9 @@ def validate_claim_ceiling(claims: Mapping[str, Any]) -> dict[str, Any]:
         _fail("SCAFFOLD_CANNOT_EARN_PASS", result_status)
     outcomes = _mapping(claims.get("claims"), "CLAIM_FLAGS_INVALID", "claims")
     claim_fields = ("fresh_generation", "performance_superiority", "promotion", "external_authority", "commercial_authority")
+    unknown_claims = sorted(set(outcomes) - set(claim_fields))
+    if unknown_claims:
+        _fail("CLAIM_FLAG_UNKNOWN", ", ".join(unknown_claims))
     for field in claim_fields:
         if type(outcomes.get(field)) is not bool:
             _fail("CLAIM_FLAGS_INVALID", field)
@@ -803,10 +806,19 @@ def evaluate_static_preflight(
     planes = validate_identity_planes(
         _mapping(plan.get("identity_planes"), "IDENTITY_PLAN_INVALID", "identity_planes")
     )
+    packet_root = Path(_text(plan.get("packet_root"), "PACKET_ROOT_INVALID", "packet_root"))
+    declared_head = planes["source"]["repo_head"]
+    actual_head = declared_head
+    try:
+        import subprocess
+        actual_head = subprocess.run(("git", "-C", str(source_root), "rev-parse", "HEAD"), check=True, capture_output=True, text=True).stdout.strip()
+        actual_head = _head(actual_head, "SOURCE_HEAD_INVALID", "actual_source_head")
+    except (OSError, subprocess.CalledProcessError):
+        pass
     packet = validate_packet_selection(
-        Path(_text(plan.get("packet_root"), "PACKET_ROOT_INVALID", "packet_root")),
+        packet_root,
         _mapping(plan.get("packet_selection"), "PACKET_SELECTION_INVALID", "packet_selection"),
-        planes["source"]["repo_head"],
+        actual_head,
     )
     adapter = validate_adapter_identity(
         Path(_text(plan.get("adapter_root"), "ADAPTER_ROOT_INVALID", "adapter_root")),

@@ -166,7 +166,7 @@ def test_sync_secondary_surfaces_updates_authority_mode_and_freeze_refs(tmp_path
     assert verifier["branch_protection_status"] == "BLOCKED"
     assert verifier["enterprise_legitimacy_ceiling"] == "WORKFLOW_GOVERNANCE_ONLY"
     assert verifier["truth_pointer_ref"] == "KT_PROD_CLEANROOM/exports/_truth/current/current_pointer.json"
-    assert "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json" in verifier["state_receipts"]
+    assert "KT_PROD_CLEANROOM/reports/dependency_inventory_validation_receipt.json" in verifier["historical_dependency_artifacts"]
     assert "KT_PROD_CLEANROOM/reports/ci_gate_promotion_receipt.json" in verifier["state_receipts"]
     assert "KT_PROD_CLEANROOM/reports/platform_governance_narrowing_receipt.json" in verifier["state_receipts"]
 
@@ -360,3 +360,4 @@ def test_build_constitutional_board_state_opens_domain2_exit_from_current_head_r
     assert domain2["maturity_state"] == "PROVEN_ON_CURRENT_HEAD"
     assert domain2["gate_state"] == "OPEN"
     assert domain2["active_blockers"] == []
+

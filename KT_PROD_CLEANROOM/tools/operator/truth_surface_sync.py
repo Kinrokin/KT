@@ -392,13 +392,13 @@ def _public_verifier_manifest_payload(
             _report_ref(report_root_rel, "platform_governance_narrowing_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
-            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
         "publication_evidence_refs": claims["publication_evidence_refs"],
-        "integrity_supporting_artifacts": [
-            _report_ref(report_root_rel, "dependency_inventory.json"),
-            _report_ref(report_root_rel, "python_environment_manifest.json"),
-            _report_ref(report_root_rel, "sbom_cyclonedx.json"),
+        "historical_dependency_artifacts": [
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "python_environment_manifest.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "sbom_cyclonedx.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory_validation_receipt.json"),
         ],
     }
 

@@ -371,7 +371,9 @@ def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
     must never rewrite them while refreshing current-head evidence.
     """
     report_root = root.parent / ".kt_dependency_evidence" / subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
-    report_root.mkdir(parents=True, exist_ok=True)
+    if report_root.exists() or report_root.is_symlink():
+        raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_ALREADY_EXISTS: {report_root}")
+    report_root.mkdir(parents=True, exist_ok=False)
     try:
         dependency_reports = build_dependency_reports(root=root)
         write_json_stable(report_root / "dependency_inventory.json", dependency_reports["inventory"], volatile_keys=())
@@ -3759,7 +3761,8 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 ]
 
     external_dependency_root = root.parent / ".kt_dependency_evidence" / head
-    external_dependency_root.mkdir(parents=True, exist_ok=True)
+    if not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
+        raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_INVALID: {external_dependency_root}")
     for rel, payload in outputs.items():
         if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
             _w(external_dependency_root, Path(rel).name, payload)

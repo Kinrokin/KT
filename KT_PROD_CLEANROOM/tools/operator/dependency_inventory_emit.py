@@ -217,7 +217,10 @@ def build_dependency_reports(*, root: Path, scan_roots: Sequence[str] = DEFAULT_
 def emit_dependency_reports(*, root: Path, report_root: str | Path) -> Dict[str, Dict[str, Any]]:
     """Emit one fresh dependency-evidence set into a new external root only."""
     destination = resolve_external_report_root(root=root, report_root=report_root)
-    if destination.exists():
+    status = subprocess.run(("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"), check=True, capture_output=True, text=True).stdout
+    if status.strip():
+        raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN")
+    if destination.exists() or destination.is_symlink():
         raise FileExistsError(f"DEPENDENCY_REPORT_ROOT_ALREADY_EXISTS: {destination}")
     destination.mkdir(parents=True, exist_ok=False)
     reports = build_dependency_reports(root=root)
