@@ -48,7 +48,7 @@ def resolve_external_report_root(*, root: Path, report_root: str | Path) -> Path
     # Reject caller-controlled symlink components before resolving for containment.
     probe = candidate
     while True:
-        if probe.exists() and probe.is_symlink():
+        if probe.is_symlink():
             raise ValueError(f"DEPENDENCY_REPORT_ROOT_SYMLINK_FORBIDDEN: {probe}")
         parent = probe.parent
         if parent == probe:

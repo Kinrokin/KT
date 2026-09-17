@@ -696,3 +696,15 @@ def test_output_assessment_rejects_symlink_destination_file(tmp_path: Path) -> N
 def test_partial_measurement_rejects_nonfinite_row(tmp_path: Path) -> None:
     plan, source_root = _plan(tmp_path)
     _expect("PARTIAL_MEASUREMENT_ROW_NOT_JSON_SAFE", contract.preserve_partial_measurements, source_root, plan["output"], 1024, [{"value": float("inf")}], "fixture failure")
+
+
+def test_packet_selection_rejects_unexpected_regular_entry(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    Path(plan["packet_root"], "stale.txt").write_text("stale", encoding="utf-8")
+    _expect("PACKET_DISCOVERY_UNEXPECTED_ENTRY", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)
+
+
+def test_output_allocation_requires_assessment_contents(tmp_path: Path) -> None:
+    plan, source_root = _plan(tmp_path)
+    plan["output"]["assessment_includes"] = []
+    _expect("ASSESSMENT_CONTENTS_INVALID", contract.evaluate_static_preflight, plan, source_root=source_root, available_bytes=1024)

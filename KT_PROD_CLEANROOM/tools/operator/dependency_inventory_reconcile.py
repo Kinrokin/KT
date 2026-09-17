@@ -34,7 +34,7 @@ def _historical_manifest(root: Path) -> Dict[str, Dict[str, str]]:
     raw_root = root / HISTORICAL_REPORT_ROOT_REL
     probe = raw_root
     while True:
-        if probe.exists() and probe.is_symlink():
+        if probe.is_symlink():
             raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {probe}")
         parent = probe.parent
         if parent == probe:

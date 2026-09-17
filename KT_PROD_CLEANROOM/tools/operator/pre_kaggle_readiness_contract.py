@@ -232,6 +232,9 @@ def validate_packet_selection(
     linked = sorted(path.name for path in entries if path.is_symlink())
     if linked:
         _fail("PACKET_SYMLINK_ENTRY_FORBIDDEN", ", ".join(linked))
+    unexpected = sorted(path.name for path in entries if not path.is_file() or path.suffix != ".zip")
+    if unexpected:
+        _fail("PACKET_DISCOVERY_UNEXPECTED_ENTRY", ", ".join(unexpected))
     candidates = sorted(path for path in entries if path.is_file() and path.suffix == ".zip")
     if len(candidates) == 0:
         _fail("PACKET_DISCOVERY_NO_CANDIDATE", str(packet_root))
@@ -591,7 +594,7 @@ def validate_output_allocation(
     if available_bytes < minimum:
         _fail("OUTPUT_DISK_RESERVE_UNMET", f"available {available_bytes}, required {minimum}")
     assessment_includes = allocation.get("assessment_includes")
-    if not isinstance(assessment_includes, list) or not all(isinstance(item, str) and item for item in assessment_includes):
+    if not isinstance(assessment_includes, list) or not assessment_includes or not all(isinstance(item, str) and item for item in assessment_includes):
         _fail("ASSESSMENT_CONTENTS_INVALID", "assessment_includes must be non-empty relative paths")
     forbidden_roots = {
         "ephemeral_heavy",
@@ -894,7 +897,7 @@ def preserve_partial_measurements(
     journal_path = assessment / "measurement_journal.jsonl"
     receipt_path = assessment / "partial_assessment_receipt.json"
     for destination in (journal_path, receipt_path):
-        if destination.exists() and (destination.is_symlink() or not destination.is_file()):
+        if destination.is_symlink() or destination.exists():
             _fail("ASSESSMENT_OUTPUT_DESTINATION_INVALID", str(destination))
     written = 0
     with journal_path.open("a", encoding="utf-8", newline="\n") as handle:

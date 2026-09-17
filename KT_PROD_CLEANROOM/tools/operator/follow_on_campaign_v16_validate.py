@@ -3758,6 +3758,8 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                 ]
 
     for rel, payload in outputs.items():
+        if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
+            continue
         _w(root, rel, payload)
 
     unexpected = [p for p in _dirty(_status_lines(root)) if not _in_scope(p)]
