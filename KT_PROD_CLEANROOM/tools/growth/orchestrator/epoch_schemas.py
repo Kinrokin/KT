@@ -64,7 +64,7 @@ def _require_safe_path_component(value: Any, *, name: str, max_len: int) -> str:
 
 
 def _require_int(value: Any, *, name: str, lo: int, hi: int) -> int:
-    if not isinstance(value, int):
+    if type(value) is not int:
         raise EpochSchemaError(f"{name} must be an integer (fail-closed)")
     if not (lo <= value <= hi):
         raise EpochSchemaError(f"{name} out of bounds (fail-closed)")

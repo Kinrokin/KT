@@ -611,6 +611,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
     registry["current_head"] = current_head()
     registry["updated_by"] = PROGRAM_ID
     registry["claim_ceiling_preserved"] = True
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
     bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     delta = authority(
@@ -619,7 +620,7 @@ def write_registry_delta(root: Path, paths: list[Path], packet_path: Path, packe
         current_head=current_head(),
         packet_path=packet_path.relative_to(root).as_posix(),
         packet_sha256=packet_sha,
-        artifacts_added_or_updated=added,
+        artifacts_added_or_updated=[canonical[item["path"]] for item in added if item["path"] in canonical],
         no_runtime_authority_added=True,
         no_promotion_authority_added=True,
         no_claim_ceiling_expansion=True,

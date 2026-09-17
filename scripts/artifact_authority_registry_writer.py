@@ -287,18 +287,23 @@ def merge_registry_entries(registry: MutableMapping[str, Any], entries: list[dic
     artifacts = registry.get("artifacts")
     if not isinstance(artifacts, list):
         raise ValueError("authority registry artifacts must be a list")
-    by_path = {
-        row["path"]: row for row in artifacts
-        if isinstance(row, dict) and isinstance(row.get("path"), str)
-    }
+    by_path = {}
+    for row in artifacts:
+        if isinstance(row, dict) and isinstance(row.get("path"), str):
+            key = unicodedata.normalize("NFKC", row["path"]).casefold()
+            by_path[key] = row
     for entry in entries:
         path = entry.get("path") if isinstance(entry, dict) else None
         if not isinstance(path, str):
             raise ValueError("registry entry path must be a string")
-        if path in by_path:
+        key = unicodedata.normalize("NFKC", path).casefold()
+        existing = by_path.get(key)
+        if existing is not None:
+            if existing.get("path") != path:
+                raise ValueError(f"registry entry path aliases admitted canonical path: {path}")
             continue
         artifacts.append(entry)
-        by_path[path] = entry
+        by_path[key] = entry
 
 
 def _normalize_primary_class_alias(row: dict[str, Any]) -> None:

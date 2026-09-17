@@ -70,7 +70,7 @@ def entropy(domains):
 
 def micro_stats(epoch_dir):
     micro = []
-    for ms in epoch_dir.glob("CRU_*/micro_steps.json"):
+    for ms in epoch_dir.glob("CRU-*/micro_steps.json"):
         evidence_path = _safe_epoch_evidence(epoch_dir, ms)
         try:
             data = json.loads(evidence_path.read_text())

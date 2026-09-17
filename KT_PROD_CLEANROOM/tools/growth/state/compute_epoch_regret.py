@@ -82,7 +82,7 @@ def _lane_from_epoch_id(epoch_id: str) -> str:
 
 def _collect_micro_steps(epoch_root: Path) -> Optional[List[Dict[str, Any]]]:
     steps: List[Dict[str, Any]] = []
-    for path in sorted(epoch_root.glob("CRU_*/micro_steps.json"), key=lambda p: p.name):
+    for path in sorted(epoch_root.glob("CRU-*/micro_steps.json"), key=lambda p: p.name):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except Exception:

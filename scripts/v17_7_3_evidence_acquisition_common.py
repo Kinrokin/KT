@@ -682,8 +682,6 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
                     "path": path.relative_to(root).as_posix(),
                     "role": "v17_7_3_evidence_acquisition",
                     "sha256": sha256_file(path),
-                    "superseded_by": None,
-                    "supersedes": [],
                     "validation_status": "PASS",
                 }
             )
@@ -698,10 +696,12 @@ def write_registry_delta(root: Path, paths: list[Path], packet_sha: str) -> Path
         **AUTHORITY_FALSE,
     }
     delta_path = root / "registry" / "artifact_authority_registry_v17_7_3_delta_receipt.json"
-    write_json(delta_path, delta)
     registry_path = root / "registry" / "artifact_authority_registry.json"
     registry = read_json(registry_path)
     merge_registry_entries(registry, artifacts)
+    canonical = {row["path"]: row for row in registry.get("artifacts", []) if isinstance(row, dict) and isinstance(row.get("path"), str)}
+    delta["artifacts_added_or_updated"] = [canonical[item["path"]] for item in artifacts if item["path"] in canonical]
+    write_json(delta_path, delta)
     bind_current_file_digests(registry_path, registry)
     write_json(registry_path, registry)
     return delta_path

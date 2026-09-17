@@ -40,7 +40,7 @@ def inspect_micro_steps(epoch_root: Path):
     forced = 0
     low = 0
     steps_seen = 0
-    for ms_path in epoch_root.glob("CRU_*/micro_steps.json"):
+    for ms_path in epoch_root.glob("CRU-*/micro_steps.json"):
         try:
             payload = json.loads(ms_path.read_text())
         except Exception:

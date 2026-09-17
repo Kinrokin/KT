@@ -179,7 +179,7 @@ def _count_transition_dict(payload: Any) -> Tuple[int, int]:
 
 def _collect_micro_steps(root: Path) -> Optional[Dict[str, Any]]:
     steps: List[Dict[str, Any]] = []
-    for path in sorted(root.glob("CRU_*/micro_steps.json"), key=lambda p: p.name):
+    for path in sorted(root.glob("CRU-*/micro_steps.json"), key=lambda p: p.name):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except Exception:

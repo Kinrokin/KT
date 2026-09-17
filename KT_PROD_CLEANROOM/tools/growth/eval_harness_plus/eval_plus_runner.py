@@ -47,7 +47,8 @@ def _reject_nonportable_path_components(*, path: Path, label: str) -> None:
     for part in path.parts:
         if part in {".", ".."}:
             continue
-        if part.endswith((".", " ")) or part.split(".", 1)[0].upper() in reserved:
+        if (":" in part or "\\" in part or part.endswith((".", " "))
+                or part.split(".", 1)[0].upper() in reserved):
             raise ValueError(f"{label}_nonportable_path_component (fail-closed)")
 
 

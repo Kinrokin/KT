@@ -16,7 +16,8 @@ from typing import Callable, Dict, List, Optional, Tuple
 import yaml
 
 # Ensure repo root on sys.path for absolute imports (tooling-only).
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+_CLEANROOM_ROOT = Path(__file__).resolve().parents[3]
+_REPO_ROOT = _CLEANROOM_ROOT
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 from tools.growth.providers.live_guard import enforce_live_guard
@@ -81,10 +82,10 @@ def _growth_artifacts_root() -> Path:
     """
     override = (os.getenv("KT_GROWTH_ARTIFACTS_ROOT") or "").strip()
     if not override:
-        return _repo_root() / "tools" / "growth" / "artifacts"
+        return _CLEANROOM_ROOT / "tools" / "growth" / "artifacts"
     p = Path(override)
     if not p.is_absolute():
-        p = _repo_root() / p
+        p = _CLEANROOM_ROOT / p
     return p.resolve()
 
 
@@ -1588,6 +1589,7 @@ def run_epoch_from_plan(
     artifacts_root: Optional[Path] = None,
     auto_bump: bool = True,
     quiet: bool = False,
+    debug_run_roots: bool = False,
 ) -> Dict[str, object]:
     """
     Canonical epoch invocation. Tooling-only; advisory.
@@ -1604,6 +1606,7 @@ def run_epoch_from_plan(
         salvage_out_root=salvage_out_root,
         auto_bump=auto_bump,
         quiet=quiet,
+        debug_run_roots=debug_run_roots,
     )
 
 
@@ -1620,6 +1623,7 @@ def main() -> int:
         salvage_out_root=Path(args.salvage_out_root) if args.salvage_out_root is not None else None,
         auto_bump=not args.no_auto_bump,
         quiet=args.summary_only,
+        debug_run_roots=args.debug_run_roots,
     )
     epoch_id = summary.get("epoch_id", "UNKNOWN")
     profile = summary.get("epoch_profile", "UNKNOWN")
