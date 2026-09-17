@@ -203,6 +203,19 @@ def update_registry(paths: list[tuple[Path, str, str, bool, str]]) -> None:
     registry_path = REGISTRY / "artifact_authority_registry.json"
     registry = read_json(registry_path)
     entries = [registry_entry(*spec) for spec in paths if spec[0].exists()]
+    for entry in entries:
+        if entry.get("primary_class") == "GENERATED_RUNTIME_PACKET":
+            entry["primary_class"] = "GENERATED_OUTPUT"
+            entry["authority_state"] = "GENERATED_PENDING_VALIDATION"
+            entry["current_authority"] = False
+            entry["controls_execution"] = False
+            entry["claim_authority"] = "NONE"
+        elif entry.get("primary_class") in {"EVIDENCE_ARCHIVE", "EVIDENCE_SUMMARY", "EVIDENCE_LEDGER", "CANONICAL_FIXTURE"}:
+            entry["primary_class"] = "ARCHIVE_HISTORY"
+            entry["authority_state"] = "ARCHIVE"
+            entry["current_authority"] = False
+            entry["controls_execution"] = False
+            entry["claim_authority"] = "NONE"
     delta_path = REGISTRY / "artifact_authority_registry_ktstop50_delta_receipt.json"
     delta = {
         "schema_id": "kt.artifact_authority_registry.ktstop50_delta_receipt.v1",
