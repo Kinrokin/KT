@@ -585,7 +585,8 @@ def validate_runner_identity(runner: Mapping[str, Any]) -> dict[str, str]:
     """Require a meaningful future runner identity without importing or executing it."""
     runner_file = _text(runner.get("runner_file"), "RUNNER_FILE_INVALID", "runner_file")
     path = Path(runner_file)
-    if (path.is_absolute() or runner_file in {"__file__", "__main__", ".", ".."}
+    if (path.is_absolute() or "\\" in runner_file
+            or runner_file in {"__file__", "__main__", ".", ".."}
             or ".." in path.parts or not runner_file.endswith(".py")):
         _fail("RUNNER_FILE_INVALID", runner_file)
     runner_sha = _sha256(runner.get("runner_file_sha256"), "RUNNER_FILE_SHA256_INVALID", "runner_file_sha256")

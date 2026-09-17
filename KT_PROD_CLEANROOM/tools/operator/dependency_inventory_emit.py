@@ -222,16 +222,20 @@ def emit_dependency_reports(*, root: Path, report_root: str | Path) -> Dict[str,
     status = subprocess.run(("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"), check=True, capture_output=True, text=True).stdout
     if status.strip():
         raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_NOT_CLEAN")
-    ignored_python = subprocess.run(
+    ignored_output = subprocess.run(
         (
             "git", "-C", str(root), "ls-files", "--others", "--ignored",
-            "--exclude-standard", "--", *DEFAULT_SCAN_ROOTS, "*.py",
+            "--exclude-standard", "--", *DEFAULT_SCAN_ROOTS,
         ),
         check=True,
         capture_output=True,
         text=True,
     ).stdout
-    if ignored_python.strip():
+    ignored_python = [
+        line for line in ignored_output.splitlines()
+        if line.casefold().endswith(".py")
+    ]
+    if ignored_python:
         raise RuntimeError("DEPENDENCY_SOURCE_SCAN_ROOT_UNTRACKED_OR_IGNORED")
     if destination.exists() or destination.is_symlink():
         raise FileExistsError(f"DEPENDENCY_REPORT_ROOT_ALREADY_EXISTS: {destination}")

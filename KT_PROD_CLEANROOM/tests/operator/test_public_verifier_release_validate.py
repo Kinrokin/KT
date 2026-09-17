@@ -171,6 +171,13 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/program_catalog.json", {"programs": [{"program_id": "program.safe_run", "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"}]})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json", {"status": "HOLD", "validated_head_sha": head_sha})
+    for name, payload in (
+        ("dependency_inventory.json", {"schema_id": "historical.inventory", "status": "ARCHIVED"}),
+        ("python_environment_manifest.json", {"schema_id": "historical.environment", "status": "ARCHIVED"}),
+        ("sbom_cyclonedx.json", {"bomFormat": "CycloneDX", "status": "ARCHIVED"}),
+        ("dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "FAIL"}),
+    ):
+        _write_json(tmp_path / "KT_PROD_CLEANROOM/reports" / name, payload)
 
 
 def _seed_public_surfaces(tmp_path: Path) -> None:
