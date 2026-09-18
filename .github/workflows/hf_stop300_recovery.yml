@@ -1,0 +1,196 @@
+name: HF STOP300 recovery
+
+on:
+  push:
+    branches:
+      - ops/hf-stop300-recovery-run
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_REPO_ID: Kinrokin/ktstop300-v4-1-results
+  HF_REPO_TYPE: dataset
+  RUN_PREFIX: runs/ktstop300_v4_1/aa12b0e4c927d5451ba36032806ba1017eb3bf23/8ff159f76e22767bca73c16e512d7b97643fe101b056211ab708b5e078100c0a/825ec52a2599a3c24a3ffa8de5b94ba1dd6b134dc74dbbcea2b7e2eab64492a0
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Select Hugging Face token without exposing it
+        shell: bash
+        env:
+          TOKEN_1: ${{ secrets.HF_TOKEN }}
+          TOKEN_2: ${{ secrets.HUGGINGFACE_HUB_TOKEN }}
+          TOKEN_3: ${{ secrets.HUGGING_FACE_HUB_TOKEN }}
+          TOKEN_4: ${{ secrets.HUGGINGFACE_TOKEN }}
+          TOKEN_5: ${{ secrets.HF_API_TOKEN }}
+          TOKEN_6: ${{ secrets.HF_READ_TOKEN }}
+          TOKEN_7: ${{ secrets.HF_WRITE_TOKEN }}
+          TOKEN_8: ${{ secrets.KT_HF_TOKEN }}
+          TOKEN_9: ${{ secrets.KAGGLE_HF_TOKEN }}
+        run: |
+          set -euo pipefail
+          token=""
+          for candidate in "$TOKEN_1" "$TOKEN_2" "$TOKEN_3" "$TOKEN_4" "$TOKEN_5" "$TOKEN_6" "$TOKEN_7" "$TOKEN_8" "$TOKEN_9"; do
+            if [ -n "$candidate" ]; then token="$candidate"; break; fi
+          done
+          if [ -z "$token" ]; then
+            echo "HF_TOKEN_NOT_CONFIGURED" > HF_RECOVERY_STATUS.txt
+            exit 2
+          fi
+          echo "::add-mask::$token"
+          echo "HF_TOKEN=$token" >> "$GITHUB_ENV"
+          echo "HF_TOKEN_CONFIGURED" > HF_RECOVERY_STATUS.txt
+
+      - name: Install Hub client
+        run: python -m pip install --disable-pip-version-check --quiet 'huggingface_hub>=0.34,<1'
+
+      - name: Download and verify complete STOP300 run
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib, json, os, shutil, zipfile
+          from pathlib import Path
+          from huggingface_hub import HfApi, hf_hub_download
+
+          repo_id = os.environ['HF_REPO_ID']
+          repo_type = os.environ['HF_REPO_TYPE']
+          prefix = os.environ['RUN_PREFIX'].rstrip('/') + '/'
+          token = os.environ['HF_TOKEN']
+          out = Path('hf_recovery')
+          out.mkdir(parents=True, exist_ok=True)
+
+          def sha256(path: Path) -> str:
+              h = hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          api = HfApi(token=token)
+          files = sorted(api.list_repo_files(repo_id=repo_id, repo_type=repo_type))
+          matched = [name for name in files if name.startswith(prefix)]
+          if not matched:
+              raise SystemExit(f'NO_FILES_UNDER_EXPECTED_PREFIX: {prefix}')
+
+          inventory = []
+          for name in matched:
+              cached = Path(hf_hub_download(
+                  repo_id=repo_id,
+                  repo_type=repo_type,
+                  filename=name,
+                  token=token,
+              ))
+              destination = out / name
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(cached, destination)
+              inventory.append({
+                  'path': name,
+                  'bytes': destination.stat().st_size,
+                  'sha256': sha256(destination),
+              })
+
+          expected_hashes = {
+              'KT_STOP300_V4_1_ASSESSMENT_ONLY.zip': 'aeec0b52b8aede8006b811e8bacd82822547ae2f354d2ff8eca5488d6a999ec5',
+          }
+          by_basename = {}
+          for item in inventory:
+              by_basename.setdefault(Path(item['path']).name, []).append(item)
+
+          checks = {}
+          for basename, expected in expected_hashes.items():
+              candidates = by_basename.get(basename, [])
+              checks[basename] = {
+                  'expected_sha256': expected,
+                  'candidates': candidates,
+                  'exact_match_count': sum(item['sha256'] == expected for item in candidates),
+              }
+
+          assessment_match = [
+              item for item in by_basename.get('KT_STOP300_V4_1_ASSESSMENT_ONLY.zip', [])
+              if item['sha256'] == expected_hashes['KT_STOP300_V4_1_ASSESSMENT_ONLY.zip']
+          ]
+          if len(assessment_match) != 1:
+              raise SystemExit('FINAL_ASSESSMENT_HASH_NOT_FOUND_OR_AMBIGUOUS')
+
+          final_assessment = out / assessment_match[0]['path']
+          extracted = out / 'EXTRACTED_FINAL_ASSESSMENT'
+          if extracted.exists(): shutil.rmtree(extracted)
+          extracted.mkdir(parents=True)
+          with zipfile.ZipFile(final_assessment) as zf:
+              bad = zf.testzip()
+              if bad: raise SystemExit(f'CORRUPT_ASSESSMENT_MEMBER:{bad}')
+              zf.extractall(extracted)
+
+          record_files = sorted(extracted.glob('records/*.json'))
+          record_count = len(record_files)
+          natural_pairs = {}
+          work_keys = []
+          for path in record_files:
+              payload = json.loads(path.read_text(encoding='utf-8-sig'))
+              if payload.get('work_key'):
+                  work_keys.append(payload['work_key'])
+              if payload.get('phase') == 'natural':
+                  natural_pairs.setdefault(payload.get('row_id'), []).append(payload.get('arm_id'))
+          expected_arms = {'L0_LEGACY_NO_DETECTOR','S1_STREAMING_DETECTOR_RUNTIME_TERMINATE'}
+          complete_pairs = sum(set(arms) == expected_arms and len(arms) == 2 for arms in natural_pairs.values())
+
+          verification = {
+              'schema_id': 'kt.stop300.hf_recovery_verification.v1',
+              'repo_id': repo_id,
+              'run_prefix': prefix,
+              'downloaded_file_count': len(inventory),
+              'downloaded_total_bytes': sum(item['bytes'] for item in inventory),
+              'expected_hash_checks': checks,
+              'assessment_zip_integrity': 'PASS',
+              'assessment_record_count': record_count,
+              'natural_record_count': sum(len(v) for v in natural_pairs.values()),
+              'natural_unique_row_count': len(natural_pairs),
+              'complete_l0_s1_pair_rows': complete_pairs,
+              'duplicate_work_key_count': len(work_keys) - len(set(work_keys)),
+              'pair_audit_status': (
+                  'PASS_EXACT_300_COMPLETE_L0_S1_PAIRS'
+                  if len(natural_pairs) == 300 and complete_pairs == 300 and len(work_keys) == len(set(work_keys))
+                  else 'BLOCK_PAIR_MATRIX_MISMATCH'
+              ),
+              'claim_ceiling_status': 'PRESERVED',
+          }
+          (out / 'HF_RECOVERY_INVENTORY.json').write_text(json.dumps(inventory, indent=2, sort_keys=True) + '\n')
+          (out / 'HF_RECOVERY_VERIFICATION.json').write_text(json.dumps(verification, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(verification, indent=2, sort_keys=True))
+          if verification['pair_audit_status'] != 'PASS_EXACT_300_COMPLETE_L0_S1_PAIRS':
+              raise SystemExit('PAIR_AUDIT_FAILED_AFTER_HF_RECOVERY')
+          PY
+
+          cp HF_RECOVERY_STATUS.txt hf_recovery/
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root = Path('hf_recovery')
+          out = Path('KT_STOP300_HF_RECOVERY_COMPLETE.zip')
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+              for path in sorted(root.rglob('*')):
+                  if path.is_file(): zf.write(path, path.relative_to(root))
+          PY
+
+      - name: Upload recovery artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kt-stop300-hf-recovery-complete
+          path: |
+            KT_STOP300_HF_RECOVERY_COMPLETE.zip
+            hf_recovery/HF_RECOVERY_INVENTORY.json
+            hf_recovery/HF_RECOVERY_VERIFICATION.json
+          if-no-files-found: error
+          retention-days: 30
