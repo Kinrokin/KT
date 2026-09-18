@@ -189,7 +189,7 @@
       "severity": "P0_authority",
       "statement": "Archive and quarantine zones may preserve lineage, but they must never define current truth or canonical runtime.",
       "verification_commands": [
-        "python -m tools.operator.dependency_inventory_validate"
+        "python -m tools.operator.dependency_inventory_validate --report-root <external-report-root> --run-root <external-run-root>"
       ]
     },
     {

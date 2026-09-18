@@ -36,10 +36,10 @@
     "python -m tools.operator.public_verifier",
     "python -m tools.operator.authority_convergence_validate",
     "python -m tools.operator.documentary_truth_validate",
-    "python -m tools.operator.dependency_inventory_validate"
+    "python -m tools.operator.dependency_inventory_validate --report-root <external-report-root> --run-root <external-run-root>"
   ],
   "rules": [
-    "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, finalized platform governance decision receipts, and cryptographic publication evidence only.",
+    "Public verifier manifests may reference authoritative pointers, current-head workflow governance receipts, branch protection verification receipts, finalized platform governance decision receipts, cryptographic publication evidence, and retained historical dependency artifacts classified outside current state.",
     "Public verifier manifests must emit evidence_commit, truth_subject_commit, subject_verdict, publication_receipt_status, evidence_contains_subject, evidence_equals_subject, claim_boundary, platform_governance_subject_commit, platform_governance_verdict, platform_governance_claim_admissible, workflow_governance_status, branch_protection_status, platform_governance_claim_boundary, enterprise_legitimacy_ceiling, and platform_governance_receipt_refs.",
     "If current HEAD differs from truth_subject_commit, runtime verifier output must phrase HEAD only as containing evidence for the subject and must never claim that HEAD itself is the verified subject.",
     "If current HEAD differs from platform_governance_subject_commit, runtime verifier output must phrase governance only as evidence for the subject commit and must never claim current-head governance freshness.",

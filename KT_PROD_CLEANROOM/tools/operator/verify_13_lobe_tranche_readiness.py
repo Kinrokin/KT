@@ -11,7 +11,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.operator import author_lobe_gate_court_taxonomy_reconciliation as taxonomy
-from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
 PROGRAM_ID = "VERIFY_KT_13_LOBE_TRANCHE_READINESS"
@@ -23,7 +23,6 @@ CONFIG_PATH = "training/kt_13_lobe_7b_tranche_config.json"
 RUNBOOK_PATH = "training/kaggle_13_lobe_7b_tranche_runbook.md"
 RECEIPT_PATH = "KT_PROD_CLEANROOM/reports/kt_13_lobe_tranche_readiness_inspection_receipt.json"
 REGISTRY_PATH = "registry/artifact_authority_registry.json"
-DELTA_PATH = "registry/artifact_authority_registry_13_lobe_tranche_readiness_delta_receipt.json"
 
 CANONICAL_LOBES = [lobe_id for lobe_id, _, _ in taxonomy.CANONICAL_LOBES]
 CANONICAL_LOBE_SET = set(CANONICAL_LOBES)
@@ -77,6 +76,7 @@ HISTORICAL_COMPAT_LABELS = {
     "lobe.muse.v1",
     "lobe.quant.v1",
     "lobe.auditor.v1",
+    "lobe.censor.v1",
     "lobe.scout.v1",
     "lobe.strategist.v1",
 }
@@ -125,11 +125,6 @@ def _read(root: Path, raw: str) -> dict[str, Any]:
     if not path.is_file():
         raise RuntimeError(f"Missing required artifact: {raw}")
     return load_json(path)
-
-
-def _file_hash(root: Path, raw: str) -> str | None:
-    path = root / raw
-    return file_sha256(path) if path.is_file() else None
 
 
 def _tranche_config(current_head: str) -> dict[str, Any]:
@@ -277,11 +272,12 @@ def _mapping_by_source(mapping: Mapping[str, Any]) -> dict[str, Mapping[str, Any
     }
 
 
-def inspect(root: Path | None = None) -> dict[str, Any]:
-    base = root or repo_root()
+def inspect(root: Path | None = None, *, source_root: Path | None = None) -> dict[str, Any]:
+    emitted = root or repo_root()
+    base = source_root or emitted
     failures: list[dict[str, Any]] = []
 
-    lobe_registry = _read(base, taxonomy.OUTPUTS["cognitive_lobe_registry"])
+    lobe_registry = _read(emitted, taxonomy.OUTPUTS["cognitive_lobe_registry"])
     lobe_ids = [str(item.get("lobe_id", "")) for item in lobe_registry.get("lobes", []) if isinstance(item, Mapping)]
     if lobe_ids != CANONICAL_LOBES:
         failures.append({"failure_id": "canonical_lobe_order_or_set_mismatch", "actual": lobe_ids, "expected": CANONICAL_LOBES})
@@ -308,7 +304,7 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     if bad_lobes:
         failures.append({"failure_id": "forbidden_label_as_canonical_lobe", "bad_lobes": bad_lobes})
 
-    gate_registry = _read(base, taxonomy.OUTPUTS["gate_registry"])
+    gate_registry = _read(emitted, taxonomy.OUTPUTS["gate_registry"])
     components = {str(item.get("component_id", "")): item for item in gate_registry.get("components", []) if isinstance(item, Mapping)}
     missing_components = sorted(REQUIRED_GATE_COMPONENTS - set(components))
     if missing_components:
@@ -325,7 +321,7 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
             if component.get(key) is not expected:
                 failures.append({"failure_id": "gate_component_contract_violation", "component_id": component_id, "field": key, "actual": component.get(key)})
 
-    mapping = _read(base, taxonomy.OUTPUTS["mapping"])
+    mapping = _read(emitted, taxonomy.OUTPUTS["mapping"])
     by_source = _mapping_by_source(mapping)
     for source, target in REQUIRED_MAPPING_TARGETS.items():
         entry = by_source.get(source)
@@ -340,7 +336,7 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     if missing_compat:
         failures.append({"failure_id": "historical_lobe_compat_mapping_missing", "source_labels": missing_compat})
 
-    advisor_schema = _read(base, taxonomy.OUTPUTS["advisor_schema"])
+    advisor_schema = _read(emitted, taxonomy.OUTPUTS["advisor_schema"])
     props = advisor_schema.get("properties", {})
     for key in ("may_authorize_claims", "may_promote_adapters_or_lobes", "may_certify_benchmark_results", "may_override_code_owned_gates"):
         if props.get(key, {}).get("const") is not False:
@@ -348,7 +344,7 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     if props.get("signal_only", {}).get("const") is not True:
         failures.append({"failure_id": "advisor_interface_not_signal_only"})
 
-    config = _read(base, CONFIG_PATH)
+    config = _read(emitted, CONFIG_PATH)
     target_lobes = [str(item) for item in config.get("target_lobe_ids", [])]
     if target_lobes != CANONICAL_LOBES:
         failures.append({"failure_id": "tranche_config_targets_not_13_canonical", "actual": target_lobes, "expected": CANONICAL_LOBES})
@@ -369,7 +365,8 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
         ("claim_ceiling", "governance/current_claim_ceiling.json"),
         ("artifact_authority_registry", REGISTRY_PATH),
     ):
-        if not (base / raw).is_file():
+        required_base = emitted if raw in {CONFIG_PATH, RUNBOOK_PATH, RECEIPT_PATH} else base
+        if not (required_base / raw).is_file():
             failures.append({"failure_id": "required_file_missing", "artifact": artifact, "path": raw})
 
     current_head = _git_head(base)
@@ -398,89 +395,61 @@ def inspect(root: Path | None = None) -> dict[str, Any]:
     }
 
 
-def _registry_entry(root: Path, artifact_id: str, raw: str, role: str, *, controls_execution: bool) -> dict[str, Any]:
-    return {
-        "artifact_id": artifact_id,
-        "path": raw,
-        "role": role,
-        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-        "validation_status": "PASS",
-        "controls_execution": controls_execution,
-        "claim_authority": "INTERNAL_SHADOW",
-        "sha256": _file_hash(root, raw),
-        "supersedes": [],
-        "superseded_by": None,
-        "notes": "13-lobe tranche readiness artifact; no claim expansion or production authority.",
-    }
+def _reject_symlink_components(path: Path) -> None:
+    probe = path
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            return
+        probe = parent
 
 
-def _update_registry(root: Path, current_head: str) -> dict[str, Any]:
-    registry = _read(root, REGISTRY_PATH)
-    artifact_ids = {
-        "KT_13_LOBE_7B_TRANCHE_CONFIG",
-        "KT_13_LOBE_7B_TRANCHE_RUNBOOK",
-        "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT",
-    }
-    artifacts = [item for item in registry.get("artifacts", []) if item.get("artifact_id") not in artifact_ids]
-    artifacts.extend(
-        [
-            _registry_entry(root, "KT_13_LOBE_7B_TRANCHE_CONFIG", CONFIG_PATH, "thirteen_lobe_tranche_config", controls_execution=True),
-            _registry_entry(root, "KT_13_LOBE_7B_TRANCHE_RUNBOOK", RUNBOOK_PATH, "thirteen_lobe_tranche_runbook", controls_execution=False),
-            _registry_entry(root, "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT", RECEIPT_PATH, "thirteen_lobe_tranche_readiness_receipt", controls_execution=True),
-        ]
-    )
-    registry["current_head"] = current_head
-    registry["generated_utc"] = utc_now_iso_z()
-    registry["artifacts"] = artifacts
-    return registry
+def _validate_external_output_root(root: Path, repo: Path) -> None:
+    _reject_symlink_components(root)
+    try:
+        root.resolve().relative_to(repo.resolve())
+    except ValueError:
+        return
+    raise RuntimeError(f"OUTPUT_ROOT_MUST_BE_EXTERNAL: {root}")
 
 
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
-    root = output_root or repo_root()
-    current_head = _git_head(root)
+    repo = repo_root()
+    current_head = _git_head(repo)
+    # Default emissions live outside the checkout so registry-bound source bytes
+    # remain unchanged when this read-only operator is rerun.
+    root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
+    _validate_external_output_root(root, repo)
     changed: list[str] = []
 
-    if write_json_stable(root / CONFIG_PATH, _tranche_config(current_head)):
+    taxonomy.run(output_root=root)
+
+    config_destination = root / CONFIG_PATH
+    _reject_symlink_components(config_destination)
+    if write_json_stable(config_destination, _tranche_config(current_head)):
         changed.append(CONFIG_PATH)
     runbook_path = root / RUNBOOK_PATH
+    _reject_symlink_components(runbook_path)
     runbook_text = _runbook_text()
     if not runbook_path.exists() or runbook_path.read_text(encoding="utf-8") != runbook_text:
         runbook_path.parent.mkdir(parents=True, exist_ok=True)
         runbook_path.write_text(runbook_text, encoding="utf-8", newline="\n")
         changed.append(RUNBOOK_PATH)
 
-    receipt = inspect(root)
-    if write_json_stable(root / RECEIPT_PATH, receipt):
+    receipt = inspect(root, source_root=repo)
+    receipt_destination = root / RECEIPT_PATH
+    _reject_symlink_components(receipt_destination)
+    if write_json_stable(receipt_destination, receipt):
         changed.append(RECEIPT_PATH)
-
-    registry = _update_registry(root, current_head)
-    if write_json_stable(root / REGISTRY_PATH, registry):
-        changed.append(REGISTRY_PATH)
-
-    delta = {
-        "schema_id": "kt.artifact_authority_registry.13_lobe_tranche_readiness_delta_receipt.v1",
-        "artifact_id": "KT_ARTIFACT_AUTHORITY_REGISTRY_13_LOBE_TRANCHE_READINESS_DELTA_RECEIPT",
-        "generated_utc": utc_now_iso_z(),
-        "current_head": current_head,
-        "artifacts_added": [CONFIG_PATH, RUNBOOK_PATH, RECEIPT_PATH],
-        "artifacts_modified": [REGISTRY_PATH, DELTA_PATH],
-        "artifacts_superseded": [],
-        "old_labels_reclassified": sorted(REQUIRED_MAPPING_TARGETS),
-        "historical_lobe_labels_preserved_as_compat_records": True,
-        "future_kaggle_training_restricted_to_13_lobe_ids": receipt["future_kaggle_training_restricted_to_13_lobe_ids"],
-        "prior_gate_scaffold_adapters_preserved_as_advisors": True,
-        "claim_ceiling_unchanged": True,
-        "production_commercial_external_superiority_authority_added": False,
-        "duplicate_controlling_artifacts": [],
-    }
-    if write_json_stable(root / DELTA_PATH, delta):
-        changed.append(DELTA_PATH)
 
     return {
         "current_head": current_head,
         "outcome": receipt["outcome"],
         "next_lawful_move": receipt["next_lawful_move"],
         "changed_outputs": changed,
+        "global_authority_registry_mutated": False,
         "blockers": receipt["blockers"],
         "claim_ceiling": "unchanged",
     }

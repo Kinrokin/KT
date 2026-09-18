@@ -10,7 +10,7 @@ from typing import Any, Mapping, Sequence
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import repo_root, utc_now_iso_z, write_json_stable
 
 
 PROGRAM_ID = "AUTHOR_KT_LOBE_GATE_COURT_TAXONOMY_RECONCILIATION_PACKET_V1"
@@ -140,6 +140,7 @@ MAPPING: tuple[tuple[str, str, str, str], ...] = (
     ("lobe.muse.v1", "HISTORICAL_COMPAT_ALIAS", "cross_domain_patterncraft_lobe", "historical lobe label; not a current training target"),
     ("lobe.quant.v1", "HISTORICAL_COMPAT_ALIAS", "formal_proof_reasoning_lobe", "historical lobe label; not a current training target"),
     ("lobe.auditor.v1", "HISTORICAL_COMPAT_ALIAS", "audit_reasoning_lobe", "historical lobe label; not a current training target"),
+    ("lobe.censor.v1", "HISTORICAL_COMPAT_ALIAS", "regulated_domain_lobe", "historical safety-enforcer baseline; not a current training target or runtime substitute"),
     ("lobe.scout.v1", "HISTORICAL_COMPAT_ALIAS", "grounded_evidence_lobe", "historical lobe label; not a current training target"),
     ("lobe.strategist.v1", "HISTORICAL_COMPAT_ALIAS", "strategic_synthesis_lobe", "historical lobe label; not a current training target"),
 )
@@ -155,8 +156,6 @@ OUTPUTS = {
     "adapter_target_matrix": "KT_PROD_CLEANROOM/reports/kt_adapter_target_matrix.json",
     "reconciliation_receipt": "KT_PROD_CLEANROOM/reports/kt_lobe_gate_court_taxonomy_reconciliation_receipt.json",
     "taxonomy_next_move": "KT_PROD_CLEANROOM/reports/kt_13_lobe_superlane_next_lawful_move.json",
-    "registry": "registry/artifact_authority_registry.json",
-    "registry_delta": "registry/artifact_authority_registry_delta_receipt.json",
 }
 
 
@@ -165,11 +164,6 @@ def _git_head(root: Path) -> str:
         return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     except Exception:  # noqa: BLE001
         return "UNKNOWN_NON_GIT_TEST_ROOT"
-
-
-def _hash_or_none(root: Path, raw: str) -> str | None:
-    path = root / raw
-    return file_sha256(path) if path.is_file() else None
 
 
 def _lobe_registry() -> dict[str, Any]:
@@ -497,99 +491,33 @@ def _next_move(current_head: str) -> dict[str, Any]:
     }
 
 
-def _registry_entry(root: Path, artifact_id: str, path: str, role: str) -> dict[str, Any]:
-    return {
-        "artifact_id": artifact_id,
-        "path": path,
-        "role": role,
-        "authority_state": "LIVE_CURRENT_HEAD_PREP_ONLY",
-        "validation_status": "PASS",
-        "controls_execution": True,
-        "claim_authority": "INTERNAL_SHADOW",
-        "sha256": _hash_or_none(root, path),
-        "supersedes": [],
-        "superseded_by": None,
-        "notes": "Taxonomy reconciliation artifact; no claim expansion or production authority.",
-    }
+def _reject_symlink_components(path: Path) -> None:
+    probe = path
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {probe}")
+        parent = probe.parent
+        if parent == probe:
+            return
+        probe = parent
 
 
-def _update_registry(root: Path, current_head: str) -> tuple[dict[str, Any], dict[str, Any]]:
-    registry = load_json(root / OUTPUTS["registry"])
-    taxonomy_ids = {
-        "KT_COGNITIVE_LOBE_REGISTRY",
-        "KT_GATE_COURT_VALIDATOR_REGISTRY",
-        "KT_LOBE_GATE_MAPPING",
-        "KT_GATE_ADVISOR_INTERFACE_SCHEMA",
-        "KT_LOBE_GATE_COURT_TAXONOMY_RECONCILIATION_RECEIPT",
-        "KT_13_LOBE_SUPERLANE_NEXT_LAWFUL_MOVE",
-    }
-    artifacts = [artifact for artifact in registry.get("artifacts", []) if artifact.get("artifact_id") not in taxonomy_ids]
-    for artifact in artifacts:
-        if artifact.get("artifact_id") == "KT_7B_Q_LORA_SMOKE_REPAIR_NEXT_LAWFUL_MOVE":
-            artifact["controls_execution"] = False
-            artifact["authority_state"] = "SUPERSEDED"
-            artifact["superseded_by"] = OUTPUTS["taxonomy_next_move"]
-            artifact["notes"] = "Superseded as direct next move by 13-lobe taxonomy reconciliation; repair settings remain incorporated into the 13-lobe tranche run policy."
-    artifacts.extend(
-        [
-            _registry_entry(root, "KT_COGNITIVE_LOBE_REGISTRY", OUTPUTS["cognitive_lobe_registry"], "canonical_13_cognitive_lobe_registry"),
-            _registry_entry(root, "KT_GATE_COURT_VALIDATOR_REGISTRY", OUTPUTS["gate_registry"], "gate_court_validator_registry"),
-            _registry_entry(root, "KT_LOBE_GATE_MAPPING", OUTPUTS["mapping"], "lobe_gate_taxonomy_mapping"),
-            _registry_entry(root, "KT_GATE_ADVISOR_INTERFACE_SCHEMA", OUTPUTS["advisor_schema"], "gate_advisor_interface"),
-            _registry_entry(root, "KT_LOBE_GATE_COURT_TAXONOMY_RECONCILIATION_RECEIPT", OUTPUTS["reconciliation_receipt"], "taxonomy_reconciliation_receipt"),
-            _registry_entry(root, "KT_13_LOBE_SUPERLANE_NEXT_LAWFUL_MOVE", OUTPUTS["taxonomy_next_move"], "seven_b_training_next_move"),
-        ]
-    )
-    duplicates = _duplicate_controllers(artifacts)
-    if duplicates:
-        raise RuntimeError(f"Duplicate controlling artifacts after taxonomy reconciliation: {duplicates}")
-    registry["current_head"] = current_head
-    registry["generated_utc"] = utc_now_iso_z()
-    registry["artifacts"] = artifacts
-
-    delta = {
-        "schema_id": "kt.artifact_authority_registry_delta_receipt.v2",
-        "artifact_id": "KT_ARTIFACT_AUTHORITY_REGISTRY_DELTA_RECEIPT",
-        "generated_utc": utc_now_iso_z(),
-        "current_head": current_head,
-        "artifacts_added": [
-            OUTPUTS["cognitive_lobe_registry"],
-            OUTPUTS["cognitive_lobe_schema"],
-            OUTPUTS["gate_registry"],
-            OUTPUTS["gate_schema"],
-            OUTPUTS["mapping"],
-            OUTPUTS["advisor_schema"],
-            OUTPUTS["reconciliation_receipt"],
-            OUTPUTS["taxonomy_next_move"],
-        ],
-        "artifacts_modified": [
-            OUTPUTS["lobe_target_matrix"],
-            OUTPUTS["adapter_target_matrix"],
-            OUTPUTS["registry"],
-            OUTPUTS["registry_delta"],
-        ],
-        "artifacts_superseded": ["KT_PROD_CLEANROOM/reports/kt_7b_q_lora_smoke_repair_next_lawful_move.json"],
-        "old_labels_reclassified": [source for source, _, _, _ in MAPPING if source not in {lobe_id for lobe_id, _, _ in CANONICAL_LOBES}],
-        "prior_gate_scaffold_adapters_preserved_as_advisors": True,
-        "claim_ceiling_unchanged": True,
-        "production_commercial_external_superiority_authority_added": False,
-        "duplicate_controlling_artifacts": [],
-    }
-    return registry, delta
-
-
-def _duplicate_controllers(artifacts: Sequence[Mapping[str, Any]]) -> list[str]:
-    roles: dict[str, int] = {}
-    for artifact in artifacts:
-        if artifact.get("controls_execution") is True and artifact.get("superseded_by") is None:
-            role = str(artifact.get("role", ""))
-            roles[role] = roles.get(role, 0) + 1
-    return sorted(role for role, count in roles.items() if count > 1)
+def _validate_external_output_root(root: Path, repo: Path) -> None:
+    _reject_symlink_components(root)
+    try:
+        root.resolve().relative_to(repo.resolve())
+    except ValueError:
+        return
+    raise RuntimeError(f"OUTPUT_ROOT_MUST_BE_EXTERNAL: {root}")
 
 
 def run(*, output_root: Path | None = None) -> dict[str, Any]:
-    root = output_root or repo_root()
-    current_head = _git_head(root)
+    repo = repo_root()
+    current_head = _git_head(repo)
+    # Default emissions live outside the checkout so registry-bound source bytes
+    # remain unchanged when this read-only operator is rerun.
+    root = output_root or (repo.parent / ".kt_operator_evidence" / f"{current_head}")
+    _validate_external_output_root(root, repo)
     changed: list[str] = []
     payloads = {
         OUTPUTS["cognitive_lobe_registry"]: _lobe_registry(),
@@ -604,18 +532,18 @@ def run(*, output_root: Path | None = None) -> dict[str, Any]:
         OUTPUTS["taxonomy_next_move"]: _next_move(current_head),
     }
     for raw, obj in payloads.items():
-        if write_json_stable(root / raw, obj):
+        destination = root / raw
+        _reject_symlink_components(destination)
+        if destination.exists() and destination.is_symlink():
+            raise RuntimeError(f"OUTPUT_PATH_SYMLINK_FORBIDDEN: {destination}")
+        if write_json_stable(destination, obj):
             changed.append(raw)
-    registry, delta = _update_registry(root, current_head)
-    if write_json_stable(root / OUTPUTS["registry"], registry):
-        changed.append(OUTPUTS["registry"])
-    if write_json_stable(root / OUTPUTS["registry_delta"], delta):
-        changed.append(OUTPUTS["registry_delta"])
     return {
         "current_head": current_head,
         "outcome": TARGET_OUTCOME,
         "next_lawful_move": NEXT_LAWFUL_MOVE,
         "changed_outputs": changed,
+        "global_authority_registry_mutated": False,
         "claim_ceiling": "unchanged",
         "blockers": [],
     }

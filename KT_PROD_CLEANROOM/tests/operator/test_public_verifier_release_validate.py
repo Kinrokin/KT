@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 from pathlib import Path
@@ -171,6 +172,29 @@ def _seed_contracts_and_receipts(tmp_path: Path, *, head_sha: str, truth_subject
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/kt_truth_publication_stabilization_receipt.json", {"status": "PASS"})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/governance/program_catalog.json", {"programs": [{"program_id": "program.safe_run", "implementation_path": "KT_PROD_CLEANROOM/tools/operator/kt_cli.py"}]})
     _write_json(tmp_path / "KT_PROD_CLEANROOM/reports/public_verifier_manifest.json", {"status": "HOLD", "validated_head_sha": head_sha})
+    for name, payload in (
+        ("dependency_inventory.json", {"schema_id": "historical.inventory", "status": "ARCHIVED"}),
+        ("python_environment_manifest.json", {"schema_id": "historical.environment", "status": "ARCHIVED"}),
+        ("sbom_cyclonedx.json", {"bomFormat": "CycloneDX", "status": "ARCHIVED"}),
+        ("dependency_inventory_validation_receipt.json", {"schema_id": "historical.receipt", "status": "FAIL"}),
+    ):
+        _write_json(tmp_path / "KT_PROD_CLEANROOM/reports" / name, payload)
+    artifacts = []
+    for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json"):
+        path = tmp_path / "KT_PROD_CLEANROOM/reports" / name
+        rel = f"KT_PROD_CLEANROOM/reports/{name}"
+        artifacts.append(
+            {
+                "path": rel,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "authority_state": "ARCHIVE",
+                "primary_class": "ARCHIVE_HISTORY",
+                "role": "historical_dependency_evidence",
+                "current_authority": False,
+                "controls_execution": False,
+            }
+        )
+    _write_json(tmp_path / "registry/artifact_authority_registry.json", {"artifacts": artifacts})
 
 
 def _seed_public_surfaces(tmp_path: Path) -> None:

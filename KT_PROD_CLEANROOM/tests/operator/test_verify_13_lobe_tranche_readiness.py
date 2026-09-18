@@ -12,8 +12,8 @@ def _copy_inputs(tmp_path: Path) -> None:
     root = author.repo_root()
     required = [
         "registry/artifact_authority_registry.json",
+        "registry/artifact_authority_registry_delta_receipt.json",
         "governance/current_claim_ceiling.json",
-        "KT_PROD_CLEANROOM/reports/kt_7b_q_lora_smoke_repair_next_lawful_move.json",
         "KT_PROD_CLEANROOM/tools/operator/taxonomy_drift_scan.py",
     ]
     for raw in required:
@@ -27,10 +27,15 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def _stage(tmp_path: Path) -> None:
+def _stage(tmp_path: Path) -> dict[str, bytes]:
     _copy_inputs(tmp_path)
+    preserved = {
+        "registry": (tmp_path / "registry/artifact_authority_registry.json").read_bytes(),
+        "registry_delta": (tmp_path / "registry/artifact_authority_registry_delta_receipt.json").read_bytes(),
+    }
     author.run(output_root=tmp_path)
     readiness.run(output_root=tmp_path)
+    return preserved
 
 
 def test_13_lobe_tranche_readiness_emits_config_receipt_and_runbook(tmp_path: Path) -> None:
@@ -68,17 +73,13 @@ def test_13_lobe_tranche_readiness_blocks_forbidden_training_target(tmp_path: Pa
 
 
 def test_13_lobe_tranche_readiness_preserves_advisor_authority_boundary(tmp_path: Path) -> None:
-    _stage(tmp_path)
+    preserved = _stage(tmp_path)
 
     receipt = _load(tmp_path / readiness.RECEIPT_PATH)
-    delta = _load(tmp_path / readiness.DELTA_PATH)
-    registry = _load(tmp_path / readiness.REGISTRY_PATH)
-    artifact_ids = {artifact["artifact_id"] for artifact in registry["artifacts"]}
 
     assert receipt["advisor_outputs_own_pass_fail_authority"] is False
     assert receipt["code_owned_gates_retain_pass_fail_authority"] is True
     assert receipt["future_kaggle_training_restricted_to_13_lobe_ids"] is True
     assert receipt["claim_ceiling_unchanged"] is True
-    assert delta["production_commercial_external_superiority_authority_added"] is False
-    assert "KT_13_LOBE_7B_TRANCHE_CONFIG" in artifact_ids
-    assert "KT_13_LOBE_TRANCHE_READINESS_INSPECTION_RECEIPT" in artifact_ids
+    assert (tmp_path / readiness.REGISTRY_PATH).read_bytes() == preserved["registry"]
+    assert (tmp_path / "registry/artifact_authority_registry_delta_receipt.json").read_bytes() == preserved["registry_delta"]

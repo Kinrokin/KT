@@ -11,8 +11,9 @@ import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
 
-from tools.operator.dependency_inventory_emit import build_dependency_reports
+from tools.operator.dependency_inventory_emit import DEFAULT_SCAN_ROOTS, build_dependency_reports, resolve_external_report_root
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
+from tools.operator.dependency_inventory_reconcile import CURRENT_EVIDENCE_STATUS, reconcile_dependency_evidence
 from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 
 
@@ -365,19 +366,50 @@ def _third_party_imports_for_surfaces(root: Path, inventory: Dict[str, Any], ref
 
 
 def _refresh_dependency_inventory(root: Path) -> Dict[str, Dict[str, Any]]:
-    report_root = (root / REPORT).resolve()
-    dependency_reports = build_dependency_reports(root=root)
-    _w(root, DEPENDENCY_INVENTORY, dependency_reports["inventory"])
-    _w(root, PYTHON_ENVIRONMENT, dependency_reports["environment"])
-    _w(root, SBOM, dependency_reports["sbom"])
-    validation = build_dependency_inventory_validation_report(root=root, report_root=report_root)
-    _w(root, DEPENDENCY_VALIDATION, validation)
-    return {
-        "inventory": dependency_reports["inventory"],
-        "environment": dependency_reports["environment"],
-        "sbom": dependency_reports["sbom"],
-        "validation": validation,
+    """Build current dependency evidence through the guarded reconciler."""
+    status = subprocess.run(
+        ("git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all", "--", *DEFAULT_SCAN_ROOTS),
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    dirty_source = [line for line in status.stdout.splitlines() if line[3:].replace("\\", "/").endswith(".py")]
+    if dirty_source:
+        raise RuntimeError("DEPENDENCY_SOURCE_WORKTREE_DIRTY")
+    head = subprocess.check_output(("git", "-C", str(root), "rev-parse", "HEAD"), text=True).strip()
+    # A run-unique destination permits safe retries while preserving the
+    # reconciler's before/after historical-retention manifest.
+    import uuid
+    report_root = root.parent / ".kt_dependency_evidence" / f"{head}-{uuid.uuid4().hex}"
+    reconcile_dependency_evidence(root=root, report_root=report_root)
+    reports = {
+        name: json.loads((report_root / name).read_text(encoding="utf-8"))
+        for name in ("dependency_inventory.json", "python_environment_manifest.json", "sbom_cyclonedx.json", "dependency_inventory_validation_receipt.json")
     }
+    reports["external_root"] = str(report_root)
+    return {
+        "inventory": reports["dependency_inventory.json"],
+        "environment": reports["python_environment_manifest.json"],
+        "sbom": reports["sbom_cyclonedx.json"],
+        "validation": reports["dependency_inventory_validation_receipt.json"],
+        "external_root": str(report_root),
+        "reconciliation": json.loads((report_root / "dependency_inventory_reconciliation_receipt.json").read_text(encoding="utf-8")),
+    }
+
+
+def _dependency_evidence_refs(root: Path, external_root: str) -> List[str]:
+    """Return relocatable refs to the sibling external evidence bundle."""
+    relative_root = Path(os.path.relpath(external_root, root))
+    return [
+        (relative_root / name).as_posix()
+        for name in (
+            "dependency_inventory.json",
+            "python_environment_manifest.json",
+            "sbom_cyclonedx.json",
+            "dependency_inventory_validation_receipt.json",
+            "dependency_inventory_reconciliation_receipt.json",
+        )
+    ]
 
 
 def _profile(cls: str) -> Dict[str, float]:
@@ -1534,8 +1566,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             environment_head_ok = str(dependency_bundle["environment"].get("pinned_head_sha", "")).strip() == head
             sbom_head_ok = str(dependency_bundle["sbom"].get("metadata", {}).get("component", {}).get("version", "")).strip() == head
             direct_imports_ok = not direct_third_party_imports
+            reconciliation_ok = dependency_bundle.get("reconciliation", {}).get("status") == CURRENT_EVIDENCE_STATUS
             f03_checks["dependency_airlock_valid"] = all(
-                [dependency_validation_ok, inventory_head_ok, environment_head_ok, sbom_head_ok, direct_imports_ok]
+                [dependency_validation_ok, inventory_head_ok, environment_head_ok, sbom_head_ok, direct_imports_ok, reconciliation_ok]
             )
 
             forbidden_drift_ok = bool(determinism_policy.get("forbidden_drift", []))
@@ -1622,6 +1655,11 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
     f09_status = "BLOCKED_UPSTREAM"
     f09_next_phase: str | None = PHASE_F09
 
+    external_root = str(dependency_bundle.get("external_root", "")).strip()
+    if external_root:
+        dependency_refs = _dependency_evidence_refs(root, external_root)
+    else:
+        dependency_refs = []
     outputs = {
         CHILD_DAG: {
             "schema_id": "kt.child_campaign.execution_dag.v1_6",
@@ -1794,9 +1832,9 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
             "current_repo_head": head,
             "generated_utc": utc_now_iso_z(),
             "checks": [
-                _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
-                _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, DEPENDENCY_INVENTORY]),
-                _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", [DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION]),
+                _check(str(dependency_bundle.get("validation", {}).get("status", "")).strip() == "PASS", "dependency_inventory_validation_pass", "The dependency inventory, environment manifest, and SBOM must validate on the current head.", dependency_refs),
+                _check(not direct_third_party_imports, "class_a_emitter_direct_imports_have_no_third_party_roots", "The declared class-A emitter paths may not directly import third-party roots from the refreshed inventory.", [*F03_EMITTER_IMPORT_SURFACES, *dependency_refs]),
+                _check(f03_checks["dependency_airlock_valid"], "declared_class_a_dependency_path_current_head_bound", "The refreshed dependency evidence must bind to the current head for the declared class-A emitter paths.", dependency_refs),
             ],
             "direct_third_party_imports": direct_third_party_imports,
             "current_strongest_claim": "F03 refreshes and validates current-head dependency evidence for the declared class-A emitter paths only." if f03_checks["dependency_airlock_valid"] else "F03 does not yet validate the current-head dependency evidence for the declared class-A emitter paths.",
@@ -3749,8 +3787,16 @@ def emit_follow_on_campaign_v16(root: Path) -> Dict[str, Any]:
                     {"id": PHASE_F09, "status": f09_status if f08_pass else "BLOCKED_UPSTREAM"},
                 ]
 
+    external_dependency_root = Path(str(dependency_bundle.get("external_root", ""))) if f02b_pass else None
+    if f02b_pass:
+        if external_dependency_root is None or not external_dependency_root.is_dir() or external_dependency_root.is_symlink():
+            raise RuntimeError(f"DEPENDENCY_EXTERNAL_REPORT_ROOT_INVALID: {external_dependency_root}")
     for rel, payload in outputs.items():
-        _w(root, rel, payload)
+        if rel in {DEPENDENCY_INVENTORY, PYTHON_ENVIRONMENT, SBOM, DEPENDENCY_VALIDATION}:
+            if f02b_pass:
+                _w(external_dependency_root, Path(rel).name, payload)
+        else:
+            _w(root, rel, payload)
 
     unexpected = [p for p in _dirty(_status_lines(root)) if not _in_scope(p)]
     if unexpected:

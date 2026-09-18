@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
@@ -11,7 +12,7 @@ from tools.operator.posture_consistency import verify_posture
 from tools.operator.authority_convergence_validate import build_authority_convergence_report
 from tools.operator.dependency_inventory_validate import build_dependency_inventory_validation_report
 from tools.operator.documentary_truth_validate import build_documentary_truth_report
-from tools.operator.titanium_common import load_json, repo_root, utc_now_iso_z, write_json_stable
+from tools.operator.titanium_common import file_sha256, load_json, repo_root, utc_now_iso_z, write_json_stable
 from tools.operator.truth_authority import active_truth_source_ref, build_settled_truth_source_receipt, build_truth_supersession_receipt, path_ref
 from tools.operator.truth_publication import (
     CURRENT_POINTER_REL,
@@ -392,13 +393,13 @@ def _public_verifier_manifest_payload(
             _report_ref(report_root_rel, "platform_governance_narrowing_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
-            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
         "publication_evidence_refs": claims["publication_evidence_refs"],
-        "integrity_supporting_artifacts": [
-            _report_ref(report_root_rel, "dependency_inventory.json"),
-            _report_ref(report_root_rel, "python_environment_manifest.json"),
-            _report_ref(report_root_rel, "sbom_cyclonedx.json"),
+        "historical_dependency_artifacts": [
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "python_environment_manifest.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "sbom_cyclonedx.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory_validation_receipt.json"),
         ],
     }
 
@@ -858,6 +859,45 @@ def build_receipts(*, root: Path, index: Dict[str, Any], report_root_rel: str, l
     }
 
 
+def _validate_historical_dependency_bundle(root: Path) -> None:
+    """Validate retained dependency bytes before any secondary-surface writes."""
+    reports_root = root / DEFAULT_REPORT_ROOT_REL
+    cursor = root
+    for part in reports_root.relative_to(root).parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_SYMLINK_FORBIDDEN: {cursor}")
+    for name in (
+        "dependency_inventory.json",
+        "python_environment_manifest.json",
+        "sbom_cyclonedx.json",
+        "dependency_inventory_validation_receipt.json",
+    ):
+        path = reports_root / name
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_MISSING: {path}")
+        relative = path.relative_to(root).as_posix()
+        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative), capture_output=True, text=True)
+        if tracked.returncode != 0 or tracked.stdout.strip() != relative:
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_NOT_TRACKED: {path}")
+        registry_path = root / "registry/artifact_authority_registry.json"
+        if registry_path.is_symlink() or not registry_path.is_file():
+            raise RuntimeError(f"HISTORICAL_AUTHORITY_REGISTRY_INVALID: {registry_path}")
+        registry = _load_required(registry_path)
+        row = next((item for item in registry.get("artifacts", []) if item.get("path") == relative), None)
+        if not isinstance(row, dict) or not (
+            row.get("authority_state") == "ARCHIVE"
+            and row.get("primary_class") == "ARCHIVE_HISTORY"
+            and row.get("role") == "historical_dependency_evidence"
+            and row.get("current_authority") is False
+            and row.get("controls_execution") is False
+        ):
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_AUTHORITY_INVALID: {path}")
+        expected = row.get("sha256") if isinstance(row, dict) else None
+        if not isinstance(expected, str) or file_sha256(path) != expected:
+            raise RuntimeError(f"HISTORICAL_DEPENDENCY_REPORT_DIGEST_MISMATCH: {path}")
+
+
 def _sync_secondary_surfaces(
     *,
     root: Path,
@@ -869,6 +909,7 @@ def _sync_secondary_surfaces(
     convergence_status: str,
     convergence_failures: Sequence[str],
 ) -> None:
+    _validate_historical_dependency_bundle(root)
     try:
         authoritative_truth_source = str(active_truth_source_ref(root=root)).strip() or truth_source_ref
     except Exception:  # noqa: BLE001
@@ -936,10 +977,7 @@ def _sync_secondary_surfaces(
             ),
         )
     reports_root = root / DEFAULT_REPORT_ROOT_REL
-    _write_json(
-        reports_root / "dependency_inventory_validation_receipt.json",
-        build_dependency_inventory_validation_report(root=root, report_root=reports_root),
-    )
+    _validate_historical_dependency_bundle(root)
     _write_json(
         reports_root / "platform_governance_narrowing_receipt.json",
         build_platform_governance_narrowing_receipt(root=root, report_root_rel=DEFAULT_REPORT_ROOT_REL),

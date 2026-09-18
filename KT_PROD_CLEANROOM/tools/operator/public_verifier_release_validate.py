@@ -216,13 +216,13 @@ def _public_verifier_manifest_payload(*, root: Path, live_head: str, report_root
             _report_ref(report_root_rel, "kt_platform_governance_final_decision_receipt.json"),
             _report_ref(report_root_rel, "authority_convergence_receipt.json"),
             _report_ref(report_root_rel, "documentary_truth_validation_receipt.json"),
-            _report_ref(report_root_rel, "dependency_inventory_validation_receipt.json"),
         ],
         "publication_evidence_refs": list(claims.get("publication_evidence_refs", [])),
-        "integrity_supporting_artifacts": [
-            _report_ref(report_root_rel, "dependency_inventory.json"),
-            _report_ref(report_root_rel, "python_environment_manifest.json"),
-            _report_ref(report_root_rel, "sbom_cyclonedx.json"),
+        "historical_dependency_artifacts": [
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "python_environment_manifest.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "sbom_cyclonedx.json"),
+            _report_ref(DEFAULT_REPORT_ROOT_REL, "dependency_inventory_validation_receipt.json"),
         ],
     }
 
@@ -503,6 +503,47 @@ def _build_public_verifier_attestation(
     }
 
 
+def _require_historical_dependency_artifacts(root: Path) -> None:
+    reports_root = root / DEFAULT_REPORT_ROOT_REL
+    probe = reports_root
+    while True:
+        if probe.is_symlink():
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency root is symlinked: {probe.as_posix()}")
+        parent = probe.parent
+        if parent == probe:
+            break
+        probe = parent
+    for name in (
+        "dependency_inventory.json",
+        "python_environment_manifest.json",
+        "sbom_cyclonedx.json",
+        "dependency_inventory_validation_receipt.json",
+    ):
+        path = reports_root / name
+        if path.is_symlink() or not path.is_file():
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact unavailable: {path.as_posix()}")
+        relative = path.relative_to(root).as_posix()
+        tracked = subprocess.run(("git", "-C", str(root), "ls-files", "--error-unmatch", "--", relative), capture_output=True, text=True)
+        if tracked.returncode != 0 or tracked.stdout.strip() != relative:
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact is not tracked: {path.as_posix()}")
+        registry_path = root / "registry/artifact_authority_registry.json"
+        if registry_path.is_symlink() or not registry_path.is_file():
+            raise RuntimeError(f"FAIL_CLOSED: authority registry is not a regular file: {registry_path.as_posix()}")
+        registry = load_json(registry_path)
+        row = next((item for item in registry.get("artifacts", []) if item.get("path") == relative), None)
+        if not isinstance(row, dict) or not (
+            row.get("authority_state") == "ARCHIVE"
+            and row.get("primary_class") == "ARCHIVE_HISTORY"
+            and row.get("role") == "historical_dependency_evidence"
+            and row.get("current_authority") is False
+            and row.get("controls_execution") is False
+        ):
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact has non-historical authority: {path.as_posix()}")
+        expected = row.get("sha256") if isinstance(row, dict) else None
+        if not isinstance(expected, str) or file_sha256(path) != expected:
+            raise RuntimeError(f"FAIL_CLOSED: retained historical dependency artifact digest mismatch: {path.as_posix()}")
+
+
 def build_public_verifier_release_outputs(*, root: Path, report_root_rel: str = DEFAULT_REPORT_ROOT_REL, generated_utc: str = "") -> Dict[str, Any]:
     generated = str(generated_utc).strip() or utc_now_iso_z()
     compiled_head_commit = _git_head(root)
@@ -514,6 +555,7 @@ def build_public_verifier_release_outputs(*, root: Path, report_root_rel: str = 
     if any(row["status"] != "PASS" for row in dependency_checks):
         raise RuntimeError("FAIL_CLOSED: public verifier dependency boundary is not releasable")
 
+    _require_historical_dependency_artifacts(root)
     fresh_manifest = _public_verifier_manifest_payload(root=root, live_head=compiled_head_commit, report_root_rel=report_root_rel)
     write_json_stable((root / Path(PUBLIC_VERIFIER_MANIFEST_REL)).resolve(), fresh_manifest)
     verifier_report = build_public_verifier_report(root=root, report_root_rel=report_root_rel)
