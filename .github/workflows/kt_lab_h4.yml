@@ -34,12 +34,31 @@ jobs:
             KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_checked_task.py \
             KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_checked_generation.py \
             --basetemp="$RUNNER_TEMP/h4-court" --junitxml="$RUNNER_TEMP/h4-court.xml"
+      - name: Replay the complete original focused and full selections plus cap regressions
+        run: |
+          export PYTHONPATH="$GITHUB_WORKSPACE/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$GITHUB_WORKSPACE/KT_PROD_CLEANROOM:$GITHUB_WORKSPACE/tests"
+          cd KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2
+          export KT_REPORT_PATH="$RUNNER_TEMP/focused.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            tests/test_prb_semantic_vertical.py tests/test_prb_semantic_hostile.py \
+            tests/test_invariants_gate.py tests/test_wave2a_adapter_activation.py \
+            --basetemp="$RUNNER_TEMP/focused" --junitxml="$RUNNER_TEMP/focused.xml"
+          export KT_REPORT_PATH="$RUNNER_TEMP/full.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            tests src/cognition/tests src/council/tests src/curriculum/tests src/multiverse/tests \
+            src/paradox/tests src/temporal/tests src/thermodynamics/tests src/tools/tests \
+            --basetemp="$RUNNER_TEMP/full" --junitxml="$RUNNER_TEMP/full.xml"
+          cd "$GITHUB_WORKSPACE"
+          export KT_REPORT_PATH="$RUNNER_TEMP/cap.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            tests/test_prb_output_token_budget.py --basetemp="$RUNNER_TEMP/cap" --junitxml="$RUNNER_TEMP/cap.xml"
       - name: Record exact-head result and source stability
         if: always()
         run: |
           git rev-parse HEAD HEAD^{tree}
           git diff --check
           test -z "$(git status --porcelain --untracked-files=all)"
+          test -z "$(git ls-files --others --ignored --exclude-standard)"
           python -B - <<'PY'
           import base64, hashlib, os
           from pathlib import Path
@@ -50,4 +69,14 @@ jobs:
               print('H4_JUNIT_BASE64=' + base64.b64encode(raw).decode())
           else:
               raise SystemExit('No JUnit evidence produced')
+          for name in ('focused.xml', 'full.xml', 'cap.xml', 'focused.events.jsonl', 'full.events.jsonl', 'cap.events.jsonl'):
+              path = Path(os.environ['RUNNER_TEMP']) / name
+              if not path.exists():
+                  print('COURT_EVIDENCE_MISSING=' + name)
+                  continue
+              raw = path.read_bytes()
+              encoded = base64.b64encode(raw).decode()
+              print('COURT_FILE=' + name + ':' + hashlib.sha256(raw).hexdigest())
+              for number, start in enumerate(range(0, len(encoded), 4096)):
+                  print('COURT_CHUNK=' + name + ':' + str(number) + ':' + encoded[start:start+4096])
           PY

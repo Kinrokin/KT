@@ -30,6 +30,7 @@ def make_contract(tmp_path, *, strategy="kt_diagnostic", attempts=3, consume=Tru
     value = {"schema_id": CONTRACT_SCHEMA, "run_id": "a" * 32, "authority_sha256": "b" * 64,
              "authority_basis": "OWNER_ADOPTED_PRIVATE_NONPAID_EXPERIMENT", "output_root": str(root),
              "expires_at": int(time.time()) + 1200, "source_files": pins,
+             "runtime_registry_sha256": hashlib.sha256((source.parent / "docs" / "RUNTIME_REGISTRY.json").read_bytes()).hexdigest(),
              "backend": {"kind": "local_qwen_nf4", "adapter_root": None},
              "limits": {"calls": 9, "generated_tokens": 300, "attempts_per_task": 3,
                         "max_new_tokens": 16, "timeout_seconds": 5, "wall_seconds": 600, **limits},

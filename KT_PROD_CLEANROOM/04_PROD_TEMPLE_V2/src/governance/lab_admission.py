@@ -39,13 +39,15 @@ def _positive_int(value: Any, maximum: int, name: str) -> None:
 
 def validate_contract(value: Any) -> dict[str, Any]:
     expected = {"schema_id", "run_id", "authority_sha256", "authority_basis", "output_root",
-                "expires_at", "source_files", "backend", "limits", "operations"}
+                "expires_at", "source_files", "runtime_registry_sha256", "backend", "limits", "operations"}
     _require(type(value) is dict and set(value) == expected, "LAB_CONTRACT_FIELDS")
     _require(value["schema_id"] == CONTRACT_SCHEMA, "LAB_CONTRACT_SCHEMA")
     _require(type(value["run_id"]) is str and re.fullmatch(r"[0-9a-f]{32}", value["run_id"]) is not None, "LAB_RUN_ID")
     _require(type(value["authority_sha256"]) is str and _HEX.fullmatch(value["authority_sha256"]) is not None, "LAB_AUTHORITY_REF")
     _require(value["authority_basis"] == "OWNER_ADOPTED_PRIVATE_NONPAID_EXPERIMENT", "LAB_AUTHORITY_SCOPE")
     _require(type(value["expires_at"]) is int and value["expires_at"] > 0, "LAB_EXPIRY")
+    _require(type(value["runtime_registry_sha256"]) is str and _HEX.fullmatch(value["runtime_registry_sha256"]) is not None,
+             "LAB_RUNTIME_REGISTRY_PIN")
     root = value["output_root"]
     _require(type(root) is str and Path(root).is_absolute(), "LAB_ROOT")
     limits = value["limits"]
@@ -90,6 +92,10 @@ class LabSession:
         _require(self.root.is_dir(), "LAB_OUTPUT_ROOT_MUST_EXIST")
         _require(self.root.resolve(strict=True) == self.root and ".." not in self.root.parts, "LAB_ROOT_NONCANONICAL")
         source_root = Path(__file__).resolve().parents[1]
+        registry_path = source_root.parent / "docs" / "RUNTIME_REGISTRY.json"
+        assert_no_link_or_reparse_path(registry_path, label="laboratory runtime registry")
+        _require(hashlib.sha256(registry_path.read_bytes()).hexdigest() == self.contract["runtime_registry_sha256"],
+                 "LAB_RUNTIME_REGISTRY_BYTES")
         _require(not self.root.is_relative_to(source_root.parents[2]), "LAB_OUTPUT_MUST_BE_EXTERNAL")
         # Complete canonical source pins, not a caller-selected subset of critical functions.
         required = {str(p.relative_to(source_root)).replace(os.sep, "/")
