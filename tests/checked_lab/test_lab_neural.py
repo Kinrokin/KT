@@ -350,3 +350,51 @@ def test_child_and_step_tampering_rejected(tmp_path,case):
     if case=='parent_bytes': (Path(job['backend']['adapter_root'])/'adapter_model.safetensors').write_bytes(b'TAMPER')
     (out/'optimizer_steps.jsonl').write_text(''.join(json.dumps(s)+'\n' for s in steps))
     with pytest.raises(ValueError):neural.verify_child_output(job,sha,out)
+
+
+class PinnedTokenizerShape:
+    """Synthetic boundary fixture; Transformers 5 returns a mapping by default."""
+    eos_token_id = 99
+
+    def __init__(self, prefix=None, full=None, ignore_format=False):
+        self.prefix = [10, 20] if prefix is None else prefix
+        self.full = [10, 20, 30, 99] if full is None else full
+        self.ignore_format = ignore_format
+        self.calls = []
+
+    def apply_chat_template(self, messages, *, tokenize=True,
+                            return_dict=True, add_generation_prompt=False):
+        self.calls.append((messages, tokenize, return_dict, add_generation_prompt))
+        ids = self.prefix if add_generation_prompt else self.full
+        return {'input_ids': ids} if return_dict or self.ignore_format else ids
+
+
+def test_training_tokenizer_explicit_lists_preserve_completion_mask():
+    from tools.training.lab_neural_worker import prepare_training
+    tokenizer = PinnedTokenizerShape()
+    row = {'prompt': 'checked task', 'completion': 'checked answer', 'example_hash': 'a'*64}
+    result = prepare_training(tokenizer, [row], 4)
+    assert result == [('a'*64, [10, 20, 30, 99], [-100, -100, 30, 99])]
+    assert tokenizer.calls == [
+        ([{'role': 'user', 'content': 'checked task'}], True, False, True),
+        ([{'role': 'user', 'content': 'checked task'},
+          {'role': 'assistant', 'content': 'checked answer'}], True, False, False)]
+
+
+@pytest.mark.parametrize('case,reason', [
+    ('mapping', 'TOKEN_IDS'), ('bool_id', 'TOKEN_IDS'),
+    ('boundary', 'TOKEN_BOUNDARY'), ('empty_target', 'TARGET_EMPTY_OR_TRUNCATED'),
+    ('truncated', 'TARGET_EMPTY_OR_TRUNCATED'), ('missing_eos', 'TARGET_EOS')])
+def test_training_tokenizer_strict_boundary_still_rejects(case, reason):
+    from tools.training.lab_neural_worker import prepare_training
+    tokenizer = PinnedTokenizerShape()
+    cap = 4
+    if case == 'mapping': tokenizer.ignore_format = True
+    if case == 'bool_id': tokenizer.full = [10, 20, True, 99]
+    if case == 'boundary': tokenizer.full = [10, 21, 30, 99]
+    if case == 'empty_target': tokenizer.full = [10, 20]
+    if case == 'truncated': cap = 3
+    if case == 'missing_eos': tokenizer.full = [10, 20, 30, 40]
+    with pytest.raises(ValueError, match='NEURAL_'+reason):
+        prepare_training(tokenizer, [{'prompt': 'task', 'completion': 'answer',
+                                     'example_hash': 'a'*64}], cap)

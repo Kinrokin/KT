@@ -17,6 +17,21 @@ import sys
 import time
 
 
+def prepare_training(tokenizer, rows, max_sequence_tokens):
+    """Require explicit token-ID lists from the pinned tokenizer API."""
+    from tools.training.lab_neural import completion_labels
+    from schemas.lab_neural_schema import require
+    training=[]
+    for row in rows:
+        messages=[{'role':'user','content':row['prompt']}]
+        prefix=tokenizer.apply_chat_template(messages,tokenize=True,return_dict=False,add_generation_prompt=True)
+        full=tokenizer.apply_chat_template(messages+[{'role':'assistant','content':row['completion']}],tokenize=True,return_dict=False,add_generation_prompt=False)
+        labels=completion_labels(prefix,full,max_sequence_tokens)
+        require(tokenizer.eos_token_id in full[len(prefix):],'TARGET_EOS')
+        training.append((row['example_hash'],full,labels))
+    return training
+
+
 def main():
     if len(sys.argv)!=4:
         raise RuntimeError('NEURAL_CONTROLLER_ACTIVATION_REQUIRED')
@@ -70,14 +85,7 @@ def main():
             and cfg.get('task_type')=='CAUSAL_LM','PARENT_COMPATIBILITY')
     tokenizer=AutoTokenizer.from_pretrained(str(base),local_files_only=True,trust_remote_code=False)
     require(hashlib.sha256(tokenizer.chat_template.encode()).hexdigest()==backend['chat_template_sha256'],'TOKENIZER_TEMPLATE')
-    training=[]
-    for row in judged['train']:
-        messages=[{'role':'user','content':row['prompt']}]
-        prefix=tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=True)
-        full=tokenizer.apply_chat_template(messages+[{'role':'assistant','content':row['completion']}],tokenize=True,add_generation_prompt=False)
-        labels=completion_labels(prefix,full,job['optimizer']['max_sequence_tokens'])
-        require(tokenizer.eos_token_id in full[len(prefix):],'TARGET_EOS')
-        training.append((row['example_hash'],full,labels))
+    training=prepare_training(tokenizer,judged['train'],job['optimizer']['max_sequence_tokens'])
     quant=BitsAndBytesConfig(load_in_4bit=True,bnb_4bit_quant_type='nf4',bnb_4bit_use_double_quant=True,bnb_4bit_compute_dtype=torch.float16)
     model=AutoModelForCausalLM.from_pretrained(str(base),quantization_config=quant,device_map={'':0},
                                             torch_dtype=torch.float16,local_files_only=True,trust_remote_code=False)
