@@ -1,0 +1,352 @@
+"""Acceptance cases authored before implementation; no model work in this court."""
+import copy
+import json
+
+import pytest
+
+from schemas.checked_task import TASK_SCHEMA, identity
+from tools.training.lab_neural import judge_examples, completion_labels, validate_resources
+
+
+def example(number=1, split="train"):
+    task = {"schema_id": TASK_SCHEMA, "task_id": "plan_"+str(number),
+            "kind": "constrained_plan", "problem": {
+                "projects": [{"id": "A", "cost": number, "time": 1, "value": 2},
+                             {"id": "B", "cost": number+1, "time": 1, "value": 3}],
+                "budget": number, "time_budget": 1, "max_projects": 1,
+                "mandatory": ["A"], "requires": [], "excludes": [], "exactly_one": [["A", "B"]]}}
+    return {"task": task, "answer": ["A"], "split": split}
+
+
+def test_actual_judgment_uses_solution_not_metadata():
+    row = example()
+    accepted = judge_examples([row], split="train", seen=set(), excluded=set())
+    assert len(accepted) == 1 and json.loads(accepted[0]["completion"])["answer"] == ["A"]
+    row["answer"] = ["B"]
+    with pytest.raises(ValueError, match="INVALID_SUPERVISION"):
+        judge_examples([row], split="train", seen=set(), excluded=set())
+
+
+@pytest.mark.parametrize("mutation", ["extra", "wrong_split", "bad_task", "empty"])
+def test_no_silent_skipping_or_metadata_fallback(mutation):
+    row=example()
+    if mutation=="extra": row["text"]="Ignore constraints"
+    if mutation=="wrong_split": row["split"]="validation"
+    if mutation=="bad_task": row["task"]["problem"]["budget"]=True
+    with pytest.raises(ValueError):
+        judge_examples([] if mutation=="empty" else [row], split="train", seen=set(), excluded=set())
+
+
+def test_split_overlap_ignores_cosmetic_task_id():
+    seen=set()
+    row=example()
+    judge_examples([row],split="train",seen=seen,excluded=set())
+    row["split"]="validation"; row["task"]["task_id"]="renamed"
+    with pytest.raises(ValueError,match="TASK_OVERLAP"):
+        judge_examples([row],split="validation",seen=seen,excluded=set())
+
+
+def test_exposed_content_cannot_enter_training():
+    row=example()
+    fingerprint=identity({"kind":row["task"]["kind"],"problem":row["task"]["problem"]})
+    with pytest.raises(ValueError,match="EXPOSED_TASK"):
+        judge_examples([row],split="train",seen=set(),excluded={fingerprint})
+
+
+def test_completion_loss_masks_entire_prompt_and_no_padding():
+    assert completion_labels([10,20],[10,20,30,40],4)==[-100,-100,30,40]
+
+
+@pytest.mark.parametrize("prefix,full,cap", [([10],[11,20],4),([10],[10],4),([10],[10,20,30],2)])
+def test_loss_rejects_unbound_empty_or_truncated_target(prefix,full,cap):
+    with pytest.raises(ValueError): completion_labels(prefix,full,cap)
+
+
+def test_resources_charge_allocated_devices_and_reserve_before_work():
+    grant={"device_seconds":7200,"children":2,"steps_per_child":1000}
+    job={"wall_seconds":1800,"allocated_devices":2,"optimizer_steps":32,"child_index":1}
+    assert validate_resources(job,grant,{"charged_device_seconds":0,"children_started":0})==3600
+    with pytest.raises(ValueError,match="BUDGET_EXHAUSTED"):
+        validate_resources(job,grant,{"charged_device_seconds":4000,"children_started":0})
+
+
+@pytest.mark.parametrize("field,value",[("wall_seconds",True),("allocated_devices",3),("optimizer_steps",1001),("child_index",0)])
+def test_hard_resource_bounds(field,value):
+    job={"wall_seconds":1800,"allocated_devices":2,"optimizer_steps":32,"child_index":1}
+    job[field]=value
+    with pytest.raises(ValueError):
+        validate_resources(job,{"device_seconds":7200,"children":2,"steps_per_child":1000},
+                           {"charged_device_seconds":0,"children_started":0})
+
+
+# Additional adversarial admission cases; fixtures are synthetic CPU assets only.
+from pathlib import Path
+import hashlib
+import time
+from schemas.lab_neural_schema import SCHEMA_ID, SCHEMA_HASH, validate_job
+from schemas.schema_registry import validate_object_with_binding
+from tools.training import lab_neural as neural
+
+
+def bound_job(tmp_path):
+    base=tmp_path/'base';base.mkdir()
+    parent=tmp_path/'parent';parent.mkdir()
+    base_payloads={'config.json':{},'tokenizer.json':{},'tokenizer_config.json':{},
+                   'model.safetensors.index.json':{'weight_map':{'x':'weights.safetensors'}}}
+    for name,value in base_payloads.items(): (base/name).write_text(json.dumps(value))
+    (base/'weights.safetensors').write_bytes(b'SYNTHETIC_TEST_ONLY')
+    (parent/'adapter_config.json').write_text(json.dumps({'base_model_name_or_path':'Qwen/Qwen2.5-7B-Instruct','peft_type':'LORA','task_type':'CAUSAL_LM'}))
+    (parent/'adapter_model.safetensors').write_bytes(b'SYNTHETIC_PARENT_TEST_ONLY')
+    data={'rights':'OWNER_AUTHORED_SYNTHETIC_DEVELOPMENT','exposed_problem_hashes':[]}
+    for index,split in enumerate(('train','validation','transfer','retention'),1):
+        path=tmp_path/(split+'.json');path.write_text(json.dumps([example(index,split)]))
+        data[split]={'path':str(path),'sha256':neural.sha_file(path),'rows':1}
+    backend={'kind':'local_qwen_nf4','base_repo':'Qwen/Qwen2.5-7B-Instruct',
+             'base_revision':'a09a35458c702b33eeacc393d103063234e8bc28','base_root':str(base),
+             'base_files':{p.name:neural.sha_file(p) for p in base.iterdir()},
+             'chat_template_sha256':'a'*64,'adapter_root':str(parent),
+             'adapter_files':{p.name:neural.sha_file(p) for p in parent.iterdir()},'seed':17,
+             'required_versions':{k:'TEST_ONLY' for k in ('torch','transformers','peft','bitsandbytes','accelerate','safetensors','tokenizers')}}
+    job={'schema_id':SCHEMA_ID,'schema_version_hash':SCHEMA_HASH,'job_id':'',
+         'authority_sha256':'b'*64,'authority_basis':'OWNER_ADOPTED_PRIVATE_NONPAID_EXPERIMENT',
+         'law_bundle_sha256':'c'*64,'source_head':'d'*40,'source_files':{'fixed.py':'e'*64},
+         'backend':backend,'data':data,'optimizer':{'kind':'AdamW','learning_rate':0.0001,'weight_decay':0.0,
+            'max_grad_norm':1.0,'batch_size':1,'gradient_accumulation':1,'max_sequence_tokens':512},
+         'limits':{'wall_seconds':60,'allocated_devices':2,'optimizer_steps':2,'child_index':1},
+         'grant':{'device_seconds':7200,'children':2,'steps_per_child':1000},
+         'output_root':str(tmp_path/'output'),'budget_root':str(tmp_path/'budget'),
+         'expires_at':int(time.time())+1200,'objective':'COMPLETION_ONLY_CHECKED_PLAN_FEASIBILITY',
+         'evaluation':{'status':'REQUIRED_NOT_RUN','child_disposition':'QUARANTINE',
+            'controls':['PARENT','UNCHANGED_PARENT_RELOAD'],'splits':['validation','transfer','retention']}}
+    context={'schema_id':'kt.lab.neural_campaign.v1','authority_sha256':job['authority_sha256'],
+             'authority_basis':job['authority_basis'],'budget_root':job['budget_root'],'grant':job['grant'],'expires_at':job['expires_at']}
+    context_path=tmp_path/'campaign.json';neural.write_once(context_path,context)
+    job['campaign_sha256']=neural.sha_file(context_path)
+    return rebind(job)
+
+
+def rebind(job):
+    job['job_id']=identity({k:v for k,v in job.items() if k!='job_id'})
+    return job
+
+
+def store_job(tmp_path,job):
+    path=tmp_path/'job.json';path.write_text(json.dumps(job))
+    return path,neural.sha_file(path)
+
+
+def test_neural_job_registered_and_does_not_import_backend(tmp_path):
+    import sys
+    before=set(sys.modules)
+    validate_object_with_binding(bound_job(tmp_path))
+    assert not ({'torch','peft','transformers','bitsandbytes'} & (set(sys.modules)-before))
+
+
+@pytest.mark.parametrize('case',['legacy','unknown','bool_steps','nan_lr','expired_type','wrong_hash','promoted'])
+def test_closed_neural_schema(tmp_path,case):
+    job=bound_job(tmp_path)
+    if case=='legacy': job['schema_id']='kt.factory.jobspec.v2'
+    if case=='unknown': job['command']='arbitrary'
+    if case=='bool_steps': job['limits']['optimizer_steps']=True
+    if case=='nan_lr': job['optimizer']['learning_rate']=float('nan')
+    if case=='expired_type': job['expires_at']=True
+    if case=='wrong_hash': job['schema_version_hash']='f'*64
+    if case=='promoted': job['evaluation']['child_disposition']='PROMOTED'
+    if case!='nan_lr': rebind(job)
+    with pytest.raises(ValueError): validate_job(job)
+
+
+def test_duplicate_job_keys_rejected_before_any_gate(tmp_path):
+    path=tmp_path/'job.json';path.write_text('{"schema_id":"x","schema_id":"y"}')
+    with pytest.raises(ValueError,match='DUPLICATE_JSON_KEY'):
+        neural.preflight(path,neural.sha_file(path),tmp_path/'repo')
+
+
+@pytest.mark.parametrize('case',['hash','expiry','source','parent','data','collision','symlink'])
+def test_preflight_denies_before_backend_or_worker(tmp_path,monkeypatch,case):
+    job=bound_job(tmp_path);repo=tmp_path/'repo';repo.mkdir()
+    monkeypatch.setattr(neural,'source_inventory',lambda _:dict(job['source_files']))
+    if case=='expiry': job['expires_at']=1;rebind(job)
+    if case=='collision': job['output_root']=job['backend']['adapter_root'];rebind(job)
+    if case=='symlink':
+        alias=tmp_path/'linked';alias.symlink_to(Path(job['backend']['adapter_root']),target_is_directory=True)
+        job['output_root']=str(alias);rebind(job)
+    path,sha=store_job(tmp_path,job)
+    if case=='hash': sha='0'*64
+    if case=='source': monkeypatch.setattr(neural,'source_inventory',lambda _:{})
+    if case=='parent': (Path(job['backend']['adapter_root'])/'adapter_model.safetensors').write_bytes(b'TAMPER')
+    if case=='data': Path(job['data']['train']['path']).write_text('[]')
+    monkeypatch.setattr(neural.subprocess,'Popen',lambda *a,**k:pytest.fail('denied preflight launched worker'))
+    with pytest.raises((ValueError,RuntimeError)): neural.preflight(path,sha,repo)
+
+
+def test_master_denial_preserved_without_launch_or_reservation(tmp_path,monkeypatch):
+    job=bound_job(tmp_path);path,sha=store_job(tmp_path,job)
+    monkeypatch.setattr(neural,'preflight',lambda *a,**k:(job,{'train':[]}))
+    monkeypatch.setattr(neural.os,'getpgrp',neural.os.getpid)
+    from tools.training import training_admission_gate
+    def denied(**kwargs):
+        neural.write_once(kwargs['job_dir']/'training_admission_receipt.json',{'decision':'FAIL_CLOSED'})
+        raise RuntimeError('SYNTHETIC_MASTER_DENIED')
+    monkeypatch.setattr(training_admission_gate,'ensure_training_admission_receipt',denied)
+    monkeypatch.setattr(neural.subprocess,'Popen',lambda *a,**k:pytest.fail('denied master launched worker'))
+    with pytest.raises(RuntimeError,match='MASTER_DENIED'): neural.run(path,sha,tmp_path/'repo',tmp_path/'campaign.json',job['campaign_sha256'])
+    assert (Path(job['output_root'])/'training_admission_receipt.json').is_file()
+    assert not list(Path(job['budget_root']).glob('reservation_*.json'))
+
+
+def test_worker_preflight_never_passes_heldout_targets_to_optimizer(tmp_path,monkeypatch):
+    job=bound_job(tmp_path);path,sha=store_job(tmp_path,job)
+    monkeypatch.setattr(neural,'source_inventory',lambda _:dict(job['source_files']))
+    loaded,judged=neural.preflight(path,sha,tmp_path/'repo',judge_splits=False)
+    assert set(judged)=={'train'} and len(judged['train'])==1
+
+
+
+@pytest.mark.parametrize('exposed',[False,True])
+def test_plan_permutations_cannot_cross_split_or_exposure(exposed):
+    row=example();permuted=copy.deepcopy(row)
+    permuted['task']['task_id']='renamed'
+    permuted['task']['problem']['projects'].reverse()
+    permuted['task']['problem']['exactly_one'][0].reverse()
+    fingerprint=neural.problem_identity(row['task'])
+    assert neural.problem_identity(permuted['task'])==fingerprint
+    seen=set()
+    if not exposed: judge_examples([row],split='train',seen=seen,excluded=set())
+    permuted['split']='validation'
+    with pytest.raises(ValueError,match='EXPOSED_TASK' if exposed else 'TASK_OVERLAP'):
+        judge_examples([permuted],split='validation',seen=seen,excluded={fingerprint} if exposed else set())
+
+
+def reservation(job,sha):
+    return {'job':copy.deepcopy(job),'job_id':job['job_id'],'job_sha256':sha,'job_content_sha256':identity(job),
+            'authority_sha256':job['authority_sha256'],'campaign_sha256':job['campaign_sha256'],
+            'device_seconds':job['limits']['wall_seconds']*job['limits']['allocated_devices'],
+            'child_index':job['limits']['child_index']}
+
+
+@pytest.mark.parametrize('case',['zero','negative','bool','index','job_id','campaign','extra','duplicate'])
+def test_malformed_reservation_cannot_reset_or_reduce_charge(tmp_path,case):
+    job=bound_job(tmp_path);context=json.loads((tmp_path/'campaign.json').read_text());sha=job['campaign_sha256']
+    record=reservation(job,'a'*64)
+    assert neural.validate_reservations([record],context,sha)['charged_device_seconds']==120
+    if case=='zero': record['device_seconds']=0
+    if case=='negative': record['device_seconds']=-120
+    if case=='bool': record['device_seconds']=True
+    if case=='index': record['child_index']=2
+    if case=='job_id': record['job_id']='f'*64
+    if case=='campaign': record['campaign_sha256']='f'*64
+    if case=='extra': record['refund']=120
+    with pytest.raises(ValueError): neural.validate_reservations([record,record] if case=='duplicate' else [record],context,sha)
+
+
+def test_job_cannot_select_new_budget_root_under_existing_campaign(tmp_path):
+    job=bound_job(tmp_path);context=json.loads((tmp_path/'campaign.json').read_text())
+    job['budget_root']=str(tmp_path/'reset_budget');rebind(job)
+    with pytest.raises(ValueError,match='CAMPAIGN_BINDING'):
+        neural.bind_campaign(job,context,job['campaign_sha256'])
+
+
+def test_worker_rejects_regular_descriptor_before_model_import(tmp_path):
+    import subprocess,sys
+    worker=Path(neural.__file__).with_name('lab_neural_worker.py')
+    fake=tmp_path/'fake.json';fake.write_text('{}')
+    with fake.open('rb') as stream:
+        result=subprocess.run([sys.executable,'-I','-B',str(worker),str(fake),'a'*64,str(stream.fileno())],
+                              pass_fds=(stream.fileno(),),capture_output=True,text=True,timeout=15)
+    assert result.returncode!=0 and 'ACTIVATION_PIPE_REQUIRED' in result.stderr
+
+
+@pytest.mark.parametrize('case',['outer_timeout','inner_timeout','normal_straggler','failed_straggler'])
+def test_controller_keeps_workers_and_descendants_in_owned_group(tmp_path,case):
+    """Synthetic controller lifecycle probe; no backend/model or training claim."""
+    import os,signal,subprocess,sys,time
+    job=bound_job(tmp_path)
+    if case=='inner_timeout': job['limits']['wall_seconds']=1;rebind(job)
+    path,sha=store_job(tmp_path,job);pid_path=tmp_path/'owned_pids.json'
+    program=r'''
+import json,os,subprocess,sys
+from pathlib import Path
+from tools.training import lab_neural as n
+from tools.training import training_admission_gate as gate
+job_path=Path(sys.argv[1]);job=json.loads(job_path.read_text());pid_path=Path(sys.argv[4]);case=sys.argv[5]
+n.preflight=lambda *a,**k:(job,{'train':[]})
+def master(**kw):
+    result={'decision':'PASS'};n.write_once(kw['job_dir']/'training_admission_receipt.json',result);return result
+gate.ensure_training_admission_receipt=master
+real=n.subprocess.Popen
+worker="import subprocess,sys,os,json,time;from pathlib import Path;p=subprocess.Popen([sys.executable,'-B','-c','import time;time.sleep(30)']);Path("+repr(str(pid_path))+ ").write_text(json.dumps([os.getpid(),p.pid]));time.sleep(30)" if case.endswith('timeout') else "import subprocess,sys,os,json,time;from pathlib import Path;p=subprocess.Popen([sys.executable,'-B','-c','import time;time.sleep(30)']);Path("+repr(str(pid_path))+").write_text(json.dumps([os.getpid(),p.pid]));time.sleep(.05);sys.exit("+('0' if case=='normal_straggler' else '2')+")"
+def synthetic(argv,**kw):
+    assert not kw.get('start_new_session',False)
+    return real([sys.executable,'-B','-c',worker],**kw)
+n.subprocess.Popen=synthetic
+n.run(job_path,sys.argv[2],job_path.parent/'repo',job_path.parent/'campaign.json',sys.argv[3])
+'''
+    with (tmp_path/'controller.stderr').open('wb') as errors:
+        process=subprocess.Popen([sys.executable,'-B','-c',program,str(path),sha,job['campaign_sha256'],str(pid_path),case],
+                                 start_new_session=True,stdout=subprocess.DEVNULL,stderr=errors)
+        deadline=time.monotonic()+10
+        try:
+            while not pid_path.exists() and process.poll() is None and time.monotonic()<deadline: time.sleep(.02)
+            assert pid_path.exists(),'Probe did not reach synthetic worker; inspect retained stderr'
+            owned=json.loads(pid_path.read_text())
+            assert all(os.getpgid(pid)==process.pid for pid in owned)
+            if case=='outer_timeout':
+                with pytest.raises(subprocess.TimeoutExpired): process.wait(timeout=.15)
+            else: process.wait(timeout=5)
+        finally:
+            try: os.killpg(process.pid,signal.SIGKILL)
+            except ProcessLookupError: pass
+            process.wait(timeout=5)
+        for pid in owned:
+            stat=Path('/proc')/str(pid)/'stat'
+            deadline=time.monotonic()+1
+            while stat.exists() and not stat.read_text().split(') ',1)[1].startswith('Z ') and time.monotonic()<deadline: time.sleep(.01)
+            assert not stat.exists() or stat.read_text().split(') ',1)[1].startswith('Z ')
+    if case=='inner_timeout': assert (Path(job['output_root'])/'internal_timeout.json').exists()
+
+
+def test_optimizer_exit_zero_without_child_evidence_never_counts_as_complete(tmp_path):
+    job=bound_job(tmp_path);output=Path(job['output_root']);output.mkdir()
+    neural.write_once(output/'metadata.json',{'status':'PASS','trained':True})
+    with pytest.raises(FileNotFoundError): neural.verify_child_output(job,'a'*64,output)
+
+
+
+def synthetic_optimizer_records(tmp_path):
+    """Explicit synthetic byte/record fixture, not a model or neural efficacy test."""
+    job=bound_job(tmp_path);out=Path(job['output_root']);out.mkdir()
+    child=out/'quarantined_child';child.mkdir()
+    (child/'adapter_config.json').write_text('{}')
+    (child/'adapter_model.safetensors').write_bytes(b'EXPLICIT_SYNTHETIC_CPU_FIXTURE_NOT_MODEL_WEIGHTS')
+    name='fixture.lora_A.default.weight';expected='a'*64;example_hash='b'*64
+    start={'job_sha256':expected,'parent_files':job['backend']['adapter_files'],
+           'versions':job['backend']['required_versions'],'real_nf4':True,'parameter_hashes':{name:'c'*64}}
+    lineage={'job_sha256':expected,'status':'QUARANTINED_UNEVALUATED','evaluation_status':'NOT_RUN','promotion_authority':False,
+             'parent_files':job['backend']['adapter_files'],'optimizer_steps':2,'parameter_hashes_after':{name:'d'*64},
+             'parameters_changed':1,'child_files':{p.name:neural.sha_file(p) for p in child.iterdir()}}
+    steps=[{'optimizer_step':i,'example_hash':example_hash,'loss':0.5,'gradient_norm_before_clip':0.25,
+            'elapsed_seconds':i*0.1,'sequence_tokens':10,'supervised_tokens':2} for i in (1,2)]
+    neural.write_once(out/'optimizer_start.json',start);neural.write_once(out/'child_lineage.json',lineage)
+    neural.write_once(out/'judgment.json',{'train':{'example_hashes':[example_hash]}})
+    (out/'optimizer_steps.jsonl').write_text(''.join(json.dumps(s)+'\n' for s in steps))
+    return job,expected,out,steps
+
+
+def test_synthetic_optimizer_record_reconciliation_keeps_quarantine(tmp_path):
+    job,sha,out,steps=synthetic_optimizer_records(tmp_path)
+    result=neural.verify_child_output(job,sha,out)
+    assert result['status']=='OPTIMIZER_EVIDENCE_RECONCILED_CHILD_UNEVALUATED'
+    assert result['steps']==2 and result['parameters_changed']==1 and result['promotion_authority'] is False
+
+
+@pytest.mark.parametrize('case',['child_bytes','nonfinite','missing_step','misbound_step','parent_bytes'])
+def test_child_and_step_tampering_rejected(tmp_path,case):
+    job,sha,out,steps=synthetic_optimizer_records(tmp_path)
+    if case=='child_bytes': (out/'quarantined_child/adapter_model.safetensors').write_bytes(b'TAMPER')
+    if case=='nonfinite': steps[0]['loss']=float('nan')
+    if case=='missing_step': steps.pop()
+    if case=='misbound_step': steps[0]['example_hash']='f'*64
+    if case=='parent_bytes': (Path(job['backend']['adapter_root'])/'adapter_model.safetensors').write_bytes(b'TAMPER')
+    (out/'optimizer_steps.jsonl').write_text(''.join(json.dumps(s)+'\n' for s in steps))
+    with pytest.raises(ValueError):neural.verify_child_output(job,sha,out)

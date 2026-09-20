@@ -618,6 +618,10 @@ def _lazy_validator(module_name: str, validator_attr: str) -> _Validator:
 
 SCHEMA_REGISTRY: Mapping[str, Tuple[str, _Validator]] = {
     # NOTE: append-only. New schemas are added explicitly with new IDs/hashes.
+    "kt.lab.neural_job.v1": (
+        schema_version_hash("lab/kt.lab.neural_job.v1.json"),
+        _lazy_validator("schemas.lab_neural_schema", "validate_job"),
+    ),
     RUNTIME_CONTEXT_SCHEMA_ID: (RUNTIME_CONTEXT_SCHEMA_VERSION_HASH, validate_runtime_context),
     STATE_VAULT_SCHEMA_ID: (STATE_VAULT_SCHEMA_VERSION_HASH, validate_state_vault_record),
     ROUTING_RECORD_SCHEMA_ID: (ROUTING_RECORD_SCHEMA_VERSION_HASH, validate_routing_record),

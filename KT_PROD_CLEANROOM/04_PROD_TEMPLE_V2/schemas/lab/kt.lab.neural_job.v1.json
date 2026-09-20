@@ -1,0 +1,88 @@
+{
+  "$id": "kt.lab.neural_job.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Detailed closed predicates are enforced by the pinned lazy validator; no production promotion authority.",
+  "properties": {
+    "authority_basis": {
+      "type": "string"
+    },
+    "authority_sha256": {
+      "type": "string"
+    },
+    "backend": {
+      "type": "object"
+    },
+    "budget_root": {
+      "type": "string"
+    },
+    "campaign_sha256": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    },
+    "evaluation": {
+      "type": "object"
+    },
+    "expires_at": {
+      "type": "integer"
+    },
+    "grant": {
+      "type": "object"
+    },
+    "job_id": {
+      "type": "string"
+    },
+    "law_bundle_sha256": {
+      "type": "string"
+    },
+    "limits": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "optimizer": {
+      "type": "object"
+    },
+    "output_root": {
+      "type": "string"
+    },
+    "schema_id": {
+      "type": "string"
+    },
+    "schema_version_hash": {
+      "type": "string"
+    },
+    "source_files": {
+      "type": "object"
+    },
+    "source_head": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_id",
+    "schema_version_hash",
+    "job_id",
+    "authority_sha256",
+    "authority_basis",
+    "law_bundle_sha256",
+    "source_head",
+    "source_files",
+    "backend",
+    "data",
+    "optimizer",
+    "limits",
+    "grant",
+    "output_root",
+    "budget_root",
+    "expires_at",
+    "objective",
+    "evaluation",
+    "campaign_sha256"
+  ],
+  "title": "Finite owner-adopted private neural laboratory job",
+  "type": "object"
+}
