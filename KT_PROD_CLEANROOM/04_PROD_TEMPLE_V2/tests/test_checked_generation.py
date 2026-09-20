@@ -96,7 +96,11 @@ def isolated_test_transport(monkeypatch):
     # their registry loader. Do not leave our first-use import in their way.
     for name, module in prior_entries.items():
         if module is None:
-            sys.modules.pop(name, None)
+            loaded = sys.modules.pop(name, None)
+            package, child = name.rsplit(".", 1)
+            parent = sys.modules.get(package)
+            if loaded is not None and parent is not None and getattr(parent, child, None) is loaded:
+                delattr(parent, child)
 
 
 def invoke(value, operation):
