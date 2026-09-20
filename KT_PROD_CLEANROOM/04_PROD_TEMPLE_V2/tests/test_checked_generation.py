@@ -5,8 +5,10 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import sys
+import tempfile
 import time
 import types
 
@@ -19,6 +21,17 @@ from governance.lab_admission import CONTRACT_SCHEMA, REQUEST_SCHEMA, LabSession
 from memory import lab_effect
 from schemas.checked_task import PROPOSAL_SCHEMA, TASK_SCHEMA, canonical_bytes, identity
 from schemas.runtime_context_schema import RUNTIME_CONTEXT_SCHEMA_ID, RUNTIME_CONTEXT_SCHEMA_VERSION_HASH
+
+
+@pytest.fixture
+def tmp_path():
+    # Legacy FL4 deliberately places its global pytest basetemp under exports.
+    # Positive lab fixtures require an actually external root; keep all their
+    # records there without weakening admission or deleting evidence at teardown.
+    parent = Path(os.environ.get("RUNNER_TEMP", tempfile.gettempdir())).resolve()
+    repo = Path(__file__).resolve().parents[3]
+    assert not parent.is_relative_to(repo), "laboratory test temporary root must be external"
+    return Path(tempfile.mkdtemp(prefix="kt_checked_lab_test_", dir=parent))
 
 
 def make_contract(tmp_path, *, strategy="kt_diagnostic", attempts=3, consume=True, **limits):
