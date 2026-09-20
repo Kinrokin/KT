@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -137,6 +138,37 @@ def test_real_training_module_is_still_rejected_before_laboratory_generation(tmp
     monkeypatch.setitem(sys.modules, "trainer.unadmitted", types.ModuleType("trainer.unadmitted"))
     with operator_session(path, expected_sha256=sha), pytest.raises(Exception, match="Training/runtime bleed"):
         invoke(value, op)
+    assert not SyntheticBackend.seen
+
+
+def operator_module():
+    path = Path(__file__).resolve().parents[2] / "tools/operator/run_checked_lab.py"
+    spec = importlib.util.spec_from_file_location("checked_lab_operator_test", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("original_status", ["HOLD_GENERATION_FAILED", "HOLD_EFFECT_FAILED_OR_NOT_AUTHORIZED"])
+def test_operator_replay_does_not_upgrade_retained_hold(tmp_path, monkeypatch, original_status):
+    from kt import entrypoint
+    path, sha, value, op = make_contract(tmp_path)
+    monkeypatch.setattr(entrypoint, "invoke", lambda context: {
+        "status": "REPLAY_NO_INFERENCE_NO_EFFECT", "original": {"status": original_status}})
+    assert operator_module().main(["--contract", str(path), "--contract-sha256", sha]) == 2
+    assert not (Path(value["output_root"]) / "operator_complete.json").exists()
+    assert not SyntheticBackend.seen
+
+
+def test_operator_replay_preserves_actual_outcome_and_execution_mode(tmp_path, monkeypatch):
+    from kt import entrypoint
+    path, sha, value, op = make_contract(tmp_path)
+    monkeypatch.setattr(entrypoint, "invoke", lambda context: {
+        "status": "REPLAY_NO_INFERENCE_NO_EFFECT", "original": {"status": "HELD_TASK_PREDICATE"}})
+    assert operator_module().main(["--contract", str(path), "--contract-sha256", sha]) == 0
+    receipt = lab_effect.read_record(Path(value["output_root"]) / "operator_complete.json")
+    assert receipt["operation_statuses"] == {op: "HELD_TASK_PREDICATE"}
+    assert receipt["operation_execution_modes"] == {op: "REPLAY_NO_INFERENCE_NO_EFFECT"}
     assert not SyntheticBackend.seen
 
 

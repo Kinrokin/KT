@@ -42,6 +42,7 @@ def main(argv=None):
                           "original_statuses": {op: value["original"]["status"] for op, value in results.items()}}, sort_keys=True))
         return 0
     statuses = {}
+    modes = {}
     started = time.perf_counter()
     with operator_session(args.contract, expected_sha256=args.contract_sha256):
         for operation_id in contract["operations"]:
@@ -51,21 +52,25 @@ def main(argv=None):
                        "artifact_root": str(root), "envelope": {"input": canonical_bytes({
                            "schema_id": REQUEST_SCHEMA, "operation_id": operation_id}).decode()}}
             result = invoke(context)
-            status = result.get("status", "MISSING_STATUS")
+            mode = result.get("status", "MISSING_STATUS")
+            # Replay is an execution mode, never an upgrade of a retained HOLD.
+            status = result.get("original", {}).get("status", "MISSING_STATUS") if mode == "REPLAY_NO_INFERENCE_NO_EFFECT" else mode
             statuses[operation_id] = status
-            print(json.dumps({"operation_id": operation_id, "status": status}), flush=True)
+            modes[operation_id] = mode
+            print(json.dumps({"operation_id": operation_id, "status": status, "execution_mode": mode}), flush=True)
             # Scientific task failures are retained and the frozen denominator continues.
             # Admission, transport, partial-outcome or recovery failures stop this run.
-            if status not in {"CHECKED_EFFECT_RESTORED", "HELD_TASK_PREDICATE", "CHECKED_NONCONSUMING", "REPLAY_NO_INFERENCE_NO_EFFECT"}:
+            if status not in {"CHECKED_EFFECT_RESTORED", "HELD_TASK_PREDICATE", "CHECKED_NONCONSUMING"}:
                 return 2
     manifest_path = root / "operator_complete.json"
     if manifest_path.exists():
         prior = read_record(manifest_path)
-        if prior["contract_sha256"] != args.contract_sha256:
+        if prior["contract_sha256"] != args.contract_sha256 or prior["operation_statuses"] != statuses:
             raise RuntimeError("OPERATOR_COMPLETION_COLLISION")
     else:
         write_record(manifest_path, {"schema_id": "kt.lab.operator_complete.v1", "contract_sha256": args.contract_sha256,
-                     "operation_statuses": statuses, "operator_seconds": time.perf_counter() - started,
+                     "operation_statuses": statuses, "operation_execution_modes": modes,
+                     "operator_seconds": time.perf_counter() - started,
                      "training_steps": 0, "paid_api_calls": 0,
                      "claim_ceiling": "BOUNDED_LABORATORY_ONLY_NOT_FULL_H4_OR_SCIENTIFIC_SEAL"})
     return 0
