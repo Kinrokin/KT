@@ -5,7 +5,9 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import sys
 import time
+import types
 
 import pytest
 
@@ -72,12 +74,28 @@ class SyntheticBackend:
 
 @pytest.fixture(autouse=True)
 def isolated_test_transport(monkeypatch):
+    # Pytest collects the curriculum court into the same interpreter. That test
+    # module is not part of a deployed runtime. Isolate only the collected test
+    # file, never a training implementation or the production invariant guard.
+    collected = sys.modules.get("test_curriculum_boundary")
+    expected = Path(__file__).resolve().parents[1] / "src/curriculum/tests/test_curriculum_boundary.py"
+    if collected is not None:
+        assert Path(collected.__file__).resolve() == expected
+        sys.modules.pop("test_curriculum_boundary")
+    prior_entries = {name: sys.modules.get(name) for name in ("kt.entrypoint", "core.spine")}
     SyntheticBackend.answers = [41, 42]
     SyntheticBackend.seen = []
     SyntheticBackend.mutate = None
     monkeypatch.setattr(lane, "LocalQwenBackend", SyntheticBackend)
     yield
     ImportTruthGuard.uninstall_for_tests()
+    if collected is not None:
+        sys.modules["test_curriculum_boundary"] = collected
+    # Legacy courts intentionally import these entry points after redirecting
+    # their registry loader. Do not leave our first-use import in their way.
+    for name, module in prior_entries.items():
+        if module is None:
+            sys.modules.pop(name, None)
 
 
 def invoke(value, operation):
@@ -111,6 +129,14 @@ def test_operator_admission_cannot_be_supplied_by_runtime_request(tmp_path):
     result = invoke(value, op)
     assert result["status"] == "FAIL"
     assert "LAB_OPERATOR_ADMISSION_REQUIRED" in result["error"]
+    assert not SyntheticBackend.seen
+
+
+def test_real_training_module_is_still_rejected_before_laboratory_generation(tmp_path, monkeypatch):
+    path, sha, value, op = make_contract(tmp_path)
+    monkeypatch.setitem(sys.modules, "trainer.unadmitted", types.ModuleType("trainer.unadmitted"))
+    with operator_session(path, expected_sha256=sha), pytest.raises(Exception, match="Training/runtime bleed"):
+        invoke(value, op)
     assert not SyntheticBackend.seen
 
 

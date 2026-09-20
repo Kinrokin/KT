@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 import time
 
+import pytest
+
 _PATH = None
 
 
@@ -40,6 +42,18 @@ def pytest_collection_finish(session):
 def pytest_runtest_logreport(report):
     _append({"event": "test", "nodeid": report.nodeid, "phase": report.when,
              "outcome": report.outcome, "xfail": hasattr(report, "wasxfail"), "duration": report.duration})
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    result = yield
+    report = result.get_result()
+    if report.failed and call.excinfo is not None:
+        for entry in call.excinfo.traceback:
+            value = entry.frame.f_locals.get("result")
+            if type(value) is dict and value.get("status") == "FAIL":
+                _append({"event": "runtime_failure_context", "nodeid": item.nodeid,
+                         "result": {key: value[key] for key in ("status", "where", "error") if key in value}})
 
 
 def pytest_sessionfinish(session, exitstatus):
