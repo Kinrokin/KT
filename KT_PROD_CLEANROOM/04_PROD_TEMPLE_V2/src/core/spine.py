@@ -123,6 +123,17 @@ def run(context: Dict[str, Any]) -> Dict[str, Any]:
     # Belt-and-suspenders: re-assert invariants at Spine boundary.
     InvariantsGate.assert_runtime_invariants(context)
 
+    # The explicitly admitted laboratory request uses an external journal. It
+    # neither activates providers for ordinary requests nor changes the offline
+    # semantic contract or its registry-owned state-vault behavior.
+    envelope_input = context.get("envelope", {}).get("input", "")
+    if isinstance(envelope_input, str) and envelope_input.lstrip().startswith("{"):
+        lab_candidate = _strict_json_loads(envelope_input)
+        if isinstance(lab_candidate, dict) and lab_candidate.get("schema_id") == "kt.lab.checked_request.v1":
+            from core.checked_generation import run_checked_generation
+
+            return run_checked_generation(context, lab_candidate)
+
     vault_path = registry.resolve_state_vault_jsonl_path()
 
     # Imports deferred until after Import Truth guard is installed.
