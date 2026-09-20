@@ -310,3 +310,43 @@ def test_optimizer_exit_zero_without_child_evidence_never_counts_as_complete(tmp
     job=bound_job(tmp_path);output=Path(job['output_root']);output.mkdir()
     neural.write_once(output/'metadata.json',{'status':'PASS','trained':True})
     with pytest.raises(FileNotFoundError): neural.verify_child_output(job,'a'*64,output)
+
+
+
+def synthetic_optimizer_records(tmp_path):
+    """Explicit synthetic byte/record fixture, not a model or neural efficacy test."""
+    job=bound_job(tmp_path);out=Path(job['output_root']);out.mkdir()
+    child=out/'quarantined_child';child.mkdir()
+    (child/'adapter_config.json').write_text('{}')
+    (child/'adapter_model.safetensors').write_bytes(b'EXPLICIT_SYNTHETIC_CPU_FIXTURE_NOT_MODEL_WEIGHTS')
+    name='fixture.lora_A.default.weight';expected='a'*64;example_hash='b'*64
+    start={'job_sha256':expected,'parent_files':job['backend']['adapter_files'],
+           'versions':job['backend']['required_versions'],'real_nf4':True,'parameter_hashes':{name:'c'*64}}
+    lineage={'job_sha256':expected,'status':'QUARANTINED_UNEVALUATED','evaluation_status':'NOT_RUN','promotion_authority':False,
+             'parent_files':job['backend']['adapter_files'],'optimizer_steps':2,'parameter_hashes_after':{name:'d'*64},
+             'parameters_changed':1,'child_files':{p.name:neural.sha_file(p) for p in child.iterdir()}}
+    steps=[{'optimizer_step':i,'example_hash':example_hash,'loss':0.5,'gradient_norm_before_clip':0.25,
+            'elapsed_seconds':i*0.1,'sequence_tokens':10,'supervised_tokens':2} for i in (1,2)]
+    neural.write_once(out/'optimizer_start.json',start);neural.write_once(out/'child_lineage.json',lineage)
+    neural.write_once(out/'judgment.json',{'train':{'example_hashes':[example_hash]}})
+    (out/'optimizer_steps.jsonl').write_text(''.join(json.dumps(s)+'\n' for s in steps))
+    return job,expected,out,steps
+
+
+def test_synthetic_optimizer_record_reconciliation_keeps_quarantine(tmp_path):
+    job,sha,out,steps=synthetic_optimizer_records(tmp_path)
+    result=neural.verify_child_output(job,sha,out)
+    assert result['status']=='OPTIMIZER_EVIDENCE_RECONCILED_CHILD_UNEVALUATED'
+    assert result['steps']==2 and result['parameters_changed']==1 and result['promotion_authority'] is False
+
+
+@pytest.mark.parametrize('case',['child_bytes','nonfinite','missing_step','misbound_step','parent_bytes'])
+def test_child_and_step_tampering_rejected(tmp_path,case):
+    job,sha,out,steps=synthetic_optimizer_records(tmp_path)
+    if case=='child_bytes': (out/'quarantined_child/adapter_model.safetensors').write_bytes(b'TAMPER')
+    if case=='nonfinite': steps[0]['loss']=float('nan')
+    if case=='missing_step': steps.pop()
+    if case=='misbound_step': steps[0]['example_hash']='f'*64
+    if case=='parent_bytes': (Path(job['backend']['adapter_root'])/'adapter_model.safetensors').write_bytes(b'TAMPER')
+    (out/'optimizer_steps.jsonl').write_text(''.join(json.dumps(s)+'\n' for s in steps))
+    with pytest.raises(ValueError):neural.verify_child_output(job,sha,out)
