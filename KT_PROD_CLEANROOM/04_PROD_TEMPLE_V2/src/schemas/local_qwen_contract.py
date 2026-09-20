@@ -33,4 +33,3 @@ def validate_backend(value: Any) -> None:
             raise RuntimeError("QWEN_ADAPTER_PIN_COVERAGE")
     if type(value["required_versions"]) is not dict or set(value["required_versions"]) != {"torch", "transformers", "peft", "bitsandbytes", "accelerate", "safetensors", "tokenizers"}:
         raise RuntimeError("QWEN_ENVIRONMENT_PINS")
-
