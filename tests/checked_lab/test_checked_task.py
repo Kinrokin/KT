@@ -208,3 +208,54 @@ def test_observed_missing_metadata_remains_denied_after_prompt_repair(missing):
         candidate.pop(field)
     with pytest.raises(CheckedTaskError, match="PROPOSAL_FIELDS"):
         parse_proposal(canonical_bytes(candidate), task, nonce=NONCE)
+
+
+@pytest.mark.parametrize("answer,limits,totals,diagnostics,relations", [
+    (["B"], {}, {"cost": 3, "time": 1, "value": 7, "selected_projects": 1},
+     ["MANDATORY", "REQUIRES"], {"mandatory_missing": ["A"], "requires": [["B", "A"]], "excludes": [], "exactly_one": []}),
+    (["A", "B", "C"], {}, {"cost": 6, "time": 6, "value": 13, "selected_projects": 3},
+     ["BUDGET", "TIME_BUDGET", "MAX_PROJECTS", "EXCLUDES", "EXACTLY_ONE"],
+     {"mandatory_missing": [], "requires": [], "excludes": [["B", "C"]], "exactly_one": [{"group": ["B", "C"], "selected_count": 2}]}),
+    (["A"], {"budget": 1, "time_budget": 1}, {"cost": 2, "time": 2, "value": 2, "selected_projects": 1},
+     ["BUDGET", "TIME_BUDGET", "EXACTLY_ONE"],
+     {"mandatory_missing": [], "requires": [], "excludes": [], "exactly_one": [{"group": ["B", "C"], "selected_count": 0}]}),
+])
+def test_constraint_detail_renders_exact_checked_totals_and_public_relations(answer, limits, totals, diagnostics, relations):
+    task = plan(); task["problem"].update(limits)
+    previous = proposal(task, answer)
+    history = [{"raw": canonical_bytes(previous).decode(), "nonce": NONCE, "feedback_mode": "kt_constraint_detail"}]
+    body = strict_json(build_prompt(task, nonce="b" * 32, history=history).split("\n", 1)[1])
+    assert body["prior_attempts"][0]["previous_proposal"] == previous
+    detail = body["prior_attempts"][0]["feedback"]
+    assert detail == {"diagnostics": diagnostics, "scope": "DECLARED_PLAN_FEASIBILITY_ONLY",
+                      "optimality": "NOT_CHECKED", "execution_permission": "NOT_GRANTED", "observed": totals,
+                      "public_limits": {"budget": task["problem"]["budget"], "time_budget": task["problem"]["time_budget"], "max_projects": 2},
+                      "violated_relations": relations}
+    assert not checked(task, answer)["satisfied"]  # richer feedback never repairs/accepts an invalid answer
+
+
+@pytest.mark.parametrize("field,value", [("nonce", "c" * 32), ("task_hash", "0" * 64),
+                                        ("schema_id", "fake"), ("optimal_plan", ["A", "B"])])
+def test_constraint_detail_does_not_launder_malformed_or_unbound_history(field, value):
+    task = plan(); previous = proposal(task, ["B"]); previous[field] = value
+    history = [{"raw": canonical_bytes(previous).decode(), "nonce": NONCE, "feedback_mode": "kt_constraint_detail"}]
+    body = strict_json(build_prompt(task, nonce="b" * 32, history=history).split("\n", 1)[1])
+    assert body["prior_attempts"] == [{"previous_proposal": None, "feedback": ["MALFORMED_OR_UNBOUND_PROPOSAL"]}]
+
+
+def test_constraint_detail_preserves_historical_label_only_and_sham_treatments():
+    task = plan(); previous = proposal(task, ["B"])
+    for mode, expected in (("kt_diagnostic", ["MANDATORY", "REQUIRES"]),
+                           ("nonconsuming", ["MANDATORY", "REQUIRES"]),
+                           ("sham", "A diagnostic stage ran. No task-specific diagnostic is supplied.")):
+        history = [{"raw": canonical_bytes(previous).decode(), "nonce": NONCE, "feedback_mode": mode}]
+        body = strict_json(build_prompt(task, nonce="b" * 32, history=history).split("\n", 1)[1])
+        assert body["prior_attempts"][0]["feedback"] == expected
+
+
+def test_constraint_detail_does_not_reveal_arithmetic_solution():
+    task = arithmetic(); previous = proposal(task, 41)
+    history = [{"raw": canonical_bytes(previous).decode(), "nonce": NONCE, "feedback_mode": "kt_constraint_detail"}]
+    body = strict_json(build_prompt(task, nonce="b" * 32, history=history).split("\n", 1)[1])
+    assert body["prior_attempts"][0]["feedback"] == {"diagnostics": ["ARITHMETIC_EQUALITY"],
+        "scope": "DECLARED_INTEGER_OPERATION_EQUALITY", "optimality": "NOT_CHECKED", "execution_permission": "NOT_GRANTED"}

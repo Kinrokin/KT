@@ -191,6 +191,30 @@ def check_proposal(task: dict[str, Any], proposal: dict[str, Any], *, nonce: str
             "optimality": "NOT_CHECKED", "execution_permission": "NOT_GRANTED"}
 
 
+
+def _constraint_feedback(task: dict[str, Any], proposal: dict[str, Any], *, nonce: str) -> dict[str, Any]:
+    """Explain the submitted plan using only its checked totals and public constraints.
+
+    This does not solve, optimize or modify the proposal, and grants no effect.
+    Keep this treatment separate from the original diagnostic-label feedback.
+    """
+    check = check_proposal(task, proposal, nonce=nonce)
+    feedback = {"diagnostics": check["diagnostics"], "scope": check["scope"],
+                "optimality": "NOT_CHECKED", "execution_permission": "NOT_GRANTED"}
+    if task["kind"] == "constrained_plan":
+        problem, selected = task["problem"], set(proposal["answer"])
+        feedback["observed"] = dict(check["metrics"], selected_projects=len(selected))
+        feedback["public_limits"] = {k: problem[k] for k in ("budget", "time_budget", "max_projects")}
+        feedback["violated_relations"] = {
+            "mandatory_missing": sorted(set(problem["mandatory"]) - selected),
+            "requires": [[a, b] for a, b in problem["requires"] if a in selected and b not in selected],
+            "excludes": [[a, b] for a, b in problem["excludes"] if a in selected and b in selected],
+            "exactly_one": [{"group": group, "selected_count": len(selected.intersection(group))}
+                            for group in problem["exactly_one"] if len(selected.intersection(group)) != 1],
+        }
+    return feedback
+
+
 def build_prompt(task: dict[str, Any], *, nonce: str, history: list[dict[str, Any]]) -> str:
     task = validate_task(task)
     if type(nonce) is not str or not re.fullmatch(r"[0-9a-f]{32}", nonce):
@@ -200,7 +224,7 @@ def build_prompt(task: dict[str, Any], *, nonce: str, history: list[dict[str, An
     sanitized = []
     for entry in history:
         _keys(entry, {"raw", "nonce", "feedback_mode"}, "HISTORY")
-        if entry["feedback_mode"] not in ("self_review", "kt_diagnostic", "sham", "nonconsuming"):
+        if entry["feedback_mode"] not in ("self_review", "kt_diagnostic", "kt_constraint_detail", "sham", "nonconsuming"):
             raise CheckedTaskError("HISTORY_MODE")
         try:
             previous = parse_proposal(entry["raw"], task, nonce=entry["nonce"])
@@ -210,6 +234,9 @@ def build_prompt(task: dict[str, Any], *, nonce: str, history: list[dict[str, An
         feedback = "Review your prior answer independently against the public task."
         if entry["feedback_mode"] in ("kt_diagnostic", "nonconsuming"):
             feedback = (check_proposal(task, previous, nonce=entry["nonce"])["diagnostics"]
+                        if previous is not None else ["MALFORMED_OR_UNBOUND_PROPOSAL"])
+        elif entry["feedback_mode"] == "kt_constraint_detail":
+            feedback = (_constraint_feedback(task, previous, nonce=entry["nonce"])
                         if previous is not None else ["MALFORMED_OR_UNBOUND_PROPOSAL"])
         elif entry["feedback_mode"] == "sham":
             feedback = "A diagnostic stage ran. No task-specific diagnostic is supplied."

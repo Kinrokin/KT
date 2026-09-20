@@ -111,7 +111,7 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
         if op["strategy"] != "direct":
             history.append({"raw": raw["output_text"], "nonce": request["nonce"], "feedback_mode": op["strategy"]})
         if attempt < len(reservations) - 1 and (op["strategy"] == "direct" or
-                (op["strategy"] in ("kt_diagnostic", "nonconsuming") and check["satisfied"])):
+                (op["strategy"] in ("kt_diagnostic", "kt_constraint_detail", "nonconsuming") and check["satisfied"])):
             raise RuntimeError("LAB_REPLAY_UNAUTHORIZED_EXTRA_ATTEMPT")
     if result.get("input_tokens") != input_tokens or result.get("output_tokens") != output_tokens:
         raise RuntimeError("LAB_REPLAY_TOKEN_TOTALS")
@@ -121,7 +121,7 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
                 or not (root / f"attempt_{len(completed)}_failure.json").exists()):
             raise RuntimeError("LAB_REPLAY_PARTIAL_GENERATION_CLAIM")
     elif (len(completed) != op["attempts"] and not (op["strategy"] == "direct" or
-            (op["strategy"] in ("kt_diagnostic", "nonconsuming") and final_check["satisfied"]))):
+            (op["strategy"] in ("kt_diagnostic", "kt_constraint_detail", "nonconsuming") and final_check["satisfied"]))):
         raise RuntimeError("LAB_REPLAY_TRUNCATED_ROSTER")
     elif not final_check["satisfied"]:
         if status != "HELD_TASK_PREDICATE" or (root / "effect_applied.json").exists():
@@ -238,7 +238,7 @@ def run_checked_generation(context: dict[str, Any], request: dict[str, Any]) -> 
         result["attempts"].append(attempt)
         result["input_tokens"] += raw["input_tokens"]
         result["output_tokens"] += raw["output_tokens"]
-        if op["strategy"] == "direct" or (op["strategy"] in ("kt_diagnostic", "nonconsuming") and final_check["satisfied"]):
+        if op["strategy"] == "direct" or (op["strategy"] in ("kt_diagnostic", "kt_constraint_detail", "nonconsuming") and final_check["satisfied"]):
             break
         history.append({"raw": raw["output_text"], "nonce": nonce, "feedback_mode": op["strategy"]})
     if final_check["satisfied"] and op["consume"]:

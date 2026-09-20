@@ -590,3 +590,31 @@ def test_fixed_worker_tamper_is_rejected_before_process_launch(tmp_path, monkeyp
         local_qwen.LocalQwenBackend(contract_path=tmp_path / "unused.json", contract_sha256="a" * 64,
                                    output_root=tmp_path, backend={}, timeout=1)
     assert launched == []
+
+
+@pytest.mark.parametrize("consume", [True, False])
+def test_constraint_detail_runs_canonical_bounded_repair_and_detached_replay(tmp_path, consume):
+    path, sha, value, op = make_contract(tmp_path, strategy="kt_constraint_detail", consume=consume)
+    with operator_session(path, expected_sha256=sha):
+        result = invoke(value, op)
+    assert result["status"] == ("CHECKED_EFFECT_RESTORED" if consume else "CHECKED_NONCONSUMING")
+    assert result["attempts"] == [0, 1] and len(SyntheticBackend.seen) == 2
+    feedback = json.loads(SyntheticBackend.seen[1].split("\n", 1)[1])["prior_attempts"][0]["feedback"]
+    assert feedback["diagnostics"] == ["ARITHMETIC_EQUALITY"] and feedback["execution_permission"] == "NOT_GRANTED"
+    folder = Path(value["output_root"]) / op
+    assert (folder / "effect_applied.json").exists() is consume
+    assert lane.verify_operation(folder, expected_contract_sha256=sha)["status"] == "REPLAY_NO_INFERENCE_NO_EFFECT"
+    with operator_session(path, expected_sha256=sha):
+        assert invoke(value, op)["status"] == "REPLAY_NO_INFERENCE_NO_EFFECT"
+    assert len(SyntheticBackend.seen) == 2
+
+
+def test_constraint_detail_exhausted_revisions_still_deny_before_effect(tmp_path):
+    SyntheticBackend.answers = [41]
+    path, sha, value, op = make_contract(tmp_path, strategy="kt_constraint_detail")
+    with operator_session(path, expected_sha256=sha):
+        result = invoke(value, op)
+    assert result["status"] == "HELD_TASK_PREDICATE" and result["attempts"] == [0, 1, 2]
+    folder = Path(value["output_root"]) / op
+    assert not (folder / "effect_prepared.json").exists() and len(SyntheticBackend.seen) == 3
+    assert lane.verify_operation(folder, expected_contract_sha256=sha)["status"] == "REPLAY_NO_INFERENCE_NO_EFFECT"
