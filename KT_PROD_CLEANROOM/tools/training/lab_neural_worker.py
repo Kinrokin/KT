@@ -12,6 +12,7 @@ import math
 import os
 from pathlib import Path
 import random
+import stat
 import sys
 import time
 
@@ -21,23 +22,36 @@ def main():
         raise RuntimeError('NEURAL_CONTROLLER_ACTIVATION_REQUIRED')
     repo=Path(__file__).resolve().parents[3]
     sys.path[:0]=[str(repo/'KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src'),str(repo/'KT_PROD_CLEANROOM')]
-    from tools.training.lab_neural import preflight,read_pinned,sha_file,write_once,completion_labels
+    from tools.training.lab_neural import preflight,read_pinned,sha_file,write_once,completion_labels,bind_campaign,validate_reservations
     from schemas.checked_task import canonical_bytes,strict_json
-    from schemas.lab_neural_schema import require
+    from schemas.lab_neural_schema import require,fields,digest,integer
     path,expected=Path(sys.argv[1]),sys.argv[2]
     fd=int(sys.argv[3])
-    require(fd>=3,'ACTIVATION_FD')
+    require(fd>=3 and stat.S_ISFIFO(os.fstat(fd).st_mode),'ACTIVATION_PIPE_REQUIRED')
     with os.fdopen(fd,'rb') as pipe:
         permit=strict_json(pipe.read(8193),max_bytes=8192)
+    fields(permit,{'job_sha256','nonce','parent_pid','owned_process_group','campaign_path','campaign_sha256',
+                   'reservation_sha256','master_receipt_sha256'},'ACTIVATION')
+    for key in ('job_sha256','nonce','campaign_sha256','reservation_sha256','master_receipt_sha256'):digest(permit[key],key)
+    integer(permit['parent_pid'],1,2**31,'PARENT_PID')
+    integer(permit['owned_process_group'],1,2**31,'PROCESS_GROUP')
+    require(permit['parent_pid']==os.getppid()==os.getpgrp()==permit['owned_process_group'],'OWNED_GROUP_PARENT')
+    context=read_pinned(Path(permit['campaign_path']),permit['campaign_sha256'])
     job,judged=preflight(path,expected,repo,judge_splits=False)
+    bind_campaign(job,context,permit['campaign_sha256'])
     output=Path(job['output_root'])
     require(permit==strict_json((output/'activation.json').read_bytes())
             and permit['job_sha256']==expected and permit['parent_pid']==os.getppid(),'ACTIVE_PARENT')
     require(sha_file(output/'reservation.json')==permit['reservation_sha256']
             and sha_file(output/'training_admission_receipt.json')==permit['master_receipt_sha256'],'ACTIVATION_PIN')
     receipt=strict_json((output/'training_admission_receipt.json').read_bytes())
-    require(receipt['decision']=='PASS' and receipt['job_sha256']==hashlib.sha256(canonical_bytes(job)).hexdigest()
-            and receipt['law_bundle_hash']==job['law_bundle_sha256'],'MASTER_BINDING')
+    from tools.training.training_admission_gate import build_training_admission_receipt
+    require(receipt==build_training_admission_receipt(repo_root=repo,job_path=path,lane_id='PRIVATE_NEURAL_LAB',
+                expected_law_bundle_hash=job['law_bundle_sha256']) and receipt['decision']=='PASS','MASTER_BINDING')
+    records=[strict_json(p.read_bytes(),max_bytes=16*1024*1024) for p in sorted(Path(job['budget_root']).glob('reservation_*.json'))]
+    validate_reservations(records,context,permit['campaign_sha256'])
+    require(records and records[-1]['job']==job and records[-1]['job_sha256']==expected
+            and records[-1]==strict_json((output/'reservation.json').read_bytes(),max_bytes=16*1024*1024),'CURRENT_RESERVATION')
     require(judged['train']==strict_json((output/'judged_train.json').read_bytes(),max_bytes=16*1024*1024),'JUDGED_TRAIN_PIN')
     backend=job['backend'];versions={name:importlib.metadata.version(name) for name in backend['required_versions']}
     require(versions==backend['required_versions'],'ENVIRONMENT_PIN')

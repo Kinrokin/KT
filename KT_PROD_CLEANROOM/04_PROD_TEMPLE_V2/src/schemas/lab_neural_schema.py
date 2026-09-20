@@ -36,10 +36,10 @@ def absolute(value, name):
 
 def validate_job(job):
     fields(job, {"schema_id", "schema_version_hash", "job_id", "authority_sha256", "authority_basis",
-                 "law_bundle_sha256", "source_head", "source_files", "backend", "data", "optimizer",
+                 "law_bundle_sha256", "campaign_sha256", "source_head", "source_files", "backend", "data", "optimizer",
                  "limits", "grant", "output_root", "budget_root", "expires_at", "objective", "evaluation"}, "JOB")
     require(job["schema_id"] == SCHEMA_ID and job["schema_version_hash"] == SCHEMA_HASH, "SCHEMA")
-    for key in ("job_id", "authority_sha256", "law_bundle_sha256"):
+    for key in ("job_id", "authority_sha256", "law_bundle_sha256", "campaign_sha256"):
         digest(job[key], key)
     require(job["authority_basis"] == "OWNER_ADOPTED_PRIVATE_NONPAID_EXPERIMENT", "AUTHORITY")
     require(type(job["source_head"]) is str and re.fullmatch(r"[0-9a-f]{40}", job["source_head"]) is not None, "SOURCE_HEAD")
@@ -56,7 +56,7 @@ def validate_job(job):
                 and all(x not in ("", ".", "..") for x in rel.split("/")), "SOURCE_PATH")
         digest(sha, "SOURCE_SHA")
     # Fixed qualified substrate contract; no dynamic model or optimizer classes.
-    from council.providers.local_qwen import validate_backend
+    from schemas.local_qwen_contract import validate_backend
     validate_backend(job["backend"])
     require(job["backend"]["adapter_root"] is not None, "EXACT_PARENT_REQUIRED")
     data = job["data"]

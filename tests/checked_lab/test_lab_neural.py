@@ -118,6 +118,10 @@ def bound_job(tmp_path):
          'expires_at':int(time.time())+1200,'objective':'COMPLETION_ONLY_CHECKED_PLAN_FEASIBILITY',
          'evaluation':{'status':'REQUIRED_NOT_RUN','child_disposition':'QUARANTINE',
             'controls':['PARENT','UNCHANGED_PARENT_RELOAD'],'splits':['validation','transfer','retention']}}
+    context={'schema_id':'kt.lab.neural_campaign.v1','authority_sha256':job['authority_sha256'],
+             'authority_basis':job['authority_basis'],'budget_root':job['budget_root'],'grant':job['grant'],'expires_at':job['expires_at']}
+    context_path=tmp_path/'campaign.json';neural.write_once(context_path,context)
+    job['campaign_sha256']=neural.sha_file(context_path)
     return rebind(job)
 
 
@@ -179,13 +183,14 @@ def test_preflight_denies_before_backend_or_worker(tmp_path,monkeypatch,case):
 def test_master_denial_preserved_without_launch_or_reservation(tmp_path,monkeypatch):
     job=bound_job(tmp_path);path,sha=store_job(tmp_path,job)
     monkeypatch.setattr(neural,'preflight',lambda *a,**k:(job,{'train':[]}))
+    monkeypatch.setattr(neural.os,'getpgrp',neural.os.getpid)
     from tools.training import training_admission_gate
     def denied(**kwargs):
         neural.write_once(kwargs['job_dir']/'training_admission_receipt.json',{'decision':'FAIL_CLOSED'})
         raise RuntimeError('SYNTHETIC_MASTER_DENIED')
     monkeypatch.setattr(training_admission_gate,'ensure_training_admission_receipt',denied)
     monkeypatch.setattr(neural.subprocess,'Popen',lambda *a,**k:pytest.fail('denied master launched worker'))
-    with pytest.raises(RuntimeError,match='MASTER_DENIED'): neural.run(path,sha,tmp_path/'repo')
+    with pytest.raises(RuntimeError,match='MASTER_DENIED'): neural.run(path,sha,tmp_path/'repo',tmp_path/'campaign.json',job['campaign_sha256'])
     assert (Path(job['output_root'])/'training_admission_receipt.json').is_file()
     assert not list(Path(job['budget_root']).glob('reservation_*.json'))
 
@@ -195,3 +200,113 @@ def test_worker_preflight_never_passes_heldout_targets_to_optimizer(tmp_path,mon
     monkeypatch.setattr(neural,'source_inventory',lambda _:dict(job['source_files']))
     loaded,judged=neural.preflight(path,sha,tmp_path/'repo',judge_splits=False)
     assert set(judged)=={'train'} and len(judged['train'])==1
+
+
+
+@pytest.mark.parametrize('exposed',[False,True])
+def test_plan_permutations_cannot_cross_split_or_exposure(exposed):
+    row=example();permuted=copy.deepcopy(row)
+    permuted['task']['task_id']='renamed'
+    permuted['task']['problem']['projects'].reverse()
+    permuted['task']['problem']['exactly_one'][0].reverse()
+    fingerprint=neural.problem_identity(row['task'])
+    assert neural.problem_identity(permuted['task'])==fingerprint
+    seen=set()
+    if not exposed: judge_examples([row],split='train',seen=seen,excluded=set())
+    permuted['split']='validation'
+    with pytest.raises(ValueError,match='EXPOSED_TASK' if exposed else 'TASK_OVERLAP'):
+        judge_examples([permuted],split='validation',seen=seen,excluded={fingerprint} if exposed else set())
+
+
+def reservation(job,sha):
+    return {'job':copy.deepcopy(job),'job_id':job['job_id'],'job_sha256':sha,'job_content_sha256':identity(job),
+            'authority_sha256':job['authority_sha256'],'campaign_sha256':job['campaign_sha256'],
+            'device_seconds':job['limits']['wall_seconds']*job['limits']['allocated_devices'],
+            'child_index':job['limits']['child_index']}
+
+
+@pytest.mark.parametrize('case',['zero','negative','bool','index','job_id','campaign','extra','duplicate'])
+def test_malformed_reservation_cannot_reset_or_reduce_charge(tmp_path,case):
+    job=bound_job(tmp_path);context=json.loads((tmp_path/'campaign.json').read_text());sha=job['campaign_sha256']
+    record=reservation(job,'a'*64)
+    assert neural.validate_reservations([record],context,sha)['charged_device_seconds']==120
+    if case=='zero': record['device_seconds']=0
+    if case=='negative': record['device_seconds']=-120
+    if case=='bool': record['device_seconds']=True
+    if case=='index': record['child_index']=2
+    if case=='job_id': record['job_id']='f'*64
+    if case=='campaign': record['campaign_sha256']='f'*64
+    if case=='extra': record['refund']=120
+    with pytest.raises(ValueError): neural.validate_reservations([record,record] if case=='duplicate' else [record],context,sha)
+
+
+def test_job_cannot_select_new_budget_root_under_existing_campaign(tmp_path):
+    job=bound_job(tmp_path);context=json.loads((tmp_path/'campaign.json').read_text())
+    job['budget_root']=str(tmp_path/'reset_budget');rebind(job)
+    with pytest.raises(ValueError,match='CAMPAIGN_BINDING'):
+        neural.bind_campaign(job,context,job['campaign_sha256'])
+
+
+def test_worker_rejects_regular_descriptor_before_model_import(tmp_path):
+    import subprocess,sys
+    worker=Path(neural.__file__).with_name('lab_neural_worker.py')
+    fake=tmp_path/'fake.json';fake.write_text('{}')
+    with fake.open('rb') as stream:
+        result=subprocess.run([sys.executable,'-I','-B',str(worker),str(fake),'a'*64,str(stream.fileno())],
+                              pass_fds=(stream.fileno(),),capture_output=True,text=True,timeout=15)
+    assert result.returncode!=0 and 'ACTIVATION_PIPE_REQUIRED' in result.stderr
+
+
+@pytest.mark.parametrize('case',['outer_timeout','inner_timeout','normal_straggler','failed_straggler'])
+def test_controller_keeps_workers_and_descendants_in_owned_group(tmp_path,case):
+    """Synthetic controller lifecycle probe; no backend/model or training claim."""
+    import os,signal,subprocess,sys,time
+    job=bound_job(tmp_path)
+    if case=='inner_timeout': job['limits']['wall_seconds']=1;rebind(job)
+    path,sha=store_job(tmp_path,job);pid_path=tmp_path/'owned_pids.json'
+    program=r'''
+import json,os,subprocess,sys
+from pathlib import Path
+from tools.training import lab_neural as n
+from tools.training import training_admission_gate as gate
+job_path=Path(sys.argv[1]);job=json.loads(job_path.read_text());pid_path=Path(sys.argv[4]);case=sys.argv[5]
+n.preflight=lambda *a,**k:(job,{'train':[]})
+def master(**kw):
+    result={'decision':'PASS'};n.write_once(kw['job_dir']/'training_admission_receipt.json',result);return result
+gate.ensure_training_admission_receipt=master
+real=n.subprocess.Popen
+worker="import subprocess,sys,os,json,time;from pathlib import Path;p=subprocess.Popen([sys.executable,'-B','-c','import time;time.sleep(30)']);Path("+repr(str(pid_path))+ ").write_text(json.dumps([os.getpid(),p.pid]));time.sleep(30)" if case.endswith('timeout') else "import subprocess,sys,os,json,time;from pathlib import Path;p=subprocess.Popen([sys.executable,'-B','-c','import time;time.sleep(30)']);Path("+repr(str(pid_path))+").write_text(json.dumps([os.getpid(),p.pid]));time.sleep(.05);sys.exit("+('0' if case=='normal_straggler' else '2')+")"
+def synthetic(argv,**kw):
+    assert not kw.get('start_new_session',False)
+    return real([sys.executable,'-B','-c',worker],**kw)
+n.subprocess.Popen=synthetic
+n.run(job_path,sys.argv[2],job_path.parent/'repo',job_path.parent/'campaign.json',sys.argv[3])
+'''
+    with (tmp_path/'controller.stderr').open('wb') as errors:
+        process=subprocess.Popen([sys.executable,'-B','-c',program,str(path),sha,job['campaign_sha256'],str(pid_path),case],
+                                 start_new_session=True,stdout=subprocess.DEVNULL,stderr=errors)
+        deadline=time.monotonic()+10
+        try:
+            while not pid_path.exists() and process.poll() is None and time.monotonic()<deadline: time.sleep(.02)
+            assert pid_path.exists(),'Probe did not reach synthetic worker; inspect retained stderr'
+            owned=json.loads(pid_path.read_text())
+            assert all(os.getpgid(pid)==process.pid for pid in owned)
+            if case=='outer_timeout':
+                with pytest.raises(subprocess.TimeoutExpired): process.wait(timeout=.15)
+            else: process.wait(timeout=5)
+        finally:
+            try: os.killpg(process.pid,signal.SIGKILL)
+            except ProcessLookupError: pass
+            process.wait(timeout=5)
+        for pid in owned:
+            stat=Path('/proc')/str(pid)/'stat'
+            deadline=time.monotonic()+1
+            while stat.exists() and not stat.read_text().split(') ',1)[1].startswith('Z ') and time.monotonic()<deadline: time.sleep(.01)
+            assert not stat.exists() or stat.read_text().split(') ',1)[1].startswith('Z ')
+    if case=='inner_timeout': assert (Path(job['output_root'])/'internal_timeout.json').exists()
+
+
+def test_optimizer_exit_zero_without_child_evidence_never_counts_as_complete(tmp_path):
+    job=bound_job(tmp_path);output=Path(job['output_root']);output.mkdir()
+    neural.write_once(output/'metadata.json',{'status':'PASS','trained':True})
+    with pytest.raises(FileNotFoundError): neural.verify_child_output(job,'a'*64,output)
