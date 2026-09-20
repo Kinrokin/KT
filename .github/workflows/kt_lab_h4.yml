@@ -1,0 +1,53 @@
+name: KT laboratory checked-generation courts
+
+on:
+  pull_request:
+    paths:
+      - 'KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**'
+      - '.github/workflows/kt_lab_h4.yml'
+  push:
+    branches:
+      - 'codex/kt-h4-checked-generation'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  checked-generation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      PYTHONPATH: KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:KT_PROD_CLEANROOM
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install the preserved proof lock
+        run: python -m pip install --require-hashes -r KT_PROD_CLEANROOM/requirements-wave0.lock.txt
+      - name: Run task and canonical laboratory courts without models
+        run: |
+          python -B -m pytest -p no:cacheprovider -o addopts='' -vv \
+            KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_checked_task.py \
+            KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tests/test_checked_generation.py \
+            --basetemp="$RUNNER_TEMP/h4-court" --junitxml="$RUNNER_TEMP/h4-court.xml"
+      - name: Record exact-head result and source stability
+        if: always()
+        run: |
+          git rev-parse HEAD HEAD^{tree}
+          git diff --check
+          test -z "$(git status --porcelain --untracked-files=all)"
+          python -B - <<'PY'
+          import base64, hashlib, os
+          from pathlib import Path
+          path = Path(os.environ['RUNNER_TEMP']) / 'h4-court.xml'
+          if path.exists():
+              raw = path.read_bytes()
+              print('H4_JUNIT_SHA256=' + hashlib.sha256(raw).hexdigest())
+              print('H4_JUNIT_BASE64=' + base64.b64encode(raw).decode())
+          else:
+              raise SystemExit('No JUnit evidence produced')
+          PY
