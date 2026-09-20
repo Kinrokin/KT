@@ -19,6 +19,19 @@ from schemas.checked_task import canonical_bytes, strict_json
 from schemas.trusted_local_path import assert_no_link_or_reparse_path
 
 
+# Transitively pinned by the admitted canonical provider source closure.
+# The inference toolchain stays outside runtime src; no caller chooses its path.
+WORKER_SHA256 = "518109695548e8c4a59e03f1db942ca46b1239d187916300ace1d9242314bbcc"
+
+
+def _verified_worker_path() -> Path:
+    worker = Path(__file__).resolve().parents[4] / "tools/operator/local_qwen_worker.py"
+    assert_no_link_or_reparse_path(worker, label="fixed inference worker")
+    if not worker.is_file() or hashlib.sha256(worker.read_bytes()).hexdigest() != WORKER_SHA256:
+        raise RuntimeError("QWEN_WORKER_SOURCE_PIN")
+    return worker
+
+
 def validate_backend(value: Any) -> None:
     expected = {"kind", "base_repo", "base_revision", "base_root", "base_files",
                 "chat_template_sha256", "adapter_root", "adapter_files", "seed", "required_versions"}
@@ -53,6 +66,7 @@ def validate_backend(value: Any) -> None:
 class LocalQwenBackend:
     def __init__(self, *, contract_path: Path, contract_sha256: str, output_root: Path, backend: dict[str, Any], timeout: int):
         validate_backend(backend)
+        worker = _verified_worker_path()
         self.backend, self.timeout = backend, timeout
         self.buffer = bytearray()
         self.process = None
@@ -64,7 +78,7 @@ class LocalQwenBackend:
                             "TOKENIZERS_PARALLELISM": "false", "PYTHONDONTWRITEBYTECODE": "1"})
         try:
             self.process = subprocess.Popen(
-                [sys.executable, "-I", "-B", str(Path(__file__).with_name("local_qwen_worker.py")),
+                [sys.executable, "-I", "-B", str(worker),
                  str(contract_path), contract_sha256], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=self.stderr, env=environment, close_fds=True)
             self.load_record = self._read()

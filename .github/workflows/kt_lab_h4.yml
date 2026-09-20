@@ -5,6 +5,7 @@ on:
     paths:
       - 'KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/**'
       - 'KT_PROD_CLEANROOM/tools/operator/run_checked_lab.py'
+      - 'KT_PROD_CLEANROOM/tools/operator/local_qwen_worker.py'
       - 'tests/kt_lab_report.py'
       - 'tests/checked_lab/**'
       - '.github/workflows/kt_lab_h4.yml'
@@ -62,6 +63,7 @@ jobs:
           export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/KT_PROD_CLEANROOM:$GITHUB_WORKSPACE/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$GITHUB_WORKSPACE/tests"
           export KT_GROWTH_ARTIFACTS_ROOT="$RUNNER_TEMP/growth-artifacts"
           mkdir -p "$KT_GROWTH_ARTIFACTS_ROOT"
+          python -B KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/tools/check_constitution.py --report "$RUNNER_TEMP/constitutional_guard.md"
           python -B -m scripts.repo_pristine_census --check
           python -B scripts/check_no_bloat.py
           python -B scripts/check_artifact_authority_registry.py

@@ -386,3 +386,33 @@ def test_self_review_replay_cannot_shorten_the_declared_attempt_roster(tmp_path)
     (altered / "result.json").write_bytes(canonical_bytes(result))
     with pytest.raises(RuntimeError, match="LAB_REPLAY_TRUNCATED_ROSTER"):
         lane.verify_operation(altered, expected_contract_sha256=sha)
+
+
+
+def test_fixed_inference_worker_is_outside_runtime_and_exactly_pinned():
+    from council.providers import local_qwen
+    worker = local_qwen._verified_worker_path()
+    source = Path(lane.__file__).resolve().parents[1]
+    assert not worker.is_relative_to(source)
+    assert hashlib.sha256(worker.read_bytes()).hexdigest() == local_qwen.WORKER_SHA256
+
+
+@pytest.mark.parametrize("tamper", ["bytes", "symlink"])
+def test_fixed_worker_tamper_is_rejected_before_process_launch(tmp_path, monkeypatch, tamper):
+    from council.providers import local_qwen
+    actual = local_qwen._verified_worker_path()
+    fake_provider = tmp_path / "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src/council/providers/local_qwen.py"
+    worker = tmp_path / "KT_PROD_CLEANROOM/tools/operator/local_qwen_worker.py"
+    worker.parent.mkdir(parents=True)
+    if tamper == "bytes":
+        worker.write_bytes(actual.read_bytes() + b"\n# changed\n")
+    else:
+        worker.symlink_to(actual)
+    monkeypatch.setattr(local_qwen, "__file__", str(fake_provider))
+    monkeypatch.setattr(local_qwen, "validate_backend", lambda value: None)
+    launched = []
+    monkeypatch.setattr(local_qwen.subprocess, "Popen", lambda *a, **kw: launched.append(True))
+    with pytest.raises((RuntimeError, ValueError, OSError)):
+        local_qwen.LocalQwenBackend(contract_path=tmp_path / "unused.json", contract_sha256="a" * 64,
+                                   output_root=tmp_path, backend={}, timeout=1)
+    assert launched == []
