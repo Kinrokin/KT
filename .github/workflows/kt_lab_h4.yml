@@ -56,6 +56,32 @@ jobs:
           export KT_REPORT_PATH="$RUNNER_TEMP/cap.events.jsonl"
           python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
             tests/test_prb_output_token_budget.py --basetemp="$RUNNER_TEMP/cap" --junitxml="$RUNNER_TEMP/cap.xml"
+      - name: Check registry, portability and guarded output contracts
+        run: |
+          export PYTHONPATH="$GITHUB_WORKSPACE:$GITHUB_WORKSPACE/KT_PROD_CLEANROOM:$GITHUB_WORKSPACE/KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src:$GITHUB_WORKSPACE/tests"
+          export KT_GROWTH_ARTIFACTS_ROOT="$RUNNER_TEMP/growth-artifacts"
+          mkdir -p "$KT_GROWTH_ARTIFACTS_ROOT"
+          python -B -m scripts.repo_pristine_census --check
+          python -B scripts/check_no_bloat.py
+          python -B scripts/check_artifact_authority_registry.py
+          python -B scripts/check_packet_name_lengths.py
+          python -B scripts/check_duplicate_artifacts.py
+          python -B scripts/check_stale_head_refs.py
+          export KT_REPORT_PATH="$RUNNER_TEMP/ktclean.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            tests/test_ktclean_readonly_guards.py tests/test_no_unregistered_controlling_artifacts.py \
+            tests/test_no_duplicate_current_authority.py tests/test_packet_name_length_policy.py \
+            tests/test_no_large_binary_without_allowlist.py tests/test_generated_artifacts_not_current_law.py \
+            tests/test_archive_files_not_live_authority.py tests/test_memory_ledger_presence.py tests/test_repo_layout_contract.py \
+            --basetemp="$RUNNER_TEMP/ktclean" --junitxml="$RUNNER_TEMP/ktclean.xml"
+          export KT_REPORT_PATH="$RUNNER_TEMP/growth.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            KT_PROD_CLEANROOM/tools/growth/eval_harness_plus/tests/test_eval_harness_plus.py \
+            KT_PROD_CLEANROOM/tools/growth/orchestrator/tests/test_epoch_orchestrator.py::TestArtifactsRootOverride \
+            --basetemp="$RUNNER_TEMP/growth" --junitxml="$RUNNER_TEMP/growth.xml"
+          export KT_REPORT_PATH="$RUNNER_TEMP/livewire.events.jsonl"
+          python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -q \
+            tests/test_livewire_pr_a_stop300_import.py --basetemp="$RUNNER_TEMP/livewire" --junitxml="$RUNNER_TEMP/livewire.xml"
       - name: Record exact-head result and source stability
         if: always()
         run: |
@@ -68,7 +94,9 @@ jobs:
           from pathlib import Path
           if not (Path(os.environ['RUNNER_TEMP']) / 'h4-court.xml').exists():
               raise SystemExit('No JUnit evidence produced')
-          for name in ('h4-court.xml', 'h4-court.events.jsonl', 'focused.xml', 'full.xml', 'cap.xml', 'focused.events.jsonl', 'full.events.jsonl', 'cap.events.jsonl'):
+          for stem in ('h4-court', 'focused', 'full', 'cap', 'ktclean', 'growth', 'livewire'):
+            for suffix in ('.xml', '.events.jsonl'):
+              name = stem + suffix
               path = Path(os.environ['RUNNER_TEMP']) / name
               if not path.exists():
                   print('COURT_EVIDENCE_MISSING=' + name)
