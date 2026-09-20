@@ -8,10 +8,13 @@ on:
       - 'KT_PROD_CLEANROOM/tools/operator/local_qwen_worker.py'
       - 'tests/kt_lab_report.py'
       - 'tests/checked_lab/**'
+      - 'scripts/v15_oracle_harvest_common.py'
+      - 'scripts/build_v15_oracle_gap_matrix.py'
       - '.github/workflows/kt_lab_h4.yml'
   push:
     branches:
       - 'codex/kt-h4-checked-generation'
+      - 'codex/kt-current-evidence-oracle'
   workflow_dispatch: {}
 
 permissions:

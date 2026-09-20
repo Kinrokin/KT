@@ -142,6 +142,180 @@ def test_canonical_repair_consumes_diagnostic_then_observes_and_restores(tmp_pat
     assert len(SyntheticBackend.seen) == 2
 
 
+def current_oracle_fixture(tmp_path):
+    """Synthetic data only; exercise the actual recorded-operation reader."""
+    path, pin, value, op = make_contract(tmp_path, strategy="direct", attempts=1)
+    SyntheticBackend.answers = [42]
+    with operator_session(path, expected_sha256=pin):
+        invoke(value, op)
+    (tmp_path / "CONTRACT_external_run.json").write_bytes(path.read_bytes())
+    freeze = {"schema_id": "kt.h4.external_engineering_run.v1", "run_id": "synthetic_current_oracle",
+              "source_head": "a" * 40, "source_tree": "b" * 40,
+              "contracts": {"external_run": {"name": "CONTRACT_external_run.json", "sha256": pin}}}
+    (tmp_path / "RUN_FREEZE.json").write_bytes(canonical_bytes(freeze))
+    return tmp_path, hashlib.sha256(canonical_bytes(freeze)).hexdigest(), value, op
+
+
+def test_current_oracle_consumes_verified_rows_without_rewriting_history(tmp_path):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio, oracle_gap_matrix
+    before = copy.deepcopy(oracle_gap_matrix())
+    root, pin, value, op = current_oracle_fixture(tmp_path)
+    files_before = {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    report = current_checked_portfolio(root, freeze_sha256=pin, baseline_route="external_run/direct")
+    assert report["status"] == "COMPLETE_RECORDED_ROSTER"
+    assert report["assigned_operations"] == report["completed_operations"] == 1
+    assert report["rows"][0]["effect_restored"] is True
+    assert report["rows"][0]["first_attempt_success"] is True
+    assert report["oracle_gap_matrix"][0]["cheapest_correct_known_tokens"] == 5
+    assert report["training_authority"] is report["runtime_feature_authority"] is False
+    assert report["rows"][0]["generation_seconds"] is None  # synthetic fixture omits timing
+    assert oracle_gap_matrix() == before
+    assert {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()} == files_before
+    assert len(SyntheticBackend.seen) == 1  # harvesting did not call the model
+
+
+
+@pytest.mark.parametrize("equals_form", [False, True])
+def test_current_oracle_cli_dispatches_current_mode_without_historical_writes(tmp_path, monkeypatch, equals_form):
+    import runpy
+    (tmp_path / "inputs").mkdir()
+    root, pin, value, op = current_oracle_fixture(tmp_path / "inputs")
+    output = tmp_path / "current.json"
+    repo = Path(lane.__file__).resolve().parents[4]
+    cli = repo / "scripts/build_v15_oracle_gap_matrix.py"
+    before = {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
+    flag = ["--current-checked-run=" + str(root)] if equals_form else ["--current-checked-run", str(root)]
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", [str(cli), *flag, "--freeze-sha256", pin,
+                                     "--baseline-route", "external_run/direct", "--output", str(output)])
+    with pytest.raises(SystemExit) as ended:
+        runpy.run_path(str(cli), run_name="__main__")
+    assert ended.value.code == 0
+    result = json.loads(output.read_bytes())
+    assert result["schema_id"] == "kt.current_checked_oracle_observation.v1"
+    assert result["assigned_operations"] == result["completed_operations"] == 1
+    assert {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file() and p != output} == before
+    assert not (tmp_path / "admission").exists()
+    assert len(SyntheticBackend.seen) == 1
+
+
+def test_current_oracle_cli_rejects_option_looking_historical_path(tmp_path, monkeypatch):
+    import runpy
+    cli = Path(lane.__file__).resolve().parents[4] / "scripts/build_v15_oracle_gap_matrix.py"
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", [str(cli), "--current-checked-ru=/missing"])
+    with pytest.raises(SystemExit, match="Unrecognized option"):
+        runpy.run_path(str(cli), run_name="__main__")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_current_oracle_accepts_large_record_allowed_by_transport_and_replay(tmp_path):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    SyntheticBackend.mutate = staticmethod(lambda raw: raw.update(input_token_ids=list(range(8192)), input_tokens=8192))
+    root, pin, value, op = current_oracle_fixture(tmp_path)
+    folder = Path(value["output_root"]) / op
+    assert 32768 < (folder / "attempt_0_raw.json").stat().st_size < 2 * 1024 * 1024
+    contract_pin = hashlib.sha256((root / "CONTRACT_external_run.json").read_bytes()).hexdigest()
+    assert lane.verify_operation(folder, expected_contract_sha256=contract_pin)["status"] == "REPLAY_NO_INFERENCE_NO_EFFECT"
+    report = current_checked_portfolio(root, freeze_sha256=pin, baseline_route="external_run/direct")
+    assert report["rows"][0]["input_tokens"] == 8192
+    assert report["rows"][0]["complete_token_accounting"] is True
+    assert report["oracle_gap_matrix"][0]["cheapest_correct_known_tokens"] == 8194
+    assert len(SyntheticBackend.seen) == 1
+
+
+def test_current_oracle_retains_missing_operation_in_assigned_denominator(tmp_path):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    root, pin, value, op = current_oracle_fixture(tmp_path)
+    # Fixture mutation simulates interrupted persistence; the original is retained.
+    result = Path(value["output_root"]) / op / "result.json"
+    result.rename(result.with_name("preserved_interrupted_result.json"))
+    report = current_checked_portfolio(root, freeze_sha256=pin, baseline_route="external_run/direct")
+    assert report["status"] == "INCOMPLETE_RECORDED_ROSTER"
+    assert report["assigned_operations"] == 1 and report["completed_operations"] == 0
+    assert len(report["missing"]) == 1 and report["missing"][0]["cost"] == "UNKNOWN_NOT_ZERO"
+    assert report["oracle_gap_matrix"][0]["baseline_success"] is None
+    assert report["oracle_gap_matrix"][0]["all_assigned_routes_failed"] is False
+
+
+@pytest.mark.parametrize("mutation,reason", [
+    ("freeze", "CURRENT_ORACLE_INPUT_PIN"),
+    ("contract", "CURRENT_ORACLE_INPUT_PIN"),
+    ("raw", "LAB_REPLAY_BYTES"),
+    ("extra_operation", "CURRENT_ORACLE_EXTRA_OPERATION"),
+    ("unassigned_baseline", "CURRENT_ORACLE_BASELINE_NOT_ASSIGNED"),
+    ("boolean_calls", "CURRENT_ORACLE_COUNTS"),
+])
+def test_current_oracle_rejects_wrong_identity_or_extra_evidence(tmp_path, mutation, reason):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    root, pin, value, op = current_oracle_fixture(tmp_path)
+    baseline = "external_run/direct"
+    if mutation == "freeze":
+        pin = "0" * 64
+    elif mutation == "contract":
+        with (root / "CONTRACT_external_run.json").open("ab") as f:
+            f.write(b" ")
+    elif mutation == "raw":
+        with (Path(value["output_root"]) / op / "attempt_0_raw.json").open("ab") as f:
+            f.write(b" ")
+    elif mutation == "extra_operation":
+        (Path(value["output_root"]) / ("c" * 64)).mkdir()
+    elif mutation == "boolean_calls":
+        file = Path(value["output_root"]) / op / "result.json"
+        result = json.loads(file.read_bytes())
+        result["model_calls"] = True
+        file.write_bytes(canonical_bytes(result))
+    else:
+        baseline = "unknown/direct"
+    with pytest.raises((ValueError, RuntimeError), match=reason):
+        current_checked_portfolio(root, freeze_sha256=pin, baseline_route=baseline)
+
+
+def test_current_oracle_rejects_linked_ancestor_before_following_data(tmp_path):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    parent = tmp_path / "actual"
+    parent.mkdir()
+    root, pin, _, _ = current_oracle_fixture(parent)
+    linked = tmp_path / "linked"
+    linked.symlink_to(parent, target_is_directory=True)
+    with pytest.raises(RuntimeError, match="link/reparse"):
+        current_checked_portfolio(linked, freeze_sha256=pin, baseline_route="external_run/direct")
+
+
+@pytest.mark.parametrize("answers", [(41, 42), (42, 41), (41, 41)])
+def test_current_oracle_computes_observed_rescue_damage_and_all_fail(tmp_path, answers):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    bindings = {}
+    for label, answer in zip(("base", "alternative"), answers):
+        preparation = tmp_path / ("prepare_" + label)
+        preparation.mkdir()
+        path, _, value, op = make_contract(preparation, strategy="direct", attempts=1)
+        destination = tmp_path / label
+        destination.mkdir()
+        value["output_root"] = str(destination)
+        value["run_id"] = hashlib.sha256(label.encode()).hexdigest()[:32]
+        path.write_bytes(canonical_bytes(value))
+        pin = hashlib.sha256(path.read_bytes()).hexdigest()
+        SyntheticBackend.answers = [answer]
+        with operator_session(path, expected_sha256=pin):
+            invoke(value, op)
+        name = f"CONTRACT_{label}.json"
+        (tmp_path / name).write_bytes(path.read_bytes())
+        bindings[label] = {"name": name, "sha256": pin}
+    freeze = {"schema_id": "kt.h4.external_engineering_run.v1", "run_id": "synthetic_pair",
+              "source_head": "a" * 40, "source_tree": "b" * 40, "contracts": bindings}
+    raw = canonical_bytes(freeze)
+    (tmp_path / "RUN_FREEZE.json").write_bytes(raw)
+    report = current_checked_portfolio(tmp_path, freeze_sha256=hashlib.sha256(raw).hexdigest())
+    gap = report["oracle_gap_matrix"][0]
+    assert report["assigned_operations"] == report["completed_operations"] == 2
+    assert gap["rescue_over_baseline"] == (["alternative/direct"] if answers == (41, 42) else [])
+    assert gap["damage_against_baseline"] == (["alternative/direct"] if answers == (42, 41) else [])
+    assert gap["all_assigned_routes_failed"] is (answers == (41, 41))
+    assert gap["observed_union_success"] is (42 in answers)
+    assert report["ownership"].startswith("UNKNOWN_BLOCKED")
+
+
 def test_operator_admission_cannot_be_supplied_by_runtime_request(tmp_path):
     _, _, value, op = make_contract(tmp_path)
     result = invoke(value, op)
