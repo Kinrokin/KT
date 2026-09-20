@@ -180,3 +180,31 @@ def test_history_reconstructs_feedback_and_does_not_accept_injected_oracles():
     task["problem"]["operation"] = "eval"
     with pytest.raises(CheckedTaskError, match="UNSUPPORTED_ARITHMETIC"):
         validate_task(task)
+
+
+@pytest.mark.parametrize("task,answer_type", [(arithmetic(), "JSON integer, not quoted and not null"),
+                                             (plan(), "JSON array of selected project ID strings")])
+def test_prompt_states_complete_task_specific_response_contract(task, answer_type):
+    prompt = build_prompt(task, nonce=NONCE, history=[])
+    instruction, encoded = prompt.split("\n", 1)
+    body = strict_json(encoded)
+    required = body["required_output"]
+    assert set(required) == {"schema_id", "task_hash", "nonce", "answer"}
+    assert required["schema_id"] == PROPOSAL_SCHEMA
+    assert required["task_hash"] == identity(task) and required["nonce"] == NONCE
+    assert required["answer"] == answer_type
+    assert "all four keys: schema_id, task_hash, nonce, answer" in instruction
+    assert "Copy schema_id, task_hash and nonce exactly" in instruction
+    # The model still has to solve the task. No computed answer or optimum is supplied.
+    assert set(body) == {"task", "prior_attempts", "required_output"}
+    assert body["task"] == task and body["prior_attempts"] == []
+
+
+@pytest.mark.parametrize("missing", [("schema_id", "task_hash"), ("task_hash",)])
+def test_observed_missing_metadata_remains_denied_after_prompt_repair(missing):
+    task = arithmetic()
+    candidate = proposal(task, 42)
+    for field in missing:
+        candidate.pop(field)
+    with pytest.raises(CheckedTaskError, match="PROPOSAL_FIELDS"):
+        parse_proposal(canonical_bytes(candidate), task, nonce=NONCE)

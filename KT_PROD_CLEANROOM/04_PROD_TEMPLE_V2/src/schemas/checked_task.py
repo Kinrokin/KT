@@ -214,12 +214,17 @@ def build_prompt(task: dict[str, Any], *, nonce: str, history: list[dict[str, An
         elif entry["feedback_mode"] == "sham":
             feedback = "A diagnostic stage ran. No task-specific diagnostic is supplied."
         sanitized.append({"previous_proposal": previous, "feedback": feedback})
+    answer_type = ("JSON integer, not quoted and not null" if task["kind"] == "integer_arithmetic"
+                   else "JSON array of selected project ID strings")
     body = {"task": task, "prior_attempts": sanitized,
             "required_output": {"schema_id": PROPOSAL_SCHEMA, "task_hash": identity(task),
-                                "nonce": nonce, "answer": "integer or array of selected project IDs"}}
+                                "nonce": nonce, "answer": answer_type}}
     raw = canonical_bytes(body)
     if len(raw) > MAX_BYTES:
         raise CheckedTaskError("PROMPT_SIZE")
-    return ("Solve the public task. Return exactly one JSON object matching required_output. "
+    return ("Solve the public task. Return exactly one JSON object with all four keys: "
+            "schema_id, task_hash, nonce, answer. Copy schema_id, task_hash and nonce exactly "
+            "from required_output; compute only answer using its specified JSON type. "
+            "The answer type description is an instruction, not the answer to copy. "
             "For constrained_plan maximize value subject to every declared constraint. "
             "No commentary or additional keys.\n" + raw.decode("utf-8"))
