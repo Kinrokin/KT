@@ -174,6 +174,56 @@ def test_current_oracle_consumes_verified_rows_without_rewriting_history(tmp_pat
     assert len(SyntheticBackend.seen) == 1  # harvesting did not call the model
 
 
+
+@pytest.mark.parametrize("equals_form", [False, True])
+def test_current_oracle_cli_dispatches_current_mode_without_historical_writes(tmp_path, monkeypatch, equals_form):
+    import runpy
+    (tmp_path / "inputs").mkdir()
+    root, pin, value, op = current_oracle_fixture(tmp_path / "inputs")
+    output = tmp_path / "current.json"
+    repo = Path(lane.__file__).resolve().parents[4]
+    cli = repo / "scripts/build_v15_oracle_gap_matrix.py"
+    before = {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
+    flag = ["--current-checked-run=" + str(root)] if equals_form else ["--current-checked-run", str(root)]
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", [str(cli), *flag, "--freeze-sha256", pin,
+                                     "--baseline-route", "external_run/direct", "--output", str(output)])
+    with pytest.raises(SystemExit) as ended:
+        runpy.run_path(str(cli), run_name="__main__")
+    assert ended.value.code == 0
+    result = json.loads(output.read_bytes())
+    assert result["schema_id"] == "kt.current_checked_oracle_observation.v1"
+    assert result["assigned_operations"] == result["completed_operations"] == 1
+    assert {p.relative_to(tmp_path).as_posix(): p.read_bytes() for p in tmp_path.rglob("*") if p.is_file() and p != output} == before
+    assert not (tmp_path / "admission").exists()
+    assert len(SyntheticBackend.seen) == 1
+
+
+def test_current_oracle_cli_rejects_option_looking_historical_path(tmp_path, monkeypatch):
+    import runpy
+    cli = Path(lane.__file__).resolve().parents[4] / "scripts/build_v15_oracle_gap_matrix.py"
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", [str(cli), "--current-checked-ru=/missing"])
+    with pytest.raises(SystemExit, match="Unrecognized option"):
+        runpy.run_path(str(cli), run_name="__main__")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_current_oracle_accepts_large_record_allowed_by_transport_and_replay(tmp_path):
+    from scripts.v15_oracle_harvest_common import current_checked_portfolio
+    SyntheticBackend.mutate = staticmethod(lambda raw: raw.update(input_token_ids=list(range(8192)), input_tokens=8192))
+    root, pin, value, op = current_oracle_fixture(tmp_path)
+    folder = Path(value["output_root"]) / op
+    assert 32768 < (folder / "attempt_0_raw.json").stat().st_size < 2 * 1024 * 1024
+    contract_pin = hashlib.sha256((root / "CONTRACT_external_run.json").read_bytes()).hexdigest()
+    assert lane.verify_operation(folder, expected_contract_sha256=contract_pin)["status"] == "REPLAY_NO_INFERENCE_NO_EFFECT"
+    report = current_checked_portfolio(root, freeze_sha256=pin, baseline_route="external_run/direct")
+    assert report["rows"][0]["input_tokens"] == 8192
+    assert report["rows"][0]["complete_token_accounting"] is True
+    assert report["oracle_gap_matrix"][0]["cheapest_correct_known_tokens"] == 8194
+    assert len(SyntheticBackend.seen) == 1
+
+
 def test_current_oracle_retains_missing_operation_in_assigned_denominator(tmp_path):
     from scripts.v15_oracle_harvest_common import current_checked_portfolio
     root, pin, value, op = current_oracle_fixture(tmp_path)

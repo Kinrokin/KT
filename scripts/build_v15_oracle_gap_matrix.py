@@ -35,9 +35,11 @@ def current_main(argv):
 
 
 if __name__ == "__main__":
-    if "--current-checked-run" in sys.argv:
+    if any(arg == "--current-checked-run" or arg.startswith("--current-checked-run=") for arg in sys.argv[1:]):
         current_main(sys.argv[1:])
         raise SystemExit(0)
+    if any(arg.startswith("-") for arg in sys.argv[1:]):
+        raise SystemExit("Unrecognized option; historical output must be a positional path")
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("admission/oracle_gap_matrix.jsonl")
     rows = write_jsonl(out, oracle_gap_matrix())
     print(json.dumps({"rows": len(rows), "out": out.as_posix()}, sort_keys=True))

@@ -206,9 +206,9 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
                 missing.append({"task_hash": task_hash, "task_id": task_id, "route": route,
                                 "operation_id": op_id, "cost": "PARTIAL_KNOWN_PLUS_UNKNOWN", "status": result["status"]})
             attempts = result["attempts"]
-            checks = [strict_json(pinned_file(folder / f"attempt_{i}_check.json")) for i in attempts]
+            checks = [strict_json(pinned_file(folder / f"attempt_{i}_check.json"), max_bytes=2 * 1024 * 1024) for i in attempts]
             require(all(type(c.get("satisfied")) is bool for c in checks), "CURRENT_ORACLE_CHECK_BOOLEAN")
-            generated = [strict_json(pinned_file(folder / f"attempt_{i}_raw.json")) for i in attempts]
+            generated = [strict_json(pinned_file(folder / f"attempt_{i}_raw.json"), max_bytes=2 * 1024 * 1024) for i in attempts]
             timings = [g.get("generation_seconds") for g in generated]
             known_time = all(type(t) in (int, float) and math.isfinite(t) and t >= 0 for t in timings)
             rows.append({"task_hash": task_hash, "task_id": task_id, "route": route, "operation_id": op_id,
@@ -221,7 +221,7 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
                          "calls_reserved": result["model_calls"], "calls_returned": len(generated),
                          "input_tokens": result["input_tokens"], "output_tokens": result["output_tokens"],
                          "generation_seconds": sum(timings) if known_time else None,
-                         "complete_cost": finished and len(generated) == result["model_calls"],
+                         "complete_token_accounting": finished and len(generated) == result["model_calls"],
                          "claim_ceiling": replay["ceiling"]})
     require(baseline_route in {route for _, route in assignments}, "CURRENT_ORACLE_BASELINE_NOT_ASSIGNED")
     grouped = {}
@@ -232,14 +232,14 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
         observed = grouped.get(task_hash, [])
         valid = [r for r in observed if r["strict_success"]]
         baseline = next((r for r in observed if r["route"] == baseline_route and r["completed"]), None)
-        eligible = [r for r in valid if r["complete_cost"]]
+        eligible = [r for r in valid if r["complete_token_accounting"]]
         cheapest = min(eligible, key=lambda r:(r["input_tokens"] + r["output_tokens"], r["route"])) if eligible else None
         assigned = [route for h, route in assignments if h == task_hash]
         gaps.append({"task_id": task_id, "task_hash": task_hash, "assigned_routes": assigned,
                      "observed_completed_routes": [r["route"] for r in observed if r["completed"]],
                      "missing_routes": [m["route"] for m in missing if m["task_hash"] == task_hash],
                      "observed_union_success": bool(valid), "successful_routes": [r["route"] for r in valid],
-                     "unique_rescue": valid[0]["route"] if len(valid) == 1 else None,
+                     "unique_observed_success_route": valid[0]["route"] if len(valid) == 1 else None,
                      "baseline_success": baseline["strict_success"] if baseline else None,
                      "rescue_over_baseline": [r["route"] for r in valid] if baseline and not baseline["strict_success"] else [],
                      "damage_against_baseline": [r["route"] for r in observed if r["completed"] and not r["strict_success"]] if baseline and baseline["strict_success"] else [],
@@ -251,6 +251,8 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             "freeze_sha256": freeze_sha256, "status": "COMPLETE_RECORDED_ROSTER" if not missing else "INCOMPLETE_RECORDED_ROSTER",
             "assigned_operations": len(assignments), "completed_operations": sum(r["completed"] for r in rows),
             "baseline_route": baseline_route, "rows": rows, "missing": missing, "oracle_gap_matrix": gaps,
+            "correctness_endpoint": "Strict task predicate; includes nonconsuming controls and does not imply an effect",
+            "uniqueness_scope": "Among observed completed routes only; missing routes remain unresolved",
             "cost_basis": "Observed input+output tokens only; generation time separate; allocation, loading and unknown costs are not zero",
             "causal_limit": "Retrospective observed routes with varying nonces; first-attempt success is not feedback benefit; unassigned routes are not measured",
             "ownership": "UNKNOWN_BLOCKED unless separately causally adjudicated; no irreducibility inference",
