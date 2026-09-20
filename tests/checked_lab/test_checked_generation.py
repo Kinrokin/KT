@@ -25,11 +25,11 @@ from schemas.runtime_context_schema import RUNTIME_CONTEXT_SCHEMA_ID, RUNTIME_CO
 
 @pytest.fixture
 def tmp_path():
-    # Legacy FL4 deliberately places its global pytest basetemp under exports.
+    # This dedicated laboratory court requires outputs outside the source tree.
     # Positive lab fixtures require an actually external root; keep all their
     # records there without weakening admission or deleting evidence at teardown.
     parent = Path(os.environ.get("RUNNER_TEMP", tempfile.gettempdir())).resolve()
-    repo = Path(__file__).resolve().parents[3]
+    repo = Path(lane.__file__).resolve().parents[4]
     assert not parent.is_relative_to(repo), "laboratory test temporary root must be external"
     return Path(tempfile.mkdtemp(prefix="kt_checked_lab_test_", dir=parent))
 
@@ -92,7 +92,7 @@ def isolated_test_transport(monkeypatch):
     # module is not part of a deployed runtime. Isolate only the collected test
     # file, never a training implementation or the production invariant guard.
     collected = sys.modules.get("test_curriculum_boundary")
-    expected = Path(__file__).resolve().parents[1] / "src/curriculum/tests/test_curriculum_boundary.py"
+    expected = Path(lane.__file__).resolve().parents[2] / "src/curriculum/tests/test_curriculum_boundary.py"
     if collected is not None:
         assert Path(collected.__file__).resolve() == expected
         sys.modules.pop("test_curriculum_boundary")
@@ -159,7 +159,7 @@ def test_real_training_module_is_still_rejected_before_laboratory_generation(tmp
 
 
 def operator_module():
-    path = Path(__file__).resolve().parents[2] / "tools/operator/run_checked_lab.py"
+    path = Path(lane.__file__).resolve().parents[3] / "tools/operator/run_checked_lab.py"
     spec = importlib.util.spec_from_file_location("checked_lab_operator_test", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
