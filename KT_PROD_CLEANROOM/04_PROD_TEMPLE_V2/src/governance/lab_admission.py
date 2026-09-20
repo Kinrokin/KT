@@ -25,7 +25,7 @@ _SESSION: ContextVar[LabSession | None] = ContextVar("kt_operator_lab_session", 
 _HEX = re.compile(r"[0-9a-f]{64}\Z")
 CONTRACT_SCHEMA = "kt.lab.execution_contract.v1"
 REQUEST_SCHEMA = "kt.lab.checked_request.v1"
-STRATEGIES = {"direct", "self_review", "kt_diagnostic", "sham", "nonconsuming"}
+STRATEGIES = {"direct", "self_review", "kt_diagnostic", "kt_constraint_detail", "sham", "nonconsuming"}
 
 
 def _require(condition: bool, reason: str) -> None:
