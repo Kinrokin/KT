@@ -14,6 +14,8 @@ except ModuleNotFoundError:
     )
 
 import json
+import hashlib
+import math
 import subprocess
 from collections import Counter
 from datetime import datetime, timezone
@@ -101,6 +103,159 @@ FORBIDDEN_FEATURES = {
     "generated_answer",
     "answer",
 }
+
+
+def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
+                              baseline_route: str = "base/direct") -> dict:
+    """Read a pinned current laboratory run without rewriting historical V15 facts.
+
+    The caller supplies the previously frozen RUN_FREEZE digest as a trust anchor.
+    This is retrospective selection evidence, never a runtime feature, training
+    admission, provider attestation, or permission to activate a model/effect.
+    """
+    from core.checked_generation import verify_operation
+    from governance.lab_admission import validate_contract
+    from schemas.checked_task import identity, strict_json
+    from schemas.trusted_local_path import assert_no_link_or_reparse_path
+
+    def require(ok, code):
+        if not ok:
+            raise ValueError(code)
+
+    def pinned_file(path, expected=None):
+        assert_no_link_or_reparse_path(path, label="current oracle input")
+        stat = path.stat()
+        require(path.is_file() and stat.st_nlink == 1 and stat.st_size <= 2 * 1024 * 1024,
+                "CURRENT_ORACLE_INPUT_FILE")
+        raw = path.read_bytes()
+        if expected is not None:
+            require(hashlib.sha256(raw).hexdigest() == expected, "CURRENT_ORACLE_INPUT_PIN")
+        return raw
+
+    root = Path(evidence_root)
+    assert_no_link_or_reparse_path(root, label="current oracle root")
+    require(root.is_dir() and root.resolve() == root and ".." not in root.parts,
+            "CURRENT_ORACLE_ROOT")
+    require(isinstance(freeze_sha256, str) and len(freeze_sha256) == 64 and
+            all(c in "0123456789abcdef" for c in freeze_sha256), "CURRENT_ORACLE_FREEZE_PIN")
+    freeze = strict_json(pinned_file(root / "RUN_FREEZE.json", freeze_sha256), max_bytes=2 * 1024 * 1024)
+    require(freeze.get("schema_id") == "kt.h4.external_engineering_run.v1", "CURRENT_ORACLE_FREEZE_SCHEMA")
+    require(type(freeze.get("run_id")) is str and 0 < len(freeze["run_id"]) <= 128 and
+            all(type(freeze.get(k)) is str and len(freeze[k]) == 40 and
+                all(c in "0123456789abcdef" for c in freeze[k]) for k in ("source_head", "source_tree")),
+            "CURRENT_ORACLE_SUBJECT_IDENTITY")
+    bindings = freeze.get("contracts")
+    require(type(bindings) is dict and 1 <= len(bindings) <= 32, "CURRENT_ORACLE_CONTRACTS")
+    rows, missing, assignments, samples = [], [], [], {}
+    contract_run_ids = set()
+    source = Path(__file__).resolve().parents[1] / "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src"
+    shared_source = None
+    for label, binding in sorted(bindings.items()):
+        require(type(label) is str and label and all(c.isascii() and (c.isalnum() or c in "_-") for c in label),
+                "CURRENT_ORACLE_ROUTE_LABEL")
+        require(type(binding) is dict and set(binding) == {"name", "sha256"}, "CURRENT_ORACLE_CONTRACT_BINDING")
+        require(binding["name"] == f"CONTRACT_{label}.json", "CURRENT_ORACLE_CONTRACT_NAME")
+        contract_raw = pinned_file(root / binding["name"], binding["sha256"])
+        contract = validate_contract(strict_json(contract_raw, max_bytes=2 * 1024 * 1024))
+        require(contract["run_id"] not in contract_run_ids, "CURRENT_ORACLE_DUPLICATE_CONTRACT_RUN")
+        contract_run_ids.add(contract["run_id"])
+        if shared_source is None:
+            shared_source = contract["source_files"]
+            required_source = {p.relative_to(source).as_posix() for p in source.rglob("*.py") if "tests" not in p.parts}
+            require(set(shared_source) == required_source, "CURRENT_ORACLE_SOURCE_COVERAGE")
+            for name, expected in shared_source.items():
+                require(not Path(name).is_absolute() and ":" not in name and "\\" not in name and
+                        all(part not in ("", ".", "..") for part in name.split("/")), "CURRENT_ORACLE_SOURCE_PATH")
+                pinned_file(source / name, expected)
+        else:
+            require(contract["source_files"] == shared_source, "CURRENT_ORACLE_MIXED_SOURCE")
+        pinned_file(source.parent / "docs/RUNTIME_REGISTRY.json", contract["runtime_registry_sha256"])
+        run_root = root / label
+        assert_no_link_or_reparse_path(run_root, label="current oracle records")
+        require(run_root.is_dir() and pinned_file(run_root / "operator_contract.json") == contract_raw,
+                "CURRENT_ORACLE_RETAINED_CONTRACT")
+        observed_dirs = {p.name for p in run_root.iterdir() if p.is_dir()}
+        require(observed_dirs <= set(contract["operations"]), "CURRENT_ORACLE_EXTRA_OPERATION")
+        for op_id, op in sorted(contract["operations"].items()):
+            require(identity(op) == op_id, "CURRENT_ORACLE_OPERATION_ID")
+            task_hash = identity(op["task"])
+            task_id = op["task"]["task_id"]
+            if task_id in samples:
+                require(samples[task_id] == task_hash, "CURRENT_ORACLE_MIXED_TASK")
+            samples[task_id] = task_hash
+            route = label + "/" + op["strategy"]
+            key = (task_hash, route)
+            require(key not in assignments, "CURRENT_ORACLE_DUPLICATE_CELL")
+            assignments.append(key)
+            folder = run_root / op_id
+            assert_no_link_or_reparse_path(folder, label="current oracle operation")
+            if not folder.is_dir() or not (folder / "result.json").exists():
+                missing.append({"task_hash": task_hash, "task_id": task_id, "route": route,
+                                "operation_id": op_id, "cost": "UNKNOWN_NOT_ZERO"})
+                continue
+            entries = list(folder.iterdir())
+            require(len(entries) <= 128, "CURRENT_ORACLE_OPERATION_SIZE")
+            for entry in entries:
+                pinned_file(entry)
+            replay = verify_operation(folder, expected_contract_sha256=binding["sha256"])
+            result = replay["original"]
+            require(all(type(result.get(k)) is int and result[k] >= 0 for k in ("model_calls", "input_tokens", "output_tokens")),
+                    "CURRENT_ORACLE_COUNTS")
+            finished = result["status"] in {"CHECKED_EFFECT_RESTORED", "CHECKED_NONCONSUMING", "HELD_TASK_PREDICATE"}
+            if not finished:
+                missing.append({"task_hash": task_hash, "task_id": task_id, "route": route,
+                                "operation_id": op_id, "cost": "PARTIAL_KNOWN_PLUS_UNKNOWN", "status": result["status"]})
+            attempts = result["attempts"]
+            checks = [strict_json(pinned_file(folder / f"attempt_{i}_check.json")) for i in attempts]
+            require(all(type(c.get("satisfied")) is bool for c in checks), "CURRENT_ORACLE_CHECK_BOOLEAN")
+            generated = [strict_json(pinned_file(folder / f"attempt_{i}_raw.json")) for i in attempts]
+            timings = [g.get("generation_seconds") for g in generated]
+            known_time = all(type(t) in (int, float) and math.isfinite(t) and t >= 0 for t in timings)
+            rows.append({"task_hash": task_hash, "task_id": task_id, "route": route, "operation_id": op_id,
+                         "contract_sha256": binding["sha256"], "record_sha256": hashlib.sha256(pinned_file(folder / "result.json")).hexdigest(),
+                         "status": result["status"], "completed": finished,
+                         "strict_success": bool(finished and checks and checks[-1]["satisfied"]),
+                         "first_attempt_success": bool(checks and checks[0]["satisfied"]),
+                         "scope": checks[-1].get("scope") if checks else None,
+                         "effect_restored": result["status"] == "CHECKED_EFFECT_RESTORED",
+                         "calls_reserved": result["model_calls"], "calls_returned": len(generated),
+                         "input_tokens": result["input_tokens"], "output_tokens": result["output_tokens"],
+                         "generation_seconds": sum(timings) if known_time else None,
+                         "complete_cost": finished and len(generated) == result["model_calls"],
+                         "claim_ceiling": replay["ceiling"]})
+    require(baseline_route in {route for _, route in assignments}, "CURRENT_ORACLE_BASELINE_NOT_ASSIGNED")
+    grouped = {}
+    for row in rows:
+        grouped.setdefault(row["task_hash"], []).append(row)
+    gaps = []
+    for task_id, task_hash in sorted(samples.items()):
+        observed = grouped.get(task_hash, [])
+        valid = [r for r in observed if r["strict_success"]]
+        baseline = next((r for r in observed if r["route"] == baseline_route and r["completed"]), None)
+        eligible = [r for r in valid if r["complete_cost"]]
+        cheapest = min(eligible, key=lambda r:(r["input_tokens"] + r["output_tokens"], r["route"])) if eligible else None
+        assigned = [route for h, route in assignments if h == task_hash]
+        gaps.append({"task_id": task_id, "task_hash": task_hash, "assigned_routes": assigned,
+                     "observed_completed_routes": [r["route"] for r in observed if r["completed"]],
+                     "missing_routes": [m["route"] for m in missing if m["task_hash"] == task_hash],
+                     "observed_union_success": bool(valid), "successful_routes": [r["route"] for r in valid],
+                     "unique_rescue": valid[0]["route"] if len(valid) == 1 else None,
+                     "baseline_success": baseline["strict_success"] if baseline else None,
+                     "rescue_over_baseline": [r["route"] for r in valid] if baseline and not baseline["strict_success"] else [],
+                     "damage_against_baseline": [r["route"] for r in observed if r["completed"] and not r["strict_success"]] if baseline and baseline["strict_success"] else [],
+                     "cheapest_correct_observed_route": cheapest["route"] if cheapest else None,
+                     "cheapest_correct_known_tokens": cheapest["input_tokens"] + cheapest["output_tokens"] if cheapest else None,
+                     "all_assigned_routes_failed": not valid and not any(m["task_hash"] == task_hash for m in missing)})
+    return {"schema_id": "kt.current_checked_oracle_observation.v1", "run_id": freeze["run_id"],
+            "source_head": freeze["source_head"], "source_tree": freeze["source_tree"],
+            "freeze_sha256": freeze_sha256, "status": "COMPLETE_RECORDED_ROSTER" if not missing else "INCOMPLETE_RECORDED_ROSTER",
+            "assigned_operations": len(assignments), "completed_operations": sum(r["completed"] for r in rows),
+            "baseline_route": baseline_route, "rows": rows, "missing": missing, "oracle_gap_matrix": gaps,
+            "cost_basis": "Observed input+output tokens only; generation time separate; allocation, loading and unknown costs are not zero",
+            "causal_limit": "Retrospective observed routes with varying nonces; first-attempt success is not feedback benefit; unassigned routes are not measured",
+            "ownership": "UNKNOWN_BLOCKED unless separately causally adjudicated; no irreducibility inference",
+            "runtime_feature_authority": False, "training_authority": False, "promotion_authority": False,
+            "claim_authority": "NONE"}
 
 
 def repo_root() -> Path:
