@@ -18,12 +18,14 @@ from typing import Any, Iterator
 
 from memory.lab_effect import read_record, write_record, write_bytes_once
 from schemas.checked_task import canonical_bytes, identity, strict_json, validate_task
+from schemas.response_interface import validate_interface
 from schemas.trusted_local_path import assert_no_link_or_reparse_path
 
 
 _SESSION: ContextVar[LabSession | None] = ContextVar("kt_operator_lab_session", default=None)
 _HEX = re.compile(r"[0-9a-f]{64}\Z")
 CONTRACT_SCHEMA = "kt.lab.execution_contract.v1"
+INTERFACE_CONTRACT_SCHEMA = "kt.lab.execution_contract.v2"
 REQUEST_SCHEMA = "kt.lab.checked_request.v1"
 STRATEGIES = {"direct", "self_review", "kt_diagnostic", "kt_constraint_detail", "sham", "nonconsuming"}
 
@@ -41,7 +43,7 @@ def validate_contract(value: Any) -> dict[str, Any]:
     expected = {"schema_id", "run_id", "authority_sha256", "authority_basis", "output_root",
                 "expires_at", "source_files", "runtime_registry_sha256", "backend", "limits", "operations"}
     _require(type(value) is dict and set(value) == expected, "LAB_CONTRACT_FIELDS")
-    _require(value["schema_id"] == CONTRACT_SCHEMA, "LAB_CONTRACT_SCHEMA")
+    _require(value["schema_id"] in (CONTRACT_SCHEMA, INTERFACE_CONTRACT_SCHEMA), "LAB_CONTRACT_SCHEMA")
     _require(type(value["run_id"]) is str and re.fullmatch(r"[0-9a-f]{32}", value["run_id"]) is not None, "LAB_RUN_ID")
     _require(type(value["authority_sha256"]) is str and _HEX.fullmatch(value["authority_sha256"]) is not None, "LAB_AUTHORITY_REF")
     _require(value["authority_basis"] == "OWNER_ADOPTED_PRIVATE_NONPAID_EXPERIMENT", "LAB_AUTHORITY_SCOPE")
@@ -60,7 +62,12 @@ def validate_contract(value: Any) -> dict[str, Any]:
     _require(type(operations) is dict and 0 < len(operations) <= 6000, "LAB_OPERATIONS")
     for key, op in operations.items():
         _require(type(key) is str and _HEX.fullmatch(key) is not None, "LAB_OPERATION_ID")
-        _require(type(op) is dict and set(op) == {"task", "strategy", "attempts", "consume"}, "LAB_OPERATION_FIELDS")
+        op_fields = {"task", "strategy", "attempts", "consume"}
+        if value["schema_id"] == INTERFACE_CONTRACT_SCHEMA:
+            op_fields.add("response_interface")
+        _require(type(op) is dict and set(op) == op_fields, "LAB_OPERATION_FIELDS")
+        if value["schema_id"] == INTERFACE_CONTRACT_SCHEMA:
+            validate_interface(op["response_interface"])
         validate_task(op["task"])
         _require(type(op["strategy"]) is str and op["strategy"] in STRATEGIES, "LAB_STRATEGY")
         _positive_int(op["attempts"], limits["attempts_per_task"], "attempts")

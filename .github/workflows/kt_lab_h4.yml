@@ -18,6 +18,7 @@ on:
       - 'codex/kt-current-evidence-oracle'
       - 'codex/kt-constraint-feedback'
       - 'codex/kt-lab-neural-learning'
+      - 'codex/kt-host-bound-interface'
   workflow_dispatch: {}
 
 permissions:
@@ -51,6 +52,7 @@ jobs:
           python -B -m pytest -p no:cacheprovider -p kt_lab_report -o addopts='' -vv \
             tests/checked_lab/test_checked_task.py \
             tests/checked_lab/test_checked_generation.py \
+            tests/checked_lab/test_response_interface.py \
             --basetemp="$RUNNER_TEMP/h4-court" --junitxml="$RUNNER_TEMP/h4-court.xml"
       - name: Replay the complete original focused and full selections plus cap regressions
         run: |

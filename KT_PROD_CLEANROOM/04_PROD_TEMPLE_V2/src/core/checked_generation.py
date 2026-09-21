@@ -14,6 +14,14 @@ from memory.lab_effect import apply_checked_effect, read_record, recover_effect,
 from schemas.checked_task import (CheckedTaskError, build_prompt, canonical_bytes, check_proposal,
                                  identity, parse_proposal, strict_json)
 
+from schemas.response_interface import build_interface_prompt, derive_proposal
+
+
+def _prompt(op, *, nonce, history):
+    if "response_interface" in op:
+        return build_interface_prompt(op["task"], nonce=nonce, history=history, interface=op["response_interface"])
+    return build_prompt(op["task"], nonce=nonce, history=history)
+
 
 def verify_generation(raw: dict[str, Any], *, nonce: str, prompt: str, cap: int,
                       contract_sha256: str, adapter_required: bool) -> None:
@@ -62,6 +70,11 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
             or result.get("task") != op["task"] or result.get("strategy") != op["strategy"]
             or result.get("adapter_required") != (contract["backend"]["adapter_root"] is not None)):
         raise RuntimeError("LAB_REPLAY_OPERATION_BINDING")
+    versioned = "response_interface" in op
+    if (result.get("schema_id") != ("kt.lab.operation_result.v2" if versioned else "kt.lab.operation_result.v1")
+            or (versioned and result.get("response_interface") != op["response_interface"])
+            or (not versioned and "response_interface" in result)):
+        raise RuntimeError("LAB_REPLAY_INTERFACE_BINDING")
     post_recovery = (root / "effect_recovered.json").exists() and "effect_recovered.json" not in result["files"]
     excluded = {"result.json", "sandbox_state.json"} | ({"effect_recovered.json"} if post_recovery else set())
     actual = {p.name for p in root.iterdir() if p.is_file() and p.name not in excluded}
@@ -78,7 +91,11 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
     completed = [i for i in range(len(reservations)) if (root / f"attempt_{i}_check.json").exists()]
     if result.get("attempts") != completed or completed != list(range(len(completed))):
         raise RuntimeError("LAB_REPLAY_COMPLETED_ROSTER")
+    expected_derivations = {f"attempt_{i}_derivation.json" for i in completed} if versioned else set()
+    if {p.name for p in root.glob("*_derivation.json")} != expected_derivations:
+        raise RuntimeError("LAB_REPLAY_DERIVATION_ROSTER")
     history = []
+    seen_nonces = set()
     input_tokens = output_tokens = 0
     final_proposal = None
     final_check = {"satisfied": False}
@@ -88,7 +105,14 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
         check = read_record(root / f"attempt_{attempt}_check.json")
         if request["max_new_tokens"] != contract["limits"]["max_new_tokens"]:
             raise RuntimeError("LAB_REPLAY_AUTHORIZED_CAP")
-        expected_prompt = build_prompt(op["task"], nonce=request["nonce"], history=history)
+        if versioned:
+            if (set(request) != {"prompt", "nonce", "max_new_tokens", "task_hash", "response_interface"}
+                    or request["response_interface"] != op["response_interface"]):
+                raise RuntimeError("LAB_REPLAY_REQUEST_INTERFACE")
+            if request["nonce"] in seen_nonces:
+                raise RuntimeError("LAB_REPLAY_DUPLICATE_NONCE")
+            seen_nonces.add(request["nonce"])
+        expected_prompt = _prompt(op, nonce=request["nonce"], history=history)
         reservation = read_record(root / f"attempt_{attempt}_reserved.json")
         if (request["prompt"] != expected_prompt or request["task_hash"] != identity(op["task"])
                 or reservation != {"operation_id": root.name, "attempt": attempt,
@@ -97,12 +121,19 @@ def verify_operation(root: Path, *, expected_contract_sha256: str) -> dict[str, 
             raise RuntimeError("LAB_REPLAY_REQUEST_BINDING")
         verify_generation(raw, nonce=request["nonce"], prompt=request["prompt"], cap=contract["limits"]["max_new_tokens"],
                           contract_sha256=result["contract_sha256"], adapter_required=result["adapter_required"])
-        try:
-            proposal = parse_proposal(raw["output_text"], result["task"], nonce=request["nonce"])
-            computed = check_proposal(result["task"], proposal, nonce=request["nonce"])
-        except CheckedTaskError as exc:
-            proposal = None
-            computed = {"satisfied": False, "diagnostics": [str(exc)], "scope": "MALFORMED_OR_UNBOUND_PROPOSAL"}
+        if versioned:
+            proposal, computed, derived = derive_proposal(raw["output_text"], op["task"], nonce=request["nonce"],
+                interface=op["response_interface"], contract_hash=expected_contract_sha256,
+                operation_id=root.name, attempt=attempt, request=request)
+            if read_record(root / f"attempt_{attempt}_derivation.json") != derived:
+                raise RuntimeError("LAB_REPLAY_DERIVATION_MISMATCH")
+        else:
+            try:
+                proposal = parse_proposal(raw["output_text"], result["task"], nonce=request["nonce"])
+                computed = check_proposal(result["task"], proposal, nonce=request["nonce"])
+            except CheckedTaskError as exc:
+                proposal = None
+                computed = {"satisfied": False, "diagnostics": [str(exc)], "scope": "MALFORMED_OR_UNBOUND_PROPOSAL"}
         if computed != check:
             raise RuntimeError("LAB_REPLAY_CHECKER_MISMATCH")
         final_proposal, final_check = proposal, check
@@ -199,15 +230,24 @@ def run_checked_generation(context: dict[str, Any], request: dict[str, Any]) -> 
               "claim_ceiling": "BOUNDED_TASK_CHECKED_LOCAL_LAB_EFFECT_ONLY", "model_calls": 0,
               "model_calls_accounting": "RESERVED_ATTEMPTS_INCLUDING_UNKNOWN_OR_FAILED_GENERATION",
               "input_tokens": 0, "output_tokens": 0, "checker_seconds": 0.0}
+    if "response_interface" in op:
+        result.update(schema_id="kt.lab.operation_result.v2", response_interface=op["response_interface"])
     history = []
+    seen_nonces = set()
     final_proposal = None
     final_check = {"satisfied": False}
     for attempt in range(op["attempts"]):
         nonce = secrets.token_hex(16)
-        prompt = build_prompt(task, nonce=nonce, history=history)
+        if "response_interface" in op and nonce in seen_nonces:
+            raise RuntimeError("LAB_DUPLICATE_OUTER_NONCE")
+        seen_nonces.add(nonce)
+        prompt = _prompt(op, nonce=nonce, history=history)
         root = session.reserve(operation_id, attempt, hashlib.sha256(prompt.encode()).hexdigest())
-        write_record(root / f"attempt_{attempt}_request.json", {"prompt": prompt, "nonce": nonce,
-                     "max_new_tokens": limits["max_new_tokens"], "task_hash": identity(task)})
+        request_record = {"prompt": prompt, "nonce": nonce,
+                          "max_new_tokens": limits["max_new_tokens"], "task_hash": identity(task)}
+        if "response_interface" in op:
+            request_record["response_interface"] = op["response_interface"]
+        write_record(root / f"attempt_{attempt}_request.json", request_record)
         result["model_calls"] += 1
         try:
             if session.backend is None:
@@ -227,12 +267,18 @@ def run_checked_generation(context: dict[str, Any], request: dict[str, Any]) -> 
             result["status"] = "HOLD_GENERATION_FAILED"
             return _terminal(root, result)
         before = time.perf_counter()
-        try:
-            final_proposal = parse_proposal(raw["output_text"], task, nonce=nonce)
-            final_check = check_proposal(task, final_proposal, nonce=nonce)
-        except CheckedTaskError as exc:
-            final_proposal = None
-            final_check = {"satisfied": False, "diagnostics": [str(exc)], "scope": "MALFORMED_OR_UNBOUND_PROPOSAL"}
+        if "response_interface" in op:
+            final_proposal, final_check, derived = derive_proposal(raw["output_text"], task, nonce=nonce,
+                interface=op["response_interface"], contract_hash=session.contract_hash,
+                operation_id=operation_id, attempt=attempt, request=request_record)
+            write_record(root / f"attempt_{attempt}_derivation.json", derived)
+        else:
+            try:
+                final_proposal = parse_proposal(raw["output_text"], task, nonce=nonce)
+                final_check = check_proposal(task, final_proposal, nonce=nonce)
+            except CheckedTaskError as exc:
+                final_proposal = None
+                final_check = {"satisfied": False, "diagnostics": [str(exc)], "scope": "MALFORMED_OR_UNBOUND_PROPOSAL"}
         result["checker_seconds"] += time.perf_counter() - before
         write_record(root / f"attempt_{attempt}_check.json", final_check)
         result["attempts"].append(attempt)
