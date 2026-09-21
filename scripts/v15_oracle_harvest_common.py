@@ -184,6 +184,8 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
                 require(samples[task_id] == task_hash, "CURRENT_ORACLE_MIXED_TASK")
             samples[task_id] = task_hash
             route = label + "/" + op["strategy"]
+            if "response_interface" in op:
+                route += "/" + op["response_interface"]["mode"]
             key = (task_hash, route)
             require(key not in assignments, "CURRENT_ORACLE_DUPLICATE_CELL")
             assignments.append(key)
@@ -223,6 +225,8 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
                          "generation_seconds": sum(timings) if known_time else None,
                          "complete_token_accounting": finished and len(generated) == result["model_calls"],
                          "claim_ceiling": replay["ceiling"]})
+            if "response_interface" in op:
+                rows[-1]["response_interface"] = op["response_interface"]
     require(baseline_route in {route for _, route in assignments}, "CURRENT_ORACLE_BASELINE_NOT_ASSIGNED")
     grouped = {}
     for row in rows:
