@@ -261,7 +261,7 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
     """
     from core.checked_generation import verify_operation
     from governance.lab_admission import validate_contract
-    from schemas.checked_task import identity, strict_json
+    from schemas.checked_task import canonical_bytes, identity, strict_json
     from schemas.trusted_local_path import assert_no_link_or_reparse_path
 
     def require(ok, code):
@@ -338,8 +338,19 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             models_here = {r["model"] for r in assigned_here.values()}
             require(len(models_here) == 1, "CURRENT_ORACLE_STAGE_MODEL")
             model = next(iter(models_here))
+            actual_backend, reference_backend = contract["backend"], comparison["backends"][model]
+            for path_key in ("base_root", "adapter_root"):
+                require((path_key in actual_backend) == (path_key in reference_backend),
+                        "CURRENT_ORACLE_MODEL_BINDING")
+                if path_key == "adapter_root":
+                    require(path_key in actual_backend, "CURRENT_ORACLE_MODEL_BINDING")
+                if path_key in actual_backend:
+                    actual_path, reference_path = actual_backend[path_key], reference_backend[path_key]
+                    require((actual_path is None) == (reference_path is None), "CURRENT_ORACLE_MODEL_BINDING")
+                    require(actual_path is None or (type(actual_path) is str and bool(actual_path)
+                            and type(reference_path) is str and bool(reference_path)), "CURRENT_ORACLE_MODEL_BINDING")
             stable_backend = lambda value: {k: v for k, v in value.items() if k not in ("base_root", "adapter_root")}
-            require(stable_backend(contract["backend"]) == stable_backend(comparison["backends"][model]),
+            require(canonical_bytes(stable_backend(actual_backend)) == canonical_bytes(stable_backend(reference_backend)),
                     "CURRENT_ORACLE_MODEL_BINDING")
         run_root = root / label
         assert_no_link_or_reparse_path(run_root, label="current oracle records")

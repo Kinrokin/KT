@@ -85,7 +85,8 @@ def _snapshot(root):
 
 
 def _fixture(root, monkeypatch, *, failed_generation=False, denied_effect=False,
-             interrupted_restoration=False, split_replicate_baseline=False):
+             interrupted_restoration=False, split_replicate_baseline=False,
+             adapter_present=False):
     """2 tasks x 2 named synthetic model subjects x 3 conditions x 2 repeats.
 
     Source/run/operation evidence is produced by the real native runtime. The
@@ -106,15 +107,22 @@ def _fixture(root, monkeypatch, *, failed_generation=False, denied_effect=False,
          "problem": {"left": 7, "operation": "subtract", "right": 10}},
     ]
     stages = ["parent_rep0", "child_rep0", "child_rep1", "parent_rep1"]
-    # Adapter activity is not manufactured: transport subjects have no adapter.
+    # These are synthetic transport subjects, never claims of actual weights.
+    # Optional adapter observations exercise the native replay predicate only.
     backends = {
-        role: {"kind": "local_qwen_nf4", "adapter_root": None,
-               "explicit_synthetic_test_subject": role}
+        role: {"kind": "local_qwen_nf4",
+               "adapter_root": f"/synthetic/runtime/{role}/adapter" if adapter_present else None,
+               "explicit_synthetic_test_subject": role,
+               "synthetic_configuration": {"seed": 1}}
         for role in ("parent", "child")
     }
+    references = copy.deepcopy(backends)
+    if adapter_present:
+        for role in references:
+            references[role]["adapter_root"] = f"/synthetic/frozen-reference/{role}/adapter"
     _write(root / "TASKS.json", tasks)
     _write(root / "MODEL_CONFIGURATION_REFERENCE.json",
-           {"parent_backend": backends["parent"], "child_backend": backends["child"]})
+           {"parent_backend": references["parent"], "child_backend": references["child"]})
     roster, bindings = [], {}
     target = ("parent_rep0", "full_fixed_display", "OI_add")
     native_write = lab_effect.write_record
@@ -168,7 +176,11 @@ def _fixture(root, monkeypatch, *, failed_generation=False, denied_effect=False,
                                               "42" if role == "child" and task_id == "OI_add"
                                               and condition == "full_varied_display" else None)
                 timing = None if condition == "host_bound_answer" else 0.25
-                SyntheticBackend.mutate = staticmethod(lambda raw, t=timing: raw.update(generation_seconds=t))
+                def synthetic_observation(raw, t=timing, adapted=adapter_present):
+                    raw.update(generation_seconds=t)
+                    if adapted:
+                        raw["adapter_observation"] = {"calls": 1, "abs_max": 0.5}
+                SyntheticBackend.mutate = staticmethod(synthetic_observation)
                 with monkeypatch.context() as local:
                     if failed_generation and is_target:
                         def failed(*args, **kwargs):
@@ -261,6 +273,70 @@ def test_complete_portfolio_preserves_conditions_replicates_and_native_semantics
     assert report["runtime_feature_authority"] is False and report["claim_authority"] == "NONE"
     assert all(r["diagnostic_content_correct"] is None for r in report["rows"])
     assert _snapshot(root) == before
+
+
+def test_native_adapter_presence_allows_relocated_nonnull_roots(tmp_path, monkeypatch):
+    root, pin, roster = _fixture(tmp_path / "portfolio", monkeypatch, adapter_present=True)
+    before = _snapshot(root)
+    references = _read(root / "MODEL_CONFIGURATION_REFERENCE.json")
+    for stage in ("parent_rep0", "child_rep0", "child_rep1", "parent_rep1"):
+        contract = _read(root / f"CONTRACT_{stage}.json")
+        role = stage.split("_rep")[0]
+        recorded_root = contract["backend"]["adapter_root"]
+        frozen_root = references[f"{role}_backend"]["adapter_root"]
+        assert recorded_root and frozen_root and recorded_root != frozen_root
+    report = _portfolio(root, pin)
+    assert report["status"] == "COMPLETE_RECORDED_ROSTER"
+    assert report["assigned_operations"] == report["completed_operations"] == 24
+    assert all(row["evidence_valid"] is True for row in report["rows"])
+    for row in roster:
+        folder = root / row["stage"] / row["operation_id"]
+        assert _read(folder / "result.json")["adapter_required"] is True
+        assert _read(folder / "attempt_0_raw.json")["adapter_observation"] == {
+            "calls": 1, "abs_max": 0.5}
+    assert _snapshot(root) == before
+
+
+@pytest.mark.parametrize("adapter_present", [False, True])
+@pytest.mark.parametrize("role", ["parent", "child"])
+def test_rehashed_reference_cannot_change_native_adapter_presence(
+        tmp_path, monkeypatch, adapter_present, role):
+    root, pin, _ = _fixture(tmp_path / "portfolio", monkeypatch, adapter_present=adapter_present)
+    assert _portfolio(root, pin)["status"] == "COMPLETE_RECORDED_ROSTER"
+    references = _read(root / "MODEL_CONFIGURATION_REFERENCE.json")
+    references[f"{role}_backend"]["adapter_root"] = (
+        None if adapter_present else f"/synthetic/unrelated/{role}/adapter")
+    _write(root / "MODEL_CONFIGURATION_REFERENCE.json", references)
+    pin = _repin_metadata(root)
+    with pytest.raises((ValueError, RuntimeError), match="CURRENT_ORACLE_MODEL_BINDING"):
+        _portfolio(root, pin)
+
+
+@pytest.mark.parametrize("owner", ["reference", "contract"])
+def test_adapter_root_presence_is_explicit_on_both_identity_owners(tmp_path, monkeypatch, owner):
+    root, pin, _ = _fixture(tmp_path / "portfolio", monkeypatch)
+    assert _portfolio(root, pin)["status"] == "COMPLETE_RECORDED_ROSTER"
+    if owner == "reference":
+        references = _read(root / "MODEL_CONFIGURATION_REFERENCE.json")
+        references["child_backend"].pop("adapter_root")
+        _write(root / "MODEL_CONFIGURATION_REFERENCE.json", references)
+        pin = _repin_metadata(root)
+    else:
+        pin = _update_contract(root, "child_rep0", lambda c: c["backend"].pop("adapter_root"))
+    with pytest.raises((ValueError, RuntimeError), match="CURRENT_ORACLE_MODEL_BINDING"):
+        _portfolio(root, pin)
+
+
+def test_rehashed_backend_identity_does_not_equate_nested_boolean_with_integer(tmp_path, monkeypatch):
+    root, pin, _ = _fixture(tmp_path / "portfolio", monkeypatch)
+    assert _portfolio(root, pin)["status"] == "COMPLETE_RECORDED_ROSTER"
+    references = _read(root / "MODEL_CONFIGURATION_REFERENCE.json")
+    assert type(references["child_backend"]["synthetic_configuration"]["seed"]) is int
+    references["child_backend"]["synthetic_configuration"]["seed"] = True
+    _write(root / "MODEL_CONFIGURATION_REFERENCE.json", references)
+    pin = _repin_metadata(root)
+    with pytest.raises((ValueError, RuntimeError), match="CURRENT_ORACLE_MODEL_BINDING"):
+        _portfolio(root, pin)
 
 
 def test_actual_cli_reads_intact_portfolio_without_mutation(tmp_path, monkeypatch):
