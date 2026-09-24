@@ -18,7 +18,8 @@ def current_main(argv):
     parser = argparse.ArgumentParser(description="Read verified current laboratory evidence; historical V15 mode is unchanged.")
     parser.add_argument("--current-checked-run", required=True, type=Path)
     parser.add_argument("--freeze-sha256", required=True)
-    parser.add_argument("--baseline-route", default="base/direct")
+    parser.add_argument("--baseline-route", help="Explicit model/condition in frozen_interface_v1; legacy default base/direct")
+    parser.add_argument("--comparison-mode", choices=["frozen_interface_v1"])
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args(argv)
     output = args.output
@@ -27,7 +28,7 @@ def current_main(argv):
             output.is_relative_to(args.current_checked_run.resolve()) or output.exists()):
         raise ValueError("CURRENT_ORACLE_OUTPUT_MUST_BE_NEW_AND_EXTERNAL")
     report = current_checked_portfolio(args.current_checked_run, freeze_sha256=args.freeze_sha256,
-                                       baseline_route=args.baseline_route)
+                                       baseline_route=args.baseline_route, comparison_mode=args.comparison_mode)
     output.parent.mkdir(parents=True, exist_ok=True)
     write_record(output, report)
     print(json.dumps({"status": report["status"], "assigned": report["assigned_operations"],

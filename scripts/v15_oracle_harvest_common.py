@@ -105,8 +105,154 @@ FORBIDDEN_FEATURES = {
 }
 
 
+def _interface_comparison_inputs(root, freeze, pinned_file, require):
+    """Bind pre-outcome comparison metadata; never infer a condition from a result."""
+    from schemas.checked_task import identity, strict_json
+
+    def load(name, digest):
+        require(type(digest) is str and len(digest) == 64 and
+                all(c in "0123456789abcdef" for c in digest), "CURRENT_ORACLE_COMPARISON_PIN")
+        return strict_json(pinned_file(root / name, digest), max_bytes=2 * 1024 * 1024)
+
+    definition = load("EXPERIMENT_DEFINITION.json", freeze.get("definition_sha256"))
+    roster = load("PROSPECTIVE_OPERATION_ROSTER.json", freeze.get("roster_sha256"))
+    require(definition.get("schema_id") == "kt.host_interface.development_definition.v1",
+            "CURRENT_ORACLE_COMPARISON_SCHEMA")
+    conditions = ["full_fixed_display", "full_varied_display", "host_bound_answer"]
+    models = ["formal_adapter_parent", "quarantined_v25_child"]
+    require(definition.get("conditions") == conditions and definition.get("models") == models and
+            definition.get("independent_process_replicates_per_model") == 2 and
+            type(definition["independent_process_replicates_per_model"]) is int and
+            definition.get("attempts_per_operation") == 1 and type(definition["attempts_per_operation"]) is int and
+            definition.get("operation_strategy") == "direct" and definition.get("consume") is True,
+            "CURRENT_ORACLE_COMPARISON_DESIGN")
+    require(definition.get("varied_display_rule") ==
+            "First32hex(SHA256(ASCII HI1|task_id|replicate_index)); identical for corresponding parent/child cells, distinct from fixed display",
+            "CURRENT_ORACLE_DISPLAY_RULE")
+    fixed = definition.get("fixed_display_nonce")
+    require(type(fixed) is str and len(fixed) == 32 and all(c in "0123456789abcdef" for c in fixed),
+            "CURRENT_ORACLE_DISPLAY_RULE")
+    tasks = load("TASKS.json", definition.get("tasks_sha256"))
+    refs = load("MODEL_CONFIGURATION_REFERENCE.json", definition.get("model_configuration_reference_sha256"))
+    require(type(tasks) is list and 0 < len(tasks) <= 1024, "CURRENT_ORACLE_COMPARISON_TASKS")
+    by_task = {t["task_id"]: t for t in tasks}
+    require(len(by_task) == len(tasks) and definition.get("task_order") == [t["task_id"] for t in tasks],
+            "CURRENT_ORACLE_COMPARISON_TASKS")
+    expected_stages = {f"{role}_rep{rep}" for role in ("parent", "child") for rep in range(2)}
+    require(set(freeze["contracts"]) == expected_stages and
+            set(definition.get("stage_order", [])) == expected_stages and
+            len(definition["stage_order"]) == len(expected_stages), "CURRENT_ORACLE_COMPARISON_STAGES")
+    require(roster.get("frozen_definition_sha256") == freeze["definition_sha256"] and
+            set(roster.get("contract_names_expected", [])) == {f"CONTRACT_{s}.json" for s in expected_stages} and
+            len(roster["contract_names_expected"]) == len(expected_stages), "CURRENT_ORACLE_ROSTER_BINDING")
+    expected_count = len(tasks) * len(models) * len(conditions) * 2
+    require(type(roster.get("rows")) is list and len(roster["rows"]) == expected_count and
+            type(roster.get("generation_rows")) is int and roster["generation_rows"] == expected_count and
+            type(roster.get("independent_tasks")) is int and roster["independent_tasks"] == len(tasks) and
+            type(definition.get("generation_total")) is int and definition["generation_total"] == expected_count,
+            "CURRENT_ORACLE_COMPARISON_ROSTER")
+    index, cells = {}, set()
+    for row in roster["rows"]:
+        require(type(row) is dict and set(row) == {"condition", "model", "operation", "operation_id", "replicate",
+                "stage", "task_id", "task_sha256"}, "CURRENT_ORACLE_COMPARISON_ROW")
+        model, condition, rep = row["model"], row["condition"], row["replicate"]
+        require(model in models and condition in conditions and type(rep) is int and rep in (0, 1),
+                "CURRENT_ORACLE_COMPARISON_IDENTITY")
+        role = "parent" if model == models[0] else "child"
+        require(row["stage"] == f"{role}_rep{rep}" and row["task_id"] in by_task,
+                "CURRENT_ORACLE_COMPARISON_IDENTITY")
+        op = row["operation"]
+        task = by_task[row["task_id"]]
+        display = (fixed if condition == conditions[0] else
+                   hashlib.sha256(f"HI1|{row['task_id']}|{rep}".encode("ascii")).hexdigest()[:32])
+        interface = {"mode": "host_bound_answer", "display_nonce": None} if condition == conditions[2] else {
+            "mode": "full_envelope_control", "display_nonce": display}
+        require(condition != conditions[1] or display != fixed, "CURRENT_ORACLE_DISPLAY_COLLISION")
+        require(op == {"task": task, "strategy": "direct", "attempts": 1, "consume": True,
+                       "response_interface": interface} and row["task_sha256"] == identity(task) and
+                row["operation_id"] == identity(op), "CURRENT_ORACLE_CONDITION_BINDING")
+        evidence_key = (row["stage"], row["operation_id"])
+        cell = (row["task_sha256"], model, condition, rep)
+        require(evidence_key not in index and cell not in cells, "CURRENT_ORACLE_DUPLICATE_CELL")
+        index[evidence_key] = row
+        cells.add(cell)
+    require(len(cells) == expected_count, "CURRENT_ORACLE_COMPARISON_ROSTER")
+    return {"index": index, "definition": definition, "models": models, "conditions": conditions,
+            "backends": {models[0]: refs["parent_backend"], models[1]: refs["child_backend"]}}
+
+
+def _interface_comparison_report(rows, missing, comparison, baseline, freeze, freeze_sha256):
+    """Pair within task and replicate; repeated generations never become tasks."""
+    from schemas.checked_task import identity
+    assigned = list(comparison["index"].values())
+    routes = {r["model"] + "/" + r["condition"] for r in assigned}
+    if baseline not in routes:
+        raise ValueError("CURRENT_ORACLE_BASELINE_NOT_ASSIGNED")
+    groups = sorted({(r["task_sha256"], r["replicate"]) for r in assigned})
+    gaps = []
+    for task_hash, rep in groups:
+        members = [r for r in assigned if (r["task_sha256"], r["replicate"]) == (task_hash, rep)]
+        baseline_members = [r for r in members if r["model"] + "/" + r["condition"] == baseline]
+        if len(baseline_members) != 1:
+            raise ValueError("CURRENT_ORACLE_BASELINE_AMBIGUOUS")
+        observed = [r for r in rows if (r["task_hash"], r["replicate"]) == (task_hash, rep)]
+        absent = [r for r in missing if (r["task_hash"], r["replicate"]) == (task_hash, rep)]
+        base = [r for r in observed if r["route"] == baseline and r["completed"]]
+        if len(base) > 1:
+            raise ValueError("CURRENT_ORACLE_BASELINE_AMBIGUOUS")
+        base = base[0] if base else None
+        valid = [r for r in observed if r["strict_success"]]
+        eligible = [r for r in valid if r["complete_token_accounting"]]
+        cheapest = min(eligible, key=lambda r: (r["input_tokens"] + r["output_tokens"], r["route"])) if eligible else None
+        gaps.append({"task_id": members[0]["task_id"], "task_hash": task_hash, "replicate": rep,
+            "assigned_routes": sorted(r["model"] + "/" + r["condition"] for r in members),
+            "observed_completed_routes": [r["route"] for r in observed if r["completed"]],
+            "missing_routes": [r["route"] for r in absent], "baseline_success": base["strict_success"] if base else None,
+            "observed_union_success": bool(valid), "successful_routes": [r["route"] for r in valid],
+            "unique_observed_success_route": valid[0]["route"] if len(valid) == 1 else None,
+            "rescue_over_baseline": [r["route"] for r in valid] if base and not base["strict_success"] else [],
+            "damage_against_baseline": [r["route"] for r in observed if r["completed"] and not r["strict_success"]] if base and base["strict_success"] else [],
+            "cheapest_correct_observed_route": cheapest["route"] if cheapest else None,
+            "cheapest_correct_known_tokens": cheapest["input_tokens"] + cheapest["output_tokens"] if cheapest else None,
+            "all_assigned_routes_failed": not valid and not absent,
+            "opportunity": None if base and base["strict_success"] else
+                "SELECTION_OPPORTUNITY" if valid and base and not base["strict_success"] else
+                ("CAPABILITY_OPPORTUNITY" if not valid and not absent else "MEASUREMENT_UNCERTAINTY"),
+            "opportunity_scope": "NO_OBSERVED_BASELINE_FAILURE" if base and base["strict_success"] else "BASELINE_FAILURE_OR_UNRESOLVED",
+            "causal_owner": "UNKNOWN"})
+    cells = []
+    for route in sorted(routes):
+        selected = [r for r in rows if r["route"] == route]
+        cells.append({"route": route, "assigned": sum(r["model"] + "/" + r["condition"] == route for r in assigned),
+            "observed": len(selected), "completed": sum(r["completed"] for r in selected),
+            "strict_successes": sum(r["strict_success"] for r in selected),
+            "independent_tasks": len({r["task_sha256"] for r in assigned if r["model"] + "/" + r["condition"] == route}),
+            "replicates": 2})
+    here = Path(__file__).resolve()
+    return {"schema_id": "kt.current_checked_oracle_observation.frozen_interface.v1",
+        "comparison_mode": "frozen_interface_v1", "run_id": freeze["run_id"],
+        "source_head": freeze["source_head"], "source_tree": freeze["source_tree"],
+        "execution_source_meaning": "Historical experiment source, not the later analysis source",
+        "analysis_source": {"reader_sha256": hashlib.sha256(here.read_bytes()).hexdigest(),
+            "cli_sha256": hashlib.sha256((here.parent / "build_v15_oracle_gap_matrix.py").read_bytes()).hexdigest()},
+        "freeze_sha256": freeze_sha256, "definition_sha256": freeze["definition_sha256"],
+        "roster_sha256": freeze["roster_sha256"], "status": "INCOMPLETE_RECORDED_ROSTER" if missing else "COMPLETE_RECORDED_ROSTER",
+        "assigned_operations": len(assigned), "completed_operations": sum(r["completed"] for r in rows),
+        "independent_tasks": len({r["task_sha256"] for r in assigned}), "models": comparison["models"],
+        "conditions": comparison["conditions"], "replicates": 2, "baseline_route": baseline,
+        "rows": rows, "missing": missing, "cells": cells, "oracle_gap_matrix": gaps,
+        "comparison_assignment_sha256": identity(assigned), "task_unit": "Task definition; replicate is a paired stratum, not another independent task",
+        "correctness_endpoint": "Native strict task predicate; protocol rejection does not establish content incorrectness",
+        "diagnostic_content": "NOT_COMPUTED; separately pinned accepted diagnostics may be joined externally and never replace native acceptance",
+        "uniqueness_scope": "Observed completed routes within task/replicate; missing work unresolved",
+        "cost_basis": "Observed native token counts; missing generation/loading/allocation costs stay UNKNOWN, never zero",
+        "causal_limit": "Retrospective opened development evidence; no routing or learning intervention",
+        "ownership": "UNKNOWN_BLOCKED unless separately causally adjudicated",
+        "runtime_feature_authority": False, "training_authority": False, "promotion_authority": False, "claim_authority": "NONE"}
+
 def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
-                              baseline_route: str = "base/direct") -> dict:
+                              baseline_route: str | None = None,
+                              comparison_mode: str | None = None) -> dict:
     """Read a pinned current laboratory run without rewriting historical V15 facts.
 
     The caller supplies the previously frozen RUN_FREEZE digest as a trust anchor.
@@ -115,7 +261,7 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
     """
     from core.checked_generation import verify_operation
     from governance.lab_admission import validate_contract
-    from schemas.checked_task import identity, strict_json
+    from schemas.checked_task import canonical_bytes, identity, strict_json
     from schemas.trusted_local_path import assert_no_link_or_reparse_path
 
     def require(ok, code):
@@ -132,6 +278,10 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             require(hashlib.sha256(raw).hexdigest() == expected, "CURRENT_ORACLE_INPUT_PIN")
         return raw
 
+    require(comparison_mode in (None, "frozen_interface_v1"), "CURRENT_ORACLE_COMPARISON_MODE")
+    if comparison_mode is None and baseline_route is None:
+        baseline_route = "base/direct"
+    require(type(baseline_route) is str and bool(baseline_route), "CURRENT_ORACLE_BASELINE_REQUIRED")
     root = Path(evidence_root)
     assert_no_link_or_reparse_path(root, label="current oracle root")
     require(root.is_dir() and root.resolve() == root and ".." not in root.parts,
@@ -146,7 +296,17 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             "CURRENT_ORACLE_SUBJECT_IDENTITY")
     bindings = freeze.get("contracts")
     require(type(bindings) is dict and 1 <= len(bindings) <= 32, "CURRENT_ORACLE_CONTRACTS")
+    comparison = (_interface_comparison_inputs(root, freeze, pinned_file, require)
+                  if comparison_mode == "frozen_interface_v1" else None)
+    if comparison is not None:
+        entries = list(root.iterdir())
+        for entry in entries:
+            assert_no_link_or_reparse_path(entry, label="current oracle portfolio member")
+        require({p.name for p in entries if p.is_dir()} <= set(bindings), "CURRENT_ORACLE_EXTRA_STAGE")
+        require({p.name for p in entries if p.name.startswith("CONTRACT_") and p.suffix == ".json"} ==
+                {b["name"] for b in bindings.values()}, "CURRENT_ORACLE_EXTRA_CONTRACT")
     rows, missing, assignments, samples = [], [], [], {}
+    seen_cells = set()
     contract_run_ids = set()
     source = Path(__file__).resolve().parents[1] / "KT_PROD_CLEANROOM/04_PROD_TEMPLE_V2/src"
     shared_source = None
@@ -170,6 +330,28 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
         else:
             require(contract["source_files"] == shared_source, "CURRENT_ORACLE_MIXED_SOURCE")
         pinned_file(source.parent / "docs/RUNTIME_REGISTRY.json", contract["runtime_registry_sha256"])
+        if comparison is not None:
+            assigned_here = {opid: row for (stage, opid), row in comparison["index"].items() if stage == label}
+            require(set(contract["operations"]) == set(assigned_here), "CURRENT_ORACLE_CONTRACT_ROSTER")
+            for opid, metadata in assigned_here.items():
+                require(contract["operations"][opid] == metadata["operation"], "CURRENT_ORACLE_CONDITION_BINDING")
+            models_here = {r["model"] for r in assigned_here.values()}
+            require(len(models_here) == 1, "CURRENT_ORACLE_STAGE_MODEL")
+            model = next(iter(models_here))
+            actual_backend, reference_backend = contract["backend"], comparison["backends"][model]
+            for path_key in ("base_root", "adapter_root"):
+                require((path_key in actual_backend) == (path_key in reference_backend),
+                        "CURRENT_ORACLE_MODEL_BINDING")
+                if path_key == "adapter_root":
+                    require(path_key in actual_backend, "CURRENT_ORACLE_MODEL_BINDING")
+                if path_key in actual_backend:
+                    actual_path, reference_path = actual_backend[path_key], reference_backend[path_key]
+                    require((actual_path is None) == (reference_path is None), "CURRENT_ORACLE_MODEL_BINDING")
+                    require(actual_path is None or (type(actual_path) is str and bool(actual_path)
+                            and type(reference_path) is str and bool(reference_path)), "CURRENT_ORACLE_MODEL_BINDING")
+            stable_backend = lambda value: {k: v for k, v in value.items() if k not in ("base_root", "adapter_root")}
+            require(canonical_bytes(stable_backend(actual_backend)) == canonical_bytes(stable_backend(reference_backend)),
+                    "CURRENT_ORACLE_MODEL_BINDING")
         run_root = root / label
         assert_no_link_or_reparse_path(run_root, label="current oracle records")
         require(run_root.is_dir() and pinned_file(run_root / "operator_contract.json") == contract_raw,
@@ -186,14 +368,19 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             route = label + "/" + op["strategy"]
             if "response_interface" in op:
                 route += "/" + op["response_interface"]["mode"]
-            key = (task_hash, route)
-            require(key not in assignments, "CURRENT_ORACLE_DUPLICATE_CELL")
-            assignments.append(key)
+            metadata = comparison["index"][(label, op_id)] if comparison is not None else None
+            if metadata is not None:
+                route = metadata["model"] + "/" + metadata["condition"]
+            key = (task_hash, route, metadata["replicate"]) if metadata is not None else (task_hash, route)
+            require(key not in seen_cells, "CURRENT_ORACLE_DUPLICATE_CELL")
+            seen_cells.add(key)
+            assignments.append((task_hash, route))
+            row_identity = ({k: metadata[k] for k in ("stage", "model", "condition", "replicate")} if metadata is not None else {})
             folder = run_root / op_id
             assert_no_link_or_reparse_path(folder, label="current oracle operation")
             if not folder.is_dir() or not (folder / "result.json").exists():
                 missing.append({"task_hash": task_hash, "task_id": task_id, "route": route,
-                                "operation_id": op_id, "cost": "UNKNOWN_NOT_ZERO"})
+                                "operation_id": op_id, "cost": "UNKNOWN_NOT_ZERO", **row_identity})
                 continue
             entries = list(folder.iterdir())
             require(len(entries) <= 128, "CURRENT_ORACLE_OPERATION_SIZE")
@@ -206,7 +393,7 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
             finished = result["status"] in {"CHECKED_EFFECT_RESTORED", "CHECKED_NONCONSUMING", "HELD_TASK_PREDICATE"}
             if not finished:
                 missing.append({"task_hash": task_hash, "task_id": task_id, "route": route,
-                                "operation_id": op_id, "cost": "PARTIAL_KNOWN_PLUS_UNKNOWN", "status": result["status"]})
+                                "operation_id": op_id, "cost": "PARTIAL_KNOWN_PLUS_UNKNOWN", "status": result["status"], **row_identity})
             attempts = result["attempts"]
             checks = [strict_json(pinned_file(folder / f"attempt_{i}_check.json"), max_bytes=2 * 1024 * 1024) for i in attempts]
             require(all(type(c.get("satisfied")) is bool for c in checks), "CURRENT_ORACLE_CHECK_BOOLEAN")
@@ -227,6 +414,32 @@ def current_checked_portfolio(evidence_root: Path, *, freeze_sha256: str,
                          "claim_ceiling": replay["ceiling"]})
             if "response_interface" in op:
                 rows[-1]["response_interface"] = op["response_interface"]
+            if metadata is not None:
+                derivations = [strict_json(pinned_file(folder / f"attempt_{i}_derivation.json"), max_bytes=2 * 1024 * 1024)
+                               for i in attempts]
+                rows[-1].update(row_identity)
+                complete_time = bool(timings) and known_time and finished and len(generated) == result["model_calls"]
+                known_timings = [t for t in timings if type(t) in (int, float) and math.isfinite(t) and t >= 0]
+                verified_recovery = ((folder / "effect_recovered.json").exists() and
+                                     "effect_recovered.json" not in result["files"])
+                rows[-1].update(contract_run_id=contract["run_id"],
+                    evidence_valid=True, evidence_ref=f"{label}/{op_id}/result.json",
+                    protocol_valid=(derivations[-1]["rejection"] is None) if derivations else None,
+                    effect_authorized=True if result["status"] == "CHECKED_EFFECT_RESTORED" else None,
+                    effect_authority_record_present=(folder / "effect_authority.json").exists(),
+                    effect_applied=(True if result["status"] == "CHECKED_EFFECT_RESTORED" else
+                        False if result["status"] in {"CHECKED_NONCONSUMING", "HELD_TASK_PREDICATE"} else None),
+                    effect_applied_record_present=(folder / "effect_applied.json").exists(),
+                    effect_restored=(True if result["status"] == "CHECKED_EFFECT_RESTORED" or verified_recovery else
+                        False if result["status"] in {"CHECKED_NONCONSUMING", "HELD_TASK_PREDICATE"} else None),
+                    post_terminal_recovery_verified=verified_recovery,
+                    generation_seconds=sum(timings) if complete_time else None,
+                    known_generation_seconds=sum(known_timings) if known_timings else None,
+                    complete_time_accounting=complete_time,
+                    diagnostic_content_correct=None,
+                    diagnostic_content_status="NOT_EVALUATED_BY_NATIVE_ORACLE")
+    if comparison is not None:
+        return _interface_comparison_report(rows, missing, comparison, baseline_route, freeze, freeze_sha256)
     require(baseline_route in {route for _, route in assignments}, "CURRENT_ORACLE_BASELINE_NOT_ASSIGNED")
     grouped = {}
     for row in rows:
